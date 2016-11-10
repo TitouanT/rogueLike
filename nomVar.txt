@@ -1,0 +1,26 @@
+/* Contient tous les noms de variables global et enum deja utilisés */
+
+CELL_H
+COLUMNS
+CORRIDOR
+dCLOSE
+dNONE
+DOOR
+dOPEN
+DOWN
+EMPTY
+FALSE
+GLOBAL_H
+LEFT
+LINES
+RIGHT
+ROOM
+TRUE
+UP
+WALL
+wDR
+wDL
+wH
+wUL
+wUR
+wV
