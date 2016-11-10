@@ -8,7 +8,7 @@
 
 #include "cell.h"
 
-typedef enum {int line, column, lvl} t_pos;
-typedef enum {dirUP, dirDOWN, dirLEFT, dirRIGHT} t_dir;
+typedef struct {int line, column, lvl} t_pos;
+typedef enum {UP, DOWN, LEFT, RIGHT} t_dir;
 
 #endif /* end of include guard: GLOBAL_H */
