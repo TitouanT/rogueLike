@@ -81,24 +81,10 @@ t_room randomRoom (t_cell map[][COLUMNS], t_room * rooms, int nbRoom, int *nbTot
 	}
 	for (i = 0; i < room.height; i++) for (j = 0; j < room.width; j++) {
 
-		if (i == 0 || i == room.height - 1 || j == 0 || j == room.width - 1) {
+		if (i == 0 || i == room.height - 1 || j == 0 || j == room.width - 1)
 			map[room.line + i][room.column + j].type = WALL;
-			if ((i == 0 || i == room.height - 1) && (j == 0 || j == room.width - 1)) {
-				if (i == 0) {
-					if (j == 0) map[room.line + i][room.column + j].wall.wallType = wUL;
-					else map[room.line + i][room.column + j].wall.wallType = wUR;
-				}
-				else {
-					if (j == 0) map[room.line + i][room.column + j].wall.wallType = wDL;
-					else map[room.line + i][room.column + j].wall.wallType = wDR;
-				}
-			}
-			else {
-				if (i == 0 || i == room.height - 1) map[room.line + i][room.column + j].wall.wallType = wH;
-				else map[room.line + i][room.column + j].wall.wallType = wV;
-			}
-		}
-		else map[room.line + i][room.column + j].type = ROOM;
+		else
+			map[room.line + i][room.column + j].type = ROOM;
 	}
 	return room;
 }
@@ -223,6 +209,8 @@ void randomFloor (t_cell map[LINES][COLUMNS], int step) {
 	if (step) {
 		printf("Phase 0: initialisation de la map\n");
 		displayFloor(map);
+		printf("Taper Enter pour continuer");
+		scanf("%*c");
 	}
 	t_room rooms[ROOM_NB_MAX];
 	for (i = 0; i < nbRoom; i++) {
@@ -230,6 +218,8 @@ void randomFloor (t_cell map[LINES][COLUMNS], int step) {
 		if (step) {
 			printf("Phase 1.%d: création des pieces\n", i);
 			displayFloor(map);
+			printf("Taper Enter pour continuer");
+			scanf("%*c");
 		}
 	}
 
@@ -267,6 +257,8 @@ void randomFloor (t_cell map[LINES][COLUMNS], int step) {
 				if (step) {
 					printf("Phase 2.%d.%d: création des couloir\n", i, j);
 					displayFloor(map);
+					printf("Taper Enter pour continuer");
+					scanf("%*c");
 				}
 			}
 		}
@@ -284,6 +276,8 @@ void randomFloor (t_cell map[LINES][COLUMNS], int step) {
 			if (step) {
 				printf("Phase 3.%d.%d: ajout de couloir\n", i, j);
 				displayFloor(map);
+				printf("Taper Enter pour continuer");
+				scanf("%*c");
 			}
 		}
 	}
