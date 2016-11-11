@@ -51,6 +51,7 @@ int main () {
 
 	keypad(stdscr, TRUE); // Pour ne pas afficher les lettres que l'utilisateur tape
 	noecho();
+	curs_set(0);
 
 
 	/* Ici se déroule tout le jeu */
