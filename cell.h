@@ -14,7 +14,7 @@ typedef enum {wV, wH, wUR, wUL, wDR, wDL} t_wallType;
 typedef struct {
 	t_type type; // WALL
 	t_bool discovered;
-	t_type wallType; //
+	t_wallType wallType; //
 } t_wall;
 
 typedef enum {dNONE, dOPEN, dCLOSE} t_doorStates;
