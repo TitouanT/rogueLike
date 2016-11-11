@@ -6,6 +6,7 @@ typedef enum {EMPTY, WALL, ROOM, CORRIDOR, DOOR} t_type;
 typedef struct {
 	t_type type; // ROOM, CORRIDOR
 	int isDiscovered;
+	int isLight;
 } t_floor;
 
 typedef struct {
