@@ -62,9 +62,12 @@ int main () {
 		displayFloor(map);
 		addLog("Vous avez éffecuté une action", &lineLog);
 
-		addLog("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaasss", &lineLog);
+		addLog("azertyuiopqsdfghjklmwxcvbn0123456789AZERTYUIOPQSDFGHJKLMWXCVBNazertyuiopqsdfghjklmwxcvbn0123456789AZERTYUIOPQSDFGHJKLMWXCVBN", &lineLog);
 		if(key == '\n') addLog("Attention, la touche entrée n'est pas faite pour manger le dessert !", &lineLog);
 		else addLog("Erreur", &lineLog);
+
+		addLog("fdsjflkjsdljflsdfljsdlfkslf", &lineLog);
+		addLog("HEEEY", &lineLog);
 
 	}
 

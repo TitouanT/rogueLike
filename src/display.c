@@ -57,18 +57,23 @@ void clearLog(int *line){
 
 void addLog(char * message, int * line){
 
-	char truncatedMsg[COLS_LOGS];
-
-	move((*line)+1, COLS_GAME+1);
 	attron(COLOR_PAIR(1));
+
+	// On découpe le message en sous messages pour rentrer dans la zone de logs
+	while(strlen(message) > COLS_LOGS-1) {
+
+		move((*line)+1, COLS_GAME+1);
+		refresh();
+  	printw("%.*s", COLS_LOGS-2, message);
+
+		(*line)++;
+    message+=COLS_LOGS-2;
+  }
+	move((*line)+1, COLS_GAME+1);
 	refresh();
+  printw("%s", message);
 
-	// On tronque le message, pour pas dépasser la taille de la zone de log
-	strncpy(truncatedMsg, message, COLS_LOGS-2);
-	truncatedMsg[COLS_LOGS-2] = '\0';
 
-	// On affiche le message
-	printw(truncatedMsg);
 
 	// Si on a plus de place pour clear la zone de logs
 	if(*line >= LINES_LOGS - 3) clearLog(line);
