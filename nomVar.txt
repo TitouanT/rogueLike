@@ -1,6 +1,8 @@
 /* Contient tous les noms de variables global et enum deja utilisés */
 
+BOOL_H
 CELL_H
+CHARACTER_H
 COLUMNS
 CORRIDOR
 dCLOSE
@@ -10,9 +12,12 @@ dOPEN
 DOWN
 EMPTY
 FALSE
+FILEPOS_H
 GLOBAL_H
 LEFT
 LINES
+LVL_H
+MAPCONST_H
 RIGHT
 ROOM
 TRUE
