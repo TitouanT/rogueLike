@@ -15,14 +15,14 @@
 #define ROOM_MIN_LEN 5
 #define MIN(a,b) (a < b) ? a : b
 
-#define ANSI_COLOR_RED     "\x1b[31m"
-#define ANSI_COLOR_GREEN   "\x1b[32m"
-#define ANSI_COLOR_YELLOW  "\x1b[33m"
-#define ANSI_COLOR_BLUE    "\x1b[34m"
-#define ANSI_COLOR_MAGENTA "\x1b[35m"
-#define ANSI_COLOR_CYAN    "\x1b[36m"
-#define ANSI_COLOR_WHITE   "\x1B[37m"
-#define ANSI_COLOR_RESET   "\x1b[0m"
+#define ANSI_COLOR_RED     "\e[31m"
+#define ANSI_COLOR_GREEN   "\e[32m"
+#define ANSI_COLOR_YELLOW  "\e[33m"
+#define ANSI_COLOR_BLUE    "\e[34m"
+#define ANSI_COLOR_MAGENTA "\e[35m"
+#define ANSI_COLOR_CYAN    "\e[36m"
+#define ANSI_COLOR_WHITE   "\e[37m"
+#define ANSI_COLOR_RESET   "\e[0m"
 
 typedef struct {int line, column, height, width, link[ROOM_NB_MAX], isLink;} t_room;
 
@@ -31,7 +31,6 @@ void displayString(char * cell, char * color){
 }
 
 void displayFloor (t_cell map[][COLUMNS]) {
-	printf("\e[1;1H\e[2J");
 	int i, j;
 	for (i = 0; i < LINES; i++) {
 		for (j = 0; j < COLUMNS; j++) {
