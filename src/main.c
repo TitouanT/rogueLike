@@ -3,12 +3,20 @@
 int main () {
 
 	int key;
+	int lineLog = 0;
 
 	srand(time(NULL));
 	t_cell map[LINES][COLUMNS];
 
 	initscr();
 	start_color();
+
+	// Init pair : init_pair(ID_PAIR, TEXT COLOR, BACKGROUND COLOR);
+	init_pair(1, COLOR_RED, COLOR_BLACK);
+	init_pair(2, COLOR_WHITE, COLOR_BLACK);
+	init_pair(3, COLOR_CYAN, COLOR_BLACK);
+	init_pair(4, COLOR_WHITE, COLOR_WHITE);
+	init_pair(5, COLOR_BLACK, COLOR_BLACK);
 
 	/* Initialisation des panels et des fenetres */
 	WINDOW *windows[3];
@@ -42,12 +50,21 @@ int main () {
 	move(LINES_GAME + LINES_STATS, 0); // On déplace le curseur à la fin
 
 	keypad(stdscr, TRUE); // Pour ne pas afficher les lettres que l'utilisateur tape
+	noecho();
 
 
 	/* Ici se déroule tout le jeu */
 	while((key = getch()) != 'q'){
+		clearLog(&lineLog);
+
 		randomFloor(map, FALSE);
 		displayFloor(map);
+		addLog("Vous avez éffecuté une action", &lineLog);
+
+		addLog("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaasss", &lineLog);
+		if(key == '\n') addLog("Attention, la touche entrée n'est pas faite pour manger le dessert !", &lineLog);
+		else addLog("Erreur", &lineLog);
+
 	}
 
 
