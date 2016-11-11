@@ -15,26 +15,32 @@
 #define ROOM_MIN_LEN 5
 #define MIN(a,b) (a < b) ? a : b
 
+#define ANSI_COLOR_RED     "\x1b[31m"
+#define ANSI_COLOR_GREEN   "\x1b[32m"
+#define ANSI_COLOR_YELLOW  "\x1b[33m"
+#define ANSI_COLOR_BLUE    "\x1b[34m"
+#define ANSI_COLOR_MAGENTA "\x1b[35m"
+#define ANSI_COLOR_CYAN    "\x1b[36m"
+#define ANSI_COLOR_WHITE   "\x1B[37m"
+#define ANSI_COLOR_RESET   "\x1b[0m"
+
 typedef struct {int line, column, height, width, link[ROOM_NB_MAX], isLink;} t_room;
 
+void displayString(char * cell, char * color){
+	printf("%s%s%s", color, cell, ANSI_COLOR_RESET);
+}
+
 void displayFloor (t_cell map[][COLUMNS]) {
+	printf("\e[1;1H\e[2J");
 	int i, j;
 	for (i = 0; i < LINES; i++) {
 		for (j = 0; j < COLUMNS; j++) {
 			switch (map[i][j].type) {
-				case EMPTY: printf ("░"); break;
-				case DOOR: printf ("+"); break;
-				case ROOM:
-				case CORRIDOR: printf (" "); break;
-				case WALL:
-					switch (map[i][j].wall.wallType) {
-						case wH: printf ("═"); break;
-						case wV: printf ("║"); break;
-						case wUR: printf ("╗"); break;
-						case wDR: printf ("╝"); break;
-						case wUL: printf ("╔"); break;
-						case wDL: printf ("╚");
-					};
+				case EMPTY: displayString(" ", ANSI_COLOR_RESET); break;
+				case DOOR: displayString("▒", ANSI_COLOR_RED); break;
+				case ROOM: displayString("█", ANSI_COLOR_WHITE); break;
+				case CORRIDOR: displayString("░", ANSI_COLOR_WHITE); break;
+				case WALL: displayString("░", ANSI_COLOR_CYAN); break;
 			}
 		}
 		printf("\n");
