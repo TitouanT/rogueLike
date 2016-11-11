@@ -10,22 +10,38 @@
 #define ANSI_COLOR_RESET   "\e[0m"
 
 
-void displayString(char * str, char * color){
-	printf("%s%s%s", color, str, ANSI_COLOR_RESET);
+
+void changeColor(char * color){
+	//printf("%s%s%s", color, str, ANSI_COLOR_RESET);
+	addch(ACS_CKBOARD);
 }
 void displayFloor (t_cell map[][COLUMNS]) {
 	int i, j;
+
+
+	start_color();
+	// Init pair : init_pair(ID_PAIR, TEXT COLOR, BACKGROUND COLOR);
+	init_pair(1, COLOR_RED, COLOR_BLACK);
+	init_pair(2, COLOR_WHITE, COLOR_BLACK);
+	init_pair(3, COLOR_CYAN, COLOR_BLACK);
+	init_pair(4, COLOR_WHITE, COLOR_WHITE);
+
+	move(10,10);
+
+	printw("d");
+
 	for (i = 0; i < LINES; i++) {
+		move(i+1,2);
 		for (j = 0; j < COLUMNS; j++) {
 			switch (map[i][j].type) {
-				case EMPTY: displayString(" ", ANSI_COLOR_RESET); break;
-				case DOOR: displayString("▒", ANSI_COLOR_RED); break;
-				case ROOM: displayString("█", ANSI_COLOR_WHITE); break;
-				case CORRIDOR: displayString("░", ANSI_COLOR_WHITE); break;
-				case WALL: displayString("░", ANSI_COLOR_CYAN); break;
+				case EMPTY: 	 printw(" "); break;
+				case DOOR: 		 attron(COLOR_PAIR (1)); addch(ACS_CKBOARD); break; //changeColor("▒", ANSI_COLOR_RED); break;
+				case ROOM: 		 attron(COLOR_PAIR (4)); printw(" "); break; //changeColor("█", ANSI_COLOR_WHITE); break;
+				case CORRIDOR: attron(COLOR_PAIR (2)); addch(ACS_CKBOARD); break; //changeColor("░", ANSI_COLOR_WHITE); break;
+				case WALL: 		 attron(COLOR_PAIR (3)); addch(ACS_CKBOARD); break; //changeColor("░", ANSI_COLOR_CYAN); break;
 			}
 		}
-		printf("\n");
+
 	}
-	printf("\n");
+	move(LINES_STATS + LINES_GAME, 0);
 }
