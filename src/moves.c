@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include <ncurses.h>
 #include "global.h"
 
 int bIsWalkable(t_cell cell){

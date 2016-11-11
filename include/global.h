@@ -4,10 +4,9 @@
 
 #include <time.h>
 #include <stdlib.h>
-#include <stdio.h>
+#include <ncurses.h>
 
 #include "mapConst.h"
-#include "bool.h"
 #include "cell.h"
 #include "lvl.h"
 #include "character.h"

@@ -1,26 +1,24 @@
 #ifndef CELL_H
 #define CELL_H
 
-#include "bool.h"
-
 typedef enum {EMPTY, WALL, ROOM, CORRIDOR, DOOR} t_type;
 
 typedef struct {
 	t_type type; // ROOM, CORRIDOR
-	t_bool discovered;
+	int isDiscovered;
 } t_floor;
 
 typedef enum {wV, wH, wUR, wUL, wDR, wDL} t_wallType;
 typedef struct {
 	t_type type; // WALL
-	t_bool discovered;
+	int isDiscovered;
 	t_wallType wallType; //
 } t_wall;
 
 typedef enum {dNONE, dOPEN, dCLOSE} t_doorStates;
 typedef struct {
 	t_type type; // DOOR
-	t_bool discovered;
+	int isDiscovered;
 	t_doorStates doorStates; // dNONE, dOPEN or dCLOSE
 } t_door;
 

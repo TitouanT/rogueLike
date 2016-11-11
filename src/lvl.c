@@ -1,7 +1,6 @@
 #include <time.h>
 #include <stdlib.h>
-#include <stdio.h>
-#include "bool.h"
+#include <ncurses.h>
 #include "cell.h"
 #include "mapConst.h"
 #include "filePos.h"
@@ -16,13 +15,7 @@
 #define ROOM_MIN_LEN 5
 #define MIN(a,b) (a < b) ? a : b
 
-
-
 typedef struct {int line, column, height, width, link[ROOM_NB_MAX], isLink;} t_room;
-
-
-
-
 
 void initFloor (t_cell map[LINES][COLUMNS]) {
 	int i, j;
@@ -224,7 +217,7 @@ void createLink (t_cell map[][COLUMNS], t_room r1, t_room r2) {
 	file_supprimer();
 }
 
-void randomFloor (t_cell map[LINES][COLUMNS], t_bool step) {
+void randomFloor (t_cell map[LINES][COLUMNS], int step) {
 	int nbRoom = randab (ROOM_NB_MIN, ROOM_NB_MAX + 1), i, j, min, max;
 	initFloor (map);
 	if (step) {

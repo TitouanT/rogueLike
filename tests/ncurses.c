@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include <ncurses.h>
 #include <ncurses.h>
 #include <panel.h>
 

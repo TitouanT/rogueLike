@@ -1,6 +1,5 @@
 |type|fichier|
 |---|---|
-|t_bool|bool.h|
 |t_cell|cell.h|
 |t_dir|character.h|
 |t_door|cell.h|

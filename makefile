@@ -1,2 +1,3 @@
+LIB = -lncurses
 all:
-	gcc main.c -Wall lvl.c filePos.c display.c
+	gcc -Wall -I ./include ${LIB} src/main.c   src/lvl.c src/filePos.c src/display.c 

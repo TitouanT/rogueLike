@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include <ncurses.h>
 
 typedef union {int a ; int b; int tab;} t_g;
 

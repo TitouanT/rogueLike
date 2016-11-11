@@ -1,7 +1,7 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
 
-#include <stdio.h>
+#include <ncurses.h>
 #include "cell.h"
 #include "mapConst.h"
 
