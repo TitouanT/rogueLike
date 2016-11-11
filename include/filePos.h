@@ -2,7 +2,7 @@
 #define FILEPOS_H
 
 
-#include "character.h"
+typedef struct {int line, column;} t_pos;
 
 void file_init (void);
 int file_est_vide (void);
