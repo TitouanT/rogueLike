@@ -8,6 +8,7 @@ int main () {
 	t_cell map[LINES][COLUMNS];
 
 	initscr();
+	start_color();
 
 	/* Initialisation des panels et des fenetres */
 	WINDOW *windows[3];
@@ -31,21 +32,25 @@ int main () {
 	update_panels();
 	doupdate();
 
+	/* Affichage des titres sur les panels */
 	mvprintw(0,2, "RogueLike");
 	mvprintw(LINES_GAME,2, "Statistiques");
+	refresh();
 	mvprintw(0, COLS_GAME+2, "Logs");
 
-	// On déplace le curseur à la fin
-	move(LINES_GAME + LINES_STATS, 0);
 
-	keypad(stdscr, TRUE);
+	move(LINES_GAME + LINES_STATS, 0); // On déplace le curseur à la fin
 
+	keypad(stdscr, TRUE); // Pour ne pas afficher les lettres que l'utilisateur tape
+
+
+	/* Ici se déroule tout le jeu */
 	while((key = getch()) != 'q'){
 		randomFloor(map, FALSE);
 		displayFloor(map);
 	}
 
-	endwin();
 
+	endwin(); //Fermeture de la fenetre
 	return 0;
 }
