@@ -33,6 +33,7 @@ int main () {
 
 	mvprintw(0,2, "RogueLike");
 	mvprintw(LINES_GAME,2, "Statistiques");
+	refresh();
 	mvprintw(0, COLS_GAME+2, "Logs");
 
 	// On déplace le curseur à la fin

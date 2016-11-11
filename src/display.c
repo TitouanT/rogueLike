@@ -26,12 +26,10 @@ void displayFloor (t_cell map[][COLUMNS]) {
 	init_pair(3, COLOR_CYAN, COLOR_BLACK);
 	init_pair(4, COLOR_WHITE, COLOR_WHITE);
 
-	move(10,10);
 
-	printw("d");
 
 	for (i = 0; i < LINES; i++) {
-		move(i+1,2);
+		move(i+1,1);
 		for (j = 0; j < COLUMNS; j++) {
 			switch (map[i][j].type) {
 				case EMPTY: 	 printw(" "); break;
