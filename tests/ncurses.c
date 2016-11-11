@@ -10,9 +10,30 @@
 #define COLS_STATS COLS_GAME + COLS_LOGS
 // Complier avec -lpanel -lncurses
 
+void writeLog(char * message, int * line){
+
+  char clearMsg[COLS_LOGS];
+
+  int i;
+  for(i = 0 ; i < LINES_LOGS ; i++) clearMsg[i] = ' ';
+
+  mvprintw(*line, COLS_GAME+1, clearMsg);
+  mvprintw(*line, COLS_GAME+1, message);
+
+  if(*line >= LINES_LOGS - 2){
+    (*line) = 1;
+  } else {
+    (*line)++;
+  }
+
+  refresh();
+}
+
 int main(){
 
   int key;
+  int lineLog = 1;
+
   WINDOW *windows[3];
 	PANEL  *panels[3];
 
@@ -36,18 +57,14 @@ int main(){
   doupdate();
 
 
-  int line = 1;
 
   while((key = getch()) != 'q'){
     if(key == KEY_LEFT){
-      mvprintw(line, COLS_GAME+1, "> Déplacement à gauche  ");
+      writeLog("> Déplacement à gauche", &lineLog);
     }
     else if(key == KEY_RIGHT){
-      mvprintw(line, COLS_GAME+1, "> Déplacement à droite  ");
+      writeLog("> Déplacement à droite", &lineLog);
     }
-    if(line < LINES_LOGS - 2) line++;
-    else line = 1;
-    refresh();
   }
 
 	endwin();
