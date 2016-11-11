@@ -5,6 +5,7 @@
 #include "cell.h"
 #include "mapConst.h"
 #include "filePos.h"
+#include "display.h"
 
 
 /*Ces define ne sont pas dans nomVar.txt car local à ce fichier (lvl.c)*/
@@ -15,37 +16,13 @@
 #define ROOM_MIN_LEN 5
 #define MIN(a,b) (a < b) ? a : b
 
-#define ANSI_COLOR_RED     "\e[31m"
-#define ANSI_COLOR_GREEN   "\e[32m"
-#define ANSI_COLOR_YELLOW  "\e[33m"
-#define ANSI_COLOR_BLUE    "\e[34m"
-#define ANSI_COLOR_MAGENTA "\e[35m"
-#define ANSI_COLOR_CYAN    "\e[36m"
-#define ANSI_COLOR_WHITE   "\e[37m"
-#define ANSI_COLOR_RESET   "\e[0m"
+
 
 typedef struct {int line, column, height, width, link[ROOM_NB_MAX], isLink;} t_room;
 
-void displayString(char * cell, char * color){
-	printf("%s%s%s", color, cell, ANSI_COLOR_RESET);
-}
 
-void displayFloor (t_cell map[][COLUMNS]) {
-	int i, j;
-	for (i = 0; i < LINES; i++) {
-		for (j = 0; j < COLUMNS; j++) {
-			switch (map[i][j].type) {
-				case EMPTY: displayString(" ", ANSI_COLOR_RESET); break;
-				case DOOR: displayString("▒", ANSI_COLOR_RED); break;
-				case ROOM: displayString("█", ANSI_COLOR_WHITE); break;
-				case CORRIDOR: displayString("░", ANSI_COLOR_WHITE); break;
-				case WALL: displayString("░", ANSI_COLOR_CYAN); break;
-			}
-		}
-		printf("\n");
-	}
-	printf("\n");
-}
+
+
 
 void initFloor (t_cell map[LINES][COLUMNS]) {
 	int i, j;

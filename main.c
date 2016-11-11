@@ -3,7 +3,7 @@
 int main () {
 	srand(time(NULL));
 	t_cell map[LINES][COLUMNS];
-	randomFloor (map, FALSE);
+	randomFloor (map, TRUE);
 	displayFloor (map);
 	return 0;
 }
