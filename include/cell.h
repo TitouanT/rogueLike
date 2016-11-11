@@ -6,13 +6,12 @@ typedef enum {EMPTY, WALL, ROOM, CORRIDOR, DOOR} t_type;
 typedef struct {
 	t_type type; // ROOM, CORRIDOR
 	int isDiscovered;
+	int isLight;
 } t_floor;
 
-typedef enum {wV, wH, wUR, wUL, wDR, wDL} t_wallType;
 typedef struct {
 	t_type type; // WALL
 	int isDiscovered;
-	t_wallType wallType; //
 } t_wall;
 
 typedef enum {dNONE, dOPEN, dCLOSE} t_doorStates;

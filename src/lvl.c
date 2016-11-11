@@ -17,6 +17,36 @@
 
 typedef struct {int line, column, height, width, link[ROOM_NB_MAX], isLink;} t_room;
 
+void writeLvl (char * fileName, t_cell map[][COLUMNS]) {
+	int i, j;
+	FILE * lvlFile = NULL;
+	lvlFile = fopen (fileName, "w");
+	for (i = 0; i < LINES; i++) {
+		for (j = 0; j < COLUMNS; j++) {
+			fprintf (lvlFile, "%d ", map[i][j].type);
+			switch (map[i][j].type) {
+				case EMPTY: break;
+
+				case WALL:
+					fprintf(lvlFile, "%d ", map[i][j].wall.isDiscovered);
+					break;
+
+				case ROOM:
+				case CORRIDOR:
+					fprintf (lvlFile, "%d ", map[i][j].walk.isDiscovered);
+					fprintf (lvlFile, "%d ", map[i][j].walk.isLight);
+					break;
+
+				case DOOR:
+					fprintf (lvlFile, "%d ", map[i][j].door.isDiscovered);
+					fprintf (lvlFile, "%d ", map[i][j].door.doorStates);
+					break;
+			}
+		}
+		fprintf(lvlFile, "\n");
+	}
+}
+
 void initFloor (t_cell map[LINES][COLUMNS]) {
 	int i, j;
 	for (i = 0; i < LINES; i++) for (j = 0; j < COLUMNS; j++) {
@@ -83,22 +113,14 @@ t_room randomRoom (t_cell map[][COLUMNS], t_room * rooms, int nbRoom, int *nbTot
 
 		if (i == 0 || i == room.height - 1 || j == 0 || j == room.width - 1) {
 			map[room.line + i][room.column + j].type = WALL;
-			if ((i == 0 || i == room.height - 1) && (j == 0 || j == room.width - 1)) {
-				if (i == 0) {
-					if (j == 0) map[room.line + i][room.column + j].wall.wallType = wUL;
-					else map[room.line + i][room.column + j].wall.wallType = wUR;
-				}
-				else {
-					if (j == 0) map[room.line + i][room.column + j].wall.wallType = wDL;
-					else map[room.line + i][room.column + j].wall.wallType = wDR;
-				}
-			}
-			else {
-				if (i == 0 || i == room.height - 1) map[room.line + i][room.column + j].wall.wallType = wH;
-				else map[room.line + i][room.column + j].wall.wallType = wV;
-			}
+			map[room.line + i][room.column + j].wall.isDiscovered = TRUE;
+
 		}
-		else map[room.line + i][room.column + j].type = ROOM;
+		else {
+			map[room.line + i][room.column + j].type = ROOM;
+			map[room.line + i][room.column + j].walk.isDiscovered = TRUE;
+			map[room.line + i][room.column + j].walk.isLight = TRUE;
+		}
 	}
 	return room;
 }
@@ -146,7 +168,11 @@ void avoidTouchingDoors (t_cell map[][COLUMNS], t_pos * pos) {
 	if (map[pos->line + 1][pos->column].type != DOOR) {
 		if (map[pos->line - 1][pos->column].type != DOOR) {
 			if (map[pos->line][pos->column + 1].type != DOOR) {
-				if (map[pos->line][pos->column - 1].type != DOOR) map[pos->line][pos->column].type = DOOR;
+				if (map[pos->line][pos->column - 1].type != DOOR) {
+					map[pos->line][pos->column].type = DOOR;
+					map[pos->line][pos->column].door.doorStates = dCLOSE;
+					map[pos->line][pos->column].door.isDiscovered = TRUE;
+				}
 				else (pos->column)--;
 			} else (pos->column)++;
 		} else (pos->line)--;
@@ -198,19 +224,35 @@ void createLink (t_cell map[][COLUMNS], t_room r1, t_room r2) {
 		c = head.column;
 		val = path[l][c] - 1;
 		if ( l+1 < LINES && path[l + 1][c] == val ) {
-			if (map[l + 1][c].type != DOOR) map[l + 1][c].type = CORRIDOR;
+			if (map[l + 1][c].type != DOOR) {
+				map[l + 1][c].type = CORRIDOR;
+				map[l + 1][c].walk.isDiscovered = TRUE;
+				map[l + 1][c].walk.isLight = FALSE;
+			}
 			head.line = l + 1;
 		}
 		else if ( l-1 >= 0 && path[l - 1][c] == val ) {
-			if (map[l - 1][c].type != DOOR) map[l - 1][c].type = CORRIDOR;
+			if (map[l - 1][c].type != DOOR) {
+				map[l - 1][c].type = CORRIDOR;
+				map[l - 1][c].walk.isDiscovered = TRUE;
+				map[l - 1][c].walk.isLight = FALSE;
+			}
 			head.line = l - 1;
 		}
 		else if ( c+1 < COLUMNS && path[l][c + 1] == val ) {
-			if (map[l][c + 1].type != DOOR) map[l][c + 1].type = CORRIDOR;
+			if (map[l][c + 1].type != DOOR) {
+				map[l][c + 1].type = CORRIDOR;
+				map[l][c + 1].walk.isDiscovered = TRUE;
+				map[l][c + 1].walk.isLight = FALSE;
+			}
 			head.column = c + 1;
 		}
 		else if ( c-1 >= 0 && path[l][c - 1] == val ) {
-			if (map[l][c - 1].type != DOOR) map[l][c - 1].type = CORRIDOR;
+			if (map[l][c - 1].type != DOOR) {
+				map[l][c - 1].type = CORRIDOR;
+				map[l][c - 1].walk.isDiscovered = TRUE;
+				map[l][c - 1].walk.isLight = FALSE;
+			}
 			head.column = c - 1;
 		}
 	}
@@ -223,6 +265,8 @@ void randomFloor (t_cell map[LINES][COLUMNS], int step) {
 	if (step) {
 		printf("Phase 0: initialisation de la map\n");
 		displayFloor(map);
+		printf("Taper Enter pour continuer");
+		scanf("%*c");
 	}
 	t_room rooms[ROOM_NB_MAX];
 	for (i = 0; i < nbRoom; i++) {
@@ -230,6 +274,8 @@ void randomFloor (t_cell map[LINES][COLUMNS], int step) {
 		if (step) {
 			printf("Phase 1.%d: création des pieces\n", i);
 			displayFloor(map);
+			printf("Taper Enter pour continuer");
+			scanf("%*c");
 		}
 	}
 
@@ -267,6 +313,8 @@ void randomFloor (t_cell map[LINES][COLUMNS], int step) {
 				if (step) {
 					printf("Phase 2.%d.%d: création des couloir\n", i, j);
 					displayFloor(map);
+					printf("Taper Enter pour continuer");
+					scanf("%*c");
 				}
 			}
 		}
@@ -284,6 +332,8 @@ void randomFloor (t_cell map[LINES][COLUMNS], int step) {
 			if (step) {
 				printf("Phase 3.%d.%d: ajout de couloir\n", i, j);
 				displayFloor(map);
+				printf("Taper Enter pour continuer");
+				scanf("%*c");
 			}
 		}
 	}
