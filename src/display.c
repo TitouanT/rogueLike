@@ -46,22 +46,40 @@ void printCell(int pair, char cell, WINDOW *win){
 /* Cette fonction affiche l'étage de la map donnée en paramètre */
 void displayFloor (t_cell map[][COLUMNS], WINDOW *win) {
 
-	int i, j;
+	int i, j, k;
 
 	for (i = 0; i < LINES; i++) {
 		wmove(win, i+1,1);
 		for (j = 0; j < COLUMNS; j++) {
 			switch (map[i][j].type) {
 				case EMPTY: 	 printCell(1,' ', win); break;
-				case DOOR: 		 printCell(1,'c', win); break;
+				case DOORWAY: 		 printCell(1,'c', win); break;
 				case ROOM:
-					switch (map[i][j].walk.object) {
-						case objNONE: printCell(4,' ', win); break;
-						case STAIRS_UP: printCell(7,'<', win); break;
-						case STAIRS_DOWN: printCell(7, '>', win); break;
+					if (map[i][j].nbObject == 0) printCell(4,' ', win);
+					else {
+						for (k = 0; k < map[i][j].nbObject; k++) {
+							switch (map[i][j].obj[k]) {
+								case STAIRS_UP: printCell(7,'<', win); break;
+								case STAIRS_DOWN: printCell(7, '>', win); break;
+								case objNONE: printCell(4,' ', win); break;
+							}
+						}
 					}
 					break;
-				case CORRIDOR: printCell(2,'c', win); break;
+
+				case CORRIDOR:
+					if (map[i][j].nbObject == 0) printCell(2,'c', win);
+					else {
+						for (k = 0; k < map[i][j].nbObject; k++) {
+							switch (map[i][j].obj[k]) {
+								case STAIRS_UP: printCell(7,'<', win); break;
+								case STAIRS_DOWN: printCell(7, '>', win); break;
+								case objNONE: printCell(4,' ', win); break;
+							}
+						}
+					}
+					break;
+
 				case WALL: 		 printCell(3,'c', win); break;
 			}
 		}

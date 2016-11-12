@@ -11,9 +11,9 @@ void writeLvl (char * fileName, t_cell map[][COLUMNS]);
 /*
 
 on a besoin de :
-	createWorld
-	loadNextlvl
-	loadPrevlvl
+	createWorld ()
+	loadNextlvl (map, lvlCourant)
+	loadPrevlvl (map, lvlCourant)
 
 
 
