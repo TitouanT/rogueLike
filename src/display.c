@@ -15,6 +15,8 @@ WINDOW *createWindow(int startX, int startY, int width, int height, char * label
 	init_pair(3, COLOR_CYAN, COLOR_BLACK);
 	init_pair(4, COLOR_WHITE, COLOR_WHITE);
 	init_pair(5, COLOR_BLACK, COLOR_BLACK);
+	init_pair(6, COLOR_GREEN, COLOR_WHITE);
+
 
 	box(localWindow, 0, 0);
 	wmove(localWindow,0,2);
@@ -100,4 +102,15 @@ void addLog(char * message, int * line, WINDOW *win){
 	if(*line >= LINES_LOGS - 3) clearLog(line, win);
 	else (*line)++;
 	gotoEndGame();
+}
+
+/* Cette fonction affiche le joueur sur le jeu */
+void displayPlayer(t_character player, WINDOW *win){
+
+	wattron(win, COLOR_PAIR(6));
+
+	wmove(win, (player.line)+1, (player.column)+1);
+	wprintw(win, "@");
+	wrefresh(win);
+
 }

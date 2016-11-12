@@ -7,6 +7,7 @@
 
 #include "cell.h"
 #include "mapConst.h"
+#include "character.h"
 
 
 // Taille de la fenetre du jeu
@@ -27,5 +28,6 @@ WINDOW *createWindow(int startX, int startY, int width, int height, char * label
 void displayFloor(t_cell map[][COLUMNS], WINDOW *win);
 void addLog(char * message, int * line, WINDOW *win);
 void clearLog(int *line, WINDOW *win);
+void displayPlayer(t_character player, WINDOW *win);
 
 #endif /* end of include guard: DISPLAY_H */
