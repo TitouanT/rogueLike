@@ -60,28 +60,56 @@ void addLog(char * message, int * line){
 	attron(COLOR_PAIR(1));
 
 	// On découpe le message en sous messages pour rentrer dans la zone de logs
-	while(strlen(message) > COLS_LOGS-1 && *line < LINES_LOGS - 4) {
+	while(strlen(message) > COLS_LOGS-1) {
 
 		move((*line)+1, COLS_GAME+1);
 		refresh();
   	printw("%.*s", COLS_LOGS-2, message);
+
 		(*line)++;
     message+=COLS_LOGS-2;
   }
-	if (*line >= LINES_LOGS - 4) {
-		move((*line)+1, COLS_GAME+1);
-		refresh();
-		printw("--More--");
-		scanf("%*c");
-		clearLog(line);
-		*line = 0;
-		addLog(message, line);
-	}
-	else {
-		move((*line)+1, COLS_GAME+1);
-		refresh();
-  	printw("%s", message);
-		(*line)++;
-	}
+	move((*line)+1, COLS_GAME+1);
+	refresh();
+  printw("%s", message);
+
+
+
+	// Si on a plus de place pour clear la zone de logs
+	if(*line >= LINES_LOGS - 3) clearLog(line);
+	else (*line)++;
 	gotoEndGame();
 }
+
+// int addLog(char * message, int * line){
+//
+// 	attron(COLOR_PAIR(1));
+//
+// 	// On découpe le message en sous messages pour rentrer dans la zone de logs
+// 	while(strlen(message) > COLS_LOGS-1 && *line < LINES_LOGS - 4) {
+//
+// 		move((*line)+1, COLS_GAME+1);
+// 		refresh();
+//   	printw("%.*s", COLS_LOGS-2, message);
+// 		(*line)++;
+//     message+=COLS_LOGS-2;
+//   }
+// 	if (*line >= LINES_LOGS - 4) {
+// 		move((*line)+1, COLS_GAME+1);
+// 		printw("--More--");
+// 		refresh();
+// 		return message;
+// 		// scanf("%*c");
+// 		// clearLog(line);
+// 		// *line = 0;
+// 		// addLog(message, line);
+// 	}
+// 	else {
+// 		move((*line)+1, COLS_GAME+1);
+// 		refresh();
+//   	printw("%s", message);
+// 		(*line)++;
+// 	}
+// 	gotoEndGame();
+// 	return NULL;
+// }
