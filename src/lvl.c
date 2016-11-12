@@ -315,6 +315,18 @@ void createLink (t_cell map[][COLUMNS], t_room r1, t_room r2) {
 	file_supprimer();
 }
 
+void chooseLink (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
+	int adj[ROOM_NB_MAX][ROOM_NB_MAX] = {0};
+	int i, j;
+	for (i = 0; i < nbRoom-1; i++) adj[i][i+1] = 1;
+	for (i = 0; i < nbRoom - 1; i++) {
+		for (j = i + 1; j < nbRoom; j++) {
+			if (adj[i][j] == 1) createLink(map, rooms[i], rooms[j]);
+		}
+	}
+
+}
+
 void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 	int rEnterance = rand()%nbRoom, rExit;
 	do rExit = rand()%nbRoom; while (rEnterance == rExit);
@@ -342,65 +354,65 @@ void randomFloor (t_cell map[LINES][COLUMNS], int step) {
 			scanf("%*c");
 		}
 	}
-
-	for (i = 0; i < nbRoom - 1; i++) { // la proba que deux pieces soient connecté est inversement proportionnelle a la distance qui les sépare
-		for (j = i+1; j < nbRoom; j++) {
-			rooms[i].link[j] = rooms[j].link[i]= minDist(rooms[i], rooms[j]);
-		}
-	}
-
-	for (i = 0; i < nbRoom; i++) {
-		min = max = rooms[i].link[(i == 0) ? 1 : 0]; // pour pas prendre une valeur qui n'existe pas
-		for (j = 0; j < nbRoom; j++) {
-			if (i != j) {
-				if (min > rooms[i].link[j]) min = rooms[i].link[j];
-				else if (max < rooms[i].link[j]) max = rooms[i].link[j];
-			}
-		}
-		for (j = 0; j < nbRoom; j++) {
-			if (i != j) {
-				if (min != max) rooms[i].link[j] = mapping (rooms[i].link[j], min, max, 100, 0);
-				else rooms[i].link[j] = 100;
-				if (rand()%101 <= rooms[i].link[j]) rooms[i].link[j] = 1;
-				else rooms[i].link[j] = 0;
-			}
-			else rooms[i].link[j] = 0;
-		}
-	}
-	for (i = 0; i < nbRoom; i++) rooms[i].isLink = 0;
-
-	for (i = 0; i < nbRoom - 1; i++) {
-		for (j = i + 1; j < nbRoom; j++) {
-			if (rooms[i].link[j] && rooms[j].link[i]) {
-				createLink (map, rooms[i], rooms[j]);
-				rooms[i].isLink = rooms[j].isLink = 1;
-				if (step) {
-					printf("Phase 2.%d.%d: création des couloir\n", i, j);
-					//displayFloor(map);
-					printf("Taper Enter pour continuer");
-					scanf("%*c");
-				}
-			}
-		}
-	}
-
-	for (i = 0; i < nbRoom; i++) {
-		if (rooms[i].isLink == 0) {
-			j = 0;
-			while (j < nbRoom && rooms[i].link[j] == 0) j++;
-			if (j == nbRoom) {
-
-				do j=rand()%nbRoom; while (j==i);
-			}
-			createLink(map, rooms[i], rooms[j]);
-			if (step) {
-				printf("Phase 3.%d.%d: ajout de couloir\n", i, j);
-				//displayFloor(map);
-				printf("Taper Enter pour continuer");
-				scanf("%*c");
-			}
-		}
-	}
+	chooseLink (map, rooms, nbRoom);
+	// for (i = 0; i < nbRoom - 1; i++) { // la proba que deux pieces soient connecté est inversement proportionnelle a la distance qui les sépare
+	// 	for (j = i+1; j < nbRoom; j++) {
+	// 		rooms[i].link[j] = rooms[j].link[i]= minDist(rooms[i], rooms[j]);
+	// 	}
+	// }
+	//
+	// for (i = 0; i < nbRoom; i++) {
+	// 	min = max = rooms[i].link[(i == 0) ? 1 : 0]; // pour pas prendre une valeur qui n'existe pas
+	// 	for (j = 0; j < nbRoom; j++) {
+	// 		if (i != j) {
+	// 			if (min > rooms[i].link[j]) min = rooms[i].link[j];
+	// 			else if (max < rooms[i].link[j]) max = rooms[i].link[j];
+	// 		}
+	// 	}
+	// 	for (j = 0; j < nbRoom; j++) {
+	// 		if (i != j) {
+	// 			if (min != max) rooms[i].link[j] = mapping (rooms[i].link[j], min, max, 100, 0);
+	// 			else rooms[i].link[j] = 100;
+	// 			if (rand()%101 <= rooms[i].link[j]) rooms[i].link[j] = 1;
+	// 			else rooms[i].link[j] = 0;
+	// 		}
+	// 		else rooms[i].link[j] = 0;
+	// 	}
+	// }
+	// for (i = 0; i < nbRoom; i++) rooms[i].isLink = 0;
+	//
+	// for (i = 0; i < nbRoom - 1; i++) {
+	// 	for (j = i + 1; j < nbRoom; j++) {
+	// 		if (rooms[i].link[j] && rooms[j].link[i]) {
+	// 			createLink (map, rooms[i], rooms[j]);
+	// 			rooms[i].isLink = rooms[j].isLink = 1;
+	// 			if (step) {
+	// 				printf("Phase 2.%d.%d: création des couloir\n", i, j);
+	// 				//displayFloor(map);
+	// 				printf("Taper Enter pour continuer");
+	// 				scanf("%*c");
+	// 			}
+	// 		}
+	// 	}
+	// }
+	//
+	// for (i = 0; i < nbRoom; i++) {
+	// 	if (rooms[i].isLink == 0) {
+	// 		j = 0;
+	// 		while (j < nbRoom && rooms[i].link[j] == 0) j++;
+	// 		if (j == nbRoom) {
+	//
+	// 			do j=rand()%nbRoom; while (j==i);
+	// 		}
+	// 		createLink(map, rooms[i], rooms[j]);
+	// 		if (step) {
+	// 			printf("Phase 3.%d.%d: ajout de couloir\n", i, j);
+	// 			//displayFloor(map);
+	// 			printf("Taper Enter pour continuer");
+	// 			scanf("%*c");
+	// 		}
+	// 	}
+	// }
 
 	placeObject (map, rooms, nbRoom);
 }
