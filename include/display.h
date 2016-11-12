@@ -22,9 +22,10 @@
 #define COLS_STATS COLS_GAME + COLS_LOGS
 
 
+WINDOW *createWindow(int startX, int startY, int width, int height, char * label);
 
-void displayFloor(t_cell map[][COLUMNS]);
-void addLog(char * message, int * line);
-void clearLog(int *line);
+void displayFloor(t_cell map[][COLUMNS], WINDOW *win);
+void addLog(char * message, int * line, WINDOW *win);
+void clearLog(int *line, WINDOW *win);
 
 #endif /* end of include guard: DISPLAY_H */

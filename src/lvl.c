@@ -264,7 +264,7 @@ void randomFloor (t_cell map[LINES][COLUMNS], int step) {
 	initFloor (map);
 	if (step) {
 		printf("Phase 0: initialisation de la map\n");
-		displayFloor(map);
+		//displayFloor(map);
 		printf("Taper Enter pour continuer");
 		scanf("%*c");
 	}
@@ -273,7 +273,7 @@ void randomFloor (t_cell map[LINES][COLUMNS], int step) {
 		rooms[i] = randomRoom(map, rooms, i, &nbRoom);
 		if (step) {
 			printf("Phase 1.%d: création des pieces\n", i);
-			displayFloor(map);
+			//displayFloor(map);
 			printf("Taper Enter pour continuer");
 			scanf("%*c");
 		}
@@ -312,7 +312,7 @@ void randomFloor (t_cell map[LINES][COLUMNS], int step) {
 				rooms[i].isLink = rooms[j].isLink = 1;
 				if (step) {
 					printf("Phase 2.%d.%d: création des couloir\n", i, j);
-					displayFloor(map);
+					//displayFloor(map);
 					printf("Taper Enter pour continuer");
 					scanf("%*c");
 				}
@@ -331,7 +331,7 @@ void randomFloor (t_cell map[LINES][COLUMNS], int step) {
 			createLink(map, rooms[i], rooms[j]);
 			if (step) {
 				printf("Phase 3.%d.%d: ajout de couloir\n", i, j);
-				displayFloor(map);
+				//displayFloor(map);
 				printf("Taper Enter pour continuer");
 				scanf("%*c");
 			}
