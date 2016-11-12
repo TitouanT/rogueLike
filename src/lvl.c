@@ -316,7 +316,7 @@ void createLink (t_cell map[][COLUMNS], t_room r1, t_room r2) {
 }
 
 void chooseLink (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
-	int adj[ROOM_NB_MAX][ROOM_NB_MAX] = {0};
+	int adj[ROOM_NB_MAX][ROOM_NB_MAX] = {{0}};
 	int i, j;
 	for (i = 0; i < nbRoom-1; i++) adj[i][i+1] = 1;
 	for (i = 0; i < nbRoom - 1; i++) {
