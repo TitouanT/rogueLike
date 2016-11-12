@@ -1,3 +1,13 @@
+/*
+ * \file main.c
+ * \brief Programme principal du jeud.
+ * \author MOTTIER Emeric
+ * \author PELLOIN Valentin
+ * \author TEYSSIER Titouan
+ * \version 0.1
+ * \date 12 novembre 2016
+ */
+
 #include "global.h"
 
 int main () {
