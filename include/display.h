@@ -25,6 +25,6 @@
 
 void displayFloor(t_cell map[][COLUMNS]);
 void addLog(char * message, int * line);
-void clearLog();
+void clearLog(int *line);
 
 #endif /* end of include guard: DISPLAY_H */

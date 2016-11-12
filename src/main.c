@@ -18,58 +18,59 @@ int main () {
 	init_pair(4, COLOR_WHITE, COLOR_WHITE);
 	init_pair(5, COLOR_BLACK, COLOR_BLACK);
 
-	/* Initialisation des panels et des fenetres */
+	/* Initialisation des fenetres */
 	WINDOW *windows[3];
-	PANEL  *panels[3];
 
 	windows[0] = newwin(LINES_GAME, COLS_GAME, 0, 0);
 	windows[1] = newwin(LINES_STATS, COLS_STATS, LINES_GAME, 0);
 	windows[2] = newwin(LINES_LOGS, COLS_LOGS, 0, COLS_GAME);
+
+
+	keypad(stdscr, TRUE); // Pour ne pas afficher les lettres que l'utilisateur tape
+	noecho();
+	curs_set(0);
+	refresh();
+
 
 	/* On trace les boxes autour des ces fenetres */
 	box(windows[0], 0, 0);
 	box(windows[1], 0, 0);
 	box(windows[2], 0, 0);
 
-	/* On affecte à un panel chaque fenetres */
-	panels[0] = new_panel(windows[0]);
-	panels[1] = new_panel(windows[1]);
-	panels[2] = new_panel(windows[2]);
+	/* On affiche le titre de chaque fenetre */
+	wmove(windows[0],0,2);
+	wprintw(windows[0], "RogueLike");
+
+	wmove(windows[1],0,2);
+	wprintw(windows[1], "Statistiques");
+
+	wmove(windows[2],0,2);
+	wprintw(windows[2], "Logs");
+
+	/* On refresh les windows */
+	wrefresh(windows[0]);
+	wrefresh(windows[1]);
+	wrefresh(windows[2]);
 
 
-	update_panels();
-	doupdate();
-
-	/* Affichage des titres sur les panels */
-	mvprintw(0,2, "RogueLike");
-	mvprintw(LINES_GAME,2, "Statistiques");
-	refresh();
-	mvprintw(0, COLS_GAME+2, "Logs");
-
-
-	move(LINES_GAME + LINES_STATS, 0); // On déplace le curseur à la fin
-
-	keypad(stdscr, TRUE); // Pour ne pas afficher les lettres que l'utilisateur tape
-	noecho();
-	curs_set(0);
+	randomFloor(map, FALSE);
+	displayFloor(map);
 
 
 	/* Ici se déroule tout le jeu */
 	while((key = getch()) != 'q'){
+
 		clearLog(&lineLog);
 
-		randomFloor(map, FALSE);
+		switch (key) {
+			case KEY_UP: addLog("Vous avez bougé vers le haut", &lineLog); break;
+			case KEY_DOWN: addLog("Vous avez bougé vers le bas", &lineLog); break;
+			case KEY_LEFT: addLog("Vous avez bougé vers la gauche", &lineLog); break;
+			case KEY_RIGHT: addLog("Vous avez bougé vers la droite", &lineLog); break;
+		}
+
+
 		displayFloor(map);
-		addLog("Vous avez éffecuté une action", &lineLog);
-
-		addLog("azertyuiopqsdfghjklmwxcvbn0123456789AZERTYUIOPQSDFGHJKLMWXCVBNazertyuiopqsdfghjklmwxcvbn0123456789AZERTYUIOPQSDFGHJKLMWXCVBN", &lineLog);
-		if(key == '\n') addLog("Attention, la touche entrée n'est pas faite pour manger le dessert !", &lineLog);
-		else addLog("Erreur", &lineLog);
-
-		addLog("fdsjflkjsdljflsdfljsdlfkslf", &lineLog);
-		addLog("azertyuiopqsdfghjklmwxcvbn0123456789AZERTYUIOPQSDFGHJKLMWXCVBNazertyuiopqsdfghjklmwxcvbn0123456789AZERTYUIOPQSDFGHJKLMWXCVBN", &lineLog);
-
-		addLog("HEEEY", &lineLog);
 
 	}
 

@@ -63,15 +63,15 @@ void addLog(char * message, int * line){
 	while(strlen(message) > COLS_LOGS-1) {
 
 		move((*line)+1, COLS_GAME+1);
-		refresh();
   	printw("%.*s", COLS_LOGS-2, message);
+		refresh();
 
 		(*line)++;
     message+=COLS_LOGS-2;
   }
 	move((*line)+1, COLS_GAME+1);
-	refresh();
   printw("%s", message);
+	refresh();
 
 
 
