@@ -336,7 +336,7 @@ void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 }
 
 void randomFloor (t_cell map[LINES][COLUMNS], int step) {
-	int nbRoom = randab (ROOM_NB_MIN, ROOM_NB_MAX + 1);
+	int nbRoom = randab (ROOM_NB_MIN, ROOM_NB_MAX + 1), i;
 	initFloor (map);
 	if (step) {
 		printf("Phase 0: initialisation de la map\n");
