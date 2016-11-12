@@ -32,11 +32,19 @@ int main () {
 	WINDOW *win_stats = createWindow(0, LINES_GAME, COLS_STATS, LINES_STATS, "Statistiques");
 	WINDOW *win_logs  = createWindow(COLS_GAME, 0, COLS_LOGS, LINES_LOGS, "Logs");
 
-
+	// On génère un niveau aléatoire
 	randomFloor(map, FALSE);
+	// On déplace le joueur au spawn de celui-ci
+	move2spawn(map, &player);
 
+	// On affiche la map et le joueur, et quelques objectifs
 	displayFloor(map, win_game);
 	displayPlayer(player, win_game);
+
+	addLog("Vous venez d'apparaître au premier étage !", &lineLog, win_logs);
+	addLog(" > Allez sauver Nathalie Camelin", &lineLog, win_logs);
+	addLog(" > Evitez de vous faire attraper par des L1", &lineLog, win_logs);
+
 
 	/* Ici se déroule tout le jeu */
 	while((key = getch()) != 'q' && key != 'Q'){
@@ -44,15 +52,15 @@ int main () {
 		clearLog(&lineLog, win_logs);
 
 		switch (key) {
-			case KEY_UP: addLog("Vous avez bougé vers le haut", &lineLog, win_logs); (player.line)--; break;
-			case KEY_DOWN: addLog("Vous avez bougé vers le bas", &lineLog, win_logs); (player.line)++; break;
-			case KEY_LEFT: addLog("Vous avez bougé vers la gauche", &lineLog, win_logs); (player.column)--; break;
-			case KEY_RIGHT: addLog("Vous avez bougé vers la droite", &lineLog, win_logs); (player.column)++; break;
+			case KEY_UP: move_perso(UP, map, &player); break;
+			case KEY_DOWN: move_perso(DOWN, map, &player); break;
+			case KEY_LEFT: move_perso(LEFT, map, &player); break;
+			case KEY_RIGHT: move_perso(RIGHT, map, &player); break;
+
 			case '\n': addLog("Entrée pas faite.", &lineLog, win_logs); break;
 			default: addLog("Commande inconnue !", &lineLog, win_logs);
 		}
 
-		randomFloor(map, FALSE);
 		displayFloor(map, win_game);
 		displayPlayer(player, win_game);
 

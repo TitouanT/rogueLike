@@ -17,6 +17,7 @@ WINDOW *createWindow(int startX, int startY, int width, int height, char * label
 	init_pair(5, COLOR_BLACK, COLOR_BLACK);
 	init_pair(6, COLOR_GREEN, COLOR_WHITE);
 	init_pair(7, COLOR_BLACK, COLOR_WHITE);
+	init_pair(8, COLOR_WHITE, COLOR_GREEN);
 
 
 	box(localWindow, 0, 0);
@@ -53,7 +54,14 @@ void displayFloor (t_cell map[][COLUMNS], WINDOW *win) {
 		for (j = 0; j < COLUMNS; j++) {
 			switch (map[i][j].type) {
 				case EMPTY: 	 printCell(1,' ', win); break;
-				case DOORWAY: 		 printCell(1,'c', win); break;
+				case DOORWAY:
+					switch (map[i][j].state) {
+						case dNONE:  printCell(2,'c', win); break;
+						case dOPEN:  printCell(8,'c', win); break;
+						case dCLOSE: printCell(1,'c', win); break;
+						default: printCell(1,'?', win); break;
+					}
+					break;
 				case ROOM:
 					if (map[i][j].nbObject == 0) printCell(4,' ', win);
 					else {

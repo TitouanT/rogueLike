@@ -11,6 +11,7 @@
 #include "lvl.h"
 #include "character.h"
 #include "display.h"
+#include "moves.h"
 
 
 #endif /* end of include guard: GLOBAL_H */

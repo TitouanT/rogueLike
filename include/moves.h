@@ -2,8 +2,11 @@
 #define MOVES_H
 
 
+typedef enum {UP, DOWN, LEFT, RIGHT} t_dir;
 
-int can_move(t_direction direction, t_cell Mat[LINES][COLUMNS]);
+
+int move2spawn(t_cell mat[LINES][COLUMNS], t_character *perso);
+int move_perso(t_dir direction, t_cell Mat[LINES][COLUMNS], t_character *perso);
 
 
 #endif
