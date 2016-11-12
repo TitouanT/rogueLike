@@ -16,6 +16,7 @@ WINDOW *createWindow(int startX, int startY, int width, int height, char * label
 	init_pair(4, COLOR_WHITE, COLOR_WHITE);
 	init_pair(5, COLOR_BLACK, COLOR_BLACK);
 	init_pair(6, COLOR_GREEN, COLOR_WHITE);
+	init_pair(7, COLOR_BLACK, COLOR_WHITE);
 
 
 	box(localWindow, 0, 0);
@@ -37,8 +38,8 @@ void printCell(int pair, char cell, WINDOW *win){
 
 	wattron(win, COLOR_PAIR(pair));
 	switch (cell) {
-		case ' ': wprintw(win, " "); break;
 		case 'c': waddch(win, ACS_CKBOARD); break;
+		default: wprintw(win, "%c", cell); break;
 	}
 }
 
@@ -53,7 +54,13 @@ void displayFloor (t_cell map[][COLUMNS], WINDOW *win) {
 			switch (map[i][j].type) {
 				case EMPTY: 	 printCell(1,' ', win); break;
 				case DOOR: 		 printCell(1,'c', win); break;
-				case ROOM: 		 printCell(4,' ', win); break;
+				case ROOM:
+					switch (map[i][j].walk.object) {
+						case objNONE: printCell(4,' ', win); break;
+						case STAIRS_UP: printCell(7,'<', win); break;
+						case STAIRS_DOWN: printCell(7, '>', win); break;
+					}
+					break;
 				case CORRIDOR: printCell(2,'c', win); break;
 				case WALL: 		 printCell(3,'c', win); break;
 			}
