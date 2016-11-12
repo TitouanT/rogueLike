@@ -10,8 +10,8 @@
 
 
 // Taille de la fenetre du jeu
-#define LINES_GAME  22
-#define COLS_GAME   92
+#define LINES_GAME  LINES + 2
+#define COLS_GAME   COLUMNS + 2
 
 // Taille de la fenetre de logs
 #define LINES_LOGS LINES_GAME
