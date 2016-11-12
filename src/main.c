@@ -42,7 +42,7 @@ int main () {
 			default: addLog("Commande inconnue !", &lineLog, win_logs);
 		}
 
-
+		randomFloor(map, FALSE);
 		displayFloor(map, win_game);
 		displayPlayer(player, win_game);
 
