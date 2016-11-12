@@ -17,7 +17,57 @@
 
 typedef struct {int line, column, height, width, link[ROOM_NB_MAX], isLink;} t_room;
 
-void writeLvl (char * fileName, t_cell map[][COLUMNS]) {
+
+int readLvl (char * fileName, t_cell map[][COLUMNS]) { /// a mettre a jour
+	int i, j, val;
+	FILE * lvlFile = NULL;
+	lvlFile = fopen (fileName, "r");
+	if (lvlFile == NULL) return FALSE;
+	for (i = 0; i < LINES; i++) {
+		for (j = 0; j < COLUMNS; j++) {
+			fscanf (lvlFile, "%d", &val);
+			switch (val) {
+				case EMPTY:
+					map[i][j].type = EMPTY;
+					break;
+
+				case WALL:
+					map[i][j].type = WALL;
+					fscanf(lvlFile, "%d", &val);
+					map[i][j].wall.isDiscovered = val;
+					break;
+
+				case ROOM:
+					map[i][j].type = ROOM;
+					fscanf (lvlFile, "%d", &val);
+					map[i][j].walk.isDiscovered = val;
+					fscanf (lvlFile, "%d", &val);
+					map[i][j].walk.isLight = val;
+					break;
+
+				case CORRIDOR:
+					map[i][j].type = CORRIDOR;
+					fscanf (lvlFile, "%d", &val);
+					map[i][j].walk.isDiscovered = val;
+					fscanf (lvlFile, "%d", &val);
+					map[i][j].walk.isLight = val;
+					break;
+
+				case DOOR:
+					map[i][j].type = DOOR;
+					fscanf (lvlFile, "%d", &val);
+					map[i][j].door.isDiscovered = val;
+					fscanf (lvlFile, "%d", &val);
+					map[i][j].door.doorStates = val;
+					break;
+			}
+		}
+	}
+	fclose(lvlFile);
+	return TRUE;
+}
+
+void writeLvl (char * fileName, t_cell map[][COLUMNS]) { //// a mettre a jours
 	int i, j;
 	FILE * lvlFile = NULL;
 	lvlFile = fopen (fileName, "w");
@@ -45,6 +95,7 @@ void writeLvl (char * fileName, t_cell map[][COLUMNS]) {
 		}
 		fprintf(lvlFile, "\n");
 	}
+	fclose(lvlFile);
 }
 
 void initFloor (t_cell map[LINES][COLUMNS]) {
@@ -120,6 +171,7 @@ t_room randomRoom (t_cell map[][COLUMNS], t_room * rooms, int nbRoom, int *nbTot
 			map[room.line + i][room.column + j].type = ROOM;
 			map[room.line + i][room.column + j].walk.isDiscovered = TRUE;
 			map[room.line + i][room.column + j].walk.isLight = TRUE;
+			map[room.line + i][room.column + j].walk.object = objNONE;
 		}
 	}
 	return room;
@@ -228,6 +280,7 @@ void createLink (t_cell map[][COLUMNS], t_room r1, t_room r2) {
 				map[l + 1][c].type = CORRIDOR;
 				map[l + 1][c].walk.isDiscovered = TRUE;
 				map[l + 1][c].walk.isLight = FALSE;
+				map[l + 1][c].walk.object = objNONE;
 			}
 			head.line = l + 1;
 		}
@@ -236,6 +289,7 @@ void createLink (t_cell map[][COLUMNS], t_room r1, t_room r2) {
 				map[l - 1][c].type = CORRIDOR;
 				map[l - 1][c].walk.isDiscovered = TRUE;
 				map[l - 1][c].walk.isLight = FALSE;
+				map[l - 1][c].walk.object = objNONE;
 			}
 			head.line = l - 1;
 		}
@@ -244,6 +298,7 @@ void createLink (t_cell map[][COLUMNS], t_room r1, t_room r2) {
 				map[l][c + 1].type = CORRIDOR;
 				map[l][c + 1].walk.isDiscovered = TRUE;
 				map[l][c + 1].walk.isLight = FALSE;
+				map[l][c + 1].walk.object = objNONE;
 			}
 			head.column = c + 1;
 		}
@@ -252,11 +307,20 @@ void createLink (t_cell map[][COLUMNS], t_room r1, t_room r2) {
 				map[l][c - 1].type = CORRIDOR;
 				map[l][c - 1].walk.isDiscovered = TRUE;
 				map[l][c - 1].walk.isLight = FALSE;
+				map[l][c - 1].walk.object = objNONE;
 			}
 			head.column = c - 1;
 		}
 	}
 	file_supprimer();
+}
+
+void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
+	int rEnterance = rand()%nbRoom, rExit;
+	do rExit = rand()%nbRoom; while (rEnterance == rExit);
+	map[randab(1, rooms[rEnterance].height - 1) + rooms[rEnterance].line][randab(1, rooms[rEnterance].width - 1) + rooms[rEnterance].column].walk.object = STAIRS_DOWN;
+	map[randab(1, rooms[rExit].height - 1) + rooms[rExit].line][randab(1, rooms[rExit].width - 1) + rooms[rExit].column].walk.object = STAIRS_UP;
+
 }
 
 void randomFloor (t_cell map[LINES][COLUMNS], int step) {
@@ -337,4 +401,6 @@ void randomFloor (t_cell map[LINES][COLUMNS], int step) {
 			}
 		}
 	}
+
+	placeObject (map, rooms, nbRoom);
 }
