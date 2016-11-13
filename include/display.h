@@ -9,6 +9,17 @@
 #include "mapConst.h"
 #include "character.h"
 
+#define COLOR_EMPTY COLOR_BLACK
+#define COLOR_BOX COLOR_WHITE
+#define COLOR_PLAYER COLOR_?
+#define COLOR_DOOR_OPEN COLOR_GREEN
+#define COLOR_DOOR_CLOSE COLOR_RED
+#define COLOR_LOG COLOR_RED
+#define COLOR_WALL COLOR_CYAN
+#define COLOR_FLOOR COLOR_YELLOW
+#define COLOR_
+
+
 
 // Taille de la fenetre du jeu
 #define LINES_GAME  LINES + 2

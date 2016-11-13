@@ -21,6 +21,21 @@ int main () {
 
 	initscr();
 	start_color();
+	init_color(COLOR_BLACK, 0, 0, 0);
+	init_color(COLOR_CYAN, 391, 184, 12);
+	init_color(COLOR_GREEN, 391, 375, 12);
+	init_color(COLOR_WHITE, 520, 310, 0);
+
+	// Init pair : init_pair(ID_PAIR, TEXT COLOR, BACKGROUND COLOR);
+	init_pair(1, COLOR_RED, COLOR_BLACK); // log(t), closed door(t), empty(f)
+	init_pair(2, COLOR_WHITE, COLOR_BLACK); // corridor(t-f)
+	init_pair(3, COLOR_CYAN, COLOR_BLACK); // wall(t-f)
+	init_pair(4, COLOR_WHITE, COLOR_WHITE); // room
+	init_pair(5, COLOR_BLACK, COLOR_BLACK); // ?
+	init_pair(6, COLOR_GREEN, COLOR_WHITE); // player
+	init_pair(7, COLOR_BLACK, COLOR_WHITE); // stairs
+	init_pair(8, COLOR_WHITE, COLOR_GREEN); // opended door
+
 
 	keypad(stdscr, TRUE); // Pour ne pas afficher les lettres que l'utilisateur tape
 	noecho();
