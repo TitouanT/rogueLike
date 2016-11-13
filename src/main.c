@@ -9,6 +9,7 @@
  */
 
 #include "global.h"
+void markDiscover(t_cell map[LINES][COLUMNS], t_character player);
 
 int main () {
 
@@ -46,10 +47,10 @@ int main () {
 		clearLog(&lineLog, win_logs);
 
 		switch (key) {
-			case KEY_UP: move_perso(UP, map, &player); break;
-			case KEY_DOWN: move_perso(DOWN, map, &player); break;
-			case KEY_LEFT: move_perso(LEFT, map, &player); break;
-			case KEY_RIGHT: move_perso(RIGHT, map, &player); break;
+			case KEY_UP: move_perso(UP, map, &player); markDiscover(map, player);break;
+			case KEY_DOWN: move_perso(DOWN, map, &player); markDiscover(map, player);break;
+			case KEY_LEFT: move_perso(LEFT, map, &player); markDiscover(map, player);break;
+			case KEY_RIGHT: move_perso(RIGHT, map, &player); markDiscover(map, player);break;
 
 			case '\n':
 				if(map[player.line][player.column].nbObject > 0){
@@ -74,4 +75,15 @@ int main () {
 
 	endwin(); //Fermeture de la fenetre
 	return 0;
+}
+
+void markDiscover(t_cell map[LINES][COLUMNS], t_character player) {
+	int line = player.line - 1;
+	int col = player.column - 1;
+	int i, j;
+	for (i = 0; i < 3; i++) {
+		for (j = 0; j < 3; j++) {
+			if (line+i >= 0 && line+i < LINES && col+j >= 0 && col+j < COLUMNS) map[line+i][col+j].isDiscovered = TRUE;
+		}
+	}
 }

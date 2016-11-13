@@ -66,7 +66,7 @@ void initFloor (t_cell map[LINES][COLUMNS]) {
 	for (i = 0; i < LINES; i++) for (j = 0; j < COLUMNS; j++) {
 		map[i][j].type = EMPTY;
 		map[i][j].state = DEFAULT_STATE;
-		map[i][j].isDiscovered = TRUE;
+		map[i][j].isDiscovered = FALSE;
 		map[i][j].nbObject = 0;
 
 	}

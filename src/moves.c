@@ -13,6 +13,7 @@ int move2spawn(t_cell mat[LINES][COLUMNS], t_character *perso){
       if(mat[i][j].nbObject != 0 && mat[i][j].obj[0] == STAIRS_DOWN){
         perso->line = i;
         perso->column = j;
+				mat[i][j].isDiscovered = TRUE;
         return TRUE;
       }
 
