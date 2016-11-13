@@ -70,11 +70,6 @@ int main () {
 			default: addLog("Commande inconnue !", &lineLog, win_logs);
 		}
 
-		// TEST POUR VOIR SI LE SPAWN EST BIEN MIS A JOUR
-		//randomFloor(map, FALSE);
-		//move2spawn(map, &player);
-		// FIN DU GAME ... EUH DU TEST
-
 
 		displayFloor(map, win_game);
 		displayPlayer(player, win_game);
