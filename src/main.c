@@ -39,7 +39,7 @@ int main () {
 
 	// On affiche la map et le joueur, et quelques objectifs
 	displayFloor(map, win_game);
-	displayPlayer(player, win_game);
+	displayPlayer(player, map, win_game);
 
 	addLog("Vous venez d'apparaître au premier étage !", &lineLog, win_logs);
 	addLog(" > Allez sauver Nathalie Camelin", &lineLog, win_logs);
@@ -72,7 +72,7 @@ int main () {
 
 
 		displayFloor(map, win_game);
-		displayPlayer(player, win_game);
+		displayPlayer(player, map, win_game);
 		displayStats(player, win_stats);
 
 	}

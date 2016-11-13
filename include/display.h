@@ -25,10 +25,10 @@
 
 WINDOW *createWindow(int startX, int startY, int width, int height, char * label);
 
-void displayFloor(t_cell map[][COLUMNS], WINDOW *win);
+void displayFloor(t_cell map[LINES][COLUMNS], WINDOW *win);
 void addLog(char * message, int * line, WINDOW *win);
 void clearLog(int *line, WINDOW *win);
-void displayPlayer(t_character player, WINDOW *win);
+void displayPlayer(t_character player, t_cell mat[LINES][COLUMNS], WINDOW *win);
 void displayStats(t_character player, WINDOW *win);
 
 #endif /* end of include guard: DISPLAY_H */

@@ -18,6 +18,7 @@ WINDOW *createWindow(int startX, int startY, int width, int height, char * label
 	init_pair(6, COLOR_GREEN, COLOR_WHITE);
 	init_pair(7, COLOR_BLACK, COLOR_WHITE);
 	init_pair(8, COLOR_WHITE, COLOR_GREEN);
+	init_pair(9, 10, 8); // 8 : dark grey
 
 
 	box(localWindow, 0, 0);
@@ -45,7 +46,7 @@ void printCell(int pair, char cell, WINDOW *win){
 }
 
 /* Cette fonction affiche l'étage de la map donnée en paramètre */
-void displayFloor (t_cell map[][COLUMNS], WINDOW *win) {
+void displayFloor (t_cell map[LINES][COLUMNS], WINDOW *win) {
 
 	int i, j;
 
@@ -134,9 +135,12 @@ void addLog(char * message, int * line, WINDOW *win){
 }
 
 /* Cette fonction affiche le joueur sur le jeu */
-void displayPlayer(t_character player, WINDOW *win){
+void displayPlayer(t_character player, t_cell mat[LINES][COLUMNS], WINDOW *win){
 
-	wattron(win, COLOR_PAIR(6));
+	if(mat[player.line][player.column].type == ROOM){
+		wattron(win, COLOR_PAIR(6));
+	}
+	else wattron(win, COLOR_PAIR(9));
 
 	wmove(win, (player.line)+1, (player.column)+1);
 	wprintw(win, "@");
@@ -148,6 +152,7 @@ void displayStats(t_character player, WINDOW *win){
 
 	int i, j;
 
+	// On clear la zone de stats
 	for(i = 1 ; i < LINES_STATS -1; i++){
 		for(j = 1 ; j < COLS_STATS -1; j++){
 			wmove(win, i, j);
