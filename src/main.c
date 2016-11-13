@@ -72,9 +72,23 @@ int main () {
 			case KEY_LEFT: move_perso(LEFT, map, &player); break;
 			case KEY_RIGHT: move_perso(RIGHT, map, &player); break;
 
-			case '\n': addLog("Entrée pas faite.", &lineLog, win_logs); break;
+			case '\n':
+				if(map[player.line][player.column].nbObject > 0){
+					switch (map[player.line][player.column].obj[0]) {
+						case STAIRS_UP: randomFloor(map, FALSE); break;
+						case STAIRS_DOWN: addLog("vous êtes déjà en bas !", &lineLog, win_logs); break;
+						default: addLog("Aucune raison de faire entrée ici", &lineLog, win_logs);
+					}
+				} else addLog("Pourquoi voulez vous faire entrée ?", &lineLog, win_logs);
+				break;
 			default: addLog("Commande inconnue !", &lineLog, win_logs);
 		}
+
+		// TEST POUR VOIR SI LE SPAWN EST BIEN MIS A JOUR
+		randomFloor(map, FALSE);
+		move2spawn(map, &player);
+		// FIN DU GAME ... EUH DU TEST
+
 
 		displayFloor(map, win_game);
 		displayPlayer(player, win_game);
