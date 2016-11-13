@@ -1,24 +1,45 @@
 #include "display.h"
 
 
+
+void init_colors(){
+
+	start_color();
+
+	init_pair(GENERAL_COLOR , COLOR_RED,   COLOR_BLACK);
+	init_pair(CORRIDOR_COLOR, COLOR_WHITE, COLOR_BLACK);
+	init_pair(WALL_COLOR    , COLOR_CYAN,  COLOR_BLACK);
+	init_pair(ROOM_COLOR    , COLOR_WHITE, COLOR_WHITE);
+	init_pair(PLAYER_COLOR  , COLOR_GREEN, COLOR_WHITE);
+	init_pair(OBJECTS_COLOR , COLOR_BLACK, COLOR_WHITE);
+	init_pair(OPENED_DOOR   , COLOR_WHITE, COLOR_GREEN);
+	init_pair(PLAYER_C_COLOR, LIGHT_GREEN, DARK_GREY);
+}
+
+void init_screen(){
+	initscr();
+	init_colors();
+
+	keypad(stdscr, TRUE); // Pour ne pas afficher les lettres que l'utilisateur tape
+	noecho();
+	curs_set(0);
+	refresh();
+}
+
+void displayObjectives(int *lineLog, WINDOW *win_logs){
+
+	addLog("Vous venez d'apparaître au premier étage !", lineLog, win_logs);
+	addLog(" > Allez sauver Nathalie Camelin", lineLog, win_logs);
+	addLog(" > Evitez de vous faire attraper par des L1", lineLog, win_logs);
+
+}
+
 /* Cette fonction crée une fenetre aux coordonnées indiquée, et de taille donnée */
 WINDOW *createWindow(int startX, int startY, int width, int height, char * label){
 
 	WINDOW *localWindow;
 
 	localWindow = newwin(height, width, startY, startX);
-
-	start_color();
-	// Init pair : init_pair(ID_PAIR, TEXT COLOR, BACKGROUND COLOR);
-	init_pair(1, COLOR_RED, COLOR_BLACK);
-	init_pair(2, COLOR_WHITE, COLOR_BLACK);
-	init_pair(3, COLOR_CYAN, COLOR_BLACK);
-	init_pair(4, COLOR_WHITE, COLOR_WHITE);
-	init_pair(5, COLOR_BLACK, COLOR_BLACK);
-	init_pair(6, COLOR_GREEN, COLOR_WHITE);
-	init_pair(7, COLOR_BLACK, COLOR_WHITE);
-	init_pair(8, COLOR_WHITE, COLOR_GREEN);
-	init_pair(9, 10, 8); // 8 : dark grey
 
 
 	box(localWindow, 0, 0);
@@ -54,38 +75,38 @@ void displayFloor (t_cell map[LINES][COLUMNS], WINDOW *win) {
 		wmove(win, i+1,1);
 		for (j = 0; j < COLUMNS; j++) {
 			switch (map[i][j].type) {
-				case EMPTY: 	 printCell(1,' ', win); break;
+				case EMPTY: 	 printCell(GENERAL_COLOR,' ', win); break;
 				case DOORWAY:
 					switch (map[i][j].state) {
-						case dNONE:  printCell(2,'c', win); break;
-						case dOPEN:  printCell(8,'c', win); break;
-						case dCLOSE: printCell(1,'c', win); break;
-						default: printCell(1,'?', win); break;
+						case dNONE:  printCell(CORRIDOR_COLOR,'c', win); break;
+						case dOPEN:  printCell(OPENED_DOOR,'c', win); break;
+						case dCLOSE: printCell(GENERAL_COLOR,'c', win); break;
+						default: printCell(GENERAL_COLOR,'?', win); break;
 					}
 					break;
 				case ROOM:
-					if (map[i][j].nbObject == 0) printCell(4,' ', win);
+					if (map[i][j].nbObject == 0) printCell(ROOM_COLOR,' ', win);
 					else {
 						switch (map[i][j].obj[0]) {
-							case STAIRS_UP: printCell(7,'<', win); break;
-							case STAIRS_DOWN: printCell(7, '>', win); break;
-							case objNONE: printCell(4,' ', win); break;
+							case STAIRS_UP: printCell(OBJECTS_COLOR,'<', win); break;
+							case STAIRS_DOWN: printCell(OBJECTS_COLOR, '>', win); break;
+							case objNONE: printCell(ROOM_COLOR,' ', win); break;
 						}
 					}
 					break;
 
 				case CORRIDOR:
-					if (map[i][j].nbObject == 0) printCell(2,'c', win);
+					if (map[i][j].nbObject == 0) printCell(CORRIDOR_COLOR,'c', win);
 					else {
 						switch (map[i][j].obj[0]) {
-							case STAIRS_UP: printCell(7,'<', win); break;
-							case STAIRS_DOWN: printCell(7, '>', win); break;
-							case objNONE: printCell(4,' ', win); break;
+							case STAIRS_UP: printCell(OBJECTS_COLOR,'<', win); break;
+							case STAIRS_DOWN: printCell(OBJECTS_COLOR, '>', win); break;
+							case objNONE: printCell(CORRIDOR_COLOR,' ', win); break;
 						}
 					}
 					break;
 
-				case WALL: 		 printCell(3,'c', win); break;
+				case WALL: 		 printCell(WALL_COLOR,'c', win); break;
 			}
 		}
 
@@ -113,7 +134,7 @@ void clearLog(int *line, WINDOW *win){
 /* Cette fonction ajoute une ligne à la fenetre de log */
 void addLog(char * message, int * line, WINDOW *win){
 
-	wattron(win, COLOR_PAIR(1));
+	wattron(win, COLOR_PAIR(GENERAL_COLOR));
 
 	// On découpe le message en sous messages pour rentrer dans la zone de logs
 	while(strlen(message) > COLS_LOGS-1) {
@@ -138,9 +159,9 @@ void addLog(char * message, int * line, WINDOW *win){
 void displayPlayer(t_character player, t_cell mat[LINES][COLUMNS], WINDOW *win, WINDOW *logs, int *line){
 
 	if(mat[player.line][player.column].type == ROOM){
-		wattron(win, COLOR_PAIR(6));
+		wattron(win, COLOR_PAIR(PLAYER_COLOR));
 	}
-	else wattron(win, COLOR_PAIR(9));
+	else wattron(win, COLOR_PAIR(PLAYER_C_COLOR));
 
 	wmove(win, (player.line)+1, (player.column)+1);
 	wprintw(win, "@");

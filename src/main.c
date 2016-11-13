@@ -19,13 +19,8 @@ int main () {
 	t_cell map[LINES][COLUMNS];
 	t_character player = {"valentin", 0, 0, 1, 10, 10, 10};
 
-	initscr();
-	start_color();
 
-	keypad(stdscr, TRUE); // Pour ne pas afficher les lettres que l'utilisateur tape
-	noecho();
-	curs_set(0);
-	refresh();
+	init_screen();
 
 	/* Initialisation des fenetres */
 	WINDOW *win_game  = createWindow(0, 0, COLS_GAME, LINES_GAME, "RogueLike");
@@ -37,11 +32,10 @@ int main () {
 	// On déplace le joueur au spawn de celui-ci
 	move2spawn(map, &player);
 
-	// On affiche la map et le joueur, et quelques objectifs
-	addLog("Vous venez d'apparaître au premier étage !", &lineLog, win_logs);
-	addLog(" > Allez sauver Nathalie Camelin", &lineLog, win_logs);
-	addLog(" > Evitez de vous faire attraper par des L1", &lineLog, win_logs);
+	// On affiche les objectifs
+	displayObjectives(&lineLog, win_logs);
 
+	// On affiche la map et le joueur
 	displayFloor(map, win_game);
 	displayPlayer(player, map, win_game, win_logs, &lineLog);
 

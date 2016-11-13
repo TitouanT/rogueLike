@@ -9,6 +9,18 @@
 #include "mapConst.h"
 #include "character.h"
 
+#define DARK_GREY 8
+#define LIGHT_GREEN 10
+
+#define GENERAL_COLOR  1
+#define CORRIDOR_COLOR 2
+#define WALL_COLOR     3
+#define ROOM_COLOR     4
+#define PLAYER_COLOR   5
+#define OBJECTS_COLOR  6
+#define OPENED_DOOR    7
+#define PLAYER_C_COLOR 8
+
 
 // Taille de la fenetre du jeu
 #define LINES_GAME  LINES + 2
@@ -23,8 +35,9 @@
 #define COLS_STATS COLS_GAME + COLS_LOGS
 
 
+void displayObjectives(int *lineLog, WINDOW *win_logs);
+void init_screen();
 WINDOW *createWindow(int startX, int startY, int width, int height, char * label);
-
 void displayFloor(t_cell map[LINES][COLUMNS], WINDOW *win);
 void addLog(char * message, int * line, WINDOW *win);
 void clearLog(int *line, WINDOW *win);
