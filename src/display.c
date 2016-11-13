@@ -143,3 +143,20 @@ void displayPlayer(t_character player, WINDOW *win){
 	wrefresh(win);
 
 }
+
+void displayStats(t_character player, WINDOW *win){
+
+	int i, j;
+
+	for(i = 1 ; i < LINES_STATS -1; i++){
+		for(j = 1 ; j < COLS_STATS -1; j++){
+			wmove(win, i, j);
+			wprintw(win, " ");
+		}
+	}
+
+	wmove(win, 1, 1);
+	wprintw(win, "Joueur : %i %i  |  Etage : %i",player.line, player.column, player.lvl);
+	wrefresh(win);
+
+}

@@ -29,5 +29,6 @@ void displayFloor(t_cell map[][COLUMNS], WINDOW *win);
 void addLog(char * message, int * line, WINDOW *win);
 void clearLog(int *line, WINDOW *win);
 void displayPlayer(t_character player, WINDOW *win);
+void displayStats(t_character player, WINDOW *win);
 
 #endif /* end of include guard: DISPLAY_H */

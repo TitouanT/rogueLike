@@ -10,7 +10,7 @@ int move2spawn(t_cell mat[LINES][COLUMNS], t_character *perso){
   for(i = 0 ; i < LINES ; i++){
     for(j = 0 ; j < COLUMNS ; j++){
 
-      if(mat[i][j].obj[0] == STAIRS_DOWN){
+      if(mat[i][j].nbObject != 0 && mat[i][j].obj[0] == STAIRS_DOWN){
         perso->line = i;
         perso->column = j;
         return TRUE;

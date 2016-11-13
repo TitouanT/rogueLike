@@ -17,7 +17,7 @@ int main () {
 
 	srand(time(NULL));
 	t_cell map[LINES][COLUMNS];
-	t_character player = {"valentin", 0, 0, 10, 10, 10, 10};
+	t_character player = {"valentin", 0, 0, 1, 10, 10, 10};
 
 	initscr();
 	start_color();
@@ -60,23 +60,25 @@ int main () {
 			case '\n':
 				if(map[player.line][player.column].nbObject > 0){
 					switch (map[player.line][player.column].obj[0]) {
-						case STAIRS_UP: randomFloor(map, FALSE); break;
+						case STAIRS_UP: randomFloor(map, FALSE); move2spawn(map, &player); (player.lvl)++; break;
 						case STAIRS_DOWN: addLog("vous êtes déjà en bas !", &lineLog, win_logs); break;
 						default: addLog("Aucune raison de faire entrée ici", &lineLog, win_logs);
 					}
 				} else addLog("Pourquoi voulez vous faire entrée ?", &lineLog, win_logs);
 				break;
+
 			default: addLog("Commande inconnue !", &lineLog, win_logs);
 		}
 
 		// TEST POUR VOIR SI LE SPAWN EST BIEN MIS A JOUR
-		randomFloor(map, FALSE);
-		move2spawn(map, &player);
+		//randomFloor(map, FALSE);
+		//move2spawn(map, &player);
 		// FIN DU GAME ... EUH DU TEST
 
 
 		displayFloor(map, win_game);
 		displayPlayer(player, win_game);
+		displayStats(player, win_stats);
 
 	}
 
