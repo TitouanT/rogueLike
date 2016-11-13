@@ -74,40 +74,43 @@ void displayFloor (t_cell map[LINES][COLUMNS], WINDOW *win) {
 	for (i = 0; i < LINES; i++) {
 		wmove(win, i+1,1);
 		for (j = 0; j < COLUMNS; j++) {
-			switch (map[i][j].type) {
-				case EMPTY: 	 printCell(GENERAL_COLOR,' ', win); break;
-				case DOORWAY:
-					switch (map[i][j].state) {
-						case dNONE:  printCell(CORRIDOR_COLOR,'c', win); break;
-						case dOPEN:  printCell(OPENED_DOOR,'c', win); break;
-						case dCLOSE: printCell(GENERAL_COLOR,'c', win); break;
-						default: printCell(GENERAL_COLOR,'?', win); break;
-					}
-					break;
-				case ROOM:
-					if (map[i][j].nbObject == 0) printCell(ROOM_COLOR,' ', win);
-					else {
-						switch (map[i][j].obj[0]) {
-							case STAIRS_UP: printCell(OBJECTS_COLOR,'<', win); break;
-							case STAIRS_DOWN: printCell(OBJECTS_COLOR, '>', win); break;
-							case objNONE: printCell(ROOM_COLOR,' ', win); break;
+			if (map[i][j].isDiscovered) {
+				switch (map[i][j].type) {
+					case EMPTY: 	 printCell(GENERAL_COLOR,' ', win); break;
+					case DOORWAY:
+						switch (map[i][j].state) {
+							case dNONE:  printCell(CORRIDOR_COLOR,'c', win); break;
+							case dOPEN:  printCell(OPENED_DOOR,'c', win); break;
+							case dCLOSE: printCell(GENERAL_COLOR,'c', win); break;
+							default: printCell(GENERAL_COLOR,'?', win); break;
 						}
-					}
-					break;
-
-				case CORRIDOR:
-					if (map[i][j].nbObject == 0) printCell(CORRIDOR_COLOR,'c', win);
-					else {
-						switch (map[i][j].obj[0]) {
-							case STAIRS_UP: printCell(OBJECTS_COLOR,'<', win); break;
-							case STAIRS_DOWN: printCell(OBJECTS_COLOR, '>', win); break;
-							case objNONE: printCell(CORRIDOR_COLOR,' ', win); break;
+						break;
+					case ROOM:
+						if (map[i][j].nbObject == 0) printCell(ROOM_COLOR,' ', win);
+						else {
+							switch (map[i][j].obj[0]) {
+								case STAIRS_UP: printCell(OBJECTS_COLOR,'<', win); break;
+								case STAIRS_DOWN: printCell(OBJECTS_COLOR, '>', win); break;
+								case objNONE: printCell(ROOM_COLOR,' ', win); break;
+							}
 						}
-					}
-					break;
+						break;
 
-				case WALL: 		 printCell(WALL_COLOR,'c', win); break;
+					case CORRIDOR:
+						if (map[i][j].nbObject == 0) printCell(CORRIDOR_COLOR,'c', win);
+						else {
+							switch (map[i][j].obj[0]) {
+								case STAIRS_UP: printCell(OBJECTS_COLOR,'<', win); break;
+								case STAIRS_DOWN: printCell(OBJECTS_COLOR, '>', win); break;
+								case objNONE: printCell(CORRIDOR_COLOR,' ', win); break;
+							}
+						}
+						break;
+
+					case WALL: 		 printCell(WALL_COLOR,'c', win); break;
+				}
 			}
+			else printCell(GENERAL_COLOR,' ', win); //EMPTY
 		}
 
 	}

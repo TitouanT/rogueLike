@@ -48,7 +48,7 @@ void writeLvl (char * fileName, t_cell map[][COLUMNS]) { //// a mettre a jours
 	lvlFile = fopen (fileName, "w");
 	for (i = 0; i < LINES; i++) {
 		for (j = 0; j < COLUMNS; j++) {
-			fprintf (lvlFile, "%d %d %d %d", map[i][j].type, map[i][j].state, map[i][j].isDiscovered, map[i][j].nbObject);
+			fprintf (lvlFile, "%d %d %d %d ", map[i][j].type, map[i][j].state, map[i][j].isDiscovered, map[i][j].nbObject);
 
 			for (k = 0; k < map[i][j].nbObject; k++) {
 				fprintf(lvlFile, "%d ", map[i][j].obj[k]);
