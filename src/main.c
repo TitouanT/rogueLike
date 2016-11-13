@@ -10,7 +10,7 @@
 
 #include "global.h"
 
-void colorFinder (t_cell map[][COLUMNS], t_character player, int color, WINDOW * win_mess, WINDOW * win_game);
+void colorFinder (t_cell map[][COLUMNS], t_character player, int color, WINDOW * win_mess, WINDOW * win_game, WINDOW * win_log, int * line);
 
 int main () {
 
@@ -92,10 +92,10 @@ int main () {
 				addLog ("4: color of player(b)",&lineLog, win_logs);
 				while ((key = getch()) != 'q') {
 					switch(key) {
-						case '1': colorFinder(map, player, COLOR_FLOOR, win_stats, win_game); break;
-						case '2': colorFinder(map, player, COLOR_WALL, win_stats, win_game); break;
-						case '3': colorFinder(map, player, COLOR_PLAYER_F, win_stats, win_game); break;
-						case '4': colorFinder(map, player, COLOR_PLAYER_B, win_stats, win_game); break;
+						case '1': colorFinder(map, player, COLOR_FLOOR, win_stats, win_game, win_logs, &lineLog); break;
+						case '2': colorFinder(map, player, COLOR_WALL, win_stats, win_game, win_logs, &lineLog); break;
+						case '3': colorFinder(map, player, COLOR_PLAYER_F, win_stats, win_game, win_logs, &lineLog); break;
+						case '4': colorFinder(map, player, COLOR_PLAYER_B, win_stats, win_game, win_logs, &lineLog); break;
 					}
 
 				}
@@ -131,7 +131,7 @@ int main () {
 	return 0;
 }
 
-void colorFinder (t_cell map[][COLUMNS], t_character player, int color, WINDOW * win_mess, WINDOW * win_game) {
+void colorFinder (t_cell map[][COLUMNS], t_character player, int color, WINDOW * win_mess, WINDOW * win_game, WINDOW * win_log, int * line) {
 	int key, r, g, b;
 	r=g=b=0;
 	mvwprintw(win_mess, 1,1,"Vous aller modifier une couleur !!");
@@ -152,7 +152,7 @@ void colorFinder (t_cell map[][COLUMNS], t_character player, int color, WINDOW *
 
 		mvwprintw(win_mess, 1,1,"r: %d, g: %d, b: %d", r,g,b);
 		displayFloor(map, win_game);
-		displayPlayer(player, win_game);
+		displayPlayer(player, map, win_game, win_log, line);
 		wrefresh(win_mess);
 
 
