@@ -8,19 +8,6 @@ WINDOW *createWindow(int startX, int startY, int width, int height, char * label
 
 	localWindow = newwin(height, width, startY, startX);
 
-	start_color();
-	// Init pair : init_pair(ID_PAIR, TEXT COLOR, BACKGROUND COLOR);
-	init_pair(1, COLOR_RED, COLOR_BLACK);
-	init_pair(2, COLOR_WHITE, COLOR_BLACK);
-	init_pair(3, COLOR_CYAN, COLOR_BLACK);
-	init_pair(4, COLOR_WHITE, COLOR_WHITE);
-	init_pair(5, COLOR_BLACK, COLOR_BLACK);
-	init_pair(6, COLOR_GREEN, COLOR_WHITE);
-	init_pair(7, COLOR_BLACK, COLOR_WHITE);
-	init_pair(8, COLOR_WHITE, COLOR_GREEN);
-	init_pair(9, 10, 8); // 8 : dark grey
-
-
 	box(localWindow, 0, 0);
 	wmove(localWindow,0,2);
 	wprintw(localWindow, label);
@@ -80,7 +67,7 @@ void displayFloor (t_cell map[LINES][COLUMNS], WINDOW *win) {
 						switch (map[i][j].obj[0]) {
 							case STAIRS_UP: printCell(7,'<', win); break;
 							case STAIRS_DOWN: printCell(7, '>', win); break;
-							case objNONE: printCell(4,' ', win); break;
+							case objNONE: printCell(2,' ', win); break;
 						}
 					}
 					break;
@@ -135,7 +122,7 @@ void addLog(char * message, int * line, WINDOW *win){
 }
 
 /* Cette fonction affiche le joueur sur le jeu */
-void displayPlayer(t_character player, t_cell mat[LINES][COLUMNS], WINDOW *win, WINDOW *logs, int *line){
+void displayPlayer(t_character player, t_cell mat[LINES][COLUMNS], WINDOW *win){
 
 	if(mat[player.line][player.column].type == ROOM){
 		wattron(win, COLOR_PAIR(6));
@@ -145,16 +132,6 @@ void displayPlayer(t_character player, t_cell mat[LINES][COLUMNS], WINDOW *win, 
 	wmove(win, (player.line)+1, (player.column)+1);
 	wprintw(win, "@");
 	wrefresh(win);
-
-	if(mat[player.line][player.column].nbObject != 0){
-
-		switch (mat[player.line][player.column].obj[0]) {
-			case STAIRS_UP: addLog("Vous pouvez monter les escaliers avec :           > Entrée", line, logs); break;
-			case STAIRS_DOWN: addLog("Vous pouvez déscendre les éscaliers avec :      > Entrée", line, logs); break;
-			default: break;
-		}
-
-	}
 
 }
 
