@@ -10,6 +10,8 @@
 
 #include "global.h"
 
+void colorFinder (t_cell map[][COLUMNS], t_character player, int color, WINDOW * win_mess, WINDOW * win_game);
+
 int main () {
 
 	int key;
@@ -21,20 +23,33 @@ int main () {
 
 	initscr();
 	start_color();
-	init_color(COLOR_BLACK, 0, 0, 0);
-	init_color(COLOR_CYAN, 391, 184, 12);
-	init_color(COLOR_GREEN, 391, 375, 12);
-	init_color(COLOR_WHITE, 520, 310, 0);
+	init_color(COLOR_DOOR_OPEN, 0, 500, 0);
+
+	init_color(COLOR_EMPTY, 0, 0, 0);
+	init_color(COLOR_LIGHT, 1000, 1000, 1000);
+	init_color(COLOR_FLOOR, 260, 260, 0);//++++++
+	init_color(COLOR_WALL, 300, 60, 0);
+	init_color(COLOR_PLAYER_B, 0, 0, 0);
+	init_color(COLOR_PLAYER_F, 1000, 1000, 1000);
 
 	// Init pair : init_pair(ID_PAIR, TEXT COLOR, BACKGROUND COLOR);
-	init_pair(1, COLOR_RED, COLOR_BLACK); // log(t), closed door(t), empty(f)
-	init_pair(2, COLOR_WHITE, COLOR_BLACK); // corridor(t-f)
-	init_pair(3, COLOR_CYAN, COLOR_BLACK); // wall(t-f)
-	init_pair(4, COLOR_WHITE, COLOR_WHITE); // room
-	init_pair(5, COLOR_BLACK, COLOR_BLACK); // ?
-	init_pair(6, COLOR_GREEN, COLOR_WHITE); // player
-	init_pair(7, COLOR_BLACK, COLOR_WHITE); // stairs
-	init_pair(8, COLOR_WHITE, COLOR_GREEN); // opended door
+	// init_pair(1, COLOR_RED, COLOR_BLACK); // log(t), closed door(t), empty
+	// init_pair(2, COLOR_WHITE, COLOR_BLACK); // corridor(t)
+	// init_pair(3, COLOR_CYAN, COLOR_BLACK); // wall(t)
+	// init_pair(4, COLOR_WHITE, COLOR_WHITE); // room
+	// init_pair(5, COLOR_BLACK, COLOR_BLACK); // ?
+	// init_pair(6, COLOR_GREEN, COLOR_WHITE); // player (t)
+	// init_pair(7, COLOR_BLACK, COLOR_WHITE); // stairs (t)
+	// init_pair(8, COLOR_GREEN, COLOR_BLACK); // opended door(t)
+
+	init_pair (1, COLOR_DOOR_CLOSE, COLOR_EMPTY);//door close
+	init_pair (2, COLOR_FLOOR, COLOR_EMPTY);//corridor
+	init_pair (3, COLOR_WALL, COLOR_EMPTY);//wall
+	init_pair (4, COLOR_FLOOR, COLOR_FLOOR);//rooom
+	init_pair (5, COLOR_BLACK, COLOR_BLACK); // ?
+	init_pair (6, COLOR_PLAYER_F, COLOR_PLAYER_B);//player
+	init_pair (7, COLOR_EMPTY, COLOR_FLOOR); // stairs (t)
+	init_pair (8, COLOR_DOOR_OPEN, COLOR_EMPTY);//door open
 
 
 	keypad(stdscr, TRUE); // Pour ne pas afficher les lettres que l'utilisateur tape
@@ -67,6 +82,24 @@ int main () {
 		clearLog(&lineLog, win_logs);
 
 		switch (key) {
+			case 'c':
+				addLog ("Bienvenu dans le mode couleur !!",&lineLog, win_logs);
+				addLog ("1: color of floor",&lineLog, win_logs);
+				addLog ("2: color of wall",&lineLog, win_logs);
+				addLog ("3: color of player(f)",&lineLog, win_logs);
+				addLog ("4: color of player(b)",&lineLog, win_logs);
+				while ((key = getch()) != 'q') {
+					switch(key) {
+						case '1': colorFinder(map, player, COLOR_FLOOR, win_stats, win_game); break;
+						case '2': colorFinder(map, player, COLOR_WALL, win_stats, win_game); break;
+						case '3': colorFinder(map, player, COLOR_PLAYER_F, win_stats, win_game); break;
+						case '4': colorFinder(map, player, COLOR_PLAYER_B, win_stats, win_game); break;
+					}
+
+				}
+				clearLog(&lineLog, win_logs);
+				break;
+
 			case KEY_UP: move_perso(UP, map, &player); break;
 			case KEY_DOWN: move_perso(DOWN, map, &player); break;
 			case KEY_LEFT: move_perso(LEFT, map, &player); break;
@@ -85,8 +118,8 @@ int main () {
 		}
 
 		// TEST POUR VOIR SI LE SPAWN EST BIEN MIS A JOUR
-		randomFloor(map, FALSE);
-		move2spawn(map, &player);
+		//randomFloor(map, FALSE);
+		//move2spawn(map, &player);
 		// FIN DU GAME ... EUH DU TEST
 
 
@@ -98,4 +131,32 @@ int main () {
 
 	endwin(); //Fermeture de la fenetre
 	return 0;
+}
+
+void colorFinder (t_cell map[][COLUMNS], t_character player, int color, WINDOW * win_mess, WINDOW * win_game) {
+	int key, r, g, b;
+	r=g=b=0;
+	mvwprintw(win_mess, 1,1,"Vous aller modifier une couleur !!");
+	wrefresh(win_mess);
+	while((key = getch()) != '\n'){
+		mvwprintw(win_mess, 1,1,"                                  ");
+
+		switch (key) {
+			case 'f': if (r+10<=1000) r+=10; break;
+			case 'g': if (g+10<=1000) g+=10; break;
+			case 'h': if (b+10<=1000) b+=10; break;
+			case 'c': if (r-10>=0) r-=10; break;
+			case 'v': if (g-10>=0) g-=10; break;
+			case 'b': if (b-10>=0) b-=10; break;
+		}
+		init_color(color, r, g, b);
+
+
+		mvwprintw(win_mess, 1,1,"r: %d, g: %d, b: %d", r,g,b);
+		displayFloor(map, win_game);
+		displayPlayer(player, win_game);
+		wrefresh(win_mess);
+
+
+	}
 }
