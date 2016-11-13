@@ -9,7 +9,7 @@
  */
 
 #include "global.h"
-void markDiscover(t_cell map[LINES][COLUMNS], t_character player);
+
 
 int main () {
 
@@ -75,15 +75,4 @@ int main () {
 
 	endwin(); //Fermeture de la fenetre
 	return 0;
-}
-
-void markDiscover(t_cell map[LINES][COLUMNS], t_character player) {
-	int line = player.line - 1;
-	int col = player.column - 1;
-	int i, j;
-	for (i = 0; i < 3; i++) {
-		for (j = 0; j < 3; j++) {
-			if (line+i >= 0 && line+i < LINES && col+j >= 0 && col+j < COLUMNS) map[line+i][col+j].isDiscovered = TRUE;
-		}
-	}
 }

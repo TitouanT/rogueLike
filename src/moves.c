@@ -3,6 +3,18 @@
 #include "moves.h"
 
 
+void markDiscover(t_cell map[LINES][COLUMNS], t_character player) {
+	int line = player.line - 1;
+	int col = player.column - 1;
+	int i, j;
+	for (i = 0; i < 3; i++) {
+		for (j = 0; j < 3; j++) {
+			if (line+i >= 0 && line+i < LINES && col+j >= 0 && col+j < COLUMNS) map[line+i][col+j].isDiscovered = TRUE;
+		}
+	}
+}
+
+
 int move2spawn(t_cell mat[LINES][COLUMNS], t_character *perso){
 
   int i, j;
@@ -13,7 +25,7 @@ int move2spawn(t_cell mat[LINES][COLUMNS], t_character *perso){
       if(mat[i][j].nbObject != 0 && mat[i][j].obj[0] == STAIRS_DOWN){
         perso->line = i;
         perso->column = j;
-				mat[i][j].isDiscovered = TRUE;
+				markDiscover(mat, *perso);
         return TRUE;
       }
 
