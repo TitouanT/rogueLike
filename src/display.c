@@ -135,7 +135,7 @@ void addLog(char * message, int * line, WINDOW *win){
 }
 
 /* Cette fonction affiche le joueur sur le jeu */
-void displayPlayer(t_character player, t_cell mat[LINES][COLUMNS], WINDOW *win, WINDOW *logs, int *line){
+void displayPlayer(t_character player, t_cell mat[LINES][COLUMNS], WINDOW *win){
 
 	if(mat[player.line][player.column].type == ROOM){
 		wattron(win, COLOR_PAIR(6));
@@ -145,16 +145,6 @@ void displayPlayer(t_character player, t_cell mat[LINES][COLUMNS], WINDOW *win, 
 	wmove(win, (player.line)+1, (player.column)+1);
 	wprintw(win, "@");
 	wrefresh(win);
-
-	if(mat[player.line][player.column].nbObject != 0){
-
-		switch (mat[player.line][player.column].obj[0]) {
-			case STAIRS_UP: addLog("Vous pouvez monter les escaliers avec :           > Entrée", line, logs); break;
-			case STAIRS_DOWN: addLog("Vous pouvez déscendre les éscaliers avec :      > Entrée", line, logs); break;
-			default: break;
-		}
-
-	}
 
 }
 
