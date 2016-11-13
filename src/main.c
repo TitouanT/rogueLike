@@ -38,12 +38,12 @@ int main () {
 	move2spawn(map, &player);
 
 	// On affiche la map et le joueur, et quelques objectifs
-	displayFloor(map, win_game);
-	displayPlayer(player, map, win_game);
-
 	addLog("Vous venez d'apparaître au premier étage !", &lineLog, win_logs);
 	addLog(" > Allez sauver Nathalie Camelin", &lineLog, win_logs);
 	addLog(" > Evitez de vous faire attraper par des L1", &lineLog, win_logs);
+
+	displayFloor(map, win_game);
+	displayPlayer(player, map, win_game, win_logs, &lineLog);
 
 
 	/* Ici se déroule tout le jeu */
@@ -72,7 +72,7 @@ int main () {
 
 
 		displayFloor(map, win_game);
-		displayPlayer(player, map, win_game);
+		displayPlayer(player, map, win_game, win_logs, &lineLog);
 		displayStats(player, win_stats);
 
 	}
