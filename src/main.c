@@ -19,7 +19,7 @@ int main () {
 
 	srand(time(NULL));
 	t_cell map[LINES][COLUMNS];
-	t_character player = {"valentin", 0, 0, 10, 10, 10, 10};
+	t_character player = {"valentin", 0, 0, 1, 10, 10, 10};
 
 	initscr();
 	start_color();
@@ -51,6 +51,8 @@ int main () {
 	init_pair (7, COLOR_EMPTY, COLOR_FLOOR); // stairs (t)
 	init_pair (8, COLOR_DOOR_OPEN, COLOR_EMPTY);//door open
 
+	init_pair(9, 10, 8); // 8 : dark grey
+
 
 	keypad(stdscr, TRUE); // Pour ne pas afficher les lettres que l'utilisateur tape
 	noecho();
@@ -68,12 +70,12 @@ int main () {
 	move2spawn(map, &player);
 
 	// On affiche la map et le joueur, et quelques objectifs
-	displayFloor(map, win_game);
-	displayPlayer(player, win_game);
-
 	addLog("Vous venez d'apparaître au premier étage !", &lineLog, win_logs);
 	addLog(" > Allez sauver Nathalie Camelin", &lineLog, win_logs);
 	addLog(" > Evitez de vous faire attraper par des L1", &lineLog, win_logs);
+
+	displayFloor(map, win_game);
+	displayPlayer(player, map, win_game, win_logs, &lineLog);
 
 
 	/* Ici se déroule tout le jeu */
@@ -108,23 +110,19 @@ int main () {
 			case '\n':
 				if(map[player.line][player.column].nbObject > 0){
 					switch (map[player.line][player.column].obj[0]) {
-						case STAIRS_UP: randomFloor(map, FALSE); break;
+						case STAIRS_UP: randomFloor(map, FALSE); move2spawn(map, &player); (player.lvl)++; break;
 						case STAIRS_DOWN: addLog("vous êtes déjà en bas !", &lineLog, win_logs); break;
 						default: addLog("Aucune raison de faire entrée ici", &lineLog, win_logs);
 					}
 				} else addLog("Pourquoi voulez vous faire entrée ?", &lineLog, win_logs);
 				break;
+
 			default: addLog("Commande inconnue !", &lineLog, win_logs);
 		}
 
-		// TEST POUR VOIR SI LE SPAWN EST BIEN MIS A JOUR
-		//randomFloor(map, FALSE);
-		//move2spawn(map, &player);
-		// FIN DU GAME ... EUH DU TEST
-
-
 		displayFloor(map, win_game);
-		displayPlayer(player, win_game);
+		displayPlayer(player, map, win_game, win_logs, &lineLog);
+		displayStats(player, win_stats);
 
 	}
 

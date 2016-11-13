@@ -51,7 +51,7 @@ int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso){
   }
 
   if(direction == DOWN){
-    if(line <= LINES_GAME && bIsWalkable(mat[line+1][column])){
+    if(line+1 < LINES && bIsWalkable(mat[line+1][column])){
       perso->line += 1;
       return TRUE;
     }
@@ -65,7 +65,7 @@ int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso){
   }
 
   if(direction == RIGHT){
-    if(line <= COLS_GAME && bIsWalkable(mat[line][column+1])){
+    if(line+1 < COLUMNS && bIsWalkable(mat[line][column+1])){
       perso->column += 1;
       return TRUE;
     }
