@@ -184,11 +184,31 @@ void displayPlayer(t_character player, t_cell mat[LINES][COLUMNS], WINDOW *win, 
 }
 
 
-void printBar(int value, int max, WINDOW * win){
+void printBar(int value, int max, int color1, int color2, WINDOW * win){
 
 	int i;
 
-	for(i = value ; i <= max ; i++) wprintw(win, "*");
+
+
+	init_pair(BAR_TMP_1, color1, color1);
+	init_pair(BAR_TMP_2, color2, color2);
+
+
+	wattron(win, COLOR_PAIR(BAR_TMP_1));
+
+	for(i = 0 ; i < value ; i++){
+		wprintw(win, " ");
+	}
+
+
+	wattron(win, COLOR_PAIR(BAR_TMP_2));
+
+	for(i = value ; i < max ; i++){
+		wprintw(win, " ");
+	}
+
+	wrefresh(win);
+	wattroff(win, COLOR_PAIR(BAR_TMP_2));
 
 }
 
@@ -205,14 +225,19 @@ void displayStats(t_character player, WINDOW *win){
 	}
 
 	wmove(win, 1, 1);
-	wprintw(win, "Etage     : %i / %i", player.lvl, NB_LVL -1);
+	wprintw(win, "Etage     : ");
+	printBar(player.lvl, NB_LVL, COLOR_YELLOW, COLOR_CYAN, win);
+
 	wmove(win, 2, 1);
 	wprintw(win, "HP        : ");
-	printBar(player.hp, MAX_HP, win);
+	printBar(player.hp, MAX_HP, COLOR_GREEN, COLOR_RED, win);
+
 	wmove(win, 3, 1);
 	wprintw(win, "Puissance : %i", player.pw);
+
 	wmove(win, 4, 1);
 	wprintw(win, "XP        : %i", player.xp);
+	
 	wrefresh(win);
 
 }
