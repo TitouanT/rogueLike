@@ -31,7 +31,7 @@
 #define COLS_LOGS   50
 
 // Taille de la fenetre de statistiques
-#define LINES_STATS  5
+#define LINES_STATS  6
 #define COLS_STATS COLS_GAME + COLS_LOGS
 
 

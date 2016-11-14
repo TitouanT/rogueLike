@@ -1,4 +1,5 @@
 #include "display.h"
+#include "global.h"
 
 
 
@@ -13,7 +14,7 @@ void init_colors(){
 	init_pair(PLAYER_COLOR  , COLOR_GREEN, COLOR_WHITE);
 	init_pair(OBJECTS_COLOR , COLOR_BLACK, COLOR_WHITE);
 	init_pair(OPENED_DOOR   , COLOR_WHITE, COLOR_GREEN);
-	init_pair(PLAYER_C_COLOR, LIGHT_GREEN, DARK_GREY);
+	init_pair(PLAYER_C_COLOR, COLOR_GREEN, COLOR_BLACK);
 }
 
 void init_screen(){
@@ -182,6 +183,15 @@ void displayPlayer(t_character player, t_cell mat[LINES][COLUMNS], WINDOW *win, 
 
 }
 
+
+void printBar(int value, int max, WINDOW * win){
+
+	int i;
+
+	for(i = value ; i <= max ; i++) wprintw(win, "*");
+
+}
+
 void displayStats(t_character player, WINDOW *win){
 
 	int i, j;
@@ -195,7 +205,14 @@ void displayStats(t_character player, WINDOW *win){
 	}
 
 	wmove(win, 1, 1);
-	wprintw(win, "Joueur : %i %i  |  Etage : %i",player.line, player.column, player.lvl);
+	wprintw(win, "Etage     : %i / %i", player.lvl, NB_LVL -1);
+	wmove(win, 2, 1);
+	wprintw(win, "HP        : ");
+	printBar(player.hp, MAX_HP, win);
+	wmove(win, 3, 1);
+	wprintw(win, "Puissance : %i", player.pw);
+	wmove(win, 4, 1);
+	wprintw(win, "XP        : %i", player.xp);
 	wrefresh(win);
 
 }
