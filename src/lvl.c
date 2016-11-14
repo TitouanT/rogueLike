@@ -18,11 +18,10 @@
 typedef struct {int line, column, height, width, link[ROOM_NB_MAX], isLink;} t_room;
 
 
-void readLvl ( t_cell map[][COLUMNS], int nb_step) { /// a mettre a jour
+void readLvl ( t_cell map[][COLUMNS], int nbLvl) { /// a mettre a jour
 	int i, j, k, type, state, isDiscovered, nbObject, object;
 	char fileName[20];
-	sprintf(fileName, "%i", nb_step);
-	
+	sprintf(fileName, "%i", nbLvl);
 	char texte[20]=".txt";
 	strcat(fileName,texte);
 	FILE * lvlFile;
@@ -46,14 +45,12 @@ void readLvl ( t_cell map[][COLUMNS], int nb_step) { /// a mettre a jour
 	//return TRUE;
 }
 
-void writeLvl ( t_cell map[][COLUMNS], int nb_step) { //// a mettre a jours
+void writeLvl ( t_cell map[][COLUMNS], int nbLvl) { //// a mettre a jours
 	int i, j, k;
 	char file[20];
-	sprintf(file, "%i", nb_step);
-	
+	sprintf(file, "%i", nbLvl);
 	char texte[20]=".txt";
 	strcat(file,texte);
-	if(fopen (file, "r")==NULL){
 	FILE * lvlFile;
 	lvlFile = fopen (file, "w");
 	for (i = 0; i < LINES; i++) {
@@ -70,10 +67,6 @@ void writeLvl ( t_cell map[][COLUMNS], int nb_step) { //// a mettre a jours
 	}
 	fprintf(lvlFile, "\n");
 	fclose(lvlFile);
-	}
-	else{	
-		readLvl(map,nb_step);
-	}
 	
 }
 void initFloor (t_cell map[LINES][COLUMNS]) {
@@ -330,7 +323,7 @@ void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 	map[lineEx][colEx].nbObject++;
 }
 
-void randomFloor (t_cell map[LINES][COLUMNS], int step) {
+void randomFloor (t_cell map[LINES][COLUMNS]) {
 	int nbRoom = randab (ROOM_NB_MIN, ROOM_NB_MAX + 1), i;
 	initFloor (map);
 	/*if (step) {
@@ -351,7 +344,6 @@ void randomFloor (t_cell map[LINES][COLUMNS], int step) {
 	}
 	chooseLink (map, rooms, nbRoom);
 	placeObject (map, rooms, nbRoom);
-	writeLvl(map,step);
 	// for (i = 0; i < nbRoom - 1; i++) { // la proba que deux pieces soient connecté est inversement proportionnelle a la distance qui les sépare
 	// 	for (j = i+1; j < nbRoom; j++) {
 	// 		rooms[i].link[j] = rooms[j].link[i]= minDist(rooms[i], rooms[j]);
