@@ -157,3 +157,12 @@ int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso){
   return FALSE;
 
 }
+
+
+
+void traiterPorte(t_cell map[LINES][COLUMNS], t_character player, int *line, WINDOW * win){
+
+
+	// Traiter les portes
+
+}

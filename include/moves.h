@@ -4,6 +4,7 @@
 
 typedef enum {UP, DOWN, LEFT, RIGHT} t_dir;
 
+void traiterPorte(t_cell map[LINES][COLUMNS], t_character player, int *line, WINDOW * win);
 void markDiscoverRoom(t_cell map[LINES][COLUMNS], t_character player);
 int move2spawn(t_cell mat[LINES][COLUMNS], t_character *perso);
 int move2Stairs_UP(t_cell mat[LINES][COLUMNS], t_character *perso);

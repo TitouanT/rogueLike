@@ -70,13 +70,12 @@ int main () {
 										move2Stairs_UP(map, &player);
 									}
 										break;
-
-						default: addLog("Aucune raison de faire entrée ici", &lineLog, win_logs);
+						default: break ;
 					}
-				} else addLog("Pourquoi voulez vous faire entrée ?", &lineLog, win_logs);
+				} else  addLog("Commande invalide.", &lineLog, win_logs);
 				break;
-
-			default: addLog("Commande iiiiiinconnue !", &lineLog, win_logs);
+			case 'o': traiterPorte(map, player, &lineLog, win_logs); break;
+			default: addLog("Commande inconnue.", &lineLog, win_logs);
 		}
 
 		markDiscoverRoom(map, player);
