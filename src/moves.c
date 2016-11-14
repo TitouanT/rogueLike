@@ -45,7 +45,7 @@ void markDiscoverRoom(t_cell map[LINES][COLUMNS], t_character player){
 				map[i][j].isDiscovered = TRUE;
 			}
 		}
-		
+
 	}
 
 
@@ -75,7 +75,7 @@ int move2spawn(t_cell mat[LINES][COLUMNS], t_character *perso){
       if(mat[i][j].nbObject != 0 && mat[i][j].obj[0] == STAIRS_DOWN){
         perso->line = i;
         perso->column = j;
-				markDiscover(mat, *perso);
+				markDiscoverRoom(mat, *perso);
         return TRUE;
       }
 
