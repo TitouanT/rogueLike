@@ -18,7 +18,7 @@ int main () {
 
 	srand(time(NULL));
 	t_cell map[LINES][COLUMNS];
-	t_character player = {"valentin", 0, 0, 1, 10, 10, 10};
+	t_character player = {"valentin", 0, 0, 0, 10, 10, 10};
 
 
 	init_screen();
@@ -29,7 +29,7 @@ int main () {
 	WINDOW *win_logs  = createWindow(COLS_GAME, 0, COLS_LOGS, LINES_LOGS, "Logs");
 
 	// On génère un niveau aléatoire
-	randomFloor(map, FALSE);
+	randomFloor(map, 0);
 	// On déplace le joueur au spawn de celui-ci
 	move2spawn(map, &player);
 
@@ -55,8 +55,8 @@ int main () {
 			case '\n':
 				if(map[player.line][player.column].nbObject > 0){
 					switch (map[player.line][player.column].obj[0]) {
-						case STAIRS_UP: randomFloor(map, FALSE); move2spawn(map, &player); (player.lvl)++; break;
-						case STAIRS_DOWN: addLog("vous êtes déjà en bas !", &lineLog, win_logs); break;
+						case STAIRS_UP: (player.lvl)++; randomFloor(map, (player.lvl)); move2spawn(map, &player);  break;
+						case STAIRS_DOWN: (player.lvl)--; randomFloor(map, (player.lvl)); move2Stairs_UP(map, &player); break;
 						default: addLog("Aucune raison de faire entrée ici", &lineLog, win_logs);
 					}
 				} else addLog("Pourquoi voulez vous faire entrée ?", &lineLog, win_logs);

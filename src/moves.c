@@ -85,6 +85,26 @@ int move2spawn(t_cell mat[LINES][COLUMNS], t_character *perso){
   return FALSE;
 }
 
+int move2Stairs_UP(t_cell mat[LINES][COLUMNS], t_character *perso){
+
+  int i, j;
+
+  for(i = 0 ; i < LINES ; i++){
+    for(j = 0 ; j < COLUMNS ; j++){
+
+      if(mat[i][j].nbObject != 0 && mat[i][j].obj[0] == STAIRS_UP){
+        perso->line = i;
+        perso->column = j;
+				markDiscover(mat, *perso);
+        return TRUE;
+      }
+
+    }
+  }
+
+  return FALSE;
+}
+
 int bIsWalkable(t_cell cell){
 
   if(cell.type == ROOM || cell.type == CORRIDOR) {
