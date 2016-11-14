@@ -191,8 +191,9 @@ t_pos chooseRandomWall (t_room r) {
 }
 
 void putRandomRoom (t_cell map[][COLUMNS], t_pos *pos) {
-	int doIt = rand()%2;
-	if (doIt == 1) map[pos->line][pos->column].state = dOPEN;
+	int doIt = rand()%3;
+	if (doIt == 0) map[pos->line][pos->column].state = dOPEN;
+	else if(doIt == 1) map[pos->line][pos->column].state = dCLOSE;
 	else map[pos->line][pos->column].state = dNONE;
 }
 
