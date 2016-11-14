@@ -2,7 +2,7 @@
 #include "global.h"
 #include "filePos.h"
 
-
+/* Renvoi les coordonnées de la pièce où le joueur se trouve */
 t_pos startRoom(t_cell map[LINES][COLUMNS], t_character player){
 
 	int line   = player.line;
@@ -26,12 +26,12 @@ t_pos startRoom(t_cell map[LINES][COLUMNS], t_character player){
 	return position;
 }
 
+/* Retourne vrai si la cellule est une composante d'une pièce */
 int bIsPartOfRoom(t_cell cell){
-
 	return (cell.type == ROOM || cell.type == WALL || cell.type == DOORWAY);
-
 }
 
+/* Marque la pièce où se trouve le joueur comme découverte */
 void markDiscoverRoom(t_cell map[LINES][COLUMNS], t_character player){
 
 	t_pos start = startRoom(map, player);
@@ -48,14 +48,14 @@ void markDiscoverRoom(t_cell map[LINES][COLUMNS], t_character player){
 
 	}
 
-
-
 }
 
-
+/* Marque les cellules autour du joueur comme découverte */
 void markDiscover(t_cell map[LINES][COLUMNS], t_character player) {
+
 	int line = player.line - 1;
 	int col = player.column - 1;
+
 	int i, j;
 	for (i = 0; i < 3; i++) {
 		for (j = 0; j < 3; j++) {
@@ -64,7 +64,7 @@ void markDiscover(t_cell map[LINES][COLUMNS], t_character player) {
 	}
 }
 
-
+/* Déplace le joueur au spawn */
 int move2spawn(t_cell mat[LINES][COLUMNS], t_character *perso){
 
   int i, j;
