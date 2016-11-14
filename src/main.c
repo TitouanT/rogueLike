@@ -64,7 +64,8 @@ int main () {
 
 			default: addLog("Commande inconnue !", &lineLog, win_logs);
 		}
-
+		
+		markDiscoverRoom(map, player);
 
 		displayFloor(map, win_game);
 		displayPlayer(player, map, win_game, win_logs, &lineLog);
