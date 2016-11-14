@@ -1,6 +1,56 @@
 #include <ncurses.h>
 #include "global.h"
-#include "moves.h"
+#include "filePos.h"
+
+
+t_pos startRoom(t_cell map[LINES][COLUMNS], t_character player){
+
+	int line   = player.line;
+	int column = player.column;
+
+	t_pos position;
+
+	int distYpos = 0, distYneg = 0;
+	int distXpos = 0, distXneg = 0;
+
+	int i;
+
+	for(i = line ; map[i][column].type == ROOM ; i++) distYneg++;
+	for(i = line ; map[i][column].type == ROOM ; i--) distYpos++;
+	for(i = column ; map[line][i].type == ROOM ; i++) distXpos++;
+	for(i = column ; map[line][i].type == ROOM ; i--) distXneg++;
+
+	position.line = line - distYpos;
+	position.column = column - distXneg;
+
+	return position;
+}
+
+int bIsPartOfRoom(t_cell cell){
+
+	return (cell.type == ROOM || cell.type == WALL || cell.type == DOORWAY);
+
+}
+
+void markDiscoverRoom(t_cell map[LINES][COLUMNS], t_character player){
+
+	t_pos start = startRoom(map, player);
+
+	int i, j = start.column;
+
+	if(map[player.line][player.column].type == ROOM){
+
+		for(i = start.line ; bIsPartOfRoom(map[i][start.column]); i++){
+			for(j = start.column ; bIsPartOfRoom(map[i][j]) ; j++){
+				map[i][j].isDiscovered = TRUE;
+			}
+		}
+		
+	}
+
+
+
+}
 
 
 void markDiscover(t_cell map[LINES][COLUMNS], t_character player) {
