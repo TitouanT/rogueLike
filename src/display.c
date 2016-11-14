@@ -1,4 +1,5 @@
 #include "display.h"
+#include "global.h"
 
 
 
@@ -13,7 +14,10 @@ void init_colors(){
 	init_pair(PLAYER_COLOR  , COLOR_GREEN, COLOR_WHITE);
 	init_pair(OBJECTS_COLOR , COLOR_BLACK, COLOR_WHITE);
 	init_pair(OPENED_DOOR   , COLOR_WHITE, COLOR_GREEN);
-	init_pair(PLAYER_C_COLOR, LIGHT_GREEN, DARK_GREY);
+	init_pair(PLAYER_C_COLOR, COLOR_GREEN, COLOR_BLACK);
+
+	init_pair(BAR_GREEN     , COLOR_GREEN,   COLOR_GREEN);
+	init_pair(BAR_RED       , COLOR_RED  ,   COLOR_RED);
 }
 
 void init_screen(){
@@ -182,6 +186,29 @@ void displayPlayer(t_character player, t_cell mat[LINES][COLUMNS], WINDOW *win, 
 
 }
 
+
+void printBar(int value, int max, WINDOW * win){
+
+	int i;
+
+	wattron(win, COLOR_PAIR(BAR_GREEN));
+
+	for(i = 0 ; i < value ; i++){
+		wprintw(win, " ");
+	}
+
+	wattron(win, COLOR_PAIR(BAR_RED));
+
+	for(i = value ; i < max ; i++){
+		wprintw(win, " ");
+	}
+
+	wrefresh(win);
+
+	wattroff(win, COLOR_PAIR(BAR_RED));
+
+}
+
 void displayStats(t_character player, WINDOW *win){
 
 	int i, j;
@@ -194,9 +221,16 @@ void displayStats(t_character player, WINDOW *win){
 		}
 	}
 
-	mvwprintw(win,1,1, "                                                             ");
-	wrefresh(win);
-	mvwprintw(win,1,1, "Joueur : %i %i  |  Etage : %i | Déplacement : %d",player.line, player.column, player.lvl, player.nbMove);
+
+	wmove(win, 1, 1);
+	wprintw(win, "Etage     : %i / %i | Déplacement : %d", player.lvl, NB_LVL -1, player.nbMove);
+	wmove(win, 2, 1);
+	wprintw(win, "HP        : ");
+	printBar(player.hp, MAX_HP, win);
+	wmove(win, 3, 1);
+	wprintw(win, "Puissance : %i", player.pw);
+	wmove(win, 4, 1);
+	wprintw(win, "XP        : %i", player.xp);
 	wrefresh(win);
 
 }

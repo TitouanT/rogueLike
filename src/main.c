@@ -10,7 +10,6 @@
 
 #include "global.h"
 
-
 int main () {
 
 	int key;
@@ -18,7 +17,7 @@ int main () {
 
 	srand(time(NULL));
 	t_cell map[LINES][COLUMNS];
-	t_character player = {"valentin", 0, 0, 1, 10, 10, 10, 0};
+	t_character player = {"bibi", 0, 0, 0, 9, 10, 10, 0};
 
 
 	init_screen();
@@ -28,8 +27,9 @@ int main () {
 	WINDOW *win_stats = createWindow(0, LINES_GAME, COLS_STATS, LINES_STATS, "Statistiques");
 	WINDOW *win_logs  = createWindow(COLS_GAME, 0, COLS_LOGS, LINES_LOGS, "Logs");
 
-	// On génère un niveau aléatoire
-	randomFloor(map, FALSE);
+	// On génère des niveaux aléatoires au nombre de
+	InitGameMap(map);
+
 	// On déplace le joueur au spawn de celui-ci
 	move2spawn(map, &player);
 
@@ -55,16 +55,30 @@ int main () {
 			case '\n':
 				if(map[player.line][player.column].nbObject > 0){
 					switch (map[player.line][player.column].obj[0]) {
-						case STAIRS_UP: randomFloor(map, FALSE); move2spawn(map, &player); (player.lvl)++; break;
-						case STAIRS_DOWN: addLog("vous êtes déjà en bas !", &lineLog, win_logs); break;
-						default: addLog("Aucune raison de faire entrée ici", &lineLog, win_logs);
+						case STAIRS_UP: if(player.lvl<6){
+																		writeLvl(map,(player.lvl));
+																		(player.lvl)++;
+																		readLvl(map,(player.lvl));
+																		move2spawn(map, &player);
+														}
+																		break;
+						case STAIRS_DOWN:
+									if(player.lvl>0){
+										writeLvl(map,(player.lvl));
+										(player.lvl)-- ;
+										readLvl(map,(player.lvl));
+										move2Stairs_UP(map, &player);
+									}
+										break;
+						default: break ;
 					}
-				} else addLog("Pourquoi voulez vous faire entrée ?", &lineLog, win_logs);
+				} else  addLog("Commande invalide.", &lineLog, win_logs);
 				break;
-
-			default: addLog("Commande inconnue !", &lineLog, win_logs);
+			case 'o': traiterPorte(map, player, &lineLog, win_logs); break;
+			default: addLog("Commande inconnue.", &lineLog, win_logs);
 		}
 
+		markDiscoverRoom(map, player);
 
 		displayFloor(map, win_game);
 		displayPlayer(player, map, win_game, win_logs, &lineLog);

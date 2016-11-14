@@ -1,7 +1,7 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
 
-
+#define MAX_HP 10
 
 typedef struct {
 	char name[100];

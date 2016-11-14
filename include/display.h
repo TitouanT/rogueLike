@@ -20,7 +20,8 @@
 #define OBJECTS_COLOR  6
 #define OPENED_DOOR    7
 #define PLAYER_C_COLOR 8
-
+#define BAR_GREEN      9
+#define BAR_RED       10
 
 // Taille de la fenetre du jeu
 #define LINES_GAME  LINES + 2
@@ -31,7 +32,7 @@
 #define COLS_LOGS   50
 
 // Taille de la fenetre de statistiques
-#define LINES_STATS  5
+#define LINES_STATS  6
 #define COLS_STATS COLS_GAME + COLS_LOGS
 
 
