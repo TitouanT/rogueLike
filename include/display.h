@@ -20,8 +20,8 @@
 #define OBJECTS_COLOR  6
 #define OPENED_DOOR    7
 #define PLAYER_C_COLOR 8
-#define BAR_TMP_1      9
-#define BAR_TMP_2     10
+#define BAR_GREEN      9
+#define BAR_RED       10
 
 // Taille de la fenetre du jeu
 #define LINES_GAME  LINES + 2
