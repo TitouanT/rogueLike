@@ -22,11 +22,12 @@ typedef struct {int line, column, height, width, link[ROOM_NB_MAX], isLink;} t_r
 
 void readLvl ( t_cell map[][COLUMNS], int nbLvl) { /// a mettre a jour
 	int i, j, k, type, state, isDiscovered, nbObject, object;
-	char fileName[20];
-
-	sprintf(fileName, "%i", nbLvl);
-	char texte[20]=".txt";
+	char fileName[40]="./partie/";
+	char texte[20];
+	sprintf(texte, "%i", nbLvl);
 	strcat(fileName,texte);
+	char texte2[20]=".txt";
+	strcat(fileName,texte2);
 	FILE * lvlFile;
 	lvlFile = fopen (fileName, "r");
 	//if (lvlFile == NULL) return FALSE;
@@ -50,12 +51,14 @@ void readLvl ( t_cell map[][COLUMNS], int nbLvl) { /// a mettre a jour
 
 void writeLvl ( t_cell map[][COLUMNS], int nbLvl) { //// a mettre a jours
 	int i, j, k;
-	char file[20];
-	sprintf(file, "%i", nbLvl);
-	char texte[20]=".txt";
-	strcat(file,texte);
+	char fileName[40]="./partie/";
+	char texte[20];
+	sprintf(texte, "%i", nbLvl);
+	strcat(fileName,texte);
+	char texte2[20]=".txt";
+	strcat(fileName,texte2);
 	FILE * lvlFile;
-	lvlFile = fopen (file, "w");
+	lvlFile = fopen (fileName, "w");
 	for (i = 0; i < LINES; i++) {
 		for (j = 0; j < COLUMNS; j++) {
 			fprintf (lvlFile, "%d %d %d %d ", map[i][j].type, map[i][j].state, map[i][j].isDiscovered, map[i][j].nbObject);
