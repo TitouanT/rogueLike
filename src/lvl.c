@@ -6,7 +6,7 @@
 #include "filePos.h"
 #include "display.h"
 
-#define DEBUG FALSE
+#define DEBUG TRUE
 
 
 /*Ces define ne sont pas dans nomVar.txt car local à ce fichier (lvl.c)*/
