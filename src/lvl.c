@@ -18,12 +18,16 @@
 typedef struct {int line, column, height, width, link[ROOM_NB_MAX], isLink;} t_room;
 
 
-int readLvl (char * fileName, t_cell map[][COLUMNS]) { /// a mettre a jour
+void readLvl ( t_cell map[][COLUMNS], int nb_step) { /// a mettre a jour
 	int i, j, k, type, state, isDiscovered, nbObject, object;
-
-	FILE * lvlFile = NULL;
+	char fileName[20];
+	sprintf(fileName, "%i", nb_step);
+	
+	char texte[20]=".txt";
+	strcat(fileName,texte);
+	FILE * lvlFile;
 	lvlFile = fopen (fileName, "r");
-	if (lvlFile == NULL) return FALSE;
+	//if (lvlFile == NULL) return FALSE;
 
 	for (i = 0; i < LINES; i++) {
 		for (j = 0; j < COLUMNS; j++) {
@@ -35,17 +39,23 @@ int readLvl (char * fileName, t_cell map[][COLUMNS]) { /// a mettre a jour
 			for (k = 0; k < nbObject; k++) {
 				fscanf (lvlFile, "%d", &object);
 				map[i][j].obj[k] = object;
-			}
+			} 
 		}
 	}
 	fclose(lvlFile);
-	return TRUE;
+	//return TRUE;
 }
 
-void writeLvl (char * fileName, t_cell map[][COLUMNS]) { //// a mettre a jours
+void writeLvl ( t_cell map[][COLUMNS], int nb_step) { //// a mettre a jours
 	int i, j, k;
-	FILE * lvlFile = NULL;
-	lvlFile = fopen (fileName, "w");
+	char file[20];
+	sprintf(file, "%i", nb_step);
+	
+	char texte[20]=".txt";
+	strcat(file,texte);
+	if(fopen (file, "r")==NULL){
+	FILE * lvlFile;
+	lvlFile = fopen (file, "w");
 	for (i = 0; i < LINES; i++) {
 		for (j = 0; j < COLUMNS; j++) {
 			fprintf (lvlFile, "%d %d %d %d ", map[i][j].type, map[i][j].state, map[i][j].isDiscovered, map[i][j].nbObject);
@@ -58,9 +68,14 @@ void writeLvl (char * fileName, t_cell map[][COLUMNS]) { //// a mettre a jours
 		}
 		fprintf(lvlFile, "\n");
 	}
+	fprintf(lvlFile, "\n");
 	fclose(lvlFile);
+	}
+	else{	
+		readLvl(map,nb_step);
+	}
+	
 }
-
 void initFloor (t_cell map[LINES][COLUMNS]) {
 	int i, j;
 	for (i = 0; i < LINES; i++) for (j = 0; j < COLUMNS; j++) {
@@ -318,24 +333,25 @@ void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 void randomFloor (t_cell map[LINES][COLUMNS], int step) {
 	int nbRoom = randab (ROOM_NB_MIN, ROOM_NB_MAX + 1), i;
 	initFloor (map);
-	if (step) {
+	/*if (step) {
 		printf("Phase 0: initialisation de la map\n");
 		//displayFloor(map);
 		printf("Taper Enter pour continuer");
 		scanf("%*c");
-	}
+	} */
 	t_room rooms[ROOM_NB_MAX];
 	for (i = 0; i < nbRoom; i++) {
 		rooms[i] = randomRoom(map, rooms, i, &nbRoom);
-		if (step) {
+		/*if (step) {
 			printf("Phase 1.%d: création des pieces\n", i);
 			//displayFloor(map);
 			printf("Taper Enter pour continuer");
 			scanf("%*c");
-		}
+		} */
 	}
 	chooseLink (map, rooms, nbRoom);
 	placeObject (map, rooms, nbRoom);
+	writeLvl(map,step);
 	// for (i = 0; i < nbRoom - 1; i++) { // la proba que deux pieces soient connecté est inversement proportionnelle a la distance qui les sépare
 	// 	for (j = i+1; j < nbRoom; j++) {
 	// 		rooms[i].link[j] = rooms[j].link[i]= minDist(rooms[i], rooms[j]);
