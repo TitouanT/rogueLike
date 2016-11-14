@@ -4,9 +4,10 @@
 #include "cell.h"
 #include "mapConst.h"
 
-void randomFloor (t_cell map[LINES][COLUMNS], int step);
-int readLvl (t_cell map[][COLUMNS], int);
-void writeLvl (t_cell map[][COLUMNS], int);
+
+void randomFloor (t_cell map[LINES][COLUMNS]);
+int readLvl (t_cell map[][COLUMNS], int nbLvl);
+void writeLvl (t_cell map[][COLUMNS], int nbLvl);
 
 /*
 

@@ -9,7 +9,7 @@
  */
 
 #include "global.h"
-
+#define NB_LVL 6
 
 int main () {
 
@@ -28,8 +28,12 @@ int main () {
 	WINDOW *win_stats = createWindow(0, LINES_GAME, COLS_STATS, LINES_STATS, "Statistiques");
 	WINDOW *win_logs  = createWindow(COLS_GAME, 0, COLS_LOGS, LINES_LOGS, "Logs");
 
-	// On génère un niveau aléatoire
-	randomFloor(map, 0);
+	// On génère des niveaux aléatoires au nombre de
+	for(int i=0;i<NB_LVL;i++){
+		randomFloor(map);
+		writeLvl(map,i);
+	}
+
 	// On déplace le joueur au spawn de celui-ci
 	move2spawn(map, &player);
 
@@ -55,8 +59,22 @@ int main () {
 			case '\n':
 				if(map[player.line][player.column].nbObject > 0){
 					switch (map[player.line][player.column].obj[0]) {
-						case STAIRS_UP: (player.lvl)++; randomFloor(map, (player.lvl)); move2spawn(map, &player);  break;
-						case STAIRS_DOWN: (player.lvl)--; randomFloor(map, (player.lvl)); move2Stairs_UP(map, &player); break;
+						case STAIRS_UP: if(player.lvl<6){
+																		writeLvl(map,(player.lvl));
+																		(player.lvl)++;
+																		readLvl(map,(player.lvl));
+																		move2spawn(map, &player);
+														}
+																		break;
+						case STAIRS_DOWN:
+									if(player.lvl>0){
+										writeLvl(map,(player.lvl));
+										(player.lvl)-- ;
+										readLvl(map,(player.lvl));
+										move2Stairs_UP(map, &player);
+									}
+										break;
+
 						default: addLog("Aucune raison de faire entrée ici", &lineLog, win_logs);
 					}
 				} else addLog("Pourquoi voulez vous faire entrée ?", &lineLog, win_logs);
@@ -64,7 +82,8 @@ int main () {
 
 			default: addLog("Commande iiiiiinconnue !", &lineLog, win_logs);
 		}
-
+		
+		markDiscoverRoom(map, player);
 
 		displayFloor(map, win_game);
 		displayPlayer(player, map, win_game, win_logs, &lineLog);

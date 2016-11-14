@@ -1,11 +1,61 @@
 #include <ncurses.h>
 #include "global.h"
-#include "moves.h"
+#include "filePos.h"
 
+/* Renvoi les coordonnées de la pièce où le joueur se trouve */
+t_pos startRoom(t_cell map[LINES][COLUMNS], t_character player){
 
+	int line   = player.line;
+	int column = player.column;
+
+	t_pos position;
+
+	int distYpos = 0, distYneg = 0;
+	int distXpos = 0, distXneg = 0;
+
+	int i;
+
+	for(i = line ; map[i][column].type == ROOM ; i++) distYneg++;
+	for(i = line ; map[i][column].type == ROOM ; i--) distYpos++;
+	for(i = column ; map[line][i].type == ROOM ; i++) distXpos++;
+	for(i = column ; map[line][i].type == ROOM ; i--) distXneg++;
+
+	position.line = line - distYpos;
+	position.column = column - distXneg;
+
+	return position;
+}
+
+/* Retourne vrai si la cellule est une composante d'une pièce */
+int bIsPartOfRoom(t_cell cell){
+	return (cell.type == ROOM || cell.type == WALL || cell.type == DOORWAY);
+}
+
+/* Marque la pièce où se trouve le joueur comme découverte */
+void markDiscoverRoom(t_cell map[LINES][COLUMNS], t_character player){
+
+	t_pos start = startRoom(map, player);
+
+	int i, j = start.column;
+
+	if(map[player.line][player.column].type == ROOM){
+
+		for(i = start.line ; bIsPartOfRoom(map[i][start.column]); i++){
+			for(j = start.column ; bIsPartOfRoom(map[i][j]) ; j++){
+				map[i][j].isDiscovered = TRUE;
+			}
+		}
+
+	}
+
+}
+
+/* Marque les cellules autour du joueur comme découverte */
 void markDiscover(t_cell map[LINES][COLUMNS], t_character player) {
+
 	int line = player.line - 1;
 	int col = player.column - 1;
+
 	int i, j;
 	for (i = 0; i < 3; i++) {
 		for (j = 0; j < 3; j++) {
@@ -14,7 +64,7 @@ void markDiscover(t_cell map[LINES][COLUMNS], t_character player) {
 	}
 }
 
-
+/* Déplace le joueur au spawn */
 int move2spawn(t_cell mat[LINES][COLUMNS], t_character *perso){
 
   int i, j;
@@ -25,7 +75,7 @@ int move2spawn(t_cell mat[LINES][COLUMNS], t_character *perso){
       if(mat[i][j].nbObject != 0 && mat[i][j].obj[0] == STAIRS_DOWN){
         perso->line = i;
         perso->column = j;
-				markDiscover(mat, *perso);
+				markDiscoverRoom(mat, *perso);
         return TRUE;
       }
 
