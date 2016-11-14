@@ -26,6 +26,7 @@ int move2spawn(t_cell mat[LINES][COLUMNS], t_character *perso){
         perso->line = i;
         perso->column = j;
 				markDiscover(mat, *perso);
+				perso->nbMove++;
         return TRUE;
       }
 
@@ -54,6 +55,7 @@ int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso){
 
   int line   = perso->line;
   int column = perso->column;
+	perso->nbMove++;
 
   // On veut regarder si il est possible d'aller en haut
   if(direction == UP){
@@ -83,7 +85,7 @@ int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso){
       return TRUE;
     }
   }
-
+	perso->nbMove--;
   return FALSE;
 
 }

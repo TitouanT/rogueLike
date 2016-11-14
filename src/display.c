@@ -194,8 +194,9 @@ void displayStats(t_character player, WINDOW *win){
 		}
 	}
 
-	wmove(win, 1, 1);
-	wprintw(win, "Joueur : %i %i  |  Etage : %i",player.line, player.column, player.lvl);
+	mvwprintw(win,1,1, "                                                             ");
+	wrefresh(win);
+	mvwprintw(win,1,1, "Joueur : %i %i  |  Etage : %i | Déplacement : %d",player.line, player.column, player.lvl, player.nbMove);
 	wrefresh(win);
 
 }

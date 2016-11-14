@@ -11,6 +11,7 @@ typedef struct {
 	int hp;
 	int pw;
 	int xp;
+	int nbMove;
 } t_character;
 
 #endif /* end of include guard: CHARACTER_H */
