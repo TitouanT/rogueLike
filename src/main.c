@@ -9,7 +9,6 @@
  */
 
 #include "global.h"
-#define NB_LVL 6
 
 int main () {
 
@@ -82,7 +81,7 @@ int main () {
 
 			default: addLog("Commande iiiiiinconnue !", &lineLog, win_logs);
 		}
-		
+
 		markDiscoverRoom(map, player);
 
 		displayFloor(map, win_game);

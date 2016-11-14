@@ -1,6 +1,7 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
+#define NB_LVL 6
 
 #include <time.h>
 #include <stdlib.h>
