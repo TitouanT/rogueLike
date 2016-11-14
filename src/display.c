@@ -223,6 +223,9 @@ void displayStats(t_character player, WINDOW *win){
 
 
 	wmove(win, 1, 1);
+	wprintw(win, "                                                  ");
+	wrefresh(win);
+	wmove(win, 1, 1);
 	wprintw(win, "Etage     : %i / %i | Déplacement : %d", player.lvl, NB_LVL -1, player.nbMove);
 	wmove(win, 2, 1);
 	wprintw(win, "HP        : ");
