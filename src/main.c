@@ -79,7 +79,7 @@ int main () {
 				} else addLog("Pourquoi voulez vous faire entrée ?", &lineLog, win_logs);
 				break;
 
-			default: addLog("Commande inconnue !", &lineLog, win_logs);
+			default: addLog("Commande iiiiiinconnue !", &lineLog, win_logs);
 		}
 
 		markDiscoverRoom(map, player);

@@ -6,6 +6,8 @@
 #include "filePos.h"
 #include "display.h"
 
+#define DEBUG FALSE
+
 
 /*Ces define ne sont pas dans nomVar.txt car local à ce fichier (lvl.c)*/
 #define ROOM_NB_MIN 3
@@ -21,6 +23,7 @@ typedef struct {int line, column, height, width, link[ROOM_NB_MAX], isLink;} t_r
 void readLvl ( t_cell map[][COLUMNS], int nbLvl) { /// a mettre a jour
 	int i, j, k, type, state, isDiscovered, nbObject, object;
 	char fileName[20];
+
 	sprintf(fileName, "%i", nbLvl);
 	char texte[20]=".txt";
 	strcat(fileName,texte);
@@ -38,7 +41,7 @@ void readLvl ( t_cell map[][COLUMNS], int nbLvl) { /// a mettre a jour
 			for (k = 0; k < nbObject; k++) {
 				fscanf (lvlFile, "%d", &object);
 				map[i][j].obj[k] = object;
-			} 
+			}
 		}
 	}
 	fclose(lvlFile);
@@ -67,14 +70,14 @@ void writeLvl ( t_cell map[][COLUMNS], int nbLvl) { //// a mettre a jours
 	}
 	fprintf(lvlFile, "\n");
 	fclose(lvlFile);
-	
+
 }
 void initFloor (t_cell map[LINES][COLUMNS]) {
 	int i, j;
 	for (i = 0; i < LINES; i++) for (j = 0; j < COLUMNS; j++) {
 		map[i][j].type = EMPTY;
 		map[i][j].state = DEFAULT_STATE;
-		map[i][j].isDiscovered = FALSE;
+		map[i][j].isDiscovered = DEBUG;
 		map[i][j].nbObject = 0;
 
 	}
@@ -187,6 +190,12 @@ t_pos chooseRandomWall (t_room r) {
 	return rep;
 }
 
+void putRandomRoom (t_cell map[][COLUMNS], t_pos *pos) {
+	int doIt = rand()%2;
+	if (doIt == 1) map[pos->line][pos->column].state = dOPEN;
+	else map[pos->line][pos->column].state = dNONE;
+}
+
 void avoidTouchingDoors (t_cell map[][COLUMNS], t_pos * pos) {
 	if (map[pos->line + 1][pos->column].type != DOORWAY) {
 		if (map[pos->line - 1][pos->column].type != DOORWAY) {
@@ -194,13 +203,14 @@ void avoidTouchingDoors (t_cell map[][COLUMNS], t_pos * pos) {
 				if (map[pos->line][pos->column - 1].type != DOORWAY) {
 					// if all around you there are no doors, then you can be one!
 					map[pos->line][pos->column].type = DOORWAY;
-					map[pos->line][pos->column].state = dNONE;
+					putRandomRoom(map, pos);
 				}
 				else (pos->column)--; // else you have to be in the shaddow of one surrounding you
 			} else (pos->column)++;
 		} else (pos->line)--;
 	} else (pos->line)++;
 }
+
 
 /* 	createLink use an algorithm call flood and fill to search a path from a door to another,
 		the principle is:
@@ -222,12 +232,18 @@ void createLink (t_cell map[][COLUMNS], t_room r1, t_room r2) {
 	int path[LINES][COLUMNS];
 	int i, j, val, c, l;
 	t_pos start = chooseRandomWall (r1), finish = chooseRandomWall (r2), head;
+
 	for (i = 0; i < LINES; i++) for (j = 0; j < COLUMNS; j++) path[i][j] = -1;
+
 	avoidTouchingDoors (map, &start);
 	avoidTouchingDoors (map, &finish);
+
+
+
 	file_init();
 	head=start;
 	path[head.line][head.column] = 0;
+
 	while (head.line != finish.line || head.column != finish.column) {
 		l = head.line;
 		c = head.column;
