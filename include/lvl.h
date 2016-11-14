@@ -5,8 +5,8 @@
 #include "mapConst.h"
 
 void randomFloor (t_cell map[LINES][COLUMNS], int step);
-int readLvl (char * fileName, t_cell map[][COLUMNS]);
-void writeLvl (char * fileName, t_cell map[][COLUMNS]);
+int readLvl (t_cell map[][COLUMNS], int);
+void writeLvl (t_cell map[][COLUMNS], int);
 
 /*
 
