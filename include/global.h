@@ -3,6 +3,9 @@
 
 #define NB_LVL 6
 
+#define NB_LVL 6
+
+
 #include <time.h>
 #include <stdlib.h>
 #include <ncurses.h>

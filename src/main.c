@@ -17,7 +17,7 @@ int main () {
 
 	srand(time(NULL));
 	t_cell map[LINES][COLUMNS];
-	t_character player = {"valentin", 0, 0, 0, 10, 10, 10};
+	t_character player = {"valentin", 0, 0, 0, 9, 10, 10};
 
 
 	init_screen();
