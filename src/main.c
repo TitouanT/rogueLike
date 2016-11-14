@@ -28,10 +28,7 @@ int main () {
 	WINDOW *win_logs  = createWindow(COLS_GAME, 0, COLS_LOGS, LINES_LOGS, "Logs");
 
 	// On génère des niveaux aléatoires au nombre de
-	for(int i=0;i<NB_LVL;i++){
-		randomFloor(map);
-		writeLvl(map,i);
-	}
+	InitGameMap(map);
 
 	// On déplace le joueur au spawn de celui-ci
 	move2spawn(map, &player);
