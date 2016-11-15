@@ -1,7 +1,7 @@
 #ifndef CELL_H
 #define CELL_H
 
-#define OBJ_NB_MAX 10
+#define OBJ_NB_MAX 20
 
 typedef enum {EMPTY, WALL, ROOM, CORRIDOR, DOORWAY} t_type;
 

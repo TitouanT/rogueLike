@@ -1,10 +1,10 @@
 #include <time.h>
 #include <stdlib.h>
 #include <ncurses.h>
+#include <string.h>
 #include "cell.h"
 #include "mapConst.h"
 #include "filePos.h"
-#include "display.h"
 
 #define DEBUG TRUE
 
@@ -345,25 +345,18 @@ void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 
 void randomFloor (t_cell map[LINES][COLUMNS]) {
 	int nbRoom = randab (ROOM_NB_MIN, ROOM_NB_MAX + 1), i;
-	initFloor (map);
-	/*if (step) {
-		printf("Phase 0: initialisation de la map\n");
-		//displayFloor(map);
-		printf("Taper Enter pour continuer");
-		scanf("%*c");
-	} */
 	t_room rooms[ROOM_NB_MAX];
+
+	initFloor (map);
+
 	for (i = 0; i < nbRoom; i++) {
 		rooms[i] = randomRoom(map, rooms, i, &nbRoom);
-		/*if (step) {
-			printf("Phase 1.%d: création des pieces\n", i);
-			//displayFloor(map);
-			printf("Taper Enter pour continuer");
-			scanf("%*c");
-		} */
 	}
+
 	chooseLink (map, rooms, nbRoom);
+
 	placeObject (map, rooms, nbRoom);
+}
 	// for (i = 0; i < nbRoom - 1; i++) { // la proba que deux pieces soient connecté est inversement proportionnelle a la distance qui les sépare
 	// 	for (j = i+1; j < nbRoom; j++) {
 	// 		rooms[i].link[j] = rooms[j].link[i]= minDist(rooms[i], rooms[j]);
@@ -395,12 +388,6 @@ void randomFloor (t_cell map[LINES][COLUMNS]) {
 	// 		if (rooms[i].link[j] && rooms[j].link[i]) {
 	// 			createLink (map, rooms[i], rooms[j]);
 	// 			rooms[i].isLink = rooms[j].isLink = 1;
-	// 			if (step) {
-	// 				printf("Phase 2.%d.%d: création des couloir\n", i, j);
-	// 				//displayFloor(map);
-	// 				printf("Taper Enter pour continuer");
-	// 				scanf("%*c");
-	// 			}
 	// 		}
 	// 	}
 	// }
@@ -414,12 +401,5 @@ void randomFloor (t_cell map[LINES][COLUMNS]) {
 	// 			do j=rand()%nbRoom; while (j==i);
 	// 		}
 	// 		createLink(map, rooms[i], rooms[j]);
-	// 		if (step) {
-	// 			printf("Phase 3.%d.%d: ajout de couloir\n", i, j);
-	// 			//displayFloor(map);
-	// 			printf("Taper Enter pour continuer");
-	// 			scanf("%*c");
-	// 		}
 	// 	}
 	// }
-}

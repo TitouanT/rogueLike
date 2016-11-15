@@ -3,7 +3,6 @@
 
 #define NB_LVL 6
 
-#define NB_LVL 6
 
 
 #include <time.h>
