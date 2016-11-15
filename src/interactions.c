@@ -12,6 +12,10 @@ int rand_a_b(int a, int b){
   return rand() % (b - a + 1) + a;
 }
 
+void wrongKey (WINDOW * win, int *lineLog) {
+	addLog("Never mind...", lineLog, win);
+}
+
 /* Fonction principale d'intéraction avec l'utilisateur */
 int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, WINDOW * win_logs, int *lineLog){
 
@@ -29,8 +33,8 @@ int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, 
     case 'q' : return FALSE;
     case 'Q' : return !askConfirmationToQuit(win_logs, lineLog);
 
-    default: addLog("Commande inconnue.", lineLog, win_logs);
-  }
+		default: wrongKey(win_logs, lineLog);
+	}
 
   markDiscover(map, *player);
 
@@ -67,6 +71,7 @@ void traiterPorte(t_cell map[LINES][COLUMNS], t_character *player, int key, WIND
     case KEY_DOWN  : (doorPos.line)++;   break;
     case KEY_LEFT  : (doorPos.column)--; break;
     case KEY_RIGHT : (doorPos.column)++; break;
+		default: wrongKey(win, lineLog);
   }
 
   if(bIsDoorClosed(map, doorPos)){
@@ -139,9 +144,7 @@ int askConfirmationToQuit(WINDOW * win, int *lineLog) {
 		case 'y': return TRUE;
 		case 'n': return FALSE;
 
-		default:
-			addLog("Never mind", lineLog, win);
-			return FALSE;
+		default: wrongKey(win, lineLog);
 	}
-
+	return FALSE;
 }

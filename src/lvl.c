@@ -6,7 +6,7 @@
 #include "mapConst.h"
 #include "filePos.h"
 
-#define DEBUG TRUE
+#define DEBUG FALSE
 
 
 /*Ces define ne sont pas dans nomVar.txt car local à ce fichier (lvl.c)*/
