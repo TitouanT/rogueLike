@@ -25,7 +25,7 @@ display.o: src/display.c include/global.h include/display.h                     
 moves.o: src/moves.c include/global.h include/filePos.h                                   include/cell.h include/character.h include/mapConst.h include/lvl.h include/display.h include/moves.h include/loadLvl.h
 	gcc -c -I ./include $<
 
-interactions.o: src/interactions.c include/interactions.h
+interactions.o: src/interactions.c include/global.h                                       include/cell.h include/character.h include/mapConst.h include/lvl.h include/display.h include/moves.h include/loadLvl.h
 	gcc -c -I ./include $<
 
 # ce qui suit n'est utile que pour garder en mémoire les dépendances des header
