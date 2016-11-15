@@ -12,6 +12,8 @@ int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, 
 
   int lineLog;
 
+  clearLog(&lineLog, win_logs);
+
   switch (key) {
     case KEY_UP:    move_perso(UP,    map, player);  break;
     case KEY_DOWN:  move_perso(DOWN,  map, player);  break;
@@ -44,7 +46,8 @@ void traiterPorte(t_cell map[LINES][COLUMNS], t_character player, int key, WINDO
 /* Traite l'appui sur la touche entrée */
 void traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW *win){
 
-  int lineLog = 0;
+  int lineLog;
+
 
   if(map[player->line][player->column].nbObject > 0){
 
