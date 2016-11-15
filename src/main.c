@@ -40,6 +40,7 @@ int main () {
 	// On affiche la map et le joueur
 	displayFloor(map, win_game);
 	displayPlayer(player, map, win_game, win_logs, &lineLog);
+	displayStats(player, win_stats);
 
 
 
