@@ -46,8 +46,8 @@ int main () {
 	/* Ici se déroule tout le jeu */
 	while (continueGame) {
 
-		clearLog(&lineLog, win_logs);
 		key = getch();
+		clearLog(&lineLog, win_logs);
 
 		switch (key) {
 			case 'q': continueGame = FALSE; break;
