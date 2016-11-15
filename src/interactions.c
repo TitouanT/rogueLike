@@ -99,7 +99,7 @@ void traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW *win,
     switch (map[player->line][player->column].obj[0]) {
 
       case STAIRS_UP:
-        if(player->lvl < NB_LVL){
+        if(player->lvl < NB_LVL - 1){
           writeLvl(map,(player->lvl));
           (player->lvl)++;
           readLvl(map,(player->lvl));
