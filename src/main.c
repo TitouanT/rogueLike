@@ -9,11 +9,13 @@
  */
 
 #include "global.h"
+int askConfirmationToQuit(int * line, WINDOW * win);
 
 int main () {
 
 	int key;
 	int lineLog = 0;
+	int continueGame = TRUE;
 
 	srand(time(NULL));
 	t_cell map[LINES][COLUMNS];
@@ -42,11 +44,17 @@ int main () {
 
 
 	/* Ici se déroule tout le jeu */
-	while((key = getch()) != 'q' && key != 'Q'){
+	while (continueGame) {
 
 		clearLog(&lineLog, win_logs);
+		key = getch();
 
 		switch (key) {
+			case 'q': continueGame = FALSE; break;
+			case 'Q': continueGame = !askConfirmationToQuit(&lineLog, win_logs); break;
+
+
+
 			case KEY_UP: move_perso(UP, map, &player); markDiscover(map, player);break;
 			case KEY_DOWN: move_perso(DOWN, map, &player); markDiscover(map, player);break;
 			case KEY_LEFT: move_perso(LEFT, map, &player); markDiscover(map, player);break;
@@ -89,4 +97,21 @@ int main () {
 
 	endwin(); //Fermeture de la fenetre
 	return 0;
+}
+
+
+
+int askConfirmationToQuit(int * line, WINDOW * win) {
+	int key;
+	addLog("Etes vous sur de vouloir quitter ? (y/n) ", line, win);
+	key = getch();
+	switch (key) {
+		case 'y': return TRUE;
+		case 'n': return FALSE;
+		default:
+			clearLog(line, win);
+			addLog("Never mind", line, win);
+			return FALSE;
+	}
+
 }
