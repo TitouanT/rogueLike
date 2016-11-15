@@ -17,7 +17,7 @@ int main () {
 	int lineLog = 0;
 	int continueGame = TRUE;
 
-	srand(time(NULL));
+	initRandom();
 	t_cell map[LINES][COLUMNS];
 	t_character player = {"bibi", 0, 0, 0, 9, 10, 10, 0};
 

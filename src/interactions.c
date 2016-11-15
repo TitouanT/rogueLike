@@ -1,16 +1,17 @@
 #include <ncurses.h>
 #include "global.h"
 #include "filePos.h"
+#include "random.h"
 
 
 void traiterPorte(t_cell map[LINES][COLUMNS],  t_character *player, int key, WINDOW * win, int *lineLog);
 void traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW * win, int *lineLog);
 int askConfirmationToQuit(WINDOW * win, int *lineLog);
 
-int rand_a_b(int a, int b){
-  srand(time(NULL));
-  return rand() % (b - a + 1) + a;
-}
+// int rand_a_b(int a, int b){
+//   srand(time(NULL));
+//   return rand() % (b - a + 1) + a;
+// }
 
 void wrongKey (WINDOW * win, int *lineLog) {
 	addLog("Never mind... (Nirvana)", lineLog, win);
@@ -69,7 +70,7 @@ void traiterPorte(t_cell map[LINES][COLUMNS], t_character *player, int key, WIND
   if(key == 'o'){
 
     if(bIsValidDoor(map, doorPos) && map[doorPos.line][doorPos.column].state == dCLOSE){
-      if(rand_a_b(0,3) == 0) {
+      if(randab(0,3) == 0) {
         addLog("Vous venez d'enfoncer cette porte.", lineLog, win);
         addLog("Recommencez pour l'ouvrir entièrement !", lineLog, win);
       }

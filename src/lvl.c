@@ -1,10 +1,9 @@
-#include <time.h>
-#include <stdlib.h>
 #include <ncurses.h>
 #include <string.h>
 #include "cell.h"
 #include "mapConst.h"
 #include "filePos.h"
+#include "random.h"
 
 #define DEBUG FALSE
 
@@ -86,13 +85,16 @@ void initFloor (t_cell map[LINES][COLUMNS]) {
 	}
 }
 
-int randab (int a, int b) { // return a number in [a,b[
-	if (b <= a) {
-		printf ("a = %d, b = %d\n", a, b);
-		scanf("%*c");
-	}
-	return (rand()%(b-a)) + a;
-}
+// int randab (int a, int b) { // return a number in [a,b[
+// 	int tmp;
+//
+// 	if (b <= a) {
+// 		tmp =   a;
+// 		a   =   b;
+// 		b   = tmp;
+// 	}
+// 	return (rand()%(b-a)) + a;
+// }
 
 int isBetween (int val, int a, int b) { // return TRUE if val is in [a,b]
 	if (a <= val && b >= val) return TRUE;
