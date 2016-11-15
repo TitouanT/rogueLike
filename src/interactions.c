@@ -13,7 +13,7 @@ int rand_a_b(int a, int b){
 }
 
 void wrongKey (WINDOW * win, int *lineLog) {
-	addLog("Never mind...", lineLog, win);
+	addLog("Never mind... (Nirvana)", lineLog, win);
 }
 
 /* Fonction principale d'intéraction avec l'utilisateur */
@@ -42,18 +42,10 @@ int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, 
 
 }
 
-
-int bIsDoorClosed(t_cell map[LINES][COLUMNS], t_pos position){
-
-  if(position.line > 0 && map[position.line][position.column].type == DOORWAY){
-    if(map[position.line][position.column].state == dCLOSE){
-      return TRUE;
-    }
-  }
-
-  return FALSE;
-
+int bIsValidDoor(t_cell map[LINES][COLUMNS], t_pos position){
+  return (position.line >= 0 && position.column >= 0 && position.line < LINES && position.column < COLUMNS && map[position.line][position.column].type == DOORWAY);
 }
+
 
 /* Traite l'ouverture et la fermeture d'une porte */
 void traiterPorte(t_cell map[LINES][COLUMNS], t_character *player, int key, WINDOW * win, int *lineLog){
@@ -74,17 +66,26 @@ void traiterPorte(t_cell map[LINES][COLUMNS], t_character *player, int key, WIND
 		default: wrongKey(win, lineLog);
   }
 
-  if(bIsDoorClosed(map, doorPos)){
-    if(rand_a_b(0,3) == 0) {
-      addLog("Vous venez d'enfoncer cette porte.", lineLog, win);
-      addLog("Recommencez pour l'ouvrir entièrement !", lineLog, win);
-    }
-    else map[doorPos.line][doorPos.column].state = dOPEN;
+  if(key == 'o'){
 
-    (player->nbMove)++;
+    if(bIsValidDoor(map, doorPos) && map[doorPos.line][doorPos.column].state == dCLOSE){
+      if(rand_a_b(0,3) == 0) {
+        addLog("Vous venez d'enfoncer cette porte.", lineLog, win);
+        addLog("Recommencez pour l'ouvrir entièrement !", lineLog, win);
+      }
+      else map[doorPos.line][doorPos.column].state = dOPEN;
+
+      (player->nbMove)++;
+    }
+    else addLog("Ouverture impossible.", lineLog, win);
+
   }
-  else{
-    addLog("Porte inexistante !", lineLog, win);
+  else if(key == 'c'){
+
+    if(bIsValidDoor(map, doorPos) && map[doorPos.line][doorPos.column].state == dOPEN){
+      map[doorPos.line][doorPos.column].state = dCLOSE;
+    }
+    else addLog("Fermeture impossible.", lineLog, win);
   }
 
 
