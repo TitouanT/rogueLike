@@ -12,7 +12,7 @@ int rand_a_b(int a, int b){
   return rand() % (b - a + 1) + a;
 }
 
-void wrongKey (WINDOW * win, int *lineLog) {
+void wrongKey(WINDOW * win, int *lineLog) {
 	addLog("Never mind... (Nirvana)", lineLog, win);
 }
 
@@ -104,7 +104,7 @@ void traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW *win,
           writeLvl(map,(player->lvl));
           (player->lvl)++;
           readLvl(map,(player->lvl));
-					move2spawn(map, player, STAIRS_DOWN);
+          move2spawn(map, player);
         }
         else {
           addLog("Vous êtes déjà au niveau le plus haut !", lineLog, win);
@@ -116,7 +116,7 @@ void traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW *win,
           writeLvl(map,(player->lvl));
           (player->lvl)-- ;
           readLvl(map,(player->lvl));
-					move2spawn(map, player, STAIRS_UP);
+          move2Stairs_UP(map, player);
         }
         else {
           addLog("Vous êtes déjà en bas !", lineLog, win);
