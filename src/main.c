@@ -50,8 +50,7 @@ int main () {
 
 		key = getch();
 		clearLog(&lineLog, win_logs);
-
-		continueGame = handleInteraction(key, map, &player, win_logs);
+		continueGame = handleInteraction(key, map, &player, win_logs, &lineLog);
 
 		markDiscoverRoom(map, player);
 
