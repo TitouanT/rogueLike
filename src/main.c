@@ -34,7 +34,7 @@ int main () {
 	// On génère des niveaux aléatoires au nombre de
 	InitGameMap(map);
 	// On déplace le joueur au spawn de celui-ci
-	move2spawn(map, &player);
+	move2spawn(map, &player, STAIRS_DOWN);
 	// On affiche les objectifs
 	displayObjectives(&lineLog, win_logs);
 	// On affiche la map et le joueur
