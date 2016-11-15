@@ -7,7 +7,7 @@
 #define NB_MONSTER_MAX 50
 #define NB_MONSTER_MIN 20
 
-
+typedef enum {L1, L2, L3, MASTER, DOC, GHOST} t_type_monster;
 
 typedef struct {
 	t_type_monster type;
@@ -26,8 +26,7 @@ typedef struct {
 	int data3;
 } t_monster;
 
-int nbMonster;
-t_monster monsters[NB_MONSTER_MAX];
+
 
 
 

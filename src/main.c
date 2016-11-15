@@ -50,6 +50,8 @@ int main () {
 	while (continueGame) {
 
 		key = getch();
+		if (key == 't'){ displayFloorCheat (map, win_game);getch();}
+
 		clearLog(&lineLog, win_logs);
 		continueGame = handleInteraction(key, map, &player, win_logs, &lineLog);
 

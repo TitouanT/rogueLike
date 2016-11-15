@@ -43,5 +43,6 @@ void addLog(char * message, int * line, WINDOW *win);
 void clearLog(int *line, WINDOW *win);
 void displayPlayer(t_character player, t_cell mat[LINES][COLUMNS], WINDOW *win, WINDOW *logs, int *line);
 void displayStats(t_character player, WINDOW *win);
+void displayFloorCheat (t_cell map[LINES][COLUMNS], WINDOW *win);
 
 #endif /* end of include guard: DISPLAY_H */
