@@ -2,7 +2,6 @@
 #define DISPLAY_H
 
 #include <ncurses.h>
-#include <panel.h>
 #include <string.h>
 
 #include "cell.h"

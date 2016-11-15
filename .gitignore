@@ -1,7 +1,3 @@
-# perso
-partie/*.txt
-
-
 # Object files
 *.o
 *.ko
@@ -40,3 +36,4 @@ partie/*.txt
 # Roguelike
 doc
 rogueLike
+partie/*.txt

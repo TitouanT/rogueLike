@@ -17,5 +17,7 @@
 #include "display.h"
 #include "moves.h"
 #include "loadLvl.h"
+#include "interactions.h"
+
 
 #endif /* end of include guard: GLOBAL_H */
