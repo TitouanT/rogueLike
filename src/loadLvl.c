@@ -1,8 +1,11 @@
 #include "global.h"
 
-void readLvl ( t_cell map[][COLUMNS], int nbLvl) { /// a mettre a jour
+
+void readLvl ( t_cell map[][COLUMNS], int nbLvl, char dossier[]) { /// a mettre a jour
+
 	int i, j, k, type, state, isDiscovered, nbObject, object;
-	char fileName[40]="./partie/";
+	char fileName[40];
+	strcpy(fileName,dossier);
 	char texte[20];
 	sprintf(texte, "%i", nbLvl);
 	strcat(fileName,texte);
@@ -29,9 +32,11 @@ void readLvl ( t_cell map[][COLUMNS], int nbLvl) { /// a mettre a jour
 	//return TRUE;
 }
 
-void writeLvl ( t_cell map[][COLUMNS], int nbLvl, char *dossier) { //// a mettre a jours
+void writeLvl ( t_cell map[][COLUMNS], int nbLvl, char dossier[]) { //// a mettre a jours
+
 	int i, j, k;
-	char fileName[40]="./partie/";
+	char fileName[40];
+	strcpy(fileName,dossier);
 	char texte[20];
 	sprintf(texte, "%i", nbLvl);
 	strcat(fileName,texte);
@@ -57,24 +62,37 @@ void writeLvl ( t_cell map[][COLUMNS], int nbLvl, char *dossier) { //// a mettre
 }
 
 
-void initGameMap(t_cell map[LINES][COLUMNS], int bsauvegarde){
-
-	if(bsauvegarde==FALSE){
-		char dossier[20]="partie";
-  		for(int i=0;i<NB_LVL;i++){
+void initGameMap(t_cell map[LINES][COLUMNS], int choix, int nbFichierSauvegarde){
+		char dossierPartie[40]="./partie/";
+		char dossier[40];
+		if(choix==0){
+			for(int i=0;i<NB_LVL;i++){
    			randomFloor(map);
-    			writeLvl(map,i,dossier);
-  		}
-	}	
-	readLvl(map,0);
+    			writeLvl(map,i,dossierPartie);
+  			}	
+		readLvl(map,0,dossierPartie);
+		}else{
+			strcpy(dossier,"./sauvegarde");
+			char texte[20];
+			sprintf(texte, "%i", nbFichierSauvegarde);
+			strcat(dossier,texte);
+			char texte2[20]="/";
+			strcat(dossier,texte2);
+			for(int i=0;i<NB_LVL;i++){       // on copie tout dans le dossier sauvegarde
+				readLvl(map,i,dossier);
+    				writeLvl(map,i,dossierPartie);
+  			}	
+		}
+  			
 }
 
 void changeLvl(t_cell map[LINES][COLUMNS], t_character *player, int dir){
-	char dossier[20]="partie";
+
+	char dossier[40]="./partie/";
 	if (isBetween(player->lvl + dir, 0, NB_LVL) ) {
 		writeLvl(map,(player->lvl),dossier);
 		(player->lvl)+= dir;
-		readLvl(map,(player->lvl));
+		readLvl(map,(player->lvl),dossier);
 		if (dir > 0){
 			move2spawn(map, player, STAIRS_DOWN);
 		}else{
@@ -83,5 +101,20 @@ void changeLvl(t_cell map[LINES][COLUMNS], t_character *player, int dir){
 	}
 }
 
-/* void saveGame(t_cell map[LINES][COLUMNS], t_character *player, */
+void saveGame(t_cell map[LINES][COLUMNS], t_character *player, int nbFichierSauvegarde){
+ 	
+	char dossierPartie[40]="./partie/";
+	char dossierSauvegarde[40]="./sauvegarde";
+	char texte[20];
+	sprintf(texte, "%i", nbFichierSauvegarde);
+	strcat(dossierSauvegarde,texte);
+	char texte2[20]="/";
+	strcat(dossierSauvegarde,texte2);
+	for(int i=0;i<NB_LVL;i++){       // on copie tout dans le dossier sauvegarde
+		readLvl(map,i,dossierPartie);
+    		writeLvl(map,i,dossierSauvegarde);
+  	}
+	readLvl(map,(player->lvl),dossierPartie);        // on revient où on en était
+}
+	
 
