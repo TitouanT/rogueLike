@@ -11,16 +11,18 @@
 #define DARK_GREY 8
 #define LIGHT_GREEN 10
 
-#define GENERAL_COLOR  1
-#define CORRIDOR_COLOR 2
-#define WALL_COLOR     3
-#define ROOM_COLOR     4
-#define PLAYER_COLOR   5
-#define OBJECTS_COLOR  6
-#define OPENED_DOOR    7
-#define PLAYER_C_COLOR 8
-#define BAR_GREEN      9
-#define BAR_RED       10
+#define GENERAL_COLOR   1
+#define CORRIDOR_COLOR  2
+#define WALL_COLOR      3
+#define ROOM_COLOR      4
+#define PLAYER_COLOR    5
+#define OBJECTS_COLOR   6
+#define OPENED_DOOR     7
+#define PLAYER_C_COLOR  8
+#define BAR_GREEN       9
+#define BAR_RED        10
+#define COLOR_TITLE    11
+
 
 // Taille de la fenetre du jeu
 #define LINES_GAME  LINES + 2
@@ -37,6 +39,7 @@
 
 void displayObjectives(int *lineLog, WINDOW *win_logs);
 void init_screen();
+void startScreen();
 WINDOW *createWindow(int startX, int startY, int width, int height, char * label);
 void displayFloor(t_cell map[LINES][COLUMNS], WINDOW *win);
 void addLog(char * message, int * line, WINDOW *win);
