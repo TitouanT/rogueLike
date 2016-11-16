@@ -54,7 +54,19 @@ include/interactions.h:
 
 include/random.h:
 
-clean:
-	rm *.o rogueLike
 
+# Permet de mettre à jour automatiquement le jeu
+upgrade:
+	make install
+	git pull
+	make
+
+# Pour l'installation, on commence par supprimer les données du jeu
+install: clean
+	mkdir partie
+
+
+clean:
+	rm -rf *.o rogueLike
+	rm -rf partie
 clear: clean
