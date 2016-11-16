@@ -102,10 +102,7 @@ void traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW *win,
 
       case STAIRS_UP:
         if(player->lvl < NB_LVL - 1){
-          writeLvl(map,(player->lvl));
-          (player->lvl)++;
-          readLvl(map,(player->lvl));
-          move2spawn(map, player, STAIRS_DOWN);
+          UP_LVL(map,player);
         }
         else {
           addLog("Vous êtes déjà au niveau le plus haut !", lineLog, win);
@@ -114,10 +111,7 @@ void traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW *win,
 
       case STAIRS_DOWN:
         if(player->lvl > 0){
-          writeLvl(map,(player->lvl));
-          (player->lvl)-- ;
-          readLvl(map,(player->lvl));
-          move2spawn(map, player, STAIRS_UP);
+          DOWN_LVL(map,player);
         }
         else {
           addLog("Vous êtes déjà en bas !", lineLog, win);
