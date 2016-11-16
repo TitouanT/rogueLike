@@ -18,16 +18,73 @@ void init_colors(){
 
 	init_pair(BAR_GREEN     , COLOR_GREEN,   COLOR_GREEN);
 	init_pair(BAR_RED       , COLOR_RED  ,   COLOR_RED);
+	init_pair(COLOR_TITLE   , COLOR_GREEN, COLOR_BLACK);
+
 }
 
 void init_screen(){
+
+	int lines, columns;
+
 	initscr();
 	init_colors();
 
 	keypad(stdscr, TRUE); // Pour ne pas afficher les lettres que l'utilisateur tape
 	noecho();
 	curs_set(0);
+
+	getmaxyx(stdscr,lines,columns);
+
+	if(columns < COLS_GAME + COLS_LOGS || lines < LINES_GAME + LINES_STATS){
+
+		char * tooSmall = "Votre fenêtre est trop petite ! Elle doit faire au minimum :";
+
+		mvprintw(lines / 2 - 1, (columns - strlen(tooSmall)) / 2, "%s", tooSmall);
+		mvprintw(lines / 2 + 1, (columns - 8) / 2, "%i x %i", COLS_GAME+COLS_LOGS, LINES_GAME+LINES_STATS);
+
+		getch();
+		endwin();
+		exit(0);
+	}
+
 	refresh();
+}
+
+void startScreen(){
+
+	int lines, columns;
+	char letter;
+	char * continuer = "Appuyez sur une touche pour jouer.";
+	FILE *logo;
+
+	getmaxyx(stdscr,lines,columns);
+
+	int line = (lines - 6) / 2;
+	int xShift = (columns - 83) / 2;
+
+	attron(COLOR_PAIR(COLOR_TITLE));
+
+	move(line++, xShift);
+
+	logo = fopen("include/logo.txt", "r");
+
+	if(logo != NULL) {
+
+		fscanf(logo, "%c", &letter);
+
+		while(!feof(logo)){
+			if(letter == '\n') move(line++, xShift);
+			else printw("%c", letter);
+			fscanf(logo, "%c", &letter);
+		}
+		fclose(logo);
+	}
+
+	mvprintw(line + 1, (columns - strlen(continuer)) / 2, "%s", continuer);
+
+	mvprintw(lines - 1, 0, "Roguelike créé par MOTTIER Emeric - PELLOIN Valentin - TEYSSIER Titouan.");
+	refresh();
+	getch();
 }
 
 void displayObjectives(int *lineLog, WINDOW *win_logs){
