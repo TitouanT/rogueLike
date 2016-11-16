@@ -6,8 +6,6 @@
 
 
 void randomFloor (t_cell map[LINES][COLUMNS]);
-int readLvl (t_cell map[][COLUMNS], int nbLvl);
-void writeLvl (t_cell map[][COLUMNS], int nbLvl);
 
 /*
 
