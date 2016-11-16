@@ -34,8 +34,8 @@ int main () {
 
 
 
-
-	initGameMap(map,0);
+	// Initialisation des niveaux
+	initGameMap(map,0,0);
 	// On déplace le joueur au spawn de celui-ci
 	move2spawn(map, &player, STAIRS_DOWN);
 	// On affiche les objectifs
