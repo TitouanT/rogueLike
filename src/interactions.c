@@ -102,7 +102,7 @@ void traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW *win,
 
       case STAIRS_UP:
         if(player->lvl < NB_LVL - 1){
-          UP_LVL(map,player);
+          changeLvl(map,player,1);
         }
         else {
           addLog("Vous êtes déjà au niveau le plus haut !", lineLog, win);
@@ -111,8 +111,8 @@ void traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW *win,
 
       case STAIRS_DOWN:
         if(player->lvl > 0){
-          DOWN_LVL(map,player);
-        }
+          changeLvl(map,player, -1);
+	}
         else {
           addLog("Vous êtes déjà en bas !", lineLog, win);
         }

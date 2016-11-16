@@ -6,6 +6,7 @@
 
 
 void randomFloor (t_cell map[LINES][COLUMNS]);
+int isBetween (int val, int a, int b);
 
 /*
 

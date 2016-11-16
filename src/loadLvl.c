@@ -29,7 +29,7 @@ void readLvl ( t_cell map[][COLUMNS], int nbLvl) { /// a mettre a jour
 	//return TRUE;
 }
 
-void writeLvl ( t_cell map[][COLUMNS], int nbLvl) { //// a mettre a jours
+void writeLvl ( t_cell map[][COLUMNS], int nbLvl, char *dossier) { //// a mettre a jours
 	int i, j, k;
 	char fileName[40]="./partie/";
 	char texte[20];
@@ -57,25 +57,31 @@ void writeLvl ( t_cell map[][COLUMNS], int nbLvl) { //// a mettre a jours
 }
 
 
-void InitGameMap(t_cell map[LINES][COLUMNS]){
-  for(int i=0;i<NB_LVL;i++){
-    randomFloor(map);
-    writeLvl(map,i);
-  }
-  readLvl(map,0);
+void initGameMap(t_cell map[LINES][COLUMNS], int bsauvegarde){
+
+	if(bsauvegarde==FALSE){
+		char dossier[20]="partie";
+  		for(int i=0;i<NB_LVL;i++){
+   			randomFloor(map);
+    			writeLvl(map,i,dossier);
+  		}
+	}	
+	readLvl(map,0);
 }
 
-void DOWN_LVL(t_cell map[LINES][COLUMNS],t_character *player){
-	writeLvl(map,(player->lvl));
-        (player->lvl)-- ;
-        readLvl(map,(player->lvl));
-        move2spawn(map, player, STAIRS_UP);
+void changeLvl(t_cell map[LINES][COLUMNS], t_character *player, int dir){
+	char dossier[20]="partie";
+	if (isBetween(player->lvl + dir, 0, NB_LVL) ) {
+		writeLvl(map,(player->lvl),dossier);
+		(player->lvl)+= dir;
+		readLvl(map,(player->lvl));
+		if (dir > 0){
+			move2spawn(map, player, STAIRS_DOWN);
+		}else{
+			 move2spawn(map, player, STAIRS_UP); 
+		} 
+	}
 }
 
-void UP_LVL(t_cell map[LINES][COLUMNS],t_character *player){
- 	writeLvl(map,(player->lvl));
-        (player->lvl)++;
-        readLvl(map,(player->lvl));
-        move2spawn(map, player, STAIRS_DOWN);
-}
+/* void saveGame(t_cell map[LINES][COLUMNS], t_character *player, */
 

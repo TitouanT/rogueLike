@@ -25,6 +25,8 @@ int main () {
 
 	init_screen();
 
+
+
 	/* Initialisation des fenetres */
 	WINDOW *win_game  = createWindow(0, 0, COLS_GAME, LINES_GAME, "RogueLike");
 	WINDOW *win_stats = createWindow(0, LINES_GAME, COLS_STATS, LINES_STATS, "Statistiques");
@@ -32,8 +34,8 @@ int main () {
 
 
 
-	// On génère des niveaux aléatoires au nombre de
-	InitGameMap(map);
+
+	initGameMap(map,0);
 	// On déplace le joueur au spawn de celui-ci
 	move2spawn(map, &player, STAIRS_DOWN);
 	// On affiche les objectifs
