@@ -34,8 +34,10 @@ int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, 
     case 'q' : return FALSE;
     case 'Q' : return !askConfirmationToQuit(win_logs, lineLog);
 
-		case 'n' : randomFloor(map); move2spawn(map, &player, STAIRS_DOWN);
-		case 'N' : randomFloor(map); move2spawn(map, &player, STAIRS_UP);
+		//case '_' : handleCheat(map, player, win_logs, lineLog); break;
+
+		case 'n' : randomFloor(map); move2spawn(map, &player, STAIRS_DOWN); break; // a mettre dans cheat
+		case 'N' : randomFloor(map); move2spawn(map, &player, STAIRS_UP); break; // a mettre dans cheat
 
 		default: wrongKey(win_logs, lineLog);
 	}
