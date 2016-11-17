@@ -5,7 +5,7 @@
 #include "filePos.h"
 #include "random.h"
 
-#define DEBUG TRUE
+#define DEBUG FALSE
 
 
 /*Ces define ne sont pas dans nomVar.txt car local à ce fichier (lvl.c)*/
