@@ -14,7 +14,7 @@ typedef struct {
 	char name[100];
 
 	int line;
-	int column;
+	int col;
 	int lvl;
 
 	int hp;

@@ -5,12 +5,12 @@
 #include "filePos.h"
 #include "random.h"
 
-#define DEBUG FALSE
+#define DEBUG TRUE
 
 
 /*Ces define ne sont pas dans nomVar.txt car local à ce fichier (lvl.c)*/
-#define ROOM_NB_MIN 3
-#define ROOM_NB_MAX 9
+#define ROOM_NB_MIN 100//3
+#define ROOM_NB_MAX 100//9
 #define ROOM_MAX_HEIGHT 10
 #define ROOM_MAX_WIDTH 20
 #define ROOM_MIN_LEN 5
