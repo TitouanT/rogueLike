@@ -130,11 +130,46 @@ int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso){
   }
 
   if(direction == RIGHT){
-    if(line+1 < COLUMNS && bIsWalkable(mat[line][column+1])){
+    if(column+1 < COLUMNS && bIsWalkable(mat[line][column+1])){
       perso->column += 1;
       return TRUE;
     }
   }
+
+	if(direction == UP_LEFT){
+		if(line > 0 && column > 0 && bIsWalkable(mat[line - 1][column - 1])){
+			perso->column -= 1;
+			perso->line   -= 1;
+			return TRUE;
+		}
+	}
+
+	if(direction == UP_RIGHT){
+    if(line > 0 && column + 1 < COLUMNS  && bIsWalkable(mat[line - 1][column + 1])){
+			perso->column += 1;
+			perso->line   -= 1;
+      return TRUE;
+    }
+  }
+
+	if(direction == DOWN_LEFT){
+    if(line+1 < LINES && column > 0 && bIsWalkable(mat[line + 1][column - 1])){
+			perso->column -= 1;
+			perso->line   += 1;
+      return TRUE;
+    }
+  }
+
+	if(direction == DOWN_RIGHT){
+    if(line+1 < LINES && column + 1 < COLUMNS  && bIsWalkable(mat[line + 1][column + 1])){
+			perso->column += 1;
+			perso->line   += 1;
+      return TRUE;
+    }
+  }
+
+
+
 	perso->nbMove--;
   return FALSE;
 

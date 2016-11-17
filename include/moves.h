@@ -2,7 +2,7 @@
 #define MOVES_H
 
 
-typedef enum {UP, DOWN, LEFT, RIGHT} t_dir;
+typedef enum {UP, DOWN, LEFT, RIGHT, UP_LEFT, UP_RIGHT, DOWN_LEFT, DOWN_RIGHT} t_dir;
 
 void markDiscoverRoom(t_cell map[LINES][COLUMNS], t_character player);
 int move2spawn(t_cell mat[LINES][COLUMNS], t_character *perso, int stair);

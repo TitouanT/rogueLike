@@ -22,14 +22,15 @@ int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, 
 
 
   switch (key) {
-		case 'k':
-    case KEY_UP:    move_perso(UP,    map, player);  break;
-		case 'j':
-    case KEY_DOWN:  move_perso(DOWN,  map, player);  break;
-		case 'h':
-    case KEY_LEFT:  move_perso(LEFT,  map, player);  break;
-		case 'l':
-    case KEY_RIGHT: move_perso(RIGHT, map, player);  break;
+		case 'k': case KEY_UP:    move_perso(UP,    map, player);  break;
+		case 'j': case KEY_DOWN:  move_perso(DOWN,  map, player);  break;
+		case 'h': case KEY_LEFT:  move_perso(LEFT,  map, player);  break;
+		case 'l': case KEY_RIGHT: move_perso(RIGHT, map, player);  break;
+
+		case 'y': move_perso(UP_LEFT, map, player);  break;
+		case 'u': move_perso(UP_RIGHT, map, player);  break;
+		case 'b': move_perso(DOWN_LEFT, map, player);  break;
+		case 'n': move_perso(DOWN_RIGHT, map, player);  break;
 
     case '\n':      traiterEntree(map, player,  win_logs,     lineLog); break;
     case 'o' :      traiterPorte (map, player, key, win_logs, lineLog); break;
@@ -40,7 +41,7 @@ int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, 
 
 		//case '_' : handleCheat(map, player, win_logs, lineLog); break;
 
-		case 'n' : randomFloor(map); move2spawn(map, player, STAIRS_DOWN); break; // a mettre dans cheat
+		//case 'n' : randomFloor(map); move2spawn(map, player, STAIRS_DOWN); break; // a mettre dans cheat
 		case 'N' : randomFloor(map); move2spawn(map, player, STAIRS_UP); break; // a mettre dans cheat
 
 		default: wrongKey(win_logs, lineLog);
