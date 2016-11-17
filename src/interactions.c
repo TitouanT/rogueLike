@@ -22,9 +22,13 @@ int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, 
 
 
   switch (key) {
+		case 'k':
     case KEY_UP:    move_perso(UP,    map, player);  break;
+		case 'j':
     case KEY_DOWN:  move_perso(DOWN,  map, player);  break;
+		case 'h':
     case KEY_LEFT:  move_perso(LEFT,  map, player);  break;
+		case 'l':
     case KEY_RIGHT: move_perso(RIGHT, map, player);  break;
 
     case '\n':      traiterEntree(map, player,  win_logs,     lineLog); break;
@@ -65,9 +69,13 @@ void traiterPorte(t_cell map[LINES][COLUMNS], t_character *player, int key, WIND
   direction = getch();
 
   switch (direction) {
+		case 'k':
     case KEY_UP    : (doorPos.line)--;   break;
+		case 'j':
     case KEY_DOWN  : (doorPos.line)++;   break;
+		case 'h':
     case KEY_LEFT  : (doorPos.column)--; break;
+		case 'l':
     case KEY_RIGHT : (doorPos.column)++; break;
 		default: wrongKey(win, lineLog);
   }
