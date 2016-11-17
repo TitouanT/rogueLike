@@ -5,12 +5,12 @@
 #include "filePos.h"
 #include "random.h"
 
-#define DEBUG FALSE
+#define DEBUG TRUE
 
 
 /*Ces define ne sont pas dans nomVar.txt car local à ce fichier (lvl.c)*/
-#define ROOM_NB_MIN 3
-#define ROOM_NB_MAX 9
+#define ROOM_NB_MIN 3//3
+#define ROOM_NB_MAX 9//9
 #define ROOM_MAX_HEIGHT 10
 #define ROOM_MAX_WIDTH 20
 #define ROOM_MIN_LEN 5
@@ -261,13 +261,69 @@ void createLink (t_cell map[][COLUMNS], t_room r1, t_room r2) {
 
 }
 
+int isThereAnExistingPath (t_cell map[][COLUMNS], t_room r1, t_room r2) {
+	t_pos start, finish, head;
+	int path[LINES][COLUMNS], l, c, seen = 1, notSeen = 0;
+
+	for (l = 0; l < LINES; l++) for (c = 0; c < COLUMNS; c++) path[l][c] = notSeen;
+
+	start.line = r1.line + 1;
+	start.column = r1.column + 1;
+
+	finish.line = r2.line + 1;
+	finish.column = r2.column + 1;
+
+	file_init();
+	file_ajouter (start);
+	path[start.line][start.column] = seen;
+	while (file_est_vide() == 0) {// && (file_retirer(&head), (head.line != finish.line || head.column != finish.column))) { // call me to understand that :p (hint: i dont want to break)
+		file_retirer(&head);
+		//if (head.line == finish.line && head.column == finish.column) break;
+		l = head.line;
+		c = head.column;
+
+		if ( l+1 < LINES && path[l + 1][c] == notSeen && (map[l + 1][c].type == CORRIDOR || map[l + 1][c].type == ROOM || map[l + 1][c].type == DOORWAY)) {
+/*       if legal   AND  not already seen  AND (                                          walkable                                            )  */
+			head.column = c;
+			head.line = l + 1;
+			path[l+1][c] = seen;
+			file_ajouter (head);
+		}
+		if ( l-1 >= 0 && path[l - 1][c] == notSeen && (map[l - 1][c].type == CORRIDOR || map[l - 1][c].type == ROOM || map[l - 1][c].type == DOORWAY)) {
+			head.column = c;
+			head.line = l - 1;
+			path[l - 1][c] = seen;
+			file_ajouter (head);
+		}
+		if ( c+1 < COLUMNS && path[l][c + 1] == notSeen && (map[l][c + 1].type == CORRIDOR || map[l][c + 1].type == ROOM || map[l][c + 1].type == DOORWAY)) {
+			head.column = c + 1;
+			head.line = l;
+			path[l][c + 1] = seen;
+			file_ajouter (head);
+		}
+		if ( c-1 >= 0 && path[l][c - 1] == notSeen && (map[l][c - 1].type == CORRIDOR || map[l][c - 1].type == ROOM || map[l][c - 1].type == DOORWAY)) {
+			head.column = c - 1;
+			head.line = l;
+			path[l][c - 1] = seen;
+			file_ajouter (head);
+		}
+	}
+	file_supprimer();
+	if (head.line == finish.line && head.column == finish.column) return TRUE;
+	else return FALSE;
+
+
+
+
+}
+
 void chooseLink (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 	int adj[ROOM_NB_MAX][ROOM_NB_MAX] = {{0}};
 	int i, j;
 	for (i = 0; i < nbRoom-1; i++) adj[i][i+1] = 1;
 	for (i = 0; i < nbRoom - 1; i++) {
 		for (j = i + 1; j < nbRoom; j++) {
-			if (adj[i][j] == 1) createLink(map, rooms[i], rooms[j]);
+			if (adj[i][j] == 1 && isThereAnExistingPath(map, rooms[i], rooms[j]) == FALSE) createLink(map, rooms[i], rooms[j]);
 		}
 	}
 
@@ -294,13 +350,13 @@ void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 void randomFloor (t_cell map[LINES][COLUMNS]) {
 	int nbRoom = randab (ROOM_NB_MIN, ROOM_NB_MAX + 1), i;
 	t_room rooms[ROOM_NB_MAX];
-
+	printw("BLURP");
+	refresh();
 	initFloor (map);
 
 	for (i = 0; i < nbRoom; i++) {
 		rooms[i] = randomRoom(map, rooms, i, &nbRoom);
 	}
-
 	chooseLink (map, rooms, nbRoom);
 
 	placeObject (map, rooms, nbRoom);
