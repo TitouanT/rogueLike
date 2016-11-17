@@ -17,7 +17,7 @@
 #define MIN(a,b) (a < b) ? a : b
 
 typedef struct {int line, column, height, width, link[ROOM_NB_MAX], isLink;} t_room;
-
+int globNbRoomTotal;
 
 
 void initFloor (t_cell map[LINES][COLUMNS]) {
@@ -316,13 +316,28 @@ void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 
 void randomFloor (t_cell map[LINES][COLUMNS]) {
 	int nbRoom = randab (ROOM_NB_MIN, ROOM_NB_MAX + 1), i;
+
 	t_room rooms[ROOM_NB_MAX];
 	initFloor (map);
 
 	for (i = 0; i < nbRoom; i++) {
 		rooms[i] = randomRoom(map, rooms, i, &nbRoom);
 	}
+	globNbRoomTotal += nbRoom;
 	chooseLink (map, rooms, nbRoom);
 
 	placeObject (map, rooms, nbRoom);
 }
+
+void initStatRoom() {
+	globNbRoomTotal = 0;
+}
+
+int queryNbRoomTotal() {
+	return globNbRoomTotal;
+}
+//
+// int queryNbRoomLvl (int lvl) {
+// 	if (isBetween())
+// 	return
+// }
