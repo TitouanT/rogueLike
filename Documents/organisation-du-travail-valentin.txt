@@ -1,0 +1,28 @@
+Répartition du travail :
+
+https://github.com/TitouanT/rogueLike/projects/1
+
+
+Valentin :
+--------
+
+ - Gestion des interactions utilisateur (déplacements, ouverture et fermeture des portes)
+ - Statistiques et infos utilisateur (vie, faim, force, ...)
+ - Gestion de l'affichage (écran d'accueil, sélecteur de sauvegarde, statistiques, jeu, logs)
+ - Nourriture (faim, génération aléatoire, ...)
+
+Titouan :
+-------
+
+ - Génération des niveaux
+ - Génération des objets sur la carte (monstres, escaliers)
+ - AI des monstres
+
+
+Emeric :
+------
+
+ - Sauvegarde et chargement des niveaux
+ - Changement d'étages
+ - Manuel d'utilisation
+ - Pièges

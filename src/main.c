@@ -9,13 +9,12 @@
  */
 
 #include "global.h"
-int askConfirmationToQuit(int * line, WINDOW * win);
-int getche(void);
 
 int main () {
 
 	int key;
 	int lineLog = 0;
+	int widthScreen, heightScreen;
 	int continueGame = TRUE;
 
 	initRandom();
@@ -24,8 +23,17 @@ int main () {
 
 
 	init_screen();
+	getmaxyx(stdscr,heightScreen,widthScreen);
 
-	startScreen();
+	WINDOW *win_start = newwin(heightScreen, widthScreen, 0, 0);
+	startScreen(win_start);
+
+	deleteWindow(win_start);
+
+	WINDOW *win_choice = newwin(heightScreen, widthScreen, 0, 0);
+	selectionScreen(win_choice);
+
+	deleteWindow(win_choice);
 
 	/* Initialisation des fenetres */
 	WINDOW *win_game  = createWindow(0, 0, COLS_GAME, LINES_GAME, "RogueLike");

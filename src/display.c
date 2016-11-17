@@ -50,21 +50,24 @@ void init_screen(){
 	refresh();
 }
 
-void startScreen(){
+
+
+
+void startScreen(WINDOW *win){
 
 	int lines, columns;
 	char letter;
 	char * continuer = "Appuyez sur une touche pour jouer.";
 	FILE *logo;
 
-	getmaxyx(stdscr,lines,columns);
+	getmaxyx(win,lines,columns);
 
 	int line = (lines - 6) / 2;
 	int xShift = (columns - 83) / 2;
 
-	attron(COLOR_PAIR(COLOR_TITLE));
+	wattron(win, COLOR_PAIR(COLOR_TITLE));
 
-	move(line++, xShift);
+	wmove(win, line++, xShift);
 
 	logo = fopen("include/logo.txt", "r");
 
@@ -73,19 +76,106 @@ void startScreen(){
 		fscanf(logo, "%c", &letter);
 
 		while(!feof(logo)){
-			if(letter == '\n') move(line++, xShift);
-			else printw("%c", letter);
+			if(letter == '\n') wmove(win, line++, xShift);
+			else wprintw(win, "%c", letter);
 			fscanf(logo, "%c", &letter);
 		}
 		fclose(logo);
 	}
 
-	mvprintw(line + 1, (columns - strlen(continuer)) / 2, "%s", continuer);
+	mvwprintw(win, line + 1, (columns - strlen(continuer)) / 2, "%s", continuer);
 
-	mvprintw(lines - 1, 0, "Roguelike créé par MOTTIER Emeric - PELLOIN Valentin - TEYSSIER Titouan.");
-	refresh();
+	mvwprintw(win, lines - 1, 0, "Roguelike créé par MOTTIER Emeric - PELLOIN Valentin - TEYSSIER Titouan.");
+	wrefresh(win);
 	getch();
 }
+
+void printLineCenter(char *msg, int widthScreen, int line, WINDOW *win){
+
+	mvwprintw(win, line, (widthScreen - strlen(msg)) / 2, "%s", msg);
+
+}
+
+void drawBox(int startX, int startY, int sizeX, int sizeY, WINDOW *win, char color){
+
+	int x = startX, y = startY;
+	int i;
+
+	switch (color) {
+		case 'r' : wattron(win, COLOR_PAIR(PLAYER_C_COLOR));  break;
+		case 'w' : wattroff(win, COLOR_PAIR(PLAYER_C_COLOR)); break;
+	}
+
+	mvwaddch(win, y, x, ACS_ULCORNER);
+	for(x++ ; x-startX < sizeX ; x++) mvwaddch(win, y, x, ACS_HLINE);
+	mvwaddch(win, y, x, ACS_URCORNER);
+
+	while(y-startY <= sizeY){
+
+		y++;
+		x = startX;
+
+		mvwaddch(win, y, x, ACS_VLINE);
+		for(x++ ; x-startX < sizeX ; x++) mvwaddch(win, y, x, ' ');
+		mvwaddch(win, y, x, ACS_VLINE);
+	}
+
+	y++;
+	x = startX;
+
+	mvwaddch(win, y, x, ACS_LLCORNER);
+	for(x++ ; x-startX < sizeX ; x++) mvwaddch(win, y, x, ACS_HLINE);
+	mvwaddch(win, y, x, ACS_LRCORNER);
+
+
+}
+
+void printSaveInfos(WINDOW *win, int leftShift, int topShift, int saveNB){
+
+	mvwprintw(win, topShift+1, leftShift+1, "Sauvegarde n°%i : ", saveNB);
+
+	wattron(win, COLOR_PAIR(GENERAL_COLOR));
+	mvwprintw(win, topShift+2, leftShift+1, "     Emplacement vide", saveNB);
+	wattroff(win, COLOR_PAIR(GENERAL_COLOR));
+
+
+}
+
+void selectionScreen(WINDOW *win){
+
+	int lines, columns;
+	getmaxyx(win,lines,columns);
+
+	int boxWidth = 50, boxHeight = 5;
+	int center = (columns-boxWidth)/2;
+	int key;
+
+
+	printLineCenter("Choissisez un emplacement de sauvegarde :", columns, 5, win);
+
+
+
+
+	printLineCenter("Entrée : Valider                ", columns, 40, win);
+	printLineCenter("Del   : Supprimer la sauvegarde", columns, 41, win);
+
+
+	do{
+
+		drawBox(center, 10, boxWidth, boxHeight, win, 'w');
+		printSaveInfos(win, center, 10, 1);
+		drawBox(center, 20, boxWidth, boxHeight, win, 'r');
+		printSaveInfos(win, center, 20, 2);
+		drawBox(center, 30, boxWidth, boxHeight, win, 'w');
+		printSaveInfos(win, center, 30, 3);
+
+
+		wrefresh(win);
+	}while((key = getch()) != '\n');
+
+
+}
+
 
 void displayObjectives(int *lineLog, WINDOW *win_logs){
 
@@ -112,6 +202,34 @@ WINDOW *createWindow(int startX, int startY, int width, int height, char * label
 	return localWindow;
 
 }
+
+
+void deleteWindow(WINDOW *window){
+
+	int lines, cols;
+
+	getmaxyx(window, lines, cols);
+
+	clearArea(window, 0, 0, cols, lines);
+	delwin(window);
+
+
+}
+
+
+void clearArea(WINDOW *win, int startX, int startY, int width, int height){
+
+	int i, j;
+
+	for(i = startY ; i < height ; i++){
+		for(j = startX ; j < width ; j++){
+			mvwprintw(win, i, j, " ");
+		}
+	}
+	wrefresh(win);
+
+}
+
 
 void gotoEndGame(){
 	move(LINES_STATS + LINES_GAME, 0); //On déplace le curseur à la fin
@@ -331,7 +449,7 @@ void displayStats(t_character player, WINDOW *win){
 
 
 	wmove(win, 1, 1);
-	wprintw(win, "                                                  ");
+	//wprintw(win, "                                                  ");
 	wrefresh(win);
 	wmove(win, 1, 1);
 	wprintw(win, "Etage     : %i / %i | Déplacement : %d", player.lvl, NB_LVL -1, player.nbMove);
