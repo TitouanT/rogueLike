@@ -34,6 +34,9 @@ int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, 
     case 'q' : return FALSE;
     case 'Q' : return !askConfirmationToQuit(win_logs, lineLog);
 
+		case 'n' : randomFloor(map); move2spawn(map, &player, STAIRS_DOWN);
+		case 'N' : randomFloor(map); move2spawn(map, &player, STAIRS_UP);
+
 		default: wrongKey(win_logs, lineLog);
 	}
 

@@ -13,7 +13,8 @@ void file_init () {
 }
 
 int file_est_vide () {
-	return (tete == NULL);
+	if (tete == NULL) return 1;
+	return 0;
 }
 
 void file_retirer (t_pos *n) {
