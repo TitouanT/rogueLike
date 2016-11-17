@@ -16,8 +16,66 @@
 #define ROOM_MIN_LEN 5
 #define MIN(a,b) (a < b) ? a : b
 
-typedef struct {int line, column, height, width, link[ROOM_NB_MAX], isLink;} t_room;
-int globNbRoomTotal;
+typedef struct {int line, column, height, width;} t_room;
+typedef struct {
+	int nbRoom;
+	t_room rooms[ROOM_NB_MAX];
+} t_lvl;
+
+t_lvl gLvl[NB_LVL];
+int gLvlId = NB_LVL;
+
+void initStatRoom () {
+	gLvlId = 0;
+}
+
+void queryLvlData (t_lvl tabLvl[NB_LVL]) {
+	int i;
+	if (gLvlId >= NB_LVL) {
+		for (i = 0; i < NB_LVL; i++) {
+			tabLvl[i] = gLvl[i];
+		}
+	}
+}
+
+int writeLvlData (t_lvl tabLvl[NB_LVL], char * fileName) {
+	FILE * file = fopen (fileName, "w");
+	int i, j, line, column, height, width;
+	for (i = 0; i < NB_LVL; i++) {
+
+		fprintf (file, "%d ", tabLvl[i].nbRoom);
+
+		for (j = 0; j < tabLvl[i].nbRoom; j++) {
+			tabLvl[i].rooms[j].line = line;
+			tabLvl[i].rooms[j].column = column;
+			tabLvl[i].rooms[j].height = height;
+			tabLvl[i].rooms[j].width = width;
+			fprintf (file, "%d %d %d %d ", line, column, height, width);
+		}
+
+	}
+}
+
+int readLvlData (t_lvl tabLvl[NB_LVL], char * fileName) {
+	FILE * file = fopen (fileName, "r");
+	if (file == NULL) return FALSE; // failure
+	int i, j, nbRoom, line, column, height, width;
+	for (i = 0; i < NB_LVL; i++) {
+
+		fscanf (file, "%d", &nbRoom);
+		tabLvl[i].nbRoom = nbRoom;
+
+		for (j = 0; j < nbRoom; j++) {
+			fscanf (file, "%d%d%d%d", &line, &column, &height, &width);
+			tabLvl[i].rooms[j].line = line;
+			tabLvl[i].rooms[j].column = column;
+			tabLvl[i].rooms[j].height = height;
+			tabLvl[i].rooms[j].width = width;
+		}
+
+	}
+	return TRUE; // success
+}
 
 
 void initFloor (t_cell map[LINES][COLUMNS]) {
@@ -148,7 +206,8 @@ void avoidTouchingDoors (t_cell map[][COLUMNS], t_pos * pos) {
 */
 void createLink (t_cell map[][COLUMNS], t_room r1, t_room r2) {
 	int path[LINES][COLUMNS];
-	int i, j, val, c, l;
+	int up = 0, down = 1, right = 2, left = 3;
+	int i, j, val, c, l, dir[4] = {0}, prevDir = up, currentDir;
 	t_pos start = chooseRandomWall (r1), finish = chooseRandomWall (r2), head;
 
 	for (i = 0; i < LINES; i++) for (j = 0; j < COLUMNS; j++) path[i][j] = -1;
@@ -199,30 +258,30 @@ void createLink (t_cell map[][COLUMNS], t_room r1, t_room r2) {
 		l = head.line;
 		c = head.column;
 		val = path[l][c] - 1;
-		if ( l+1 < LINES && path[l + 1][c] == val ) {
-			if (map[l + 1][c].type != DOORWAY) {
-				map[l + 1][c].type = CORRIDOR;
-			}
-			head.line = l + 1;
+
+		if ( l + 1 <  LINES   && path[l + 1][c] == val ) dir[down]  = 1;
+		if ( l - 1 >= 0       && path[l - 1][c] == val ) dir[up]    = 1;
+		if ( c + 1 <  COLUMNS && path[l][c + 1] == val ) dir[right] = 1;
+		if ( c - 1 >= 0       && path[l][c - 1] == val ) dir[left]  = 1;
+
+		currentDir = prevDir;
+		for (i = 0; i < 4; i++) {
+			if (i != prevDir && dir[i] == 1) currentDir = i;
+			dir[i] = 0;
 		}
-		else if ( l-1 >= 0 && path[l - 1][c] == val ) {
-			if (map[l - 1][c].type != DOORWAY) {
-				map[l - 1][c].type = CORRIDOR;
-			}
-			head.line = l - 1;
+		prevDir = currentDir;
+		switch (currentDir) {
+			case 0 : l--; break;
+			case 1 : l++; break;
+			case 2 : c++; break;
+			case 3 : c--; break;
 		}
-		else if ( c+1 < COLUMNS && path[l][c + 1] == val ) {
-			if (map[l][c + 1].type != DOORWAY) {
-				map[l][c + 1].type = CORRIDOR;
-			}
-			head.column = c + 1;
+
+		if (map[l][c].type != DOORWAY) {
+			map[l][c].type = CORRIDOR;
 		}
-		else if ( c-1 >= 0 && path[l][c - 1] == val ) {
-			if (map[l][c - 1].type != DOORWAY) {
-				map[l][c - 1].type = CORRIDOR;
-			}
-			head.column = c - 1;
-		}
+		head.line   = l;
+		head.column = c;
 	}
 
 }
@@ -247,7 +306,7 @@ int isThereAnExistingPath (t_cell map[][COLUMNS], t_room r1, t_room r2) {
 		c = head.column;
 
 		if ( l+1 < LINES && path[l + 1][c] == notSeen && (map[l + 1][c].type == CORRIDOR || map[l + 1][c].type == ROOM || map[l + 1][c].type == DOORWAY)) {
-/*       if legal   AND  not already seen  AND (                                          walkable                                            )  */
+			/*       if legal   AND  not already seen  AND (                                          walkable                                            )  */
 			head.column = c;
 			head.line = l + 1;
 			path[l+1][c] = seen;
@@ -274,25 +333,16 @@ int isThereAnExistingPath (t_cell map[][COLUMNS], t_room r1, t_room r2) {
 	}
 	file_supprimer();
 	if (head.line == finish.line && head.column == finish.column) return TRUE;
-	else {
-		//there some work to do there. That not because there is no direct path that we should made a totally new one.
-		return FALSE;
-	}
-
-
-
+	else return FALSE;
 
 }
 
 void chooseLink (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
-	int adj[ROOM_NB_MAX][ROOM_NB_MAX] = {{0}};
-	int i, j;
-	for (i = 0; i < nbRoom-1; i++) adj[i][i+1] = 1;
-	for (i = 0; i < nbRoom - 1; i++) {
-		for (j = i + 1; j < nbRoom; j++) {
-			if (adj[i][j] == 1 && isThereAnExistingPath(map, rooms[i], rooms[j]) == FALSE) createLink(map, rooms[i], rooms[j]);
-		}
-	}
+	int i;
+	for (i = 0; i < nbRoom-1; i++)
+		if (isThereAnExistingPath(map, rooms[i], rooms[i+1]) == FALSE) // a direct path doesn't exist yet.
+			createLink(map, rooms[i], rooms[i+1]);
+		else printf("blob ");
 
 }
 
@@ -323,21 +373,15 @@ void randomFloor (t_cell map[LINES][COLUMNS]) {
 	for (i = 0; i < nbRoom; i++) {
 		rooms[i] = randomRoom(map, rooms, i, &nbRoom);
 	}
-	globNbRoomTotal += nbRoom;
+
 	chooseLink (map, rooms, nbRoom);
 
 	placeObject (map, rooms, nbRoom);
+	if (gLvlId < NB_LVL) {
+		gLvl[gLvlId].nbRoom = nbRoom;
+		for (i = 0; i < nbRoom; i++) {
+			gLvl[i].rooms[i] = rooms[i];
+		}
+		gLvlId++;
+	}
 }
-
-void initStatRoom() {
-	globNbRoomTotal = 0;
-}
-
-int queryNbRoomTotal() {
-	return globNbRoomTotal;
-}
-//
-// int queryNbRoomLvl (int lvl) {
-// 	if (isBetween())
-// 	return
-// }
