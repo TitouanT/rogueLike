@@ -31,17 +31,6 @@ void initFloor (t_cell map[LINES][COLUMNS]) {
 	}
 }
 
-// int randab (int a, int b) { // return a number in [a,b[
-// 	int tmp;
-//
-// 	if (b <= a) {
-// 		tmp =   a;
-// 		a   =   b;
-// 		b   = tmp;
-// 	}
-// 	return (rand()%(b-a)) + a;
-// }
-
 int isBetween (int val, int a, int b) { // return TRUE if val is in [a,b]
 	if (a <= val && b >= val) return TRUE;
 	else return FALSE;
@@ -99,29 +88,6 @@ t_room randomRoom (t_cell map[][COLUMNS], t_room * rooms, int nbRoom, int *nbTot
 		}
 	}
 	return room;
-}
-
-int minDist (t_room r1, t_room r2) { // calcul la distance entre le centre de deux pieces.
-	int r1MidLine = r1.height / 2  + r1.line;
-	int r1MidCol = r1.width / 2  + r1.column;
-	int r2MidLine = r2.height / 2  + r2.line;
-	int r2MidCol = r2.width / 2  + r2.column;
-	int line = r1MidLine - r2MidLine;
-	int col = r1MidCol - r2MidCol;
-	if (line < 0) line = -line;
-	if (col < 0) col = -col;
-	return line + col;
-}
-
-// return the linear translation of value from [min, max] to [destMin, destMax]
-int mapping (int value, int min, int max, int destMin, int destMax) {
-	if (destMin > destMax) return destMax + destMin - mapping (value, min, max, destMax, destMin);
-	return ((destMax - destMin) * (value - min) / (max - min)) + destMin;
-				/*	max - min -> value - min
-					destMax - destMin -> ? - destMin
-					=> ? - destMin = (destMax - destMin) * (value - min) / (max - min)
-					=> ? = ((destMax - destMin) * (value - min) / (max - min)) + destMin
-				*/
 }
 
 t_pos chooseRandomWall (t_room r) {
@@ -351,8 +317,6 @@ void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 void randomFloor (t_cell map[LINES][COLUMNS]) {
 	int nbRoom = randab (ROOM_NB_MIN, ROOM_NB_MAX + 1), i;
 	t_room rooms[ROOM_NB_MAX];
-	printw("BLURP");
-	refresh();
 	initFloor (map);
 
 	for (i = 0; i < nbRoom; i++) {
@@ -362,49 +326,3 @@ void randomFloor (t_cell map[LINES][COLUMNS]) {
 
 	placeObject (map, rooms, nbRoom);
 }
-	// for (i = 0; i < nbRoom - 1; i++) { // la proba que deux pieces soient connecté est inversement proportionnelle a la distance qui les sépare
-	// 	for (j = i+1; j < nbRoom; j++) {
-	// 		rooms[i].link[j] = rooms[j].link[i]= minDist(rooms[i], rooms[j]);
-	// 	}
-	// }
-	//
-	// for (i = 0; i < nbRoom; i++) {
-	// 	min = max = rooms[i].link[(i == 0) ? 1 : 0]; // pour pas prendre une valeur qui n'existe pas
-	// 	for (j = 0; j < nbRoom; j++) {
-	// 		if (i != j) {
-	// 			if (min > rooms[i].link[j]) min = rooms[i].link[j];
-	// 			else if (max < rooms[i].link[j]) max = rooms[i].link[j];
-	// 		}
-	// 	}
-	// 	for (j = 0; j < nbRoom; j++) {
-	// 		if (i != j) {
-	// 			if (min != max) rooms[i].link[j] = mapping (rooms[i].link[j], min, max, 100, 0);
-	// 			else rooms[i].link[j] = 100;
-	// 			if (rand()%101 <= rooms[i].link[j]) rooms[i].link[j] = 1;
-	// 			else rooms[i].link[j] = 0;
-	// 		}
-	// 		else rooms[i].link[j] = 0;
-	// 	}
-	// }
-	// for (i = 0; i < nbRoom; i++) rooms[i].isLink = 0;
-	//
-	// for (i = 0; i < nbRoom - 1; i++) {
-	// 	for (j = i + 1; j < nbRoom; j++) {
-	// 		if (rooms[i].link[j] && rooms[j].link[i]) {
-	// 			createLink (map, rooms[i], rooms[j]);
-	// 			rooms[i].isLink = rooms[j].isLink = 1;
-	// 		}
-	// 	}
-	// }
-	//
-	// for (i = 0; i < nbRoom; i++) {
-	// 	if (rooms[i].isLink == 0) {
-	// 		j = 0;
-	// 		while (j < nbRoom && rooms[i].link[j] == 0) j++;
-	// 		if (j == nbRoom) {
-	//
-	// 			do j=rand()%nbRoom; while (j==i);
-	// 		}
-	// 		createLink(map, rooms[i], rooms[j]);
-	// 	}
-	// }
