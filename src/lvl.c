@@ -276,9 +276,7 @@ int isThereAnExistingPath (t_cell map[][COLUMNS], t_room r1, t_room r2) {
 	file_init();
 	file_ajouter (start);
 	path[start.line][start.column] = seen;
-	while (file_est_vide() == 0) {// && (file_retirer(&head), (head.line != finish.line || head.column != finish.column))) { // call me to understand that :p (hint: i dont want to break)
-		file_retirer(&head);
-		//if (head.line == finish.line && head.column == finish.column) break;
+	while (file_est_vide() == 0 && (file_retirer(&head), (head.line != finish.line || head.column != finish.column))) {
 		l = head.line;
 		c = head.column;
 
@@ -310,7 +308,10 @@ int isThereAnExistingPath (t_cell map[][COLUMNS], t_room r1, t_room r2) {
 	}
 	file_supprimer();
 	if (head.line == finish.line && head.column == finish.column) return TRUE;
-	else return FALSE;
+	else {
+		//there some work to do there. That not because there is no direct path that we should made a totally new one.
+		return FALSE;
+	}
 
 
 
