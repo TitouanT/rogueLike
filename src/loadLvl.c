@@ -1,3 +1,13 @@
+/*
+ * \file loadlvl.c
+ * \brief Programme de changement, chargement et sauvegarde de niveaux
+ * \author MOTTIER Emeric
+ * \author PELLOIN Valentin
+ * \author TEYSSIER Titouan
+ * \version 1.0
+ * \date 17 novembre 2016
+ */
+
 #include "global.h"
 
 
