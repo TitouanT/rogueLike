@@ -64,7 +64,7 @@ void writeLvl ( t_cell map[][COLUMNS], int nbLvl, char dossier[]) { //// a mettr
 
 void initGameMap(t_cell map[LINES][COLUMNS], int choix, int nbFichierSauvegarde){
 		char dossierPartie[40]="./partie/";
-		char dossier[40];
+		char texte[20];
 		if(choix==0){
 			for(int i=0;i<NB_LVL;i++){
    			randomFloor(map);
@@ -72,15 +72,14 @@ void initGameMap(t_cell map[LINES][COLUMNS], int choix, int nbFichierSauvegarde)
   			}	
 		readLvl(map,0,dossierPartie);
 		}else{
-			strcpy(dossier,"./sauvegarde");
-			char texte[20];
+			char dossierSauvegarde[40]="./partie/sauvegarde";
 			sprintf(texte, "%i", nbFichierSauvegarde);
-			strcat(dossier,texte);
+			strcat(dossierSauvegarde,texte);
 			char texte2[20]="/";
-			strcat(dossier,texte2);
+			strcat(dossierSauvegarde,texte2);
 			for(int i=0;i<NB_LVL;i++){       // on copie tout dans le dossier sauvegarde
-				readLvl(map,i,dossier);
-    				writeLvl(map,i,dossierPartie);
+				readLvl(map,i,dossierPartie);
+    			writeLvl(map,i,dossierSauvegarde);
   			}	
 		}
   			
@@ -101,10 +100,11 @@ void changeLvl(t_cell map[LINES][COLUMNS], t_character *player, int dir){
 	}
 }
 
-void saveGame(t_cell map[LINES][COLUMNS], t_character *player, int nbFichierSauvegarde){
+void saveGame(t_cell map[LINES][COLUMNS], t_character *player, int nbFichierSauvegarde){    
  	
 	char dossierPartie[40]="./partie/";
-	char dossierSauvegarde[40]="./sauvegarde";
+	char dossierSauvegarde[40]="./partie/sauvegarde";
+	strcat(dossierSauvegarde,dossierSauvegarde);
 	char texte[20];
 	sprintf(texte, "%i", nbFichierSauvegarde);
 	strcat(dossierSauvegarde,texte);
@@ -112,9 +112,30 @@ void saveGame(t_cell map[LINES][COLUMNS], t_character *player, int nbFichierSauv
 	strcat(dossierSauvegarde,texte2);
 	for(int i=0;i<NB_LVL;i++){       // on copie tout dans le dossier sauvegarde
 		readLvl(map,i,dossierPartie);
-    		writeLvl(map,i,dossierSauvegarde);
+    	writeLvl(map,i,dossierSauvegarde);
   	}
 	readLvl(map,(player->lvl),dossierPartie);        // on revient où on en était
 }
+
+int bFileSaveEmpty(int nbFichierSauvegarde){
+	char dossierSauvegarde[40]="./partie/sauvegarde";
+	char texte[20];
+	sprintf(texte, "%i", nbFichierSauvegarde);
+	strcat(dossierSauvegarde,texte);
+	char texte2[20]="/0.txt";
+	strcat(dossierSauvegarde,texte2);
+	FILE * lvlFile;
+	lvlFile = fopen (dossierSauvegarde, "r");
+	if(lvlFile == NULL){
+		return FALSE;
+	}
+	else{
+		return TRUE;
+	}
+	fclose(lvlFile);
+}
 	
+	
+	
+
 
