@@ -151,7 +151,7 @@ void selectionScreen(WINDOW *win){
 	int key;
 
 
-	printLineCenter("Choissisez un emplacement de sauvegarde :", columns, 5, win);
+	printLineCenter("Choisissez un emplacement de sauvegarde :", columns, 5, win);
 
 
 
