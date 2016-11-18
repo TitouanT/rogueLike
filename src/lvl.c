@@ -285,6 +285,12 @@ void createLink (t_cell map[][COLUMNS], t_room r1, t_room r2) {
 	}
 
 }
+/*
+methode:
+	1. verifier si il y a un chemin direct.
+	2. sinon, créé un chemin sans toucher de couloir
+	3. sinon, se raccorder au chemin le plus proche
+*/
 
 int isThereAnExistingPath (t_cell map[][COLUMNS], t_room r1, t_room r2) {
 	t_pos start, finish, head;
