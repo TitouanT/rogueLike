@@ -206,8 +206,8 @@ void avoidTouchingDoors (t_cell map[][COLUMNS], t_pos * pos) {
 */
 void createLink (t_cell map[][COLUMNS], t_room r1, t_room r2) {
 	int path[LINES][COLUMNS];
-	int up = 0, down = 1, right = 2, left = 3;
-	int i, j, val, c, l, dir[4] = {0}, prevDir = up, currentDir;
+	int up = 0, down = 1, right = 2, left = 3, curDir;
+	int i, j, val, c, l, dir[4] = {0};
 	t_pos start = chooseRandomWall (r1), finish = chooseRandomWall (r2), head;
 
 	for (i = 0; i < LINES; i++) for (j = 0; j < COLUMNS; j++) path[i][j] = -1;
@@ -264,13 +264,14 @@ void createLink (t_cell map[][COLUMNS], t_room r1, t_room r2) {
 		if ( c + 1 <  COLUMNS && path[l][c + 1] == val ) dir[right] = 1;
 		if ( c - 1 >= 0       && path[l][c - 1] == val ) dir[left]  = 1;
 
-		currentDir = prevDir;
 		for (i = 0; i < 4; i++) {
-			if (i != prevDir && dir[i] == 1) currentDir = i;
-			dir[i] = 0;
+			if (dir[i] == 1) {
+				curDir = i;
+				dir[i] = 0;
+			}
 		}
-		prevDir = currentDir;
-		switch (currentDir) {
+
+		switch (curDir) {
 			case 0 : l--; break;
 			case 1 : l++; break;
 			case 2 : c++; break;
