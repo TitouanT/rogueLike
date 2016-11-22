@@ -13,8 +13,13 @@ int askConfirmationToQuit(WINDOW * win, int *lineLog);
 //   return rand() % (b - a + 1) + a;
 // }
 
-void wrongKey(WINDOW * win, int *lineLog) {
-	addLog("Never mind... (Nirvana)", lineLog, win);
+typedef struct {char * msg;} t_msg;
+
+t_msg tipos[24] = {"whatever", "ha! ha! ha! ha!", "believe it, baby", "it’s all good", "not likely", "you wish", "say what ?", "yeah, sure", "probably", "you are so hosed", "if you want", "uhhh… no",
+"like i care", "yep", "uh huh", "yo so funny", "are you crazy ?", "not even", "oh yeah", "true dat", "fer sure", "sorry", "42", "could be"};
+
+void wrongKey (WINDOW * win, int *lineLog) {
+	addLog (tipos[randab (0, 24)].msg, lineLog, win);
 }
 
 /* Fonction principale d'intéraction avec l'utilisateur */
