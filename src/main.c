@@ -1,6 +1,6 @@
-/*
+/**
  * \file main.c
- * \brief Programme principal du jeud.
+ * \brief Programme principal du jeu.
  * \author MOTTIER Emeric
  * \author PELLOIN Valentin
  * \author TEYSSIER Titouan

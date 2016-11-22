@@ -1,5 +1,5 @@
-/*
- * \file loadlvl.c
+/**
+ * \file
  * \brief Programme de changement, chargement et sauvegarde de niveaux
  * \author MOTTIER Emeric
  * \author PELLOIN Valentin
@@ -13,7 +13,7 @@ char DOSSIERPARTIE[40]="./partie/";
 char DOSSIERSAUVEGARDE[40]="./partie/sauvegarde";
 
 
-void readLvl ( t_cell map[][COLUMNS], int nbLvl, char dossier[]) { 
+void readLvl ( t_cell map[][COLUMNS], int nbLvl, char dossier[]) {
 /* Lit un fichier dans un dossier donné */
 
 	int i, j, k, type, state, isDiscovered, nbObject, object;
@@ -42,7 +42,7 @@ void readLvl ( t_cell map[][COLUMNS], int nbLvl, char dossier[]) {
 	fclose(lvlFile);
 }
 
-void writeLvl ( t_cell map[][COLUMNS], int nbLvl, char dossier[]) { 
+void writeLvl ( t_cell map[][COLUMNS], int nbLvl, char dossier[]) {
 /* enregistre la partie soit dans le dossier temporaire ou dans les dossiers de sauvegardes */
 
 	int i, j, k;
@@ -81,7 +81,7 @@ void initGameMap(t_cell map[LINES][COLUMNS], int choix, int nbFichierSauvegarde)
 			for(int i=0;i<NB_LVL;i++){
    			randomFloor(map);
     			writeLvl(map,i,DOSSIERPARTIE);
-  			}	
+  			}
 		readLvl(map,0,DOSSIERPARTIE);
 		}else{
 			sprintf(texte, "%i", nbFichierSauvegarde);
@@ -91,9 +91,9 @@ void initGameMap(t_cell map[LINES][COLUMNS], int choix, int nbFichierSauvegarde)
 			for(int i=0;i<NB_LVL;i++){       // on copie tout dans le dossier sauvegarde
 				readLvl(map,i,DOSSIERPARTIE);
     			writeLvl(map,i,DOSSIERPARTIE);
-  			}	
+  			}
 		}
-  			
+
 }
 
 void changeLvl(t_cell map[LINES][COLUMNS], t_character *player, int dir){
@@ -103,17 +103,17 @@ void changeLvl(t_cell map[LINES][COLUMNS], t_character *player, int dir){
 		writeLvl(map,(player->lvl),DOSSIERPARTIE);
 		(player->lvl)+= dir;
 		readLvl(map,(player->lvl),DOSSIERPARTIE);
-		if (dir > 0){                                            
-			move2spawn(map, player, STAIRS_DOWN);               
+		if (dir > 0){
+			move2spawn(map, player, STAIRS_DOWN);
 		}else{
-			 move2spawn(map, player, STAIRS_UP); 
-		} 
+			 move2spawn(map, player, STAIRS_UP);
+		}
 	}
 }
 
-void saveGame(t_cell map[LINES][COLUMNS], t_character *player, int nbFichierSauvegarde){    
+void saveGame(t_cell map[LINES][COLUMNS], t_character *player, int nbFichierSauvegarde){
 /* Fonction permettant de sauvegarder la partie à l'instant t */
-	
+
 	char texte[20];
 	sprintf(texte, "%i", nbFichierSauvegarde);
 	strcat(DOSSIERSAUVEGARDE,texte);
@@ -144,8 +144,3 @@ int bFileSaveEmpty(int nbFichierSauvegarde){
 	}
 	fclose(lvlFile);
 }
-	
-	
-	
-
-

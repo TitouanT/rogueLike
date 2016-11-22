@@ -1,8 +1,20 @@
+/**
+	* \file
+	* \brief Fonctions gérant l'affichage (utilisation de ncurses)
+	* \author MOTTIER Emeric
+  * \author PELLOIN Valentin
+  * \author TEYSSIER Titouan
+	* \date 22 novembre 2016
+	* \version 1.0
+	*/
 #include "display.h"
 #include "global.h"
 
 
-
+/**
+	* \brief Initialisation de toutes les couleurs utilisées par le jeu
+	*	\fn void init_colors()
+	*/
 void init_colors(){
 
 	start_color();
@@ -22,6 +34,11 @@ void init_colors(){
 
 }
 
+/**
+	* \brief Initialisation de l'écran du jeu.
+	* Affiche un message d'avertissement et quitte le jeu si la fenêtre est trop petite.
+	*	\fn void init_screen()
+	*/
 void init_screen(){
 
 	int lines, columns;
@@ -51,8 +68,11 @@ void init_screen(){
 }
 
 
-
-
+/**
+	* \brief Affichage de l'écran de départ du jeu
+	*	\fn void startScreen(WINDOW *win)
+	* \param win Fenêtre à utiliser pour l'affichage des informations
+	*/
 void startScreen(WINDOW *win){
 
 	int lines, columns;
@@ -90,12 +110,30 @@ void startScreen(WINDOW *win){
 	getch();
 }
 
+/**
+	* \brief Affichage une ligne centrée horizontalement
+	*	\fn void printLineCenter(char *msg, int widthScreen, int line, WINDOW *win)
+	* \param msg Message à afficher
+	* \param widthScreen Largeur de l'écran
+	* \param line Ligne sur laquelle on veut écrire le message
+	* \param win Fenêtre où afficher le message
+	*/
 void printLineCenter(char *msg, int widthScreen, int line, WINDOW *win){
 
 	mvwprintw(win, line, (widthScreen - strlen(msg)) / 2, "%s", msg);
 
 }
 
+/**
+	* \brief Affichage une boîte de taille et de coordonnées données
+	*	\fn void drawBox(int startX, int startY, int sizeX, int sizeY, WINDOW *win, char color)
+	* \param startX Position X de départ de la boîte
+	* \param startY Position Y de départ de la boîte
+	* \param sizeX Largeur de la boîte
+	* \param sizeY Hauteur de la boîte
+	* \param win Fenêtre où afficher la boîte
+	* \param color Couleur de la boîte (r pour rouge, w pour blanc)
+	*/
 void drawBox(int startX, int startY, int sizeX, int sizeY, WINDOW *win, char color){
 
 	int x = startX, y = startY;
@@ -130,6 +168,14 @@ void drawBox(int startX, int startY, int sizeX, int sizeY, WINDOW *win, char col
 
 }
 
+/**
+	* \brief Affichage du contenu d'une sauvegarde
+	*	\fn void printSaveInfos(WINDOW *win, int leftShift, int topShift, int saveNB)
+	* \param win Fenêtre où afficher les informations
+	* \param leftShift Décalage vertical en partant de la gauche
+	* \param topShift Décalage horizontal en partant du haut
+	* \param saveNB Numéro de la sauvegarde
+	*/
 void printSaveInfos(WINDOW *win, int leftShift, int topShift, int saveNB){
 
 	mvwprintw(win, topShift+1, leftShift+1, "Sauvegarde n°%i : ", saveNB);
@@ -141,6 +187,12 @@ void printSaveInfos(WINDOW *win, int leftShift, int topShift, int saveNB){
 
 }
 
+
+/**
+	* \brief Gère l'affichage de l'écran de sélection de la sauvegarde
+	*	\fn void selectionScreen(WINDOW *win)
+	* \param win Fenêtre où afficher les informations
+	*/
 void selectionScreen(WINDOW *win){
 
 	int lines, columns;
@@ -176,7 +228,12 @@ void selectionScreen(WINDOW *win){
 
 }
 
-
+/**
+	* \brief Affiche les objectifs du joueur dans la fenêtre de log
+	*	\fn void displayObjectives(int *lineLog, WINDOW *win_logs)
+	* \param lineLog Numéro de ligne de log
+	* \param win_logs Fenêtre où afficher les objectifs
+	*/
 void displayObjectives(int *lineLog, WINDOW *win_logs){
 
 	addLog("Vous venez d'apparaître au premier étage !", lineLog, win_logs);
@@ -185,7 +242,16 @@ void displayObjectives(int *lineLog, WINDOW *win_logs){
 
 }
 
-/* Cette fonction crée une fenetre aux coordonnées indiquée, et de taille donnée */
+/**
+	* \brief Crée une fenetre aux coordonnées indiquée, et de taille donnée
+	*	\fn WINDOW *createWindow(int startX, int startY, int width, int height, char * label)
+	* \param startX Décalage horizontal (en partant du point 0 à gauche)
+	* \param startY Décalage vertical (en partant du point 0 en haut)
+	* \param width Largeur de la fenêtre à créer
+	* \param height Hauteur de la fenêtre à créer
+	* \param label Nom de la fenêtre
+	* \return Pointeur vers la fenetre créee
+	*/
 WINDOW *createWindow(int startX, int startY, int width, int height, char * label){
 
 	WINDOW *localWindow;
@@ -203,7 +269,11 @@ WINDOW *createWindow(int startX, int startY, int width, int height, char * label
 
 }
 
-
+/**
+	* \brief Supprimer la fenêtre donnée
+	*	\fn void deleteWindow(WINDOW *window)
+	* \param window Nom de la fenêtre à supprimer
+	*/
 void deleteWindow(WINDOW *window){
 
 	int lines, cols;
@@ -216,7 +286,15 @@ void deleteWindow(WINDOW *window){
 
 }
 
-
+/**
+	* \brief Efface le contenu d'un zone d'une fenêtre
+	*	\fn void clearArea(WINDOW *win, int startX, int startY, int width, int height)
+	* \param win Nom de la fenêtre à affecter
+	* \param startX Décalage horizontal de la zone à effacer (en partant du point 0 à gauche)
+	* \param startY Décalage vertical de la zone à effacer (en partant du point 0 à en haut)
+	* \param width Largeur de la zone à effacer
+	* \param height Hauteur de la zone à effacer
+	*/
 void clearArea(WINDOW *win, int startX, int startY, int width, int height){
 
 	int i, j;
@@ -230,12 +308,21 @@ void clearArea(WINDOW *win, int startX, int startY, int width, int height){
 
 }
 
-
+/**
+	* \brief Déplace le curseur en dessous du jeu
+	*	\fn void gotoEndGame()
+	*/
 void gotoEndGame(){
 	move(LINES_STATS + LINES_GAME, 0); //On déplace le curseur à la fin
 }
 
-/* Cette fonction affiche le contenu d'une cellule (' ' ou 'c') avec la paire de couleur choisie */
+/**
+	* \brief Affiche le contenu d'une cellule
+	*	\fn void printCell(int pair, char cell, WINDOW *win)
+	* \param pair Paire à choisir pour la couleur
+	* \param cell Cellule à afficher (' ' ou 'c')
+	* \param win Fenêtre où afficher la cellule
+	*/
 void printCell(int pair, char cell, WINDOW *win){
 
 	wattron(win, COLOR_PAIR(pair));
@@ -245,8 +332,13 @@ void printCell(int pair, char cell, WINDOW *win){
 	}
 }
 
-/* Cette fonction affiche l'étage de la map donnée en paramètre */
-void displayFloor (t_cell map[LINES][COLUMNS], WINDOW *win) {
+/**
+	* \brief Affiche l'étage de la map donnée en paramètre
+	*	\fn void displayFloor(t_cell map[LINES][COLUMNS], WINDOW *win)
+	* \param map Carte à afficher
+	* \param win Fenêtre où afficher la carte
+	*/
+void displayFloor(t_cell map[LINES][COLUMNS], WINDOW *win) {
 
 	int i, j;
 
