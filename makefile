@@ -64,6 +64,7 @@ upgrade:
 # Pour l'installation, on commence par supprimer les données du jeu
 install: clean
 	mkdir partie
+	make
 
 
 clean:
