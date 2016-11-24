@@ -234,6 +234,7 @@ void selectionScreen(WINDOW *win){
 		switch (key) {
 			case '\n'       : quit = TRUE; break;
 			case 'q'        : quit = TRUE; break;
+			case KEY_RETURN : quit = TRUE; break;
 
 			case KEY_UP     : if(selectedGame >= 2) selectedGame--; break;
 			case KEY_DOWN   : if(selectedGame <= 2) selectedGame++; break;
