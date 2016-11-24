@@ -52,7 +52,6 @@
 
 
 
-
 /** Hauteur de la fenêtre du jeu */
 #define LINES_GAME  LINES + 2
 /** Largeur de la fenêtre du jeu */
@@ -69,8 +68,10 @@
 #define COLS_STATS COLS_GAME + COLS_LOGS
 
 
+
 /** Touche retour en arrière (celle de ncurses ne fonctionne pas) */
 #define KEY_RETURN 127
+
 
 
 void displayObjectives(int *lineLog, WINDOW *win_logs);

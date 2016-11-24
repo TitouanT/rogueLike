@@ -1,9 +1,24 @@
+/**
+	* \file
+	* \brief Fonctions gérant les interactions utilisateurs / jeu
+	* \author MOTTIER Emeric
+  * \author PELLOIN Valentin
+  * \author TEYSSIER Titouan
+	* \date 24 novembre 2016
+	* \version 1.1
+	*/
 #include <ncurses.h>
 #include "global.h"
 #include "filePos.h"
 #include "random.h"
 
+/** Nombre de messages d'erreurs différents */
 #define NB_ERROR_MESSAGES 26
+
+/**
+	*	\brief Définition d'une structure de messages d'erreur.
+	*	\struct t_msg
+	*/
 typedef struct {char * msg;} t_msg;
 
 
@@ -11,20 +26,65 @@ void traiterPorte(t_cell map[LINES][COLUMNS],  t_character *player, int key, WIN
 void traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW * win, int *lineLog);
 int askConfirmationToQuit(WINDOW * win, int *lineLog);
 
-// int rand_a_b(int a, int b){
-//   srand(time(NULL));
-//   return rand() % (b - a + 1) + a;
-// }
+
+/**
+	* \var error_msg
+	* \brief Liste des messages d'erreurs.
+	*/
+t_msg error_msg[NB_ERROR_MESSAGES] = {
+																			"whatever",
+																			"ha! ha! ha! ha!",
+																			"believe it, baby",
+																			"it's all good",
+																			"not likely",
+																			"you wish",
+																			"say what ?",
+																			"yeah, sure",
+																			"probably",
+																			"you are so hosed",
+																			"if you want",
+																			"uhhh... no",
+																			"like i care",
+																			"yep",
+																			"uh huh",
+																			"yo so funny",
+																			"are you crazy ?",
+																			"not even",
+																			"oh yeah",
+																			"true dat",
+																			"fer sure",
+																			"sorry",
+																			"42",
+																			"could be",
+																			"r u mad?",
+																			"STOP DOING THAT"
+																		};
 
 
-t_msg tipos[NB_ERROR_MESSAGES] = {"whatever", "ha! ha! ha! ha!", "believe it, baby", "it's all good", "not likely", "you wish", "say what ?", "yeah, sure", "probably", "you are so hosed", "if you want", "uhhh... no",
-"like i care", "yep", "uh huh", "yo so funny", "are you crazy ?", "not even", "oh yeah", "true dat", "fer sure", "sorry", "42", "could be", "r u mad?", "STOP DOING THAT"};
 
+/**m
+	* \brief Message d'erreur si une touche appuyée n'existe pas
+	*	\fn void wrongKey(WINDOW * win, int *lineLog)
+	* \param win Fenêtre de logs où afficher le message
+	* \param lineLog Ligne d'écriture du message
+	*/
 void wrongKey(WINDOW * win, int *lineLog) {
-	addLog(tipos[randab(0, NB_ERROR_MESSAGES)].msg, lineLog, win);
+	addLog(error_msg[randab(0, NB_ERROR_MESSAGES)].msg, lineLog, win);
 }
 
-/* Fonction principale d'intéraction avec l'utilisateur */
+
+
+/**
+	* \brief Fonction principale d'intéraction avec l'utilisateur
+	*	\fn int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, WINDOW * win_logs, int *lineLog)
+	* \param key Touche que l'utilisateur a appuyé
+	* \param map Carte où se trouve le joueur
+	* \param player Joueur
+	* \param win_logs Fenêtre de logs où afficher le message
+	* \param lineLog Ligne d'écriture du message
+	* \return FALSE si l'utilisateur à demandé de quitter la partie
+	* \return TRUE sinon
+	*/
 int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, WINDOW * win_logs, int *lineLog){
 
 
@@ -60,12 +120,30 @@ int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, 
 
 }
 
+
+/**
+	* \brief Teste si la porte est valide
+	*	\fn int bIsValidDoor(t_cell map[LINES][COLUMNS], t_pos position)
+	* \param map Carte où se trouve le joueur
+	* \param position Position de la porte à verifier
+	* \return TRUE si la porte est valide
+	* \return FALSE sinon
+	*/
 int bIsValidDoor(t_cell map[LINES][COLUMNS], t_pos position){
   return (position.line >= 0 && position.column >= 0 && position.line < LINES && position.column < COLUMNS && map[position.line][position.column].type == DOORWAY);
 }
 
 
-/* Traite l'ouverture et la fermeture d'une porte */
+
+/**
+	* \brief Traite l'ouverture et la fermeture d'une porte
+	*	\fn void traiterPorte(t_cell map[LINES][COLUMNS], t_character *player, int key, WINDOW * win, int *lineLog)
+	* \param map Carte où se trouve le joueur
+	* \param player Joueur sur la carte
+	* \param key Touche appuyée par l'utilisateur
+	* \param win Fenêtre de logs
+	* \param lineLog Ligne où afficher les logs
+	*/
 void traiterPorte(t_cell map[LINES][COLUMNS], t_character *player, int key, WINDOW * win, int *lineLog){
 
   int direction;
@@ -91,6 +169,7 @@ void traiterPorte(t_cell map[LINES][COLUMNS], t_character *player, int key, WIND
   if(key == 'o'){
 
     if(bIsValidDoor(map, doorPos) && map[doorPos.line][doorPos.column].state == dCLOSE){
+			// Ajoute une probabilité de ne pas réussir à ouvrir la porte
       if(randab(0,3) == 0) {
         addLog("Vous venez d'enfoncer cette porte.", lineLog, win);
         addLog("Recommencez pour l'ouvrir entièrement !", lineLog, win);
@@ -113,7 +192,15 @@ void traiterPorte(t_cell map[LINES][COLUMNS], t_character *player, int key, WIND
 
 }
 
-/* Traite l'appui sur la touche entrée */
+
+/**
+	* \brief Traite l'appui sur la touche entrée
+	*	\fn void traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW *win, int *lineLog)
+	* \param map Carte où se trouve le joueur
+	* \param player Joueur sur la carte
+	* \param win Fenêtre de logs
+	* \param lineLog Ligne où afficher les logs
+	*/
 void traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW *win, int *lineLog){
 
 
@@ -149,6 +236,15 @@ void traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW *win,
 
 }
 
+
+/**
+	* \brief Demande confirmation à l'utilisateur avant de quitter le jeu
+	*	\fn int askConfirmationToQuit(WINDOW * win, int *lineLog)
+	* \param win Fenêtre de logs
+	* \param lineLog Ligne où afficher les logs
+	* \return TRUE si l'utilisateur souhaite quitter le jeu
+	* \return FALSE sinon
+	*/
 int askConfirmationToQuit(WINDOW * win, int *lineLog) {
 
 	int key;
