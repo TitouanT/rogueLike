@@ -54,6 +54,7 @@ int writeLvlData (t_lvl tabLvl[NB_LVL], char * fileName) {
 		}
 
 	}
+	return 1;
 }
 
 int readLvlData (t_lvl tabLvl[NB_LVL], char * fileName) {

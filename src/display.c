@@ -176,7 +176,20 @@ void drawBox(int startX, int startY, int sizeX, int sizeY, WINDOW *win, char col
 	* \param topShift Décalage horizontal en partant du haut
 	* \param saveNB Numéro de la sauvegarde
 	*/
-void printSaveInfos(WINDOW *win, int leftShift, int topShift, int saveNB){
+void printSaveInfos(WINDOW *win, int saveNB, int selectedGame){
+
+	int lines, columns;
+	char color = 'w';
+	getmaxyx(win,lines,columns);
+
+	int boxWidth = 50, boxHeight = 5;
+	int center = (columns-boxWidth)/2;
+	int topShift = saveNB * 10;
+	int leftShift = center;
+
+	if(saveNB == selectedGame) color = 'r';
+
+	drawBox(center, topShift, boxWidth, boxHeight, win, color);
 
 	mvwprintw(win, topShift+1, leftShift+1, "Sauvegarde n°%i : ", saveNB);
 
@@ -198,32 +211,37 @@ void selectionScreen(WINDOW *win){
 	int lines, columns;
 	getmaxyx(win,lines,columns);
 
-	int boxWidth = 50, boxHeight = 5;
-	int center = (columns-boxWidth)/2;
+	int selectedGame = 2;
 	int key;
-
+	int quit = FALSE;
 
 	printLineCenter("Choisissez un emplacement de sauvegarde :", columns, 5, win);
-
-
 
 
 	printLineCenter("Entrée : Valider                ", columns, 40, win);
 	printLineCenter("Del   : Supprimer la sauvegarde", columns, 41, win);
 
 
-	do{
+	while(quit == FALSE){
 
-		drawBox(center, 10, boxWidth, boxHeight, win, 'w');
-		printSaveInfos(win, center, 10, 1);
-		drawBox(center, 20, boxWidth, boxHeight, win, 'r');
-		printSaveInfos(win, center, 20, 2);
-		drawBox(center, 30, boxWidth, boxHeight, win, 'w');
-		printSaveInfos(win, center, 30, 3);
-
+		printSaveInfos(win, 1, selectedGame);
+		printSaveInfos(win, 2, selectedGame);
+		printSaveInfos(win, 3, selectedGame);
 
 		wrefresh(win);
-	}while((key = getch()) != '\n');
+		key = getch();
+
+		switch (key) {
+			case '\n'       : quit = TRUE; break;
+			case 'q'        : quit = TRUE; break;
+			case KEY_RETURN : quit = TRUE; break;
+			case KEY_UP     : if(selectedGame >= 2) selectedGame--; break;
+			case KEY_DOWN   : if(selectedGame <= 2) selectedGame++; break;
+
+			default : break;
+		}
+	}
+
 
 
 }

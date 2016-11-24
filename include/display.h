@@ -36,6 +36,7 @@
 #define LINES_STATS  6
 #define COLS_STATS COLS_GAME + COLS_LOGS
 
+#define KEY_RETURN 127
 
 void displayObjectives(int *lineLog, WINDOW *win_logs);
 void init_screen();
