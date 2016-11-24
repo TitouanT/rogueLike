@@ -42,6 +42,18 @@ void readLvl ( t_cell map[][COLUMNS], int nbLvl, char dossier[]) {
 	fclose(lvlFile);
 }
 
+void writePosition ( t_character *player, char dossier[]) {
+/* enregistre les paramètres du joueur dans les dossiers de sauvegardes */
+
+	FILE * lvlFile;
+	lvlFile = fopen (dossier, "w");
+	fprintf (lvlFile, "%s %i %i %i %i %i %i %i", (*player).name, (*player).line, (*player).column, (*player).lvl, (*player).hp, (*player).pw, (*player).xp, (*player).nbMove);
+	fprintf(lvlFile, "\n");
+	fclose(lvlFile);
+}
+
+
+
 void writeLvl ( t_cell map[][COLUMNS], int nbLvl, char dossier[]) {
 /* enregistre la partie soit dans le dossier temporaire ou dans les dossiers de sauvegardes */
 
@@ -81,7 +93,7 @@ void initGameMap(t_cell map[LINES][COLUMNS], int choix, int nbFichierSauvegarde)
 			for(int i=0;i<NB_LVL;i++){
    			randomFloor(map);
     			writeLvl(map,i,DOSSIERPARTIE);
-  			}
+  		}
 		readLvl(map,0,DOSSIERPARTIE);
 		}else{
 			sprintf(texte, "%i", nbFichierSauvegarde);
@@ -90,7 +102,7 @@ void initGameMap(t_cell map[LINES][COLUMNS], int choix, int nbFichierSauvegarde)
 			strcat(DOSSIERSAUVEGARDE,texte2);
 			for(int i=0;i<NB_LVL;i++){       // on copie tout dans le dossier sauvegarde
 				readLvl(map,i,DOSSIERPARTIE);
-    			writeLvl(map,i,DOSSIERPARTIE);
+    				writeLvl(map,i,DOSSIERPARTIE);
   			}
 		}
 
@@ -119,9 +131,10 @@ void saveGame(t_cell map[LINES][COLUMNS], t_character *player, int nbFichierSauv
 	strcat(DOSSIERSAUVEGARDE,texte);
 	char texte2[20]="/";
 	strcat(DOSSIERSAUVEGARDE,texte2);
+	writePosition(player,DOSSIERSAUVEGARDE);
 	for(int i=0;i<NB_LVL;i++){       // on copie tout dans le dossier sauvegarde
 		readLvl(map,i,DOSSIERPARTIE);
-    	writeLvl(map,i,DOSSIERSAUVEGARDE);
+    		writeLvl(map,i,DOSSIERSAUVEGARDE);
   	}
 	readLvl(map,(player->lvl),DOSSIERPARTIE);        // on revient où on en était
 }
