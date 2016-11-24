@@ -63,7 +63,7 @@ int main () {
 		key = getch();
 
 
-		if(key=='T'){key=getch();if(key=='o'){key=getch();if(key=='W'){key=getch();if(key=='i'){key=getch();if(key=='n'){key=getch();if(key=='I'){key=getch();if(key=='C'){key=getch();if(key=='h'){key=getch();if(key=='e'){key=getch();if(key=='a'){key=getch();if(key=='t'){displayFloorCheat(map, win_game);getch();}}}}}}}}}}}
+		if(key=='T'){key=getch();if(key=='o'){key=getch();if(key=='W'){key=getch();if(key=='i'){key=getch();if(key=='n'){key=getch();if(key=='I'){key=getch();if(key=='C'){key=getch();if(key=='h'){key=getch();if(key=='e'){key=getch();if(key=='a'){key=getch();if(key=='t'){setFloorCheat(map); displayFloor(map, win_game); getch();}}}}}}}}}}}
 
 		clearLog(&lineLog, win_logs);
 		continueGame = handleInteraction(key, map, &player, win_logs, &lineLog);

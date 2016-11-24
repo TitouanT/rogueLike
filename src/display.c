@@ -234,7 +234,7 @@ void selectionScreen(WINDOW *win){
 		switch (key) {
 			case '\n'       : quit = TRUE; break;
 			case 'q'        : quit = TRUE; break;
-			
+
 			case KEY_UP     : if(selectedGame >= 2) selectedGame--; break;
 			case KEY_DOWN   : if(selectedGame <= 2) selectedGame++; break;
 
@@ -407,58 +407,29 @@ void displayFloor(t_cell map[LINES][COLUMNS], WINDOW *win) {
 	gotoEndGame();
 }
 
-void displayFloorCheat (t_cell map[LINES][COLUMNS], WINDOW *win) {
+/**
+	* \brief Affiche toute la map chargée
+	*	\fn void setFloorCheat(t_cell map[LINES][COLUMNS])
+	* \param map Carte à marquer comme explorée
+	*/
+void setFloorCheat(t_cell map[LINES][COLUMNS]) {
 
 	int i, j;
 
 	for (i = 0; i < LINES; i++) {
-		wmove(win, i+1,1);
 		for (j = 0; j < COLUMNS; j++) {
-			//if (map[i][j].isDiscovered) {
-				switch (map[i][j].type) {
-					case EMPTY: 	 printCell(GENERAL_COLOR,' ', win); break;
-					case DOORWAY:
-						switch (map[i][j].state) {
-							case dNONE:  printCell(CORRIDOR_COLOR,'c', win); break;
-							case dOPEN:  printCell(OPENED_DOOR,'c', win); break;
-							case dCLOSE: printCell(GENERAL_COLOR,'c', win); break;
-							default: printCell(GENERAL_COLOR,'?', win); break;
-						}
-						break;
-					case ROOM:
-						if (map[i][j].nbObject == 0) printCell(ROOM_COLOR,' ', win);
-						else {
-							switch (map[i][j].obj[0]) {
-								case STAIRS_UP: printCell(OBJECTS_COLOR,'<', win); break;
-								case STAIRS_DOWN: printCell(OBJECTS_COLOR, '>', win); break;
-								case objNONE: printCell(ROOM_COLOR,' ', win); break;
-							}
-						}
-						break;
-
-					case CORRIDOR:
-						if (map[i][j].nbObject == 0) printCell(CORRIDOR_COLOR,'c', win);
-						else {
-							switch (map[i][j].obj[0]) {
-								case STAIRS_UP: printCell(OBJECTS_COLOR,'<', win); break;
-								case STAIRS_DOWN: printCell(OBJECTS_COLOR, '>', win); break;
-								case objNONE: printCell(CORRIDOR_COLOR,' ', win); break;
-							}
-						}
-						break;
-
-					case WALL: 		 printCell(WALL_COLOR,'c', win); break;
-				}
-			//}
-			//else printCell(GENERAL_COLOR,' ', win); //EMPTY
+			map[i][j].isDiscovered = TRUE;
 		}
-
 	}
-	wrefresh(win);
-	gotoEndGame();
+
 }
 
-/* Cette fonction efface la fenetre de log */
+/**
+	* \brief Efface la fenetre de log
+	*	\fn void clearLog(int *line, WINDOW *win)
+	* \param line Ligne acutelle du log
+	* \param win Fenetre des logs
+	*/
 void clearLog(int *line, WINDOW *win){
 
 	int i, j;
@@ -474,7 +445,13 @@ void clearLog(int *line, WINDOW *win){
 	gotoEndGame();
 }
 
-/* Cette fonction ajoute une ligne à la fenetre de log */
+/**
+	* \brief Ajoute une ligne à la fenetre de log
+	*	\fn void addLog(char * message, int * line, WINDOW *win)
+	* \param message Message à ajouter
+	* \param line Ligne acutelle du log
+	* \param win Fenetre des logs
+	*/
 void addLog(char * message, int * line, WINDOW *win){
 
 	wattron(win, COLOR_PAIR(GENERAL_COLOR));
@@ -498,7 +475,16 @@ void addLog(char * message, int * line, WINDOW *win){
 	gotoEndGame();
 }
 
-/* Cette fonction affiche le joueur sur le jeu */
+
+/**
+	* \brief Affiche le joueur sur le jeu
+	*	\fn void displayPlayer(t_character player, t_cell mat[LINES][COLUMNS], WINDOW *win, WINDOW *logs, int *line)
+	* \param player Joueur
+	* \param mat Carte du jeu
+	* \param win Fenêtre du jeu
+	* \param logs Fenetre des logs
+	* \param line Ligne acutelle du log
+	*/
 void displayPlayer(t_character player, t_cell mat[LINES][COLUMNS], WINDOW *win, WINDOW *logs, int *line){
 
 	if(mat[player.line][player.column].type == ROOM){
@@ -522,7 +508,13 @@ void displayPlayer(t_character player, t_cell mat[LINES][COLUMNS], WINDOW *win, 
 
 }
 
-
+/**
+	* \brief Affiche une barre
+	*	\fn void printBar(int value, int max, WINDOW * win)
+	* \param value Taille de la barre remplie
+	* \param max Taille de la taille totale
+	* \param win Fenêtre où afficher la barre
+	*/
 void printBar(int value, int max, WINDOW * win){
 
 	int i;
@@ -540,11 +532,16 @@ void printBar(int value, int max, WINDOW * win){
 	}
 
 	wrefresh(win);
-
 	wattroff(win, COLOR_PAIR(BAR_RED));
 
 }
 
+/**
+	* \brief Affiche les statistiques du joueur
+	*	\fn void displayStats(t_character player, WINDOW *win)
+	* \param player Joueur à afficher ses statistiques
+	* \param win Fenêtre où afficher les statistiques
+	*/
 void displayStats(t_character player, WINDOW *win){
 
 	int i, j;
