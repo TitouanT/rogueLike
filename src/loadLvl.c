@@ -44,14 +44,23 @@ void readLvl ( t_cell map[][COLUMNS], int nbLvl, char dossier[]) {
 
 void writePosition ( t_character *player, char dossier[]) {
 /* enregistre les paramètres du joueur dans les dossiers de sauvegardes */
-
-	FILE * lvlFile;
-	lvlFile = fopen (dossier, "w");
-	fprintf (lvlFile, "%s %i %i %i %i %i %i %i", (*player).name, (*player).line, (*player).column, (*player).lvl, (*player).hp, (*player).pw, (*player).xp, (*player).nbMove);
-	fprintf(lvlFile, "\n");
-	fclose(lvlFile);
+	char fileName[40]="position.txt";
+	strcat(dossier,fileName);
+	FILE * positionFile;
+	positionFile = fopen (dossier, "w");
+	fprintf (positionFile, "%s %i %i %i %i %i %i %i", (*player).name, (*player).line, (*player).column, (*player).lvl, (*player).hp, (*player).pw, (*player).xp, (*player).nbMove);
+	fprintf(positionFile, "\n");
+	fclose(positionFile);
 }
 
+void readPosition ( t_character *player, char dossier[]){
+	char fileName[40]="position.txt";
+	strcat(dossier,fileName);
+	FILE * positionFile;
+	positionFile = fopen (dossier, "w");
+	fscanf(positionFile, "%s %i %i %i %i %i %i %i", (*player).name, &(*player).line, &(*player).column, &(*player).lvl, &(*player).hp, &(*player).pw, &(*player).xp, &(*player).nbMove);
+	fclose(positionFile);
+}
 
 
 void writeLvl ( t_cell map[][COLUMNS], int nbLvl, char dossier[]) {
@@ -85,7 +94,7 @@ void writeLvl ( t_cell map[][COLUMNS], int nbLvl, char dossier[]) {
 }
 
 
-void initGameMap(t_cell map[LINES][COLUMNS], int choix, int nbFichierSauvegarde){
+void initGameMap(t_cell map[LINES][COLUMNS], int choix, int nbFichierSauvegarde, t_character *player){
 /* Initialise les niveaux soit une nouvelle partie soit une sauvegarde */
 
 		char texte[20];
@@ -104,6 +113,7 @@ void initGameMap(t_cell map[LINES][COLUMNS], int choix, int nbFichierSauvegarde)
 				readLvl(map,i,DOSSIERPARTIE);
     				writeLvl(map,i,DOSSIERPARTIE);
   			}
+			readPosition(*&player,DOSSIERSAUVEGARDE);
 		}
 
 }
