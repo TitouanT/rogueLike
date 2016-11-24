@@ -170,11 +170,10 @@ void drawBox(int startX, int startY, int sizeX, int sizeY, WINDOW *win, char col
 
 /**
 	* \brief Affichage du contenu d'une sauvegarde
-	*	\fn void printSaveInfos(WINDOW *win, int leftShift, int topShift, int saveNB)
+	*	\fn void printSaveInfos(WINDOW *win, int saveNB, int selectedGame)
 	* \param win Fenêtre où afficher les informations
-	* \param leftShift Décalage vertical en partant de la gauche
-	* \param topShift Décalage horizontal en partant du haut
 	* \param saveNB Numéro de la sauvegarde
+	* \param selectedGame Numéro du jeu sélectionné
 	*/
 void printSaveInfos(WINDOW *win, int saveNB, int selectedGame){
 
@@ -229,12 +228,13 @@ void selectionScreen(WINDOW *win){
 		printSaveInfos(win, 3, selectedGame);
 
 		wrefresh(win);
+
 		key = getch();
 
 		switch (key) {
 			case '\n'       : quit = TRUE; break;
 			case 'q'        : quit = TRUE; break;
-			case KEY_RETURN : quit = TRUE; break;
+			
 			case KEY_UP     : if(selectedGame >= 2) selectedGame--; break;
 			case KEY_DOWN   : if(selectedGame <= 2) selectedGame++; break;
 

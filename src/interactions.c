@@ -3,6 +3,9 @@
 #include "filePos.h"
 #include "random.h"
 
+#define NB_ERROR_MESSAGES 26
+typedef struct {char * msg;} t_msg;
+
 
 void traiterPorte(t_cell map[LINES][COLUMNS],  t_character *player, int key, WINDOW * win, int *lineLog);
 void traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW * win, int *lineLog);
@@ -13,13 +16,12 @@ int askConfirmationToQuit(WINDOW * win, int *lineLog);
 //   return rand() % (b - a + 1) + a;
 // }
 
-typedef struct {char * msg;} t_msg;
 
-t_msg tipos[24] = {"whatever", "ha! ha! ha! ha!", "believe it, baby", "it’s all good", "not likely", "you wish", "say what ?", "yeah, sure", "probably", "you are so hosed", "if you want", "uhhh… no",
-"like i care", "yep", "uh huh", "yo so funny", "are you crazy ?", "not even", "oh yeah", "true dat", "fer sure", "sorry", "42", "could be"};
+t_msg tipos[NB_ERROR_MESSAGES] = {"whatever", "ha! ha! ha! ha!", "believe it, baby", "it's all good", "not likely", "you wish", "say what ?", "yeah, sure", "probably", "you are so hosed", "if you want", "uhhh... no",
+"like i care", "yep", "uh huh", "yo so funny", "are you crazy ?", "not even", "oh yeah", "true dat", "fer sure", "sorry", "42", "could be", "r u mad?", "STOP DOING THAT"};
 
-void wrongKey (WINDOW * win, int *lineLog) {
-	addLog (tipos[randab (0, 24)].msg, lineLog, win);
+void wrongKey(WINDOW * win, int *lineLog) {
+	addLog(tipos[randab(0, NB_ERROR_MESSAGES)].msg, lineLog, win);
 }
 
 /* Fonction principale d'intéraction avec l'utilisateur */
