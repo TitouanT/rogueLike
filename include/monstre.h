@@ -2,7 +2,6 @@
 #define MONSTER_H
 
 #include "cell.h"
-#include "mapConst.h"
 
 #define NB_MONSTER_MAX 50
 #define NB_MONSTER_MIN 20
