@@ -340,22 +340,37 @@ void chooseLink (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 
 }
 
+void randomFreePlace (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom, int iRoom, int * line, int * col) {
+	if (!isBetween(iRoom, 0, nbRoom - 1)) iRoom = rand()%nbRoom;
+	int secu = 0;
+	do {
+		*line = randab(1, rooms[iRoom].height - 1) + rooms[iRoom].line;
+		*col = randab(1, rooms[iRoom].width - 1) + rooms[iRoom].column;
+		secu++;
+	} while (map[*line][*col].nbObject != 0 && secu < 100);
+	if (map[*line][*col].nbObject != 0) *line = *col = -1;
+}
+
 void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 	int rEnterance = rand()%nbRoom, rExit, lineEn, colEn, lineEx, colEx;
 
 	do rExit = rand()%nbRoom; while (rEnterance == rExit);
 
-	lineEn = randab(1, rooms[rEnterance].height - 1) + rooms[rEnterance].line;
-	colEn = randab(1, rooms[rEnterance].width - 1) + rooms[rEnterance].column;
+	randomFreePlace (map, rooms, nbRoom, rEnterance, &lineEn, &colEn);
+	randomFreePlace (map, rooms, nbRoom, rExit, &lineEx, &colEx);
 
-	lineEx = randab(1, rooms[rExit].height - 1) + rooms[rExit].line;
-	colEx = randab(1, rooms[rExit].width - 1) + rooms[rExit].column;
+	// lineEn = randab(1, rooms[rEnterance].height - 1) + rooms[rEnterance].line;
+	// colEn = randab(1, rooms[rEnterance].width - 1) + rooms[rEnterance].column;
+	//
+	// lineEx = randab(1, rooms[rExit].height - 1) + rooms[rExit].line;
+	// colEx = randab(1, rooms[rExit].width - 1) + rooms[rExit].column;
 
 	map[lineEn][colEn].obj[map[lineEn][colEn].nbObject] = STAIRS_DOWN;
 	map[lineEx][colEx].obj[map[lineEn][colEn].nbObject] = STAIRS_UP;
 
 	map[lineEn][colEn].nbObject++;
 	map[lineEx][colEx].nbObject++;
+
 
 
 }
