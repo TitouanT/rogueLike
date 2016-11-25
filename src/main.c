@@ -60,11 +60,8 @@ int main () {
 
 	key = getch();
 
-
-	if(key=='T'){key=getch();if(key=='o'){key=getch();if(key=='W'){key=getch();if(key=='i'){key=getch();if(key=='n'){key=getch();if(key=='I'){key=getch();if(key=='C'){key=getch();if(key=='h'){key=getch();if(key=='e'){key=getch();if(key=='a'){key=getch();if(key=='t'){setFloorCheat(map); displayFloor(map, win_game); getch();}}}}}}}}}}}
-
 	clearLog(&lineLog, win_logs);
-	continueGame = handleInteraction(key, map, &player, win_logs, &lineLog);
+	continueGame = handleInteraction(key, map, &player, win_logs, win_game, &lineLog);
 
 	markDiscoverRoom(map, player);
 
@@ -74,14 +71,15 @@ int main () {
 
 	}
 
-	if(player.hp <= 0){
+	// ----- UNE FOIS QUE LE JEU EST TERMINE ----- //
+
+	// Si le joueur est sorti du jeu sans vouloir quitter manuellement
+	if(key != 'q' && key != 'Q'){
 		WINDOW *win_end = newwin(heightScreen, widthScreen, 0, 0);
 		displayEnd(player, win_end);
-
+		while((key = getch()) != 'q' && key != 'Q');
 	}
 
-
-	while((key = getch()) != 'q' && key != 'Q');
 
 	endwin(); //Fermeture de la fenetre
 	return 0;
