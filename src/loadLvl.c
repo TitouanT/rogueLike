@@ -162,6 +162,5 @@ int bFileSaveEmpty(int nbFichierSauvegarde){
 	}else{
 		i=TRUE;
 	}
-	printf("%i",i);
 	return i;
 }
