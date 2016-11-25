@@ -554,29 +554,24 @@ void printBar(int value, int max, WINDOW * win){
 	*/
 void displayStats(t_character player, WINDOW *win){
 
-	int i, j;
-
-	// On clear la zone de stats
-	for(i = 1 ; i < LINES_STATS -1; i++){
-		for(j = 1 ; j < COLS_STATS -1; j++){
-			wmove(win, i, j);
-			wprintw(win, " ");
-		}
-	}
+	clearArea(win, 1, 1, COLS_STATS - 1, LINES_STATS - 1);
 
 
 	wmove(win, 1, 1);
-	//wprintw(win, "                                                  ");
 	wrefresh(win);
-	wmove(win, 1, 1);
-	wprintw(win, "Etage     : %i / %i | Déplacement : %d", player.lvl, NB_LVL -1, player.nbMove);
-	wmove(win, 2, 1);
-	wprintw(win, "HP        : ");
+
+	mvwprintw(win, 1, 1, "Etage     : %i / %i", player.lvl, NB_LVL -1);
+	mvwprintw(win, 2, 1, "HP        : ");
 	printBar(player.hp, MAX_HP, win);
-	wmove(win, 3, 1);
-	wprintw(win, "Puissance : %i", player.pw);
-	wmove(win, 4, 1);
-	wprintw(win, "XP        : %i", player.xp);
+
+	mvwprintw(win, 3, 1, "Puissance : %i", player.pw);
+	mvwprintw(win, 4, 1, "XP        : %i", player.xp);
+
+	mvwprintw(win, 1, 30, "Nourriture   : ");
+	printBar(player.food/10, MAX_FOOD/10, win);
+	mvwprintw(win, 2, 30, "Déplacements : %i", player.nbMove);
+	mvwprintw(win, 3, 30, "Joueur       : %s", player.name);
+
 	wrefresh(win);
 
 }
