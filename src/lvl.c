@@ -9,8 +9,8 @@
 
 
 /*Ces define ne sont pas dans nomVar.txt car local à ce fichier (lvl.c)*/
-#define ROOM_NB_MIN 3//3
-#define ROOM_NB_MAX 9//9
+#define ROOM_NB_MIN 5//3
+#define ROOM_NB_MAX 10//9
 #define ROOM_MAX_HEIGHT 10
 #define ROOM_MAX_WIDTH 20
 #define ROOM_MIN_LEN 5
@@ -372,10 +372,10 @@ void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 	map[lineEx][colEx].nbObject++;
 }
 
-void randomFloor (t_cell map[LINES][COLUMNS]) {
-	int nbRoom = randab (ROOM_NB_MIN, ROOM_NB_MAX + 1), i;
+void randomFloor (t_cell map[LINES][COLUMNS], int lvl) {
+	int nbRoom = randab (ROOM_NB_MIN + lvl, ROOM_NB_MAX + 1 + lvl), i;
 
-	t_room rooms[ROOM_NB_MAX];
+	t_room rooms[ROOM_NB_MAX + NB_LVL];
 	initFloor (map);
 
 	for (i = 0; i < nbRoom; i++) {
