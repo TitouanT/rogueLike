@@ -116,6 +116,7 @@ int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso){
   int column = perso->column;
 
 	if(!canPlayerMove(perso)) return FALSE;
+	augmenterFaim(perso);
 
 	perso->nbMove++;
 

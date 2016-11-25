@@ -1,7 +1,7 @@
 #ifndef MAPCONST_H
 #define MAPCONST_H
 
-#define DEBUG FALSE
+#define DEBUG TRUE
 
 #define LINES 36//20
 #define COLUMNS 118//90
@@ -14,5 +14,7 @@
 #define ROOM_MIN_LEN 5
 
 #define OBJ_NB_MAX 20
+
+#define AV_NB_FOOD_ROOM 2
 
 #endif /* end of include guard: MAPCONST_H */

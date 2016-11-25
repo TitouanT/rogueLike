@@ -390,6 +390,7 @@ void displayFloor(t_cell map[LINES][COLUMNS], WINDOW *win) {
 							switch (map[i][j].obj[0]) {
 								case STAIRS_UP: printCell(OBJECTS_COLOR,'<', win); break;
 								case STAIRS_DOWN: printCell(OBJECTS_COLOR, '>', win); break;
+								case FOOD: printCell(OBJECTS_COLOR, '%', win); break;
 								case objNONE: printCell(ROOM_COLOR,' ', win); break;
 							}
 						}

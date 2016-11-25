@@ -135,7 +135,6 @@ void eatFood(t_character *player, t_cell map[LINES][COLUMNS]){
 	*/
 int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, WINDOW * win_logs, int *lineLog){
 
-	augmenterFaim(player);
 
   switch (key) {
 		case 'k': case KEY_UP:    move_perso(UP,    map, player);  break;
