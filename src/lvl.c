@@ -5,22 +5,9 @@
 #include "filePos.h"
 #include "random.h"
 
-#define DEBUG FALSE
-
-
-/*Ces define ne sont pas dans nomVar.txt car local à ce fichier (lvl.c)*/
-#define ROOM_NB_MIN 5//3
-#define ROOM_NB_MAX 10//9
-#define ROOM_MAX_HEIGHT 10
-#define ROOM_MAX_WIDTH 20
-#define ROOM_MIN_LEN 5
 #define MIN(a,b) (a < b) ? a : b
 
-typedef struct {int line, column, height, width;} t_room;
-typedef struct {
-	int nbRoom;
-	t_room rooms[ROOM_NB_MAX];
-} t_lvl;
+
 
 t_lvl gLvl[NB_LVL];
 int gLvlId = NB_LVL;
@@ -350,7 +337,7 @@ void chooseLink (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 	for (i = 0; i < nbRoom-1; i++)
 		if (isThereAnExistingPath(map, rooms[i], rooms[i+1]) == FALSE) // a direct path doesn't exist yet.
 			createLink(map, rooms[i], rooms[i+1]);
-		else printf("blob ");
+		else printf("bloooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooob ");
 
 }
 
@@ -370,6 +357,8 @@ void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 
 	map[lineEn][colEn].nbObject++;
 	map[lineEx][colEx].nbObject++;
+
+
 }
 
 void randomFloor (t_cell map[LINES][COLUMNS], int lvl) {

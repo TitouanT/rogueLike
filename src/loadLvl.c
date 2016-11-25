@@ -144,8 +144,8 @@ void saveGame(t_cell map[LINES][COLUMNS], t_character *player, int nbFichierSauv
 	writePosition(player,DOSSIERSAUVEGARDE);
 	for(int i=0;i<NB_LVL;i++){       // on copie tout dans le dossier sauvegarde
 		readLvl(map,i,DOSSIERPARTIE);
-    		writeLvl(map,i,DOSSIERSAUVEGARDE);
-  	}
+    writeLvl(map,i,DOSSIERSAUVEGARDE);
+  }
 	readLvl(map,(player->lvl),DOSSIERPARTIE);        // on revient où on en était
 }
 

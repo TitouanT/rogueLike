@@ -1,7 +1,7 @@
 #ifndef CELL_H
 #define CELL_H
 
-#define OBJ_NB_MAX 20
+#include "mapConst.h"
 
 typedef enum {EMPTY, WALL, ROOM, CORRIDOR, DOORWAY} t_type;
 
@@ -18,7 +18,10 @@ typedef struct {
 	t_object obj[OBJ_NB_MAX];
 } t_cell;
 
+typedef struct {int line, column, height, width;} t_room;
+typedef struct {
+	int nbRoom;
+	t_room rooms[ROOM_NB_MAX];
+} t_lvl;
+
 #endif /* end of include guard: CELL_H */
-
-
-// Ne pas toucher
