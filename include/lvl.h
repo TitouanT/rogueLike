@@ -2,12 +2,11 @@
 #define LVL_H
 
 #include "cell.h"
-#include "mapConst.h"
 
 
 void randomFloor (t_cell map[LINES][COLUMNS], int lvl);
 int isBetween (int val, int a, int b);
-void queryLvlData (t_lvl tabLvl[NB_LVL]);	
+void queryLvlData (t_lvl tabLvl[NB_LVL]);
 /*
 
 on a besoin de :

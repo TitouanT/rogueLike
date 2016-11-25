@@ -1,7 +1,6 @@
 #include <ncurses.h>
 #include <string.h>
 #include "cell.h"
-#include "mapConst.h"
 #include "filePos.h"
 #include "random.h"
 
