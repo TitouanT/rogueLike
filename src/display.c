@@ -232,7 +232,12 @@ void printSaveInfos(WINDOW *win, int saveNB, int selectedGame){
 	mvwprintw(win, topShift+1, leftShift+1, "Sauvegarde n°%i : ", saveNB);
 
 	wattron(win, COLOR_PAIR(GENERAL_COLOR));
-	mvwprintw(win, topShift+2, leftShift+1, "     Emplacement vide", saveNB);
+	if(bFileSaveEmpty(saveNB)==FALSE){
+		mvwprintw(win, topShift+2, leftShift+1, "     Emplacement vide", saveNB);
+	}else{
+		mvwprintw(win, topShift+2, leftShift+1, "     Reprendre la partie", saveNB);
+	}
+
 	wattroff(win, COLOR_PAIR(GENERAL_COLOR));
 
 
@@ -284,8 +289,10 @@ void selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *playe
 		}
 	}
 
-	if(key == '\n'){
-		initGameMap(map, 1, selectedGame, player);
+	if(key == '\n' && bFileSaveEmpty(selectedGame)==TRUE ){
+			initGameMap(map,1,selectedGame,player);
+	}else{
+			initGameMap(map,0,selectedGame,player);
 	}
 
 }

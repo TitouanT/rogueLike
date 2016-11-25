@@ -2,7 +2,7 @@
 #include <string.h>
 #include "cell.h"
 #include "filePos.h"
-#include "random.h"
+#include "tools.h"
 
 #define MIN(a,b) (a < b) ? a : b
 
@@ -97,7 +97,7 @@ t_room randomRoom (t_cell map[][COLUMNS], t_room * rooms, int nbRoom, int *nbTot
 	t_room room;
 	acc = 0;
 	do {
-		// choose a random position for the top left corner of the room
+		// choose a tools position for the top left corner of the room
 		room.line = randab(1, LINES - ROOM_MIN_LEN - 1);
 		room.column = randab(1, COLUMNS - ROOM_MIN_LEN - 1);
 

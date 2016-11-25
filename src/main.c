@@ -40,10 +40,6 @@ int main () {
 	WINDOW *win_stats = createWindow(0, LINES_GAME, COLS_STATS, LINES_STATS, "Statistiques");
 	WINDOW *win_logs  = createWindow(COLS_GAME, 0, COLS_LOGS, LINES_LOGS, "Logs");
 
-
-
-	// Initialisation des niveaux
-	initGameMap(map,0,0,&player);
 	// On déplace le joueur au spawn de celui-ci
 	move2spawn(map, &player, STAIRS_DOWN);
 	// On affiche les objectifs

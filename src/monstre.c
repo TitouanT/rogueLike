@@ -1,5 +1,5 @@
 #include "monstre.h"
-#include "random.h"
+#include "tools.h"
 
 int nbMonster;
 t_monster monsters[NB_MONSTER_MAX];
