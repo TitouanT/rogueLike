@@ -124,6 +124,30 @@ void printLineCenter(char *msg, int widthScreen, int line, WINDOW *win){
 
 }
 
+
+/**
+* \brief Efface le contenu d'un zone d'une fenêtre
+*	\fn void clearArea(WINDOW *win, int startX, int startY, int width, int height)
+* \param win Nom de la fenêtre à affecter
+* \param startX Décalage horizontal de la zone à effacer (en partant du point 0 à gauche)
+* \param startY Décalage vertical de la zone à effacer (en partant du point 0 à en haut)
+* \param width Largeur de la zone à effacer
+* \param height Hauteur de la zone à effacer
+*/
+void clearArea(WINDOW *win, int startX, int startY, int width, int height){
+
+	int i, j;
+
+	for(i = startY ; i < height ; i++){
+		for(j = startX ; j < width ; j++){
+			mvwprintw(win, i, j, " ");
+		}
+	}
+	wrefresh(win);
+
+}
+
+
 /**
 	* \brief Affichage une boîte de taille et de coordonnées données
 	*	\fn void drawBox(int startX, int startY, int sizeX, int sizeY, WINDOW *win, char color)
@@ -138,6 +162,8 @@ void drawBox(int startX, int startY, int sizeX, int sizeY, WINDOW *win, char col
 
 	int x = startX, y = startY;
 	int i;
+
+	clearArea(win, startX, startY, sizeX, sizeY);
 
 	switch (color) {
 		case 'r' : wattron(win, COLOR_PAIR(PLAYER_C_COLOR));  break;
@@ -202,10 +228,12 @@ void printSaveInfos(WINDOW *win, int saveNB, int selectedGame){
 
 /**
 	* \brief Gère l'affichage de l'écran de sélection de la sauvegarde
-	*	\fn void selectionScreen(WINDOW *win)
+	*	\fn void selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *player)
 	* \param win Fenêtre où afficher les informations
+	* \param map Carte du joueur
+	* \param player Infos du joueur
 	*/
-void selectionScreen(WINDOW *win){
+void selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *player){
 
 	int lines, columns;
 	getmaxyx(win,lines,columns);
@@ -243,7 +271,9 @@ void selectionScreen(WINDOW *win){
 		}
 	}
 
-
+	if(key == '\n'){
+		initGameMap(map, 1, selectedGame, player);
+	}
 
 }
 
@@ -305,27 +335,6 @@ void deleteWindow(WINDOW *window){
 
 }
 
-/**
-	* \brief Efface le contenu d'un zone d'une fenêtre
-	*	\fn void clearArea(WINDOW *win, int startX, int startY, int width, int height)
-	* \param win Nom de la fenêtre à affecter
-	* \param startX Décalage horizontal de la zone à effacer (en partant du point 0 à gauche)
-	* \param startY Décalage vertical de la zone à effacer (en partant du point 0 à en haut)
-	* \param width Largeur de la zone à effacer
-	* \param height Hauteur de la zone à effacer
-	*/
-void clearArea(WINDOW *win, int startX, int startY, int width, int height){
-
-	int i, j;
-
-	for(i = startY ; i < height ; i++){
-		for(j = startX ; j < width ; j++){
-			mvwprintw(win, i, j, " ");
-		}
-	}
-	wrefresh(win);
-
-}
 
 /**
 	* \brief Déplace le curseur en dessous du jeu

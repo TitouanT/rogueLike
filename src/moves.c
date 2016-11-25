@@ -1,3 +1,12 @@
+/**
+ * \file
+ * \brief Fonctions de déplacement du joueur sur la carte
+ * \author MOTTIER Emeric
+ * \author PELLOIN Valentin
+ * \author TEYSSIER Titouan
+ * \version 1.1
+ * \date 25 novembre 2016
+ */
 #include <ncurses.h>
 #include "global.h"
 #include "filePos.h"

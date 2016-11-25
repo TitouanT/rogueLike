@@ -70,14 +70,14 @@
 
 
 /** Touche retour en arrière (celle de ncurses ne fonctionne pas) */
-#define KEY_RETURN 127
+#define KEY_RETURN 263
 
 
 
 void displayObjectives(int *lineLog, WINDOW *win_logs);
 void init_screen();
 void startScreen(WINDOW *win);
-void selectionScreen(WINDOW *win);
+void selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *player);
 WINDOW *createWindow(int startX, int startY, int width, int height, char * label);
 void deleteWindow(WINDOW *window);
 void displayFloor(t_cell map[LINES][COLUMNS], WINDOW *win);
