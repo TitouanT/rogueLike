@@ -5,7 +5,7 @@
 
 typedef enum {EMPTY, WALL, ROOM, CORRIDOR, DOORWAY} t_type;
 
-typedef enum {objNONE, STAIRS_UP, STAIRS_DOWN} t_object; // il sera lpus long un jour :)
+typedef enum {objNONE, STAIRS_UP, STAIRS_DOWN, FOOD} t_object; // il sera lpus long un jour :)
 
 typedef enum {DEFAULT_STATE, dNONE, dOPEN, dCLOSE, LIGHT, DARK} t_state;
 

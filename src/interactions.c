@@ -62,7 +62,7 @@ t_msg error_msg[NB_ERROR_MESSAGES] = {
 
 
 
-/**m
+/**
 	* \brief Message d'erreur si une touche appuyée n'existe pas
 	*	\fn void wrongKey(WINDOW * win, int *lineLog)
 	* \param win Fenêtre de logs où afficher le message
@@ -72,6 +72,26 @@ void wrongKey(WINDOW * win, int *lineLog) {
 	addLog(error_msg[randab(0, NB_ERROR_MESSAGES)].msg, lineLog, win);
 }
 
+/**
+	* \brief Teste si le joueur peut se déplacer (si il a suffisament de nourriture)
+	*	\fn int canPlayerMove(t_character *player)
+	* \param player Joueur
+	* \return FALSE si le joueur ne peut pas se déplacer
+	*/
+int canPlayerMove(t_character *player){
+	return player->food != 0;
+}
+
+/**
+	* \brief Augmente la faim du joueur de façon aléatoire
+	*	\fn void augmenterFaim(t_character *player)
+	* \param player Joueur
+	*/
+void augmenterFaim(t_character *player){
+	if(canPlayerMove(player)){
+		if(randab(0,3) == 0) (player->food)--;
+	}
+}
 
 
 /**
@@ -87,6 +107,7 @@ void wrongKey(WINDOW * win, int *lineLog) {
 	*/
 int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, WINDOW * win_logs, int *lineLog){
 
+	augmenterFaim(player);
 
   switch (key) {
 		case 'k': case KEY_UP:    move_perso(UP,    map, player);  break;

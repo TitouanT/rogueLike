@@ -114,6 +114,9 @@ int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso){
 
   int line   = perso->line;
   int column = perso->column;
+
+	if(!canPlayerMove(perso)) return FALSE;
+
 	perso->nbMove++;
 
   // On veut regarder si il est possible d'aller en haut

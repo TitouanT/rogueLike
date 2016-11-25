@@ -3,6 +3,8 @@
 
 #define MAX_HP 10
 
+#define MAX_FOOD 100
+
 typedef struct {
 	char name[100];
 	int line;
@@ -12,6 +14,7 @@ typedef struct {
 	int pw;
 	int xp;
 	int nbMove;
+	int food;
 } t_character;
 
 #endif /* end of include guard: CHARACTER_H */
