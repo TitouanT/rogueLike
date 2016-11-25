@@ -70,7 +70,7 @@
 
 
 /** Touche retour en arrière (celle de ncurses ne fonctionne pas) */
-#define KEY_RETURN 127
+#define KEY_RETURN 263
 
 
 

@@ -1,10 +1,10 @@
 /**
- * \file main.c
+ * \file
  * \brief Programme principal du jeu.
  * \author MOTTIER Emeric
  * \author PELLOIN Valentin
  * \author TEYSSIER Titouan
- * \version 0.1
+ * \version 1.2
  * \date 12 novembre 2016
  */
 
@@ -55,30 +55,27 @@ int main () {
 
 
 
-
-
 	/* Ici se déroule tout le jeu */
 	while (continueGame) {
 
-		key = getch();
+	key = getch();
 
 
-		if(key=='T'){key=getch();if(key=='o'){key=getch();if(key=='W'){key=getch();if(key=='i'){key=getch();if(key=='n'){key=getch();if(key=='I'){key=getch();if(key=='C'){key=getch();if(key=='h'){key=getch();if(key=='e'){key=getch();if(key=='a'){key=getch();if(key=='t'){setFloorCheat(map); displayFloor(map, win_game); getch();}}}}}}}}}}}
+	if(key=='T'){key=getch();if(key=='o'){key=getch();if(key=='W'){key=getch();if(key=='i'){key=getch();if(key=='n'){key=getch();if(key=='I'){key=getch();if(key=='C'){key=getch();if(key=='h'){key=getch();if(key=='e'){key=getch();if(key=='a'){key=getch();if(key=='t'){setFloorCheat(map); displayFloor(map, win_game); getch();}}}}}}}}}}}
 
-		clearLog(&lineLog, win_logs);
-		continueGame = handleInteraction(key, map, &player, win_logs, &lineLog);
+	clearLog(&lineLog, win_logs);
+	continueGame = handleInteraction(key, map, &player, win_logs, &lineLog);
 
-		markDiscoverRoom(map, player);
+	markDiscoverRoom(map, player);
 
-		displayFloor(map, win_game);
-		displayPlayer(player, map, win_game, win_logs, &lineLog);
-		displayStats(player, win_stats);
+	displayFloor(map, win_game);
+	displayPlayer(player, map, win_game, win_logs, &lineLog);
+	displayStats(player, win_stats);
 
 	}
 
 
-
-
 	endwin(); //Fermeture de la fenetre
 	return 0;
+
 }
