@@ -616,17 +616,17 @@ void displayEnd(t_character player, WINDOW *win){
 	int yShift, xShift;
 	getmaxyx(win, lines, columns);
 
+	wattron(win, COLOR_PAIR(COLOR_TITLE));
+
+
 	if(player.hp <= 0){
-
-
 		yShift = (lines - 6) / 2;
 		xShift = (columns - 83) / 2;
 
-		wattron(win, COLOR_PAIR(COLOR_TITLE));
 		wmove(win, yShift++, xShift);
-
 		printASCIIText("include/game_over.txt", &yShift, xShift, win);
 	}
+	
 
 	wrefresh(win);
 }

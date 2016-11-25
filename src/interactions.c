@@ -137,7 +137,7 @@ void eatFood(t_character *player, t_cell map[LINES][COLUMNS]){
 	* \return FALSE si l'utilisateur à demandé de quitter la partie
 	* \return TRUE sinon
 	*/
-int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, WINDOW * win_logs, int *lineLog){
+int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, WINDOW * win_logs, WINDOW * win_game, int *lineLog){
 
 
   switch (key) {
@@ -158,10 +158,11 @@ int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, 
     case 'q' : return FALSE;
     case 'Q' : return !askConfirmationToQuit(win_logs, lineLog);
 
-		//case '_' : handleCheat(map, player, win_logs, lineLog); break;
+		case '_' : cheat(win_logs, win_game, map, player);
+
 
 		//case 'n' : randomFloor(map, 5); move2spawn(map, player, STAIRS_DOWN); break; // a mettre dans cheat
-		case 'N' : randomFloor(map, 5); move2spawn(map, player, STAIRS_UP); break; // a mettre dans cheat
+		//case 'N' : randomFloor(map, 5); move2spawn(map, player, STAIRS_UP); break; // a mettre dans cheat
 
 		default: wrongKey(win_logs, lineLog);
 	}
@@ -318,4 +319,26 @@ int askConfirmationToQuit(WINDOW * win, int *lineLog) {
 		default: wrongKey(win, lineLog);
 	}
 	return FALSE;
+}
+
+
+void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_character *player){
+
+	char cheatSTR[COLS_LOGS];
+
+	echo();
+
+	mvwprintw(win_logs, LINES_LOGS-3, 1, "Indiquez votre code de triche :");
+	move(LINES_LOGS-2, COLS_GAME+2);
+
+	wrefresh(win_logs);
+	getstr(cheatSTR);
+	noecho();
+
+	if(strcmp(cheatSTR, "ToWinICheat") == 0){
+		displayFloor(map, win_game);
+	}
+	if(strcmp(cheatSTR, "kill") == 0){
+		player->hp = 0;
+	}
 }

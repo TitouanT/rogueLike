@@ -184,8 +184,12 @@ int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso){
 		perso->nbMove++;
 		augmenterFaim(perso);
 
+		/// Perte de vie si la personne a trop faim.
+		if(perso->food <= 0){
+			if(didItHappen(10)) (perso->hp)--;
+		}
 
-		// On enleve des points de vie à chaque mouvement si le joueur est malde
+		/// Perte de vie si le joueur est malade.
 		if(perso->isSick){
 			(perso->hp)--;
 			// Probabilité de ne plus être malade
