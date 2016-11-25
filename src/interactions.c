@@ -154,7 +154,7 @@ int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, 
     case '\n':      traiterEntree(map, player,  win_logs,     lineLog); break;
     case 'o' :      traiterPorte (map, player, key, win_logs, lineLog); break;
     case 'c' :      traiterPorte (map, player, key, win_logs, lineLog); break;
-
+		case 's' :  		saveGame(map, player); break;//
     case 'q' : return FALSE;
     case 'Q' : return !askConfirmationToQuit(win_logs, lineLog);
 

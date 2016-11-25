@@ -12,7 +12,6 @@
 char DOSSIERPARTIE[40]="./partie/";
 char DOSSIERSAUVEGARDE[40]="./partie/sauvegarde";
 
-
 void readLvl ( t_cell map[][COLUMNS], int nbLvl, char dossier[]) {
 /* Lit un fichier dans un dossier donné */
 
@@ -42,23 +41,27 @@ void readLvl ( t_cell map[][COLUMNS], int nbLvl, char dossier[]) {
 	fclose(lvlFile);
 }
 
-void writePosition ( t_character *player, char dossier[]) {
+void writePosition ( t_character player, char dossier[]) {
 /* enregistre les paramètres du joueur dans les dossiers de sauvegardes */
-	char fileName[40]="position.txt";
-	strcat(dossier,fileName);
+	char fileName[50];
+	strcat(fileName,dossier);
+	char texte[40]="position.txt";
+	strcat(fileName,texte);
 	FILE * positionFile;
-	positionFile = fopen (dossier, "w");
-	fprintf (positionFile, "%s %i %i %i %i %i %i %i", (*player).name, (*player).line, (*player).column, (*player).lvl, (*player).hp, (*player).pw, (*player).xp, (*player).nbMove);
+	positionFile = fopen (fileName, "w");
+	fprintf (positionFile, "%i %i %i %i %i %i %i ", (player).line, (player).column, (player).lvl, (player).hp, (player).pw, (player).xp, (player).nbMove);
 	fprintf(positionFile, "\n");
 	fclose(positionFile);
 }
 
 void readPosition ( t_character *player, char dossier[]){
-	char fileName[40]="position.txt";
-	strcat(dossier,fileName);
+	char fileName[50];
+	strcat(fileName,dossier);
+	char texte[40]="position.txt";
+	strcat(fileName,texte);
 	FILE * positionFile;
-	positionFile = fopen (dossier, "w");
-	fscanf(positionFile, "%s %i %i %i %i %i %i %i", (*player).name, &(*player).line, &(*player).column, &(*player).lvl, &(*player).hp, &(*player).pw, &(*player).xp, &(*player).nbMove);
+	positionFile = fopen (fileName, "r");
+	fscanf(positionFile, "%i %i %i %i %i %i %i ", &(*player).line, &(*player).column, &(*player).lvl, &(*player).hp, &(*player).pw, &(*player).xp, &(*player).nbMove);
 	fclose(positionFile);
 }
 
@@ -96,26 +99,25 @@ void writeLvl ( t_cell map[][COLUMNS], int nbLvl, char dossier[]) {
 
 void initGameMap(t_cell map[LINES][COLUMNS], int choix, int nbFichierSauvegarde, t_character *player){
 /* Initialise les niveaux soit une nouvelle partie soit une sauvegarde */
-
 		char texte[20];
-		if(choix==0){
-			for(int i=0;i<NB_LVL;i++){
-   			randomFloor(map, i);
-    		writeLvl(map,i,DOSSIERPARTIE);
-  		}
-		readLvl(map,0,DOSSIERPARTIE);
-		}else{
-			sprintf(texte, "%i", nbFichierSauvegarde);
-			strcat(DOSSIERSAUVEGARDE,texte);
-			char texte2[20]="/";
-			strcat(DOSSIERSAUVEGARDE,texte2);
-			for(int i=0;i<NB_LVL;i++){       // on copie tout dans le dossier sauvegarde
-				readLvl(map,i,DOSSIERPARTIE);
-    				writeLvl(map,i,DOSSIERPARTIE);
-  			}
-			readPosition(*&player,DOSSIERSAUVEGARDE);
+		sprintf(texte, "%i", nbFichierSauvegarde);
+		strcat(DOSSIERSAUVEGARDE,texte);
+		char texte2[20]="/";
+		strcat(DOSSIERSAUVEGARDE,texte2);
+			if(choix==0){
+				for(int i=0;i<NB_LVL;i++){
+					randomFloor(map, i);
+					writeLvl(map,i,DOSSIERSAUVEGARDE);
+					writeLvl(map,i,DOSSIERPARTIE);
+				}
+			}else{
+				for(int i=0;i<NB_LVL;i++){       // on copie tout dans le dossier sauvegarde
+						readLvl(map,i,DOSSIERSAUVEGARDE);
+						writeLvl(map,i,DOSSIERPARTIE);
+				}
+			//readPosition(*&player,DOSSIERSAUVEGARDE);
 		}
-
+		readLvl(map,(player->lvl),DOSSIERPARTIE);
 }
 
 void changeLvl(t_cell map[LINES][COLUMNS], t_character *player, int dir){
@@ -133,37 +135,34 @@ void changeLvl(t_cell map[LINES][COLUMNS], t_character *player, int dir){
 	}
 }
 
-void saveGame(t_cell map[LINES][COLUMNS], t_character *player, int nbFichierSauvegarde){
+void saveGame(t_cell map[LINES][COLUMNS], t_character *player){
 /* Fonction permettant de sauvegarder la partie à l'instant t */
-
-	char texte[20];
-	sprintf(texte, "%i", nbFichierSauvegarde);
-	strcat(DOSSIERSAUVEGARDE,texte);
-	char texte2[20]="/";
-	strcat(DOSSIERSAUVEGARDE,texte2);
-	writePosition(player,DOSSIERSAUVEGARDE);
+	writeLvl(map,(player->lvl),DOSSIERPARTIE);
 	for(int i=0;i<NB_LVL;i++){       // on copie tout dans le dossier sauvegarde
 		readLvl(map,i,DOSSIERPARTIE);
-    writeLvl(map,i,DOSSIERSAUVEGARDE);
-  }
+		writeLvl(map,i,DOSSIERSAUVEGARDE);
+	}
+	writePosition(*player,DOSSIERSAUVEGARDE);
 	readLvl(map,(player->lvl),DOSSIERPARTIE);        // on revient où on en était
 }
 
 int bFileSaveEmpty(int nbFichierSauvegarde){
 /* Fonction vérifiant si un dossier est vide */
-
-	char texte[20];
-	sprintf(texte, "%i", nbFichierSauvegarde);
-	strcat(DOSSIERSAUVEGARDE,texte);
-	char texte2[20]="/0.txt";
-	strcat(DOSSIERSAUVEGARDE,texte2);
+	int i;
+	char fileName[50];
 	FILE * lvlFile;
-	lvlFile = fopen (DOSSIERSAUVEGARDE, "r");
+	strcat(fileName,DOSSIERSAUVEGARDE);
+	char texte[10];
+	sprintf(texte, "%i", nbFichierSauvegarde);
+	strcat(fileName,texte);
+	char texte2[10]="/0.txt";
+	strcat(fileName,texte2);
+	lvlFile = fopen(fileName, "r");
 	if(lvlFile == NULL){
-		return FALSE;
-	}
-	else{
-		return TRUE;
+		i=FALSE;
+	}else{
+		i=TRUE;
 	}
 	fclose(lvlFile);
+	return i;
 }
