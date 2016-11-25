@@ -1,6 +1,5 @@
-#include "cell.h"
-#include "mapConst.h"
-#include "monster.h"
+#include "monstre.h"
+#include "random.h"
 
 int nbMonster;
 t_monster monsters[NB_MONSTER_MAX];

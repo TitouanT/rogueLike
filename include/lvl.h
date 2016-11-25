@@ -5,7 +5,7 @@
 #include "mapConst.h"
 
 
-void randomFloor (t_cell map[LINES][COLUMNS]);
+void randomFloor (t_cell map[LINES][COLUMNS], int lvl);
 int isBetween (int val, int a, int b);
 
 /*

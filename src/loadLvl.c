@@ -100,7 +100,7 @@ void initGameMap(t_cell map[LINES][COLUMNS], int choix, int nbFichierSauvegarde,
 		char texte[20];
 		if(choix==0){
 			for(int i=0;i<NB_LVL;i++){
-   			randomFloor(map);
+   			randomFloor(map, i);
     			writeLvl(map,i,DOSSIERPARTIE);
   		}
 		readLvl(map,0,DOSSIERPARTIE);
