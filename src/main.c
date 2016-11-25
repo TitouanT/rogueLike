@@ -31,7 +31,7 @@ int main () {
 	deleteWindow(win_start);
 
 	WINDOW *win_choice = newwin(heightScreen, widthScreen, 0, 0);
-	selectionScreen(win_choice);
+	selectionScreen(win_choice, map, &player);
 
 	deleteWindow(win_choice);
 

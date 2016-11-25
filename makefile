@@ -56,16 +56,19 @@ include/random.h:
 
 
 # Permet de mettre à jour automatiquement le jeu
-upgrade:
-	make install
+upgrade: createFolders
 	git pull
 	make
 
 # Pour l'installation, on commence par supprimer les données du jeu
-install: clean
-	mkdir partie
+install: createFolders
 	make
 
+createFolders: clean
+	mkdir partie
+	mkdir partie/sauvegarde1
+	mkdir partie/sauvegarde2
+	mkdir partie/sauvegarde3
 
 clean:
 	rm -rf *.o rogueLike
