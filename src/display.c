@@ -284,8 +284,10 @@ void selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *playe
 		}
 	}
 
-	if(key == '\n'){
-		initGameMap(map, 1, selectedGame, player);
+	if(key == '\n' /*&& bFileSaveEmpty(selectedGame)==TRUE */){
+			initGameMap(map,1,selectedGame,player);
+	}else{
+			initGameMap(map,0,selectedGame,player);
 	}
 
 }
