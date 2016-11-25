@@ -67,6 +67,15 @@ void init_screen(){
 	refresh();
 }
 
+/**
+	* \brief Afficher le contenu d'un fichier
+	* Permet d'afficher des messages ASCII
+	*	\fn void printASCIIText(char * file, int * line, int xShift, WINDOW *win)
+	* \param file Fichier ASCII à afficher
+	* \param line Ligne où afficher le message
+	* \param xShift Décalage horizontal à partir de la gauche
+	* \param win Fenetre où afficher le message
+	*/
 void printASCIIText(char * file, int * line, int xShift, WINDOW *win){
 	FILE *texte;
 	char letter;
