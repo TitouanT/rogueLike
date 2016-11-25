@@ -375,7 +375,7 @@ void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 void randomFloor (t_cell map[LINES][COLUMNS], int lvl) {
 	int nbRoom = randab (ROOM_NB_MIN + lvl, ROOM_NB_MAX + 1 + lvl), i;
 
-	t_room rooms[ROOM_NB_MAX];
+	t_room rooms[ROOM_NB_MAX + NB_LVL];
 	initFloor (map);
 
 	for (i = 0; i < nbRoom; i++) {
