@@ -150,19 +150,18 @@ int bFileSaveEmpty(int nbFichierSauvegarde){
 /* Fonction vérifiant si un dossier est vide */
 	int i;
 	char fileName[50];
-	FILE * lvlFile;
-	strcat(fileName,DOSSIERSAUVEGARDE);
+	strcpy(fileName,DOSSIERSAUVEGARDE);
 	char texte[10];
 	sprintf(texte, "%i", nbFichierSauvegarde);
 	strcat(fileName,texte);
 	char texte2[10]="/0.txt";
 	strcat(fileName,texte2);
-	lvlFile = fopen(fileName, "r");
-	if(lvlFile == NULL){
+
+	if(fopen(fileName, "r") == NULL){
 		i=FALSE;
 	}else{
 		i=TRUE;
 	}
-	fclose(lvlFile);
+	printf("%i",i);
 	return i;
 }
