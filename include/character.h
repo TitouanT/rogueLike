@@ -15,6 +15,7 @@ typedef struct {
 	int xp;
 	int nbMove;
 	int food;
+	int isSick;
 } t_character;
 
 #endif /* end of include guard: CHARACTER_H */

@@ -566,12 +566,19 @@ void displayStats(t_character player, WINDOW *win){
 	printBar(player.hp, MAX_HP, win);
 
 	mvwprintw(win, 3, 1, "Puissance : %i", player.pw);
-	mvwprintw(win, 4, 1, "XP        : %i", player.xp);
+	mvwprintw(win, 4, 1, "Vie       : %i", player.xp);
 
 	mvwprintw(win, 1, 30, "Nourriture   : ");
 	printBar(player.food/10, MAX_FOOD/10, win);
 	mvwprintw(win, 2, 30, "Déplacements : %i", player.nbMove);
 	mvwprintw(win, 3, 30, "Joueur       : %s", player.name);
+
+	// Si le joueur est malade
+	if(player.isSick){
+		wattron(win, COLOR_PAIR(GENERAL_COLOR));
+		mvwprintw(win, 4, 30, "Empoisonné");
+		wattroff(win, COLOR_PAIR(GENERAL_COLOR));
+	}
 
 	wrefresh(win);
 

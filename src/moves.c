@@ -112,40 +112,39 @@ int bIsWalkable(t_cell cell){
 
 int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso){
 
+	int success = FALSE;
   int line   = perso->line;
   int column = perso->column;
 
 	if(!canPlayerMove(perso)) return FALSE;
-	augmenterFaim(perso);
 
-	perso->nbMove++;
 
   // On veut regarder si il est possible d'aller en haut
   if(direction == UP){
     if(line > 0 && bIsWalkable(mat[line-1][column])){
       perso->line -= 1;
-      return TRUE;
+			success = TRUE;
     }
   }
 
   if(direction == DOWN){
     if(line+1 < LINES && bIsWalkable(mat[line+1][column])){
       perso->line += 1;
-      return TRUE;
+			success = TRUE;
     }
   }
 
   if(direction == LEFT){
     if(column > 0 && bIsWalkable(mat[line][column-1])){
       perso->column -= 1;
-      return TRUE;
+			success = TRUE;
     }
   }
 
   if(direction == RIGHT){
     if(column+1 < COLUMNS && bIsWalkable(mat[line][column+1])){
       perso->column += 1;
-      return TRUE;
+			success = TRUE;
     }
   }
 
@@ -153,7 +152,7 @@ int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso){
 		if(line > 0 && column > 0 && bIsWalkable(mat[line - 1][column - 1])){
 			perso->column -= 1;
 			perso->line   -= 1;
-			return TRUE;
+			success = TRUE;
 		}
 	}
 
@@ -161,7 +160,7 @@ int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso){
     if(line > 0 && column + 1 < COLUMNS  && bIsWalkable(mat[line - 1][column + 1])){
 			perso->column += 1;
 			perso->line   -= 1;
-      return TRUE;
+			success = TRUE;
     }
   }
 
@@ -169,7 +168,7 @@ int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso){
     if(line+1 < LINES && column > 0 && bIsWalkable(mat[line + 1][column - 1])){
 			perso->column -= 1;
 			perso->line   += 1;
-      return TRUE;
+			success = TRUE;
     }
   }
 
@@ -177,13 +176,24 @@ int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso){
     if(line+1 < LINES && column + 1 < COLUMNS  && bIsWalkable(mat[line + 1][column + 1])){
 			perso->column += 1;
 			perso->line   += 1;
-      return TRUE;
+			success = TRUE;
     }
   }
 
+	if(success == TRUE){
+		perso->nbMove++;
+		augmenterFaim(perso);
 
 
-	perso->nbMove--;
-  return FALSE;
+		// On enleve des points de vie à chaque mouvement si le joueur est malde
+		if(perso->isSick){
+			(perso->hp)--;
+			// Probabilité de ne plus être malade
+			if(didItHappen(35)) perso->isSick = FALSE;
+
+		}
+	}
+
+  return success;
 
 }
