@@ -74,24 +74,52 @@ void wrongKey(WINDOW * win, int *lineLog) {
 
 /**
 	* \brief Teste si le joueur peut se déplacer (si il a suffisament de nourriture)
+	* Le joueur a 25% de chance de pouvoir se déplacer même en ayant plus de nourriture
 	*	\fn int canPlayerMove(t_character *player)
 	* \param player Joueur
-	* \return FALSE si le joueur ne peut pas se déplacer
+	* \return TRUE si le joueur peut se déplacer
 	*/
 int canPlayerMove(t_character *player){
-	return player->food != 0;
+	if(player->food == 0){
+		return didItHappen(25);
+	}
+	return TRUE;
 }
 
 /**
 	* \brief Augmente la faim du joueur de façon aléatoire
+	* Le joueur a 30% de chance de perdre de la nourriture à chaque mouvement
 	*	\fn void augmenterFaim(t_character *player)
 	* \param player Joueur
 	*/
 void augmenterFaim(t_character *player){
 	if(canPlayerMove(player)){
-		if(randab(0,3) == 0) (player->food)--;
+		if(player->food > 0 && didItHappen(30)) (player->food)--;
 	}
 }
+
+
+/**
+	* \brief Permet au joueur de manger la nourriture sur laquelle il se trouve
+	*	\fn void eatFood(t_character *player, t_cell map[LINES][COLUMNS])
+	* \param player Joueur
+	* \param map Carte où se trouve le joueur
+	*/
+void eatFood(t_character *player, t_cell map[LINES][COLUMNS]){
+
+
+	int minFood = 20; /// minFood : Apport minimal de la nourriture à la faim du joueur
+	int maxFood = 30; /// maxFood : Apport maximal de la nourriture à la faim du joueur
+
+
+	map[player->line][player->column].obj[0] = objNONE;
+	map[player->line][player->column].nbObject = 0;
+
+	player->food += randab(minFood, maxFood);
+	if(player->food > MAX_FOOD) player->food = MAX_FOOD;
+
+}
+
 
 
 /**
@@ -241,12 +269,18 @@ void traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW *win,
       case STAIRS_DOWN:
         if(player->lvl > 0){
           changeLvl(map,player, -1);
-	}
+				}
         else {
           addLog("Vous êtes déjà en bas !", lineLog, win);
         }
         break;
-
+			case FOOD:
+				if(player->food >= MAX_FOOD){
+					addLog("Vous n'avez plus faim !", lineLog, win);
+				}
+				else {
+					eatFood(player, map);
+				}
       default: break ;
 
     }
