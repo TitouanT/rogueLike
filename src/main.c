@@ -19,7 +19,7 @@ int main () {
 
 	initRandom();
 	t_cell map[LINES][COLUMNS];
-	t_character player = {"valentin", 0, 0, 0, 1, 10, 10, 0, MAX_FOOD, FALSE};
+	t_character player = {"valentin", 0, 0, 0, 10, 10, 10, 0, MAX_FOOD, FALSE};
 
 
 	init_screen();
@@ -77,8 +77,11 @@ int main () {
 	if(player.hp <= 0){
 		WINDOW *win_end = newwin(heightScreen, widthScreen, 0, 0);
 		displayEnd(player, win_end);
-		getch();
+
 	}
+
+
+	while((key = getch()) != 'q' && key != 'Q');
 
 	endwin(); //Fermeture de la fenetre
 	return 0;
