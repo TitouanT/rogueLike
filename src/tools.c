@@ -1,4 +1,4 @@
-#include "random.h"
+#include "tools.h"
 
 void initRandom () {
 	srand(time(NULL));

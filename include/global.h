@@ -14,7 +14,7 @@
 #include "display.h"
 #include "moves.h"
 #include "loadLvl.h"
-#include "random.h"
+#include "tools.h"
 #include "interactions.h"
 
 

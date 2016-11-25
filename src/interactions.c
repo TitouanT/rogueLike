@@ -10,7 +10,7 @@
 #include <ncurses.h>
 #include "global.h"
 #include "filePos.h"
-#include "random.h"
+#include "tools.h"
 
 /** Nombre de messages d'erreurs différents */
 #define NB_ERROR_MESSAGES 26
