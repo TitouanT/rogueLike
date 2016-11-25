@@ -29,3 +29,13 @@ int mapping (int value, int min, int max, int destMin, int destMax) {
 					=> ? = ((destMax - destMin) * (value - min) / (max - min)) + destMin
 				*/
 }
+
+
+int isBetween (int val, int a, int b) { // return TRUE if val is in [a,b]
+	if (a <= val && b >= val) return TRUE;
+	else return FALSE;
+}
+int intervalOverlaping (int a, int b, int c, int d) { // return TRUE if the intersection of [a,b] and [c,d] is not empty
+	if (isBetween (a, c, d) || isBetween (b, c, d) || isBetween (c, a, b) || isBetween (d, a, b)) return TRUE;
+	else return FALSE;
+}

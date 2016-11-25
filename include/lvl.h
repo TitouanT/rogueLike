@@ -5,7 +5,6 @@
 
 
 void randomFloor (t_cell map[LINES][COLUMNS], int lvl);
-int isBetween (int val, int a, int b);
 void queryLvlData (t_lvl tabLvl[NB_LVL]);
 /*
 

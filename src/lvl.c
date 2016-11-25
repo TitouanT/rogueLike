@@ -76,15 +76,8 @@ void initFloor (t_cell map[LINES][COLUMNS]) {
 	}
 }
 
-int isBetween (int val, int a, int b) { // return TRUE if val is in [a,b]
-	if (a <= val && b >= val) return TRUE;
-	else return FALSE;
-}
 
-int intervalOverlaping (int a, int b, int c, int d) { // return TRUE if the intersection of [a,b] and [c,d] is not empty
-	if (isBetween (a, c, d) || isBetween (b, c, d) || isBetween (c, a, b) || isBetween (d, a, b)) return TRUE;
-	else return FALSE;
-}
+
 
 int areInContact (t_room r1, t_room r2) { // return TRUE if the room are in Contact
 	if (intervalOverlaping(r2.line, r2.line + r2.height, r1.line, r1.line + r1.height)
