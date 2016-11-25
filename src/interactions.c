@@ -111,12 +111,16 @@ void eatFood(t_character *player, t_cell map[LINES][COLUMNS]){
 	int minFood = 20; /// minFood : Apport minimal de la nourriture à la faim du joueur
 	int maxFood = 30; /// maxFood : Apport maximal de la nourriture à la faim du joueur
 
-
 	map[player->line][player->column].obj[0] = objNONE;
 	map[player->line][player->column].nbObject = 0;
 
 	player->food += randab(minFood, maxFood);
 	if(player->food > MAX_FOOD) player->food = MAX_FOOD;
+
+	// Possibilité de tomber malade en mangeant de la nourriture avariée
+	if(didItHappen(CHANCE_SICK)){
+		player->isSick = TRUE;
+	}
 
 }
 

@@ -87,5 +87,6 @@ void clearLog(int *line, WINDOW *win);
 void displayPlayer(t_character player, t_cell mat[LINES][COLUMNS], WINDOW *win, WINDOW *logs, int *line);
 void displayStats(t_character player, WINDOW *win);
 void setFloorCheat(t_cell map[LINES][COLUMNS]);
+void displayEnd(t_character player, WINDOW *win);
 
 #endif

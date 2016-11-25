@@ -67,6 +67,26 @@ void init_screen(){
 	refresh();
 }
 
+void printASCIIText(char * file, int * line, int xShift, WINDOW *win){
+	FILE *texte;
+	char letter;
+
+	texte = fopen(file, "r");
+
+	if(texte != NULL) {
+
+		fscanf(texte, "%c", &letter);
+
+		while(!feof(texte)){
+			if(letter == '\n') wmove(win, (*line)++, xShift);
+			else wprintw(win, "%c", letter);
+			fscanf(texte, "%c", &letter);
+		}
+		fclose(texte);
+	}
+
+
+}
 
 /**
 	* \brief Affichage de l'écran de départ du jeu
@@ -76,9 +96,7 @@ void init_screen(){
 void startScreen(WINDOW *win){
 
 	int lines, columns;
-	char letter;
 	char * continuer = "Appuyez sur une touche pour jouer.";
-	FILE *logo;
 
 	getmaxyx(win,lines,columns);
 
@@ -86,22 +104,8 @@ void startScreen(WINDOW *win){
 	int xShift = (columns - 83) / 2;
 
 	wattron(win, COLOR_PAIR(COLOR_TITLE));
-
 	wmove(win, line++, xShift);
-
-	logo = fopen("include/logo.txt", "r");
-
-	if(logo != NULL) {
-
-		fscanf(logo, "%c", &letter);
-
-		while(!feof(logo)){
-			if(letter == '\n') wmove(win, line++, xShift);
-			else wprintw(win, "%c", letter);
-			fscanf(logo, "%c", &letter);
-		}
-		fclose(logo);
-	}
+	printASCIIText("include/logo.txt", &line, xShift, win);
 
 	mvwprintw(win, line + 1, (columns - strlen(continuer)) / 2, "%s", continuer);
 
@@ -566,13 +570,47 @@ void displayStats(t_character player, WINDOW *win){
 	printBar(player.hp, MAX_HP, win);
 
 	mvwprintw(win, 3, 1, "Puissance : %i", player.pw);
-	mvwprintw(win, 4, 1, "XP        : %i", player.xp);
+	mvwprintw(win, 4, 1, "Vie       : %i", player.xp);
 
 	mvwprintw(win, 1, 30, "Nourriture   : ");
 	printBar(player.food/10, MAX_FOOD/10, win);
 	mvwprintw(win, 2, 30, "Déplacements : %i", player.nbMove);
 	mvwprintw(win, 3, 30, "Joueur       : %s", player.name);
 
+	// Si le joueur est malade
+	if(player.isSick){
+		wattron(win, COLOR_PAIR(GENERAL_COLOR));
+		mvwprintw(win, 4, 30, "Empoisonné");
+		wattroff(win, COLOR_PAIR(GENERAL_COLOR));
+	}
+
 	wrefresh(win);
 
+}
+
+/**
+	* \brief Afficher la fin du jeu
+	*	\fn void displayEnd(t_character player, WINDOW *win)
+	* \param player Joueur
+	* \param win Fenêtre
+	*/
+void displayEnd(t_character player, WINDOW *win){
+
+	int lines, columns;
+	int yShift, xShift;
+	getmaxyx(win, lines, columns);
+
+	if(player.hp <= 0){
+
+
+		yShift = (lines - 6) / 2;
+		xShift = (columns - 83) / 2;
+
+		wattron(win, COLOR_PAIR(COLOR_TITLE));
+		wmove(win, yShift++, xShift);
+
+		printASCIIText("include/game_over.txt", &yShift, xShift, win);
+	}
+
+	wrefresh(win);
 }

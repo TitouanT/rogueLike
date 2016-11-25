@@ -36,7 +36,7 @@
 # Roguelike
 doc
 rogueLike
-partie/*.txt
+partie
 asciiFont
 index.php
 github-sync.php
