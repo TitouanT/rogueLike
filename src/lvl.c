@@ -284,23 +284,29 @@ int isThereAnExistingPath (t_cell map[][COLUMNS], t_room r1, t_room r2) {
 	t_pos start, finish, head;
 	int path[LINES][COLUMNS], l, c, seen = 1, notSeen = 0;
 
-	for (l = 0; l < LINES; l++) for (c = 0; c < COLUMNS; c++) path[l][c] = notSeen;
+	for (l = 0; l < LINES; l++)
+		for (c = 0; c < COLUMNS; c++)
+			path[l][c] = notSeen;
 
 	start.line = r1.line + 1;
 	start.column = r1.column + 1;
 
 	finish.line = r2.line + 1;
 	finish.column = r2.column + 1;
+	FILE * file = fopen ("err", "a");
+	fprintf(file, "wall: %d, finish: %d\n", WALL, map[finish.line][finish.column].type);
 
 	file_init();
 	file_ajouter (start);
 	path[start.line][start.column] = seen;
-	while (file_est_vide() == 0 && (file_retirer(&head), (head.line != finish.line || head.column != finish.column))) {
+	path[finish.line][finish.column] = 4;
+	while (file_est_vide() == 0 && path[finish.line][finish.column] != seen) {
+		file_retirer(&head);
 		l = head.line;
 		c = head.column;
 
 		if ( l+1 < LINES && path[l + 1][c] == notSeen && (map[l + 1][c].type == CORRIDOR || map[l + 1][c].type == ROOM || map[l + 1][c].type == DOORWAY)) {
-			/*       if legal   AND  not already seen  AND (                                          walkable                                            )  */
+			/*  if legal   AND  not already seen        AND (                                          walkable                                            )  */
 			head.column = c;
 			head.line = l + 1;
 			path[l+1][c] = seen;
@@ -326,7 +332,14 @@ int isThereAnExistingPath (t_cell map[][COLUMNS], t_room r1, t_room r2) {
 		}
 	}
 	file_supprimer();
-	if (head.line == finish.line && head.column == finish.column) return TRUE;
+	int i, j;
+	for (i = 0; i < LINES; i++) {
+		for (j = 0; j < COLUMNS; j++) fprintf (file, "%c", (path[i][j] == 4) ? 'X' : (path[i][j]) ? '#' : ' ');
+		fprintf (file, "\n");
+	}
+	fprintf (file, "\n");
+	fclose(file);
+	if (path[finish.line][finish.column] == seen) return TRUE;
 	else return FALSE;
 
 }
@@ -336,7 +349,7 @@ void chooseLink (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 	for (i = 0; i < nbRoom-1; i++)
 		if (isThereAnExistingPath(map, rooms[i], rooms[i+1]) == FALSE) // a direct path doesn't exist yet.
 			createLink(map, rooms[i], rooms[i+1]);
-		else printf("bloooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooob ");
+		else while(1);
 
 }
 
