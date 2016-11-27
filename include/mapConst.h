@@ -1,7 +1,7 @@
 #ifndef MAPCONST_H
 #define MAPCONST_H
 
-#define DEBUG TRUE
+#define DEBUG FALSE
 
 #define LINES 36//20
 #define COLUMNS 118//90
