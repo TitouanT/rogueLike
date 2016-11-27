@@ -29,3 +29,21 @@ int mapping (int value, int min, int max, int destMin, int destMax) {
 					=> ? = ((destMax - destMin) * (value - min) / (max - min)) + destMin
 				*/
 }
+
+int car2val (char car) {
+	if (car >= 'a' && car <= 'z') return car - 'a';
+	else if (car >= 'A' && car <= 'Z') return car - 'A';
+	return -1;
+}
+
+char up2low (char car) {
+	if (car >= 'A' && car <= 'Z') return car - 'A' + 'a';
+	else if (car >= 'a' && car <= 'z') return car;
+	else return -1;
+}
+
+char low2up (char car) {
+	if (car >= 'A' && car <= 'Z') return car;
+	else if (car >= 'a' && car <= 'z') return car - 'a' + 'A';
+	else return -1;
+}
