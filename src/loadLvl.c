@@ -49,7 +49,7 @@ void writePosition ( t_character player, char dossier[]) {
 	strcat(fileName,texte);
 	FILE * positionFile;
 	positionFile = fopen (fileName, "w");
-	fprintf (positionFile, "%i %i %i %i %i %i %i ", (player).line, (player).column, (player).lvl, (player).hp, (player).pw, (player).xp, (player).nbMove);
+	fprintf (positionFile, "%i %i %i %i %i %i %i %i ", (player).line, (player).column, (player).lvl, (player).hp, (player).pw, (player).xp, (player).nbMove, (player).food);
 	fprintf(positionFile, "\n");
 	fclose(positionFile);
 }
@@ -61,7 +61,7 @@ void readPosition ( t_character *player, char dossier[]){
 	strcat(fileName,texte);
 	FILE * positionFile;
 	positionFile = fopen (fileName, "r");
-	fscanf(positionFile, "%i %i %i %i %i %i %i ", &(*player).line, &(*player).column, &(*player).lvl, &(*player).hp, &(*player).pw, &(*player).xp, &(*player).nbMove);
+	fscanf(positionFile, "%i %i %i %i %i %i %i %i ", &(*player).line, &(*player).column, &(*player).lvl, &(*player).hp, &(*player).pw, &(*player).xp, &(*player).nbMove, &(*player).food);
 	fclose(positionFile);
 }
 
@@ -107,17 +107,18 @@ void initGameMap(t_cell map[LINES][COLUMNS], int choix, int nbFichierSauvegarde,
 			if(choix==0){
 				for(int i=0;i<NB_LVL;i++){
 					randomFloor(map, i);
-					writeLvl(map,i,DOSSIERSAUVEGARDE);
 					writeLvl(map,i,DOSSIERPARTIE);
 				}
+				readLvl(map,(player->lvl),DOSSIERPARTIE);
+				move2spawn(map, player, STAIRS_DOWN);
 			}else{
 				for(int i=0;i<NB_LVL;i++){       // on copie tout dans le dossier sauvegarde
 						readLvl(map,i,DOSSIERSAUVEGARDE);
 						writeLvl(map,i,DOSSIERPARTIE);
 				}
-			//readPosition(*&player,DOSSIERSAUVEGARDE);
-		}
-		readLvl(map,(player->lvl),DOSSIERPARTIE);
+				readPosition(*&player,DOSSIERSAUVEGARDE);
+				readLvl(map,(player->lvl),DOSSIERPARTIE);
+			}
 }
 
 void changeLvl(t_cell map[LINES][COLUMNS], t_character *player, int dir){
