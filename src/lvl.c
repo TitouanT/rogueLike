@@ -17,8 +17,10 @@
 #define MIN(a,b) (a < b) ? a : b
 
 
-
+/** tableau qui contient tous les étages de la partie */
 t_lvl gLvl[NB_LVL];
+
+/** permet de savoir quel étage est actuellement en cours de génération */
 int gLvlId = NB_LVL;
 
 /**
@@ -108,8 +110,6 @@ void initFloor (t_cell map[LINES][COLUMNS]) {
 
 	}
 }
-
-
 
 /**
   * \brief fonction booléenne pour savoir si deux pieces se touchent
