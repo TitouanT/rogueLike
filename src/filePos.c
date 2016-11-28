@@ -76,7 +76,7 @@ void file_ajouter (t_pos n) {
 /**
   * \brief supprime la file
   * procède à la libération de la mémoire alouée.
-  * \fn void file_ajouter (t_pos n)
+  * \fn void file_supprimer ()
   */
 void file_supprimer () {
 	t_element * tmp;

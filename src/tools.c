@@ -149,7 +149,7 @@ char up2low (char car) {
 
 /**
   * \brief convertit une lettre en majuscule
-  * \fn char up2low (char car)
+  * \fn char low2up (char car)
   * \param car la lettre que l'on veut en majuscule
   * \return La lettre correspondante en majuscule si c'est une lettre
   * \return -1 sinon

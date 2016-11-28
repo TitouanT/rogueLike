@@ -124,11 +124,12 @@ void eatFood(t_character *player, t_cell map[LINES][COLUMNS]){
 
 /**
 	* \brief Fonction principale d'intéraction avec l'utilisateur
-	*	\fn int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, WINDOW * win_logs, int *lineLog)
+	* \fn int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, WINDOW * win_logs, WINDOW * win_game, int *lineLog)
 	* \param key Touche que l'utilisateur a appuyé
 	* \param map Carte où se trouve le joueur
 	* \param player Joueur
 	* \param win_logs Fenêtre de logs où afficher le message
+	* \param win_game Fenêtre de jeu
 	* \param lineLog Ligne d'écriture du message
 	* \return FALSE si l'utilisateur à demandé de quitter la partie
 	* \return TRUE sinon
@@ -148,12 +149,12 @@ int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, 
 		case 'n': move_perso(DOWN_RIGHT, map, player); break;
 
 
-    case '\n':      traiterEntree(map, player,  win_logs,     lineLog); break;
-    case 'o' :      traiterPorte (map, player, key, win_logs, lineLog); break;
-    case 'c' :      traiterPorte (map, player, key, win_logs, lineLog); break;
-		case 's' :  		saveGame(map, player); addLog("Partie Sauvegardée", lineLog, win_logs); break;//
-    case 'q' : return FALSE;
-    case 'Q' : return !askConfirmationToQuit(win_logs, lineLog);
+    	case '\n': traiterEntree(map, player,  win_logs,     lineLog); break;
+    	case 'o' : traiterPorte (map, player, key, win_logs, lineLog); break;
+    	case 'c' : traiterPorte (map, player, key, win_logs, lineLog); break;
+		case 's' : saveGame(map, player); addLog("Partie Sauvegardée", lineLog, win_logs); break;//
+    	case 'q' : return FALSE;
+    	case 'Q' : return !askConfirmationToQuit(win_logs, lineLog);
 
 		case '_' : cheat(win_logs, win_game, map, player); break;
 

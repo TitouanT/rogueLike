@@ -203,7 +203,7 @@ t_pos chooseRandomWall (t_room r) {
 
 /**
   * \brief placement au hasard d'une porte fermée ou ouverte
-  * \fn void putRandomDoor (t_cell map[][COLUMNS], t_pos *pos)
+  * \fn void putRandomDoor (t_cell map[][COLUMNS], t_pos pos)
   * \param map carte représenant l'étage
   * \param pos position ou on peut placer une porte
   */
