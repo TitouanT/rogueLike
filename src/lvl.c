@@ -384,7 +384,7 @@ void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 	map[lineEx][colEx].nbObject++;
 
 	// Génération de la nourriture aléatoirement sur la carte
-	for (i = 0; i < AV_NB_FOOD_ROOM * nbRoom; i++) {
+	for (i = 0; i < (int)AV_NB_FOOD_ROOM * nbRoom; i++) {
 		randomFreePlace(map, rooms, nbRoom, -1, &lineFood, &colFood);
 		map[lineFood][colFood].obj[map[lineFood][colFood].nbObject].type = FOOD;
 		map[lineFood][colFood].obj[map[lineFood][colFood].nbObject].isDiscovered = FALSE;
