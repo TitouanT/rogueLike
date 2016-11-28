@@ -50,6 +50,7 @@ void writePosition ( t_character player, char dossier[]) {
 	FILE * positionFile;
 	positionFile = fopen (fileName, "w");
 	fprintf (positionFile, "%i %i %i %i %i %i %i %i ", (player).line, (player).column, (player).lvl, (player).hp, (player).pw, (player).xp, (player).nbMove, (player).food);
+	fprintf(positionFile, "%i ", (player).isSick);
 	fprintf(positionFile, "\n");
 	fclose(positionFile);
 }
