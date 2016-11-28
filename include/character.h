@@ -17,20 +17,20 @@
 
 /**
  * \struct t_object
- * \brief contient les information nécessaire à la manipulation d'un personnage
+ * \brief contient les informations nécessaire à la manipulation d'un personnage
  */
 typedef struct {
 	char name[100];  /*!< son nom*/
 	int line;        /*!< la ligne a laquelle il se trouve*/
 	int column;      /*!< la colonne à laquelle il se trouve*/
 	int lvl;         /*!< l'étage auquel il se trouve*/
-	int hp;          /*!< ces points de vie*/
-	int pw;          /*!< ces points de dégats*/
+	int hp;          /*!< ses points de vie*/
+	int pw;          /*!< ses points de dégat*/
 	int xp;          /*!< son expérience*/
 	int nbMove;      /*!< le nombre de mouvement effectué*/
-	int food;        /*!< faible lorsque il a faim, haut lorsqu'il n'as pas faim*/
+	int food;        /*!< faible lorsqu'il a faim, haut lorsqu'il n'as pas faim*/
 	int isSick;      /*!< un booléen pour savoir si il est malade*/
-	int hasFoundObj; /*!< in booléen pour savoir si il a trouvé l'OBJET du jeu*/
+	int hasFoundObj; /*!< un booléen pour savoir si il a trouvé l'OBJET du jeu*/
 } t_character;
 
 #endif
