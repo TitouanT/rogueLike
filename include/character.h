@@ -19,7 +19,7 @@
 
 
 /**
- * \struct t_object
+ * \struct t_character
  * \brief contient les informations nécessaire à la manipulation d'un personnage
  */
 typedef struct {
