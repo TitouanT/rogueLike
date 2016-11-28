@@ -41,7 +41,7 @@ void file_init () {
   * \return FALSE sinon
   */
 int file_est_vide () {
-	return (tete == NULL)
+	return (tete == NULL);
 }
 
 /**
