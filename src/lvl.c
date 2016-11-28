@@ -11,10 +11,19 @@
 t_lvl gLvl[NB_LVL];
 int gLvlId = NB_LVL;
 
+/**
+	* \brief initialise la gestion des informations sur les étages
+	*	\fn void initStatRoom (void)
+	*/
 void initStatRoom () {
 	gLvlId = 0;
 }
 
+/**
+	* \brief donne les informations sur les étages
+	*	\fn void queryLvlData (t_lvl tabLvl[NB_LVL])
+	* \param tabLvl tableau qui contiendra chaque niveau
+	*/
 void queryLvlData (t_lvl tabLvl[NB_LVL]) {
 	int i;
 	if (gLvlId >= NB_LVL) {
@@ -24,13 +33,17 @@ void queryLvlData (t_lvl tabLvl[NB_LVL]) {
 	}
 }
 
-int writeLvlData (t_lvl tabLvl[NB_LVL], char * fileName) {
+/**
+	* \brief écrit dans un fichier les données sur les étages
+	*	\fn void writeLvlData (t_lvl tabLvl[NB_LVL], char * fileName)
+	* \param tabLvl tableau qui contient chaque niveau
+	* \param fileName nom du fichier à écrire
+	*/
+void writeLvlData (t_lvl tabLvl[NB_LVL], char * fileName) {
 	FILE * file = fopen (fileName, "w");
 	int i, j, line, column, height, width;
 	for (i = 0; i < NB_LVL; i++) {
-
 		fprintf (file, "%d ", tabLvl[i].nbRoom);
-
 		for (j = 0; j < tabLvl[i].nbRoom; j++) {
 			tabLvl[i].rooms[j].line = line;
 			tabLvl[i].rooms[j].column = column;
@@ -38,11 +51,17 @@ int writeLvlData (t_lvl tabLvl[NB_LVL], char * fileName) {
 			tabLvl[i].rooms[j].width = width;
 			fprintf (file, "%d %d %d %d ", line, column, height, width);
 		}
-
 	}
-	return 1;
 }
 
+/**
+	* \brief lit dans un fichier les données sur les étages
+	*	\fn int readLvlData (t_lvl tabLvl[NB_LVL], char * fileName)
+	* \param tabLvl tableau qui contiendra chaque niveau
+	* \param fileName nom du fichier à lire
+	* \return TRUE si la lecture c'est bien passée.
+	* \return FALSE sinon.
+	*/
 int readLvlData (t_lvl tabLvl[NB_LVL], char * fileName) {
 	FILE * file = fopen (fileName, "r");
 	if (file == NULL) return FALSE; // failure
@@ -64,7 +83,11 @@ int readLvlData (t_lvl tabLvl[NB_LVL], char * fileName) {
 	return TRUE; // success
 }
 
-
+/**
+	* \brief initialise l'étage a créer
+	*	\fn void initFloor (t_cell map[LINES][COLUMNS])
+	* \param map matrice qui représente le niveau
+	*/
 void initFloor (t_cell map[LINES][COLUMNS]) {
 	int i, j;
 	for (i = 0; i < LINES; i++) for (j = 0; j < COLUMNS; j++) {
@@ -78,13 +101,29 @@ void initFloor (t_cell map[LINES][COLUMNS]) {
 
 
 
-
+/**
+	* \brief fonction booléenne pour savoir si deux pieces se touchent
+	*	\fn int areInContact (t_room r1, t_room r2)
+	* \param r1 premiere piece
+	* \param r2 seconde piece
+	* \return TRUE si les pieces se touchent
+	* \return FALSE sinon.
+	*/
 int areInContact (t_room r1, t_room r2) { // return TRUE if the room are in Contact
 	if (intervalOverlaping(r2.line, r2.line + r2.height, r1.line, r1.line + r1.height)
 	&& intervalOverlaping(r2.column, r2.column + r2.width, r1.column, r1.column + r1.width)) return TRUE;
 	else return FALSE;
 }
 
+/**
+	* \brief fonction qui renvoi une pièce valable
+	*	\fn t_room randomRoom (t_cell map[][COLUMNS], t_room * rooms, int nbRoom, int *nbTotal)
+	* \param map carte représenant l'étage
+	* \param rooms tableau qui contient toutes les pieces déjà créée
+	* \param nbRoom nombre de pièces créée.
+	* \param nbTotal nb de pieces a créé, sera mis à nbRoom en cas d'échec
+	* \return room une piece valide
+	*/
 t_room randomRoom (t_cell map[][COLUMNS], t_room * rooms, int nbRoom, int *nbTotal) {
 	int maxHeight, maxWidth, i, j, posNotOk, maxTour = 100, acc;
 	t_room room;
@@ -109,7 +148,7 @@ t_room randomRoom (t_cell map[][COLUMNS], t_room * rooms, int nbRoom, int *nbTot
 		acc++;
 	} while (posNotOk && acc < maxTour); // maxTour is there to protect against infinite loop
 
-	if (acc >= maxTour) { // if acc reach maxTour then give up one room
+	if (acc >= maxTour) { //seconde piece if acc reach maxTour then give up one room
 		*nbTotal = nbRoom;
 		return room;
 	}
@@ -128,6 +167,13 @@ t_room randomRoom (t_cell map[][COLUMNS], t_room * rooms, int nbRoom, int *nbTot
 	return room;
 }
 
+
+/**
+	* \brief choix d'un mur d'une pieces au hasard
+	*	\fn t_pos chooseRandomWall (t_room r)
+	* \param r piece dont on veut un mur
+	* \return la position d'une cellule qui est un mur de la piece
+	*/
 t_pos chooseRandomWall (t_room r) {
 	int isHorizontal = rand()%2;
 	int isLeftOrTop = rand()%2;
@@ -145,13 +191,25 @@ t_pos chooseRandomWall (t_room r) {
 	return rep;
 }
 
-void putRandomRoom (t_cell map[][COLUMNS], t_pos *pos) {
+/**
+	* \brief placement au hasard d'une porte, fermée ou ouverte
+	*	\fn void putRandomDoor (t_cell map[][COLUMNS], t_pos *pos)
+	* \param map carte représenant l'étage
+	* \param pos position ou on peut placer une porte
+	*/
+void putRandomDoor (t_cell map[][COLUMNS], t_pos pos) {
 	int doIt = rand()%3;
-	if (doIt == 0) map[pos->line][pos->column].state = dOPEN;
-	else if(doIt == 1) map[pos->line][pos->column].state = dCLOSE;
-	else map[pos->line][pos->column].state = dNONE;
+	if (doIt == 0) map[pos.line][pos.column].state = dOPEN;
+	else if(doIt == 1) map[pos.line][pos.column].state = dCLOSE;
+	else map[pos.line][pos.column].state = dNONE;
 }
 
+/**
+	* \brief empeche le placement de deux porte qui se touche
+	*	\fn void avoidTouchingDoors (t_cell map[][COLUMNS], t_pos * pos)
+	* \param map carte représenant l'étage
+	* \param pos position d'une porte que l'on veut tester
+	*/
 void avoidTouchingDoors (t_cell map[][COLUMNS], t_pos * pos) {
 	if (map[pos->line + 1][pos->column].type != DOORWAY) {
 		if (map[pos->line - 1][pos->column].type != DOORWAY) {
@@ -159,7 +217,7 @@ void avoidTouchingDoors (t_cell map[][COLUMNS], t_pos * pos) {
 				if (map[pos->line][pos->column - 1].type != DOORWAY) {
 					// if all around you there are no doors, then you can be one!
 					map[pos->line][pos->column].type = DOORWAY;
-					putRandomRoom(map, pos);
+					putRandomDoor (map, *pos);
 				}
 				else (pos->column)--; // else you have to be in the shaddow of one surrounding you
 			} else (pos->column)++;
@@ -184,6 +242,13 @@ void avoidTouchingDoors (t_cell map[][COLUMNS], t_pos * pos) {
 
 		After it start from the end and move back to the start following the decreasing value.
 */
+/**
+	* \brief fait un couloir entre deux pieces
+	*	\fn void createLink (t_cell map[][COLUMNS], t_room r1, t_room r2)
+	* \param map carte représenant l'étage
+	* \param r1 premiere piece
+	* \param r2 seconde piece
+	*/
 void createLink (t_cell map[][COLUMNS], t_room r1, t_room r2) {
 	int path[LINES][COLUMNS];
 	int up = 0, down = 1, right = 2, left = 3, curDir;
@@ -194,8 +259,6 @@ void createLink (t_cell map[][COLUMNS], t_room r1, t_room r2) {
 
 	avoidTouchingDoors (map, &start);
 	avoidTouchingDoors (map, &finish);
-
-
 
 	file_init();
 	head=start;
@@ -273,6 +336,15 @@ methode:
 	3. sinon, se raccorder au chemin le plus proche
 */
 
+/**
+	* \brief test si un chemin existe deja entre deux pieces
+	*	\fn int isThereAnExistingPath (t_cell map[][COLUMNS], t_room r1, t_room r2)
+	* \param map carte représenant l'étage
+	* \param r1 premiere piece
+	* \param r2 seconde piece
+	* \return TRUE si un lien existe
+	* \return FALSE sinon.
+	*/
 int isThereAnExistingPath (t_cell map[][COLUMNS], t_room r1, t_room r2) {
 	t_pos start, finish, head;
 	int path[LINES][COLUMNS], l, c, seen = 1, notSeen = 0;
@@ -337,6 +409,13 @@ int isThereAnExistingPath (t_cell map[][COLUMNS], t_room r1, t_room r2) {
 
 }
 
+/**
+	* \brief choisi quelles pieces lier
+	*	\fn void chooseLink (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom)
+	* \param map carte représenant l'étage
+	* \param rooms tableau contenant les pieces existantes
+	* \param nbRoom nombre de pieces existantes
+	*/
 void chooseLink (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 	int i;
 	for (i = 0; i < nbRoom-1; i++)
@@ -346,6 +425,16 @@ void chooseLink (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 
 }
 
+/**
+	* \brief choisi un endroit au hasard dans une pièce qui ne contient pas d'objets
+	*	\fn void randomFreePlace (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom, int iRoom, int * line, int * col)
+	* \param map carte représenant l'étage
+	* \param rooms tableau contenant les pieces existantes
+	* \param nbRoom nombre de pieces existantes
+	* \param iRoom index de la pieces que l'on veut, -1 si indifférent
+	* \param line contiendra la ligne choisi
+	* \param colonne contiendra la colonne choisi
+	*/
 void randomFreePlace (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom, int iRoom, int * line, int * col) {
 	if (!isBetween(iRoom, 0, nbRoom - 1)) iRoom = rand()%nbRoom;
 	int secu = 0;
@@ -357,6 +446,13 @@ void randomFreePlace (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom, in
 	if (map[*line][*col].nbObject != 0) *line = *col = -1;
 }
 
+/**
+	* \brief place les différents objets
+	*	\fn void chooseLink (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom)
+	* \param map carte représenant l'étage
+	* \param rooms tableau contenant les pieces existantes
+	* \param nbRoom nombre de pieces existantes
+	*/
 void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 	int rEnterance = rand()%nbRoom, rExit, lineEn, colEn, lineEx, colEx;
 	int lineFood, colFood;
@@ -367,12 +463,6 @@ void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 
 	randomFreePlace (map, rooms, nbRoom, rEnterance, &lineEn, &colEn);
 	randomFreePlace (map, rooms, nbRoom, rExit, &lineEx, &colEx);
-
-	// lineEn = randab(1, rooms[rEnterance].height - 1) + rooms[rEnterance].line;
-	// colEn = randab(1, rooms[rEnterance].width - 1) + rooms[rEnterance].column;
-	//
-	// lineEx = randab(1, rooms[rExit].height - 1) + rooms[rExit].line;
-	// colEx = randab(1, rooms[rExit].width - 1) + rooms[rExit].column;
 
 	map[lineEn][colEn].obj[map[lineEn][colEn].nbObject] = STAIRS_DOWN;
 	map[lineEx][colEx].obj[map[lineEn][colEn].nbObject] = STAIRS_UP;
@@ -390,6 +480,13 @@ void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 
 }
 
+
+/**
+	* \brief créé un étage au hasard !
+	*	\fn void randomFloor (t_cell map[LINES][COLUMNS], int lvl)
+	* \param map carte représenant l'étage
+	* \param lvl hauteur de l'étage
+	*/
 void randomFloor (t_cell map[LINES][COLUMNS], int lvl) {
 	int nbRoom = randab (ROOM_NB_MIN + lvl, ROOM_NB_MAX + 1 + lvl), i;
 
