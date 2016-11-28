@@ -19,7 +19,7 @@ int main () {
 
 	initRandom();
 	t_cell map[LINES][COLUMNS];
-	t_character player = {"valentin", 0, 0, 0, 10, 10, 10, 0, MAX_FOOD, FALSE};
+	t_character player = {"valentin", 0, 0, 0, 10, 10, 10, 0, MAX_FOOD, FALSE, FALSE};
 
 
 	init_screen();
