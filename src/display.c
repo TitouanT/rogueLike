@@ -463,17 +463,9 @@ void setFloorCheat(t_cell map[LINES][COLUMNS]) {
 	*/
 void clearLog(int *line, WINDOW *win){
 
-	int i, j;
+	clearArea(win, 1, 1, COLS_LOGS - 1, LINES_LOGS - 1);
 
-	for(i = 1 ; i <= LINES_LOGS - 2 ; i++){
-		for(j = 1 ; j <= COLS_LOGS - 2 ; j++){
-			wmove(win, i, j);
-			wprintw(win, " ");
-		}
-	}
-	wrefresh(win);
 	*line = 0;
-	gotoEndGame();
 }
 
 /**
@@ -626,7 +618,7 @@ void displayEnd(t_character player, WINDOW *win){
 		wmove(win, yShift++, xShift);
 		printASCIIText("include/game_over.txt", &yShift, xShift, win);
 	}
-	
+
 
 	wrefresh(win);
 }

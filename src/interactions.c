@@ -158,7 +158,7 @@ int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, 
     case 'q' : return FALSE;
     case 'Q' : return !askConfirmationToQuit(win_logs, lineLog);
 
-		case '_' : cheat(win_logs, win_game, map, player);
+		case '_' : cheat(win_logs, win_game, map, player); break;
 
 
 		//case 'n' : randomFloor(map, 5); move2spawn(map, player, STAIRS_DOWN); break; // a mettre dans cheat
@@ -326,6 +326,8 @@ void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_cha
 
 	char cheatSTR[COLS_LOGS];
 
+	int lineLog = 0;
+
 	echo();
 
 	mvwprintw(win_logs, LINES_LOGS-3, 1, "Indiquez votre code de triche :");
@@ -336,9 +338,55 @@ void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_cha
 	noecho();
 
 	if(strcmp(cheatSTR, "ToWinICheat") == 0){
-		displayFloor(map, win_game);
+		setFloorCheat(map);
 	}
-	if(strcmp(cheatSTR, "kill") == 0){
+	else if(strcmp(cheatSTR, "food") == 0){
+		player->food = MAX_FOOD;
+	}
+	else if(strcmp(cheatSTR, "heal") == 0){
+		player->hp = MAX_HP;
+		player->isSick = FALSE;
+	}
+	else if(strcmp(cheatSTR, "kill") == 0){
 		player->hp = 0;
 	}
+	else if(strcmp(cheatSTR, "sick") == 0){
+		player->isSick = TRUE;
+	}
+	else if(strcmp(cheatSTR, "up") == 0){
+		changeLvl(map,player, 1);
+	}
+	else if(strcmp(cheatSTR, "down") == 0){
+		changeLvl(map,player, -1);
+	}
+	else if(strcmp(cheatSTR, "exit") == 0){
+
+	}
+	else {
+
+		clearLog(&lineLog, win_logs);
+
+
+		addLog("        -- AIDE POUR LES TRICHEURS -- ", &lineLog, win_logs);
+
+		addLog("", &lineLog, win_logs);
+
+		addLog("?           : Affiche cette liste d'aide", &lineLog, win_logs);
+		addLog("help        : Affiche cette liste d'aide", &lineLog, win_logs);
+		addLog("ToWinICheat : Affiche la map au complet", &lineLog, win_logs);
+		addLog("food        : Met 100% de la nourriture", &lineLog, win_logs);
+		addLog("heal        : Met 100% de la vie", &lineLog, win_logs);
+		addLog("kill        : Tue le joueur", &lineLog, win_logs);
+		addLog("sick        : Rend le joueur malade", &lineLog, win_logs);
+		addLog("up          : Monte le joueur d'un étage", &lineLog, win_logs);
+		addLog("down        : Descend le joueur d'un étage", &lineLog, win_logs);
+		addLog("exit        : Sortir de ce menu", &lineLog, win_logs);
+
+		cheat(win_logs, win_game, map, player);
+
+		clearLog(&lineLog, win_logs);
+
+	}
+
+
 }

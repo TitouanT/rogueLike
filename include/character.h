@@ -2,7 +2,6 @@
 #define CHARACTER_H
 
 #define MAX_HP 10
-
 #define MAX_FOOD 100
 
 typedef struct {

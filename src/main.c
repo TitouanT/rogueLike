@@ -41,7 +41,7 @@ int main () {
 	WINDOW *win_logs  = createWindow(COLS_GAME, 0, COLS_LOGS, LINES_LOGS, "Logs");
 
 	// On déplace le joueur au spawn de celui-ci
-	move2spawn(map, &player, STAIRS_DOWN);
+	// move2spawn(map, &player, STAIRS_DOWN);
 	// On affiche les objectifs
 	displayObjectives(&lineLog, win_logs);
 	// On affiche la map et le joueur

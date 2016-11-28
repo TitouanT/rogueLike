@@ -39,3 +39,21 @@ int intervalOverlaping (int a, int b, int c, int d) { // return TRUE if the inte
 	if (isBetween (a, c, d) || isBetween (b, c, d) || isBetween (c, a, b) || isBetween (d, a, b)) return TRUE;
 	else return FALSE;
 }
+
+int car2val (char car) {
+	if (car >= 'a' && car <= 'z') return car - 'a';
+	else if (car >= 'A' && car <= 'Z') return car - 'A';
+	return -1;
+}
+
+char up2low (char car) {
+	if (car >= 'A' && car <= 'Z') return car - 'A' + 'a';
+	else if (car >= 'a' && car <= 'z') return car;
+	else return -1;
+}
+
+char low2up (char car) {
+	if (car >= 'A' && car <= 'Z') return car;
+	else if (car >= 'a' && car <= 'z') return car - 'a' + 'A';
+	else return -1;
+}
