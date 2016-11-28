@@ -1,3 +1,13 @@
+/**
+	* \file
+	* \brief fonctions de génération d'étage
+	* \author MOTTIER Emeric
+ 	* \author PELLOIN Valentin
+ 	* \author TEYSSIER Titouan
+	* \date 28 novembre 2016
+	* \version 1.0
+	*/
+
 #include <ncurses.h>
 #include <string.h>
 #include "cell.h"
