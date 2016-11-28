@@ -329,19 +329,17 @@ void passOut(t_cell map[LINES][COLUMNS]){
 
 	int aMinLen = 10, aMaxHeight = 15, aMaxWidth = 20;
 
-	line   = randab(1, LINES - aMinLen);
-	column = randab(1, COLUMNS - aMinLen);
+	line   = randab(1, LINES - aMinLen -1);
+	column = randab(1, COLUMNS - aMinLen -1);
 
 	maxHeight = min(LINES - line - 1, aMaxHeight);
-	height    = randab(aMinLen, maxHeight);
+	height    = randab(aMinLen, maxHeight +1);
 
 	maxWidth = min(COLUMNS - column - 1, aMaxWidth);
-	width    = randab(aMinLen, maxWidth);
+	width    = randab(aMinLen, maxWidth +1);
 
-	fprintf(stderr, "line:%i, col:%i, h:%i, w:%i           ", line, column, height, width);
-
-	for(i = line ; i < maxHeight ; i++){
-		for(j = column ; j < maxWidth ; j++){
+	for(i = line ; i < maxHeight + line ; i++){
+		for(j = column ; j < maxWidth + column ; j++){
 			map[i][j].isDiscovered = FALSE;
 		}
 	}
