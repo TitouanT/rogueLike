@@ -30,6 +30,15 @@ int mapping (int value, int min, int max, int destMin, int destMax) {
 				*/
 }
 
+int min(int a, int b){
+	if(a > b) return b;
+	return a;
+}
+
+int max(int a, int b){
+	if(a > b) return a;
+	return b;
+}
 
 int isBetween (int val, int a, int b) { // return TRUE if val is in [a,b]
 	if (a <= val && b >= val) return TRUE;

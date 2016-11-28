@@ -181,14 +181,30 @@ int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso){
     }
   }
 
+	// On effectue certaines actions si le joueur a réussi à se deplacer
 	if(success == TRUE){
+
 		perso->nbMove++;
+
 		augmenterFaim(perso);
+
+		if(perso->food >= MAX_FOOD - 10 && perso->hp < MAX_HP && perso->isSick == FALSE){
+			if(didItHappen(perso->food / 3)){
+				(perso->hp)++;
+				(perso->food) -= 10;
+			}
+		}
+		else {
+			if(didItHappen(1) && perso->hp < MAX_HP) (perso->hp)++;
+		}
 
 		/// Perte de vie si la personne a trop faim.
 		if(perso->food <= 0){
 			if(didItHappen(10)) (perso->hp)--;
 		}
+		//if(perso->food <= 20){
+			if(didItHappen(100)) passOut(mat);
+		//}
 
 		/// Perte de vie si le joueur est malade.
 		if(perso->isSick){

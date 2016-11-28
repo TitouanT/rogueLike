@@ -18,4 +18,4 @@ typedef struct {
 	int hasFoundObj;
 } t_character;
 
-#endif /* end of include guard: CHARACTER_H */
+#endif

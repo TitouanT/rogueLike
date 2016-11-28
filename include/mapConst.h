@@ -16,7 +16,7 @@
 #define OBJ_NB_MAX 20
 
 #define AV_NB_FOOD_ROOM 2
-#define CHANCE_SICK 30
+#define CHANCE_SICK 20
 
 #define AV_NB_TRAP_ROOM 2
 

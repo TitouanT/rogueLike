@@ -9,6 +9,9 @@ void initRandom (void);
 int randab (int a, int b);
 int didItHappen (int chance);
 
+int min(int a, int b);
+int max(int a, int b);
+
 int isBetween (int val, int a, int b);
 int intervalOverlaping (int a, int b, int c, int d);
 
