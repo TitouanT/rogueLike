@@ -203,7 +203,7 @@ int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso){
 			if(didItHappen(10)) (perso->hp)--;
 		}
 		if(perso->food <= 20){
-			if(didItHappen(100)) passOut(mat);
+			if(didItHappen(25)) passOut(mat);
 		}
 
 		/// Perte de vie si le joueur est malade.

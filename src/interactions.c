@@ -363,10 +363,16 @@ void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_cha
 		setFloorCheat(map);
 	}
 	else if(strcmp(cheatSTR, "food") == 0){
-		if(player->food < MAX_FOOD) player->food += 10;
+		player->food = MAX_FOOD;
 	}
 	else if(strcmp(cheatSTR, "food++") == 0){
-		player->food = MAX_FOOD;
+		if(player->food < MAX_FOOD) player->food += 10;
+	}
+	else if(strcmp(cheatSTR, "food--") == 0){
+		if(player->food >= 10) player->food -= 10;
+	}
+	else if(strcmp(cheatSTR, "I WANT TO EAT") == 0){
+		player->food = 0;
 	}
 	else if(strcmp(cheatSTR, "heal") == 0){
 		player->hp = MAX_HP;
@@ -402,19 +408,21 @@ void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_cha
 
 		addLog("", &lineLog, win_logs);
 
-		addLog("?            : Affiche cette liste d'aide", &lineLog, win_logs);
-		addLog("help         : Affiche cette liste d'aide", &lineLog, win_logs);
-		addLog("ToWinICheat  : Affiche la map au complet", &lineLog, win_logs);
-		addLog("food         : Ajoute 1pt de nourriture", &lineLog, win_logs);
-		addLog("food++       : Met 100% de la nourriture", &lineLog, win_logs);
-		addLog("heal         : Met 100% de la vie", &lineLog, win_logs);
-		addLog("damage       : Enlève 1pt de vie", &lineLog, win_logs);
-		addLog("suicide fail : Met la vie à 1", &lineLog, win_logs);
-		addLog("kill         : Tue le joueur", &lineLog, win_logs);
-		addLog("sick         : Rend le joueur malade", &lineLog, win_logs);
-		addLog("up           : Monte le joueur d'un étage", &lineLog, win_logs);
-		addLog("down         : Descend le joueur d'un étage", &lineLog, win_logs);
-		addLog("exit         : Sortir de ce menu", &lineLog, win_logs);
+		addLog("?             : Affiche cette liste d'aide", &lineLog, win_logs);
+		addLog("help          : Affiche cette liste d'aide", &lineLog, win_logs);
+		addLog("ToWinICheat   : Affiche la map au complet", &lineLog, win_logs);
+		addLog("food          : Met 100% de la nourriture", &lineLog, win_logs);
+		addLog("food++        : Ajoute 1pt de nourriture", &lineLog, win_logs);
+		addLog("food--        : Enlève 1pt de nourriture", &lineLog, win_logs);
+		addLog("I WANT TO EAT : Met 0% de la nourriture", &lineLog, win_logs);
+		addLog("heal          : Met 100% de la vie", &lineLog, win_logs);
+		addLog("damage        : Enlève 1pt de vie", &lineLog, win_logs);
+		addLog("suicide fail  : Met la vie à 1", &lineLog, win_logs);
+		addLog("kill          : Tue le joueur", &lineLog, win_logs);
+		addLog("sick          : Rend le joueur malade", &lineLog, win_logs);
+		addLog("up            : Monte le joueur d'un étage", &lineLog, win_logs);
+		addLog("down          : Descend le joueur d'un étage", &lineLog, win_logs);
+		addLog("exit          : Sortir de ce menu", &lineLog, win_logs);
 
 		cheat(win_logs, win_game, map, player);
 
