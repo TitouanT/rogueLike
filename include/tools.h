@@ -1,3 +1,13 @@
+/**
+  * \file
+  * \brief boite à outils du projet
+  * \author MOTTIER Emeric
+  * \author PELLOIN Valentin
+  * \author TEYSSIER Titouan
+  * \date 28 novembre 2016
+  * \version 1.0
+  */
+
 #ifndef RANDOM_H
 #define RANDOM_H
 
