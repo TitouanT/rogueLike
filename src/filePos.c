@@ -11,9 +11,13 @@
 #include <stdlib.h>
 #include "filePos.h"
 
+/**
+  * \struct t_element
+  * \brief décrit un élément de la file
+  */
 typedef struct element {
-	t_pos val;
-	struct element * suiv;
+	t_pos val;              /*<! valeur stocké*/
+	struct element * suiv;  /*<! pointeur sur l'élément suivant*/
 } t_element;
 
 /** pointeur sur la tete de la file */
