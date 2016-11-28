@@ -1,3 +1,13 @@
+/**
+  * \file
+  * \brief Définition des constantes qui paramètre le jeu
+  * \author MOTTIER Emeric
+  * \author PELLOIN Valentin
+  * \author TEYSSIER Titouan
+  * \date 28 novembre 2016
+  * \version 1.0
+  */
+
 #ifndef MAPCONST_H
 #define MAPCONST_H
 
