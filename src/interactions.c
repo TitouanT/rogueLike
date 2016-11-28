@@ -98,7 +98,6 @@ void augmenterFaim(t_character *player){
 	}
 }
 
-
 /**
 	* \brief Permet au joueur de manger la nourriture sur laquelle il se trouve
 	*	\fn void eatFood(t_character *player, t_cell map[LINES][COLUMNS])
@@ -107,11 +106,10 @@ void augmenterFaim(t_character *player){
 	*/
 void eatFood(t_character *player, t_cell map[LINES][COLUMNS]){
 
-
 	int minFood = 20; /// minFood : Apport minimal de la nourriture à la faim du joueur
 	int maxFood = 30; /// maxFood : Apport maximal de la nourriture à la faim du joueur
 
-	map[player->line][player->column].obj[0] = objNONE;
+	map[player->line][player->column].obj[0].type = objNONE;
 	map[player->line][player->column].nbObject = 0;
 
 	player->food += randab(minFood, maxFood);
@@ -123,8 +121,6 @@ void eatFood(t_character *player, t_cell map[LINES][COLUMNS]){
 	}
 
 }
-
-
 
 /**
 	* \brief Fonction principale d'intéraction avec l'utilisateur
@@ -151,10 +147,11 @@ int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, 
 		case 'b': move_perso(DOWN_LEFT, map, player);  break;
 		case 'n': move_perso(DOWN_RIGHT, map, player); break;
 
-    case '\n': traiterEntree(map, player,  win_logs,     lineLog); break;
-    case 'o' : traiterPorte (map, player, key, win_logs, lineLog); break;
-    case 'c' : traiterPorte (map, player, key, win_logs, lineLog); break;
-		case 's' : saveGame(map, player); break;//
+
+    case '\n':      traiterEntree(map, player,  win_logs,     lineLog); break;
+    case 'o' :      traiterPorte (map, player, key, win_logs, lineLog); break;
+    case 'c' :      traiterPorte (map, player, key, win_logs, lineLog); break;
+		case 's' :  		saveGame(map, player); addLog("Partie Sauvegardée", lineLog, win_logs); break;//
     case 'q' : return FALSE;
     case 'Q' : return !askConfirmationToQuit(win_logs, lineLog);
 
@@ -259,7 +256,7 @@ void traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW *win,
 
   if(map[player->line][player->column].nbObject > 0){
 
-    switch (map[player->line][player->column].obj[0]) {
+    switch (map[player->line][player->column].obj[0].type) {
 
       case STAIRS_UP:
         if(player->lvl < NB_LVL - 1){
@@ -308,7 +305,7 @@ int askConfirmationToQuit(WINDOW * win, int *lineLog) {
 
 	int key;
 
-	addLog("Etes-vous sur de vouloir quitter ? (y/n)", lineLog, win);
+	addLog("Etes-vous sur de vouloir quitter sans sauvegarder ? (y/n)", lineLog, win);
 
 	key = getch();
 

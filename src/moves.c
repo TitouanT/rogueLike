@@ -52,11 +52,12 @@ void markDiscoverRoom(t_cell map[LINES][COLUMNS], t_character player){
 		for(i = start.line ; bIsPartOfRoom(map[i][start.column]); i++){
 			for(j = start.column ; bIsPartOfRoom(map[i][j]) ; j++){
 				map[i][j].isDiscovered = TRUE;
+				if(map[i][j].obj[0].type!=TRAP){
+					map[i][j].obj[0].isDiscovered=TRUE;
+				}
 			}
 		}
-
 	}
-
 }
 
 /* Marque les cellules autour du joueur comme découverte */
@@ -68,7 +69,7 @@ void markDiscover(t_cell map[LINES][COLUMNS], t_character player) {
 	int i, j;
 	for (i = 0; i < 3; i++) {
 		for (j = 0; j < 3; j++) {
-			if (line+i >= 0 && line+i < LINES && col+j >= 0 && col+j < COLUMNS) map[line+i][col+j].isDiscovered = TRUE;
+			if (line+i >= 0 && line+i < LINES && col+j >= 0 && col+j < COLUMNS) map[line+i][col+j].isDiscovered = TRUE; map[i][j].obj[0].isDiscovered=TRUE;
 		}
 	}
 }
@@ -81,7 +82,7 @@ int move2spawn(t_cell mat[LINES][COLUMNS], t_character *perso, int stair){
   for(i = 0 ; i < LINES ; i++){
     for(j = 0 ; j < COLUMNS ; j++){
 
-      if(mat[i][j].nbObject != 0 && mat[i][j].obj[0] == stair){
+      if(mat[i][j].nbObject != 0 && mat[i][j].obj[0].type == stair){
         perso->line = i;
         perso->column = j;
 				markDiscoverRoom(mat, *perso);
