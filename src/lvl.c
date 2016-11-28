@@ -1,12 +1,12 @@
 /**
-	* \file
-	* \brief fonctions de génération d'étage
-	* \author MOTTIER Emeric
- 	* \author PELLOIN Valentin
- 	* \author TEYSSIER Titouan
-	* \date 28 novembre 2016
-	* \version 1.0
-	*/
+  * \file
+  * \brief fonctions de génération d'étage
+  * \author MOTTIER Emeric
+  * \author PELLOIN Valentin
+  * \author TEYSSIER Titouan
+  * \date 28 novembre 2016
+  * \version 1.0
+  */
 
 #include <ncurses.h>
 #include <string.h>
@@ -22,9 +22,9 @@ t_lvl gLvl[NB_LVL];
 int gLvlId = NB_LVL;
 
 /**
-	* \brief initialise la gestion des informations sur les étages
-	*	\fn void initStatRoom (void)
-	*/
+  * \brief initialise la gestion des informations sur les étages
+  * \fn void initStatRoom (void)
+  */
 void initStatRoom () {
 	gLvlId = 0;
 }
