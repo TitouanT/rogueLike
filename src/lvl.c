@@ -458,7 +458,7 @@ void randomFreePlace (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom, in
 
 /**
   * \brief place les différents objets
-  * \fn void chooseLink (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom)
+  * \fn void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom)
   * \param map carte représenant l'étage
   * \param rooms tableau contenant les pieces existantes
   * \param nbRoom nombre de pieces existantes
