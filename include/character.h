@@ -17,4 +17,4 @@ typedef struct {
 	int isSick;
 } t_character;
 
-#endif /* end of include guard: CHARACTER_H */
+#endif

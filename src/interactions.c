@@ -146,15 +146,15 @@ int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, 
 		case 'h': case KEY_LEFT:  move_perso(LEFT,  map, player);  break;
 		case 'l': case KEY_RIGHT: move_perso(RIGHT, map, player);  break;
 
-		case 'y': move_perso(UP_LEFT, map, player);  break;
-		case 'u': move_perso(UP_RIGHT, map, player);  break;
+		case 'y': move_perso(UP_LEFT, map, player);    break;
+		case 'u': move_perso(UP_RIGHT, map, player);   break;
 		case 'b': move_perso(DOWN_LEFT, map, player);  break;
-		case 'n': move_perso(DOWN_RIGHT, map, player);  break;
+		case 'n': move_perso(DOWN_RIGHT, map, player); break;
 
-    case '\n':      traiterEntree(map, player,  win_logs,     lineLog); break;
-    case 'o' :      traiterPorte (map, player, key, win_logs, lineLog); break;
-    case 'c' :      traiterPorte (map, player, key, win_logs, lineLog); break;
-		case 's' :  		saveGame(map, player); break;//
+    case '\n': traiterEntree(map, player,  win_logs,     lineLog); break;
+    case 'o' : traiterPorte (map, player, key, win_logs, lineLog); break;
+    case 'c' : traiterPorte (map, player, key, win_logs, lineLog); break;
+		case 's' : saveGame(map, player); break;//
     case 'q' : return FALSE;
     case 'Q' : return !askConfirmationToQuit(win_logs, lineLog);
 
@@ -322,6 +322,33 @@ int askConfirmationToQuit(WINDOW * win, int *lineLog) {
 }
 
 
+void passOut(t_cell map[LINES][COLUMNS]){
+
+	int line, column, height, width, maxHeight, maxWidth;
+	int i, j;
+
+	int aMinLen = 10, aMaxHeight = 15, aMaxWidth = 20;
+
+	line   = randab(1, LINES - aMinLen);
+	column = randab(1, COLUMNS - aMinLen);
+
+	maxHeight = min(LINES - line - 1, aMaxHeight);
+	height    = randab(aMinLen, maxHeight);
+
+	maxWidth = min(COLUMNS - column - 1, aMaxWidth);
+	width    = randab(aMinLen, maxWidth);
+
+	fprintf(stderr, "line:%i, col:%i, h:%i, w:%i           ", line, column, height, width);
+
+	for(i = line ; i < maxHeight ; i++){
+		for(j = column ; j < maxWidth ; j++){
+			map[i][j].isDiscovered = FALSE;
+		}
+	}
+
+}
+
+
 void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_character *player){
 
 	char cheatSTR[COLS_LOGS];
@@ -341,11 +368,20 @@ void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_cha
 		setFloorCheat(map);
 	}
 	else if(strcmp(cheatSTR, "food") == 0){
+		if(player->food < MAX_FOOD) player->food += 10;
+	}
+	else if(strcmp(cheatSTR, "food++") == 0){
 		player->food = MAX_FOOD;
 	}
 	else if(strcmp(cheatSTR, "heal") == 0){
 		player->hp = MAX_HP;
 		player->isSick = FALSE;
+	}
+	else if(strcmp(cheatSTR, "damage") == 0){
+		player->hp -= 1;
+	}
+	else if(strcmp(cheatSTR, "suicide fail") == 0){
+		player->hp = 1;
 	}
 	else if(strcmp(cheatSTR, "kill") == 0){
 		player->hp = 0;
@@ -371,16 +407,19 @@ void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_cha
 
 		addLog("", &lineLog, win_logs);
 
-		addLog("?           : Affiche cette liste d'aide", &lineLog, win_logs);
-		addLog("help        : Affiche cette liste d'aide", &lineLog, win_logs);
-		addLog("ToWinICheat : Affiche la map au complet", &lineLog, win_logs);
-		addLog("food        : Met 100% de la nourriture", &lineLog, win_logs);
-		addLog("heal        : Met 100% de la vie", &lineLog, win_logs);
-		addLog("kill        : Tue le joueur", &lineLog, win_logs);
-		addLog("sick        : Rend le joueur malade", &lineLog, win_logs);
-		addLog("up          : Monte le joueur d'un étage", &lineLog, win_logs);
-		addLog("down        : Descend le joueur d'un étage", &lineLog, win_logs);
-		addLog("exit        : Sortir de ce menu", &lineLog, win_logs);
+		addLog("?            : Affiche cette liste d'aide", &lineLog, win_logs);
+		addLog("help         : Affiche cette liste d'aide", &lineLog, win_logs);
+		addLog("ToWinICheat  : Affiche la map au complet", &lineLog, win_logs);
+		addLog("food         : Ajoute 1pt de nourriture", &lineLog, win_logs);
+		addLog("food++       : Met 100% de la nourriture", &lineLog, win_logs);
+		addLog("heal         : Met 100% de la vie", &lineLog, win_logs);
+		addLog("damage       : Enlève 1pt de vie", &lineLog, win_logs);
+		addLog("suicide fail : Met la vie à 1", &lineLog, win_logs);
+		addLog("kill         : Tue le joueur", &lineLog, win_logs);
+		addLog("sick         : Rend le joueur malade", &lineLog, win_logs);
+		addLog("up           : Monte le joueur d'un étage", &lineLog, win_logs);
+		addLog("down         : Descend le joueur d'un étage", &lineLog, win_logs);
+		addLog("exit         : Sortir de ce menu", &lineLog, win_logs);
 
 		cheat(win_logs, win_game, map, player);
 

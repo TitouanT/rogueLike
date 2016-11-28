@@ -574,11 +574,11 @@ void displayStats(t_character player, WINDOW *win){
 	wrefresh(win);
 
 	mvwprintw(win, 1, 1, "Etage     : %i / %i", player.lvl, NB_LVL -1);
-	mvwprintw(win, 2, 1, "HP        : ");
+	mvwprintw(win, 2, 1, "Vie       : ");
 	printBar(player.hp, MAX_HP, win);
 
 	mvwprintw(win, 3, 1, "Puissance : %i", player.pw);
-	mvwprintw(win, 4, 1, "Vie       : %i", player.xp);
+	mvwprintw(win, 4, 1, "XP        : %i", player.xp);
 
 	mvwprintw(win, 1, 30, "Nourriture   : ");
 	printBar(player.food/10, MAX_FOOD/10, win);
