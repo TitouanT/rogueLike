@@ -1,6 +1,6 @@
 /**
   * \file
-  * \brief Structure abstraite de file sur des position
+  * \brief Structure abstraite de file sur des positions
   * \author MOTTIER Emeric
   * \author PELLOIN Valentin
   * \author TEYSSIER Titouan
@@ -43,7 +43,7 @@ int file_est_vide () {
 /**
   * \brief retire un élément de la file
   * \fn void file_retirer (t_pos *n)
-  * \param n adresse d'une position qui contiendra la position de l'élément retirer
+  * \param n adresse d'une position qui contiendra la position de l'élément retiré
   */
 void file_retirer (t_pos *n) {
 	t_element * tmp;
@@ -71,7 +71,7 @@ void file_ajouter (t_pos n) {
 
 /**
   * \brief supprime la file
-  * procede à la libération de la mémoire alouée.
+  * procède à la libération de la mémoire alouée.
   * \fn void file_ajouter (t_pos n)
   */
 void file_supprimer () {

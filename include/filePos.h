@@ -1,6 +1,6 @@
 /**
   * \file
-  * \brief Structure abstraite de file sur des position
+  * \brief Structure abstraite de file sur des positions
   * \author MOTTIER Emeric
   * \author PELLOIN Valentin
   * \author TEYSSIER Titouan

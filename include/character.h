@@ -11,7 +11,10 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
 
+/** Nombres de points de vie maximum pour le personnage */
 #define MAX_HP 10
+
+/** Niveau de nourriture maximum pour le personnage */
 #define MAX_FOOD 100
 
 
