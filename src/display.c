@@ -405,13 +405,16 @@ void displayFloor(t_cell map[LINES][COLUMNS], WINDOW *win) {
 						}
 						break;
 					case ROOM:
-						if (map[i][j].nbObject == 0) printCell(ROOM_COLOR,' ', win);
+						if (map[i][j].nbObject == 0 || !map[i][j].obj[0].isDiscovered) printCell(ROOM_COLOR,' ', win);
 						else {
-							switch (map[i][j].obj[0]) {
-								case STAIRS_UP: printCell(OBJECTS_COLOR,'<', win); break;
-								case STAIRS_DOWN: printCell(OBJECTS_COLOR, '>', win); break;
-								case FOOD: printCell(OBJECTS_COLOR, '%', win); break;
-								case objNONE: printCell(ROOM_COLOR,' ', win); break;
+							if(map[i][j].obj[0].isDiscovered){
+								switch (map[i][j].obj[0].type) {
+									case STAIRS_UP: printCell(OBJECTS_COLOR,'<', win); break;
+									case STAIRS_DOWN: printCell(OBJECTS_COLOR, '>', win); break;
+									case FOOD: printCell(OBJECTS_COLOR, '%', win); break;
+									case TRAP: printCell(OBJECTS_COLOR, '^', win); break;
+									case objNONE: printCell(ROOM_COLOR,' ', win); break;
+								}
 							}
 						}
 						break;
@@ -419,7 +422,7 @@ void displayFloor(t_cell map[LINES][COLUMNS], WINDOW *win) {
 					case CORRIDOR:
 						if (map[i][j].nbObject == 0) printCell(CORRIDOR_COLOR,'c', win);
 						else {
-							switch (map[i][j].obj[0]) {
+							switch (map[i][j].obj[0].type) {
 								case STAIRS_UP: printCell(OBJECTS_COLOR,'<', win); break;
 								case STAIRS_DOWN: printCell(OBJECTS_COLOR, '>', win); break;
 								case objNONE: printCell(CORRIDOR_COLOR,' ', win); break;
@@ -450,6 +453,7 @@ void setFloorCheat(t_cell map[LINES][COLUMNS]) {
 	for (i = 0; i < LINES; i++) {
 		for (j = 0; j < COLUMNS; j++) {
 			map[i][j].isDiscovered = TRUE;
+			map[i][j].obj[0].isDiscovered = TRUE;
 		}
 	}
 
@@ -521,7 +525,7 @@ void displayPlayer(t_character player, t_cell mat[LINES][COLUMNS], WINDOW *win, 
 
 	if(mat[player.line][player.column].nbObject != 0){
 
-		switch (mat[player.line][player.column].obj[0]) {
+		switch (mat[player.line][player.column].obj[0].type) {
 			case STAIRS_UP: addLog("Vous pouvez monter les escaliers avec :           > Entrée", line, logs); break;
 			case STAIRS_DOWN: addLog("Vous pouvez déscendre les éscaliers avec :      > Entrée", line, logs); break;
 			default: break;
@@ -574,11 +578,11 @@ void displayStats(t_character player, WINDOW *win){
 	wrefresh(win);
 
 	mvwprintw(win, 1, 1, "Etage     : %i / %i", player.lvl, NB_LVL -1);
-	mvwprintw(win, 2, 1, "HP        : ");
+	mvwprintw(win, 2, 1, "Vie       : ");
 	printBar(player.hp, MAX_HP, win);
 
 	mvwprintw(win, 3, 1, "Puissance : %i", player.pw);
-	mvwprintw(win, 4, 1, "Vie       : %i", player.xp);
+	mvwprintw(win, 4, 1, "XP        : %i", player.xp);
 
 	mvwprintw(win, 1, 30, "Nourriture   : ");
 	printBar(player.food/10, MAX_FOOD/10, win);

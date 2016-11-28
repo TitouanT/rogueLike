@@ -456,6 +456,7 @@ void randomFreePlace (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom, in
 void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 	int rEnterance = rand()%nbRoom, rExit, lineEn, colEn, lineEx, colEx;
 	int lineFood, colFood;
+	int lineTrap, colTrap;
 
 	int i;
 
@@ -464,17 +465,40 @@ void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 	randomFreePlace (map, rooms, nbRoom, rEnterance, &lineEn, &colEn);
 	randomFreePlace (map, rooms, nbRoom, rExit, &lineEx, &colEx);
 
+<<<<<<< HEAD
 	map[lineEn][colEn].obj[map[lineEn][colEn].nbObject] = STAIRS_DOWN;
 	map[lineEx][colEx].obj[map[lineEn][colEn].nbObject] = STAIRS_UP;
+=======
+	// lineEn = randab(1, rooms[rEnterance].height - 1) + rooms[rEnterance].line;
+	// colEn = randab(1, rooms[rEnterance].width - 1) + rooms[rEnterance].column;
+	//
+	// lineEx = randab(1, rooms[rExit].height - 1) + rooms[rExit].line;
+	// colEx = randab(1, rooms[rExit].width - 1) + rooms[rExit].column;
+
+	map[lineEn][colEn].obj[map[lineEn][colEn].nbObject].type = STAIRS_DOWN;
+	map[lineEn][colEn].obj[map[lineEn][colEn].nbObject].isDiscovered = FALSE;
+	map[lineEx][colEx].obj[map[lineEn][colEn].nbObject].type = STAIRS_UP;
+	map[lineEx][colEx].obj[map[lineEn][colEn].nbObject].isDiscovered = FALSE;
+>>>>>>> 14c7a15cbf16d539d675b841ba3cb681b30508ef
 
 	map[lineEn][colEn].nbObject++;
 	map[lineEx][colEx].nbObject++;
 
 	// Génération de la nourriture aléatoirement sur la carte
-	for (i = 0; i < AV_NB_FOOD_ROOM * nbRoom; i++) {
+	for (i = 0; i < (int)AV_NB_FOOD_ROOM * nbRoom; i++) {
 		randomFreePlace(map, rooms, nbRoom, -1, &lineFood, &colFood);
-		map[lineFood][colFood].obj[map[lineFood][colFood].nbObject] = FOOD;
+		map[lineFood][colFood].obj[map[lineFood][colFood].nbObject].type = FOOD;
+		map[lineFood][colFood].obj[map[lineFood][colFood].nbObject].isDiscovered = FALSE;
+
 		map[lineFood][colFood].nbObject++;
+	}
+
+	// Génération des pièges aléatoirement sur la carte
+	for (i = 0; i < AV_NB_TRAP_ROOM * nbRoom; i++) {
+		randomFreePlace(map, rooms, nbRoom, -1, &lineTrap, &colTrap);
+		map[lineTrap][colTrap].obj[map[lineTrap][colTrap].nbObject].type = TRAP;
+		map[lineTrap][colTrap].obj[map[lineTrap][colTrap].nbObject].isDiscovered = FALSE;
+		map[lineTrap][colTrap].nbObject++;
 	}
 
 
