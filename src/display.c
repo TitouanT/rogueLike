@@ -68,6 +68,33 @@ void init_screen(){
 }
 
 /**
+	* \brief Compte le nombre de lignes d'un fichier
+	*	\fn int numberLinesFile(char * file)
+	* \param file Fichier à ouvrir pour compter les lignes
+	* \return Le nombre de ligne du fichier, 0 si l'ouverture n'a pas marché.
+	*/
+int numberLinesFile(char * file){
+
+	char tmp;
+	int line = 1;
+	FILE * fic;
+
+	fic = fopen(file, "r");
+
+	if(fic != NULL){
+		fscanf(fic, "%c", &tmp);
+		while(!feof(fic)){
+			if(tmp == '\n') line++;
+			fscanf(fic, "%c", &tmp);
+		}
+		fclose(fic);
+	}
+	else return 0;
+
+	return line;
+}
+
+/**
 	* \brief Afficher le contenu d'un fichier
 	* Permet d'afficher des messages ASCII
 	*	\fn void printASCIIText(char * file, int * line, int xShift, WINDOW *win)
@@ -109,7 +136,7 @@ void startScreen(WINDOW *win){
 
 	getmaxyx(win,lines,columns);
 
-	int line = (lines - 6) / 2;
+	int line = (lines - numberLinesFile("include/logo.txt")) / 2;
 	int xShift = (columns - 83) / 2;
 
 	wattron(win, COLOR_PAIR(COLOR_TITLE));
@@ -618,7 +645,7 @@ void displayEnd(t_character player, WINDOW *win){
 
 
 	if(player.hp <= 0){
-		yShift = (lines - 6) / 2;
+		yShift = (lines - numberLinesFile("include/game_over.txt")) / 2;
 		xShift = (columns - 83) / 2;
 
 		wmove(win, yShift++, xShift);
