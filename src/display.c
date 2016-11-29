@@ -613,6 +613,5 @@ void displayEnd(t_character player, WINDOW *win){
 
 	}
 
-
 	wrefresh(win);
 }
