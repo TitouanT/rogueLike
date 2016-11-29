@@ -7,9 +7,6 @@
   * \date 28 novembre 2016
   * \version 1.0
   */
-
-#include <ncurses.h>
-#include <string.h>
 #include "cell.h"
 #include "filePos.h"
 #include "tools.h"
@@ -230,6 +227,7 @@ void putRandomDoor (t_cell map[][COLUMNS], t_pos pos) {
 
 		After it start from the end and move back to the start following the decreasing value.
 */
+
 /**
   * \brief connecte une pièces au reste du réseau
   * \fn void connect(t_cell map[LINES][COLUMNS], int walkable[LINES][COLUMNS], t_room room)
