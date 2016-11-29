@@ -71,6 +71,7 @@
 
 /** Touche retour en arrière (celle de ncurses ne fonctionne pas) */
 #define KEY_RETURN 263
+#define KEY_RETURN_MAC 127
 
 
 
