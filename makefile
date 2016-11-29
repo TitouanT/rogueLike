@@ -10,7 +10,7 @@ rogueLike: main.o lvl.o filePos.o loadLvl.o display.o moves.o interactions.o too
 main.o: src/main.c include/global.h                                                      include/cell.h include/character.h include/mapConst.h include/lvl.h include/display.h include/moves.h include/loadLvl.h include/tools.h
 	gcc -c -I ./include $<
 
-lvl.o: src/lvl.c include/filePos.h include/cell.h include/filePos.h include/tools.h
+lvl.o: src/lvl.c include/filePos.h include/cell.h include/filePos.h include/tools.h include/mapConst.h
 	gcc -c -I ./include $<
 
 filePos.o: src/filePos.c include/filePos.h

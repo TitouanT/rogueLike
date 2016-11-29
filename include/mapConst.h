@@ -12,7 +12,7 @@
 #define MAPCONST_H
 
 /** Si mit à TRUE, les étages sont entièrements découverts par défaut */
-#define DEBUG FALSE
+#define DEBUG TRUE
 
 /** Nombre de ligne d'un étage */
 #define LINES 36

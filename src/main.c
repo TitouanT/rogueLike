@@ -52,6 +52,11 @@ int main () {
 	while (continueGame && player.hp > 0) {
 
 	key = getch();
+	if (key == 'N') {
+		randomFloor(map, 6);
+		displayFloor(map, win_game);
+		displayPlayer(player, map, win_game, win_logs, &lineLog);
+	}
 
 	clearLog(&lineLog, win_logs);
 	continueGame = handleInteraction(key, map, &player, win_logs, win_game, &lineLog);

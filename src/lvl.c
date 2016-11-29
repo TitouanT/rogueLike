@@ -16,7 +16,7 @@
 
 #define MIN(a,b) (a < b) ? a : b
 
-
+int gChoix;
 /** tableau qui contient tous les étages de la partie */
 t_lvl gLvl[NB_LVL];
 
@@ -368,8 +368,8 @@ int isThereAnExistingPath (t_cell map[][COLUMNS], t_room r1, t_room r2) {
 
 	finish.line = r2.line + 1;
 	finish.column = r2.column + 1;
-	FILE * file = fopen ("err", "a");
-	fprintf(file, "wall: %d, finish: %d\n", WALL, map[finish.line][finish.column].type);
+	//FILE * file = fopen ("err", "a");
+	//fprintf(file, "wall: %d, finish: %d\n", WALL, map[finish.line][finish.column].type);
 
 	file_init();
 	file_ajouter (start);
@@ -408,12 +408,12 @@ int isThereAnExistingPath (t_cell map[][COLUMNS], t_room r1, t_room r2) {
 	}
 	file_supprimer();
 	int i, j;
-	for (i = 0; i < LINES; i++) {
-		for (j = 0; j < COLUMNS; j++) fprintf (file, "%c", (path[i][j] == 4) ? 'X' : (path[i][j]) ? '#' : ' ');
-		fprintf (file, "\n");
-	}
-	fprintf (file, "\n");
-	fclose(file);
+	// for (i = 0; i < LINES; i++) {
+	// 	for (j = 0; j < COLUMNS; j++) fprintf (file, "%c", (path[i][j] == 4) ? 'X' : (path[i][j]) ? '#' : ' ');
+	// 	fprintf (file, "\n");
+	// }
+	// fprintf (file, "\n");
+	// fclose(file);
 	if (path[finish.line][finish.column] == seen) return TRUE;
 	else return FALSE;
 
@@ -428,11 +428,98 @@ int isThereAnExistingPath (t_cell map[][COLUMNS], t_room r1, t_room r2) {
   */
 void chooseLink (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 	int i;
-	for (i = 0; i < nbRoom-1; i++)
+	for (i = 0; i < nbRoom-1; i++) {
 		if (isThereAnExistingPath(map, rooms[i], rooms[i+1]) == FALSE) // a direct path doesn't exist yet.
 			createLink(map, rooms[i], rooms[i+1]);
 		else while(1);
+	}
+}
 
+void connect(t_cell map[LINES][COLUMNS], int walkable[LINES][COLUMNS], t_room room) {
+	int path[LINES][COLUMNS], i, j, l, c, val;
+	int up = 0, down = 1, right = 2, left = 3, curDir, dir[4] = {0};
+	t_pos head, start = chooseRandomWall (room);
+	map[start.line][start.column].type = DOORWAY;
+	putRandomDoor (map, start);
+
+	for (i = 0; i < LINES; i++) for (j = 0; j < COLUMNS; j++) path[i][j] = -1;
+	file_init();
+	head = start;
+	path[head.line][head.column] = 0;
+	while (walkable[head.line][head.column] != 1) {
+		l = head.line;
+		c = head.column;
+		val = path[l][c];
+		if ( l+1 < LINES && path[l + 1][c] == -1 && (map[l + 1][c].type == EMPTY || map[l + 1][c].type == DOORWAY)) {
+			path[l + 1][c] = val + 1;
+			head.column = c;
+			head.line = l + 1;
+			file_ajouter (head);
+		}
+		if ( l-1 >= 0 && path[l - 1][c] == -1 && (map[l - 1][c].type == EMPTY || map[l - 1][c].type == DOORWAY)) {
+			path[l - 1][c] = val + 1;
+			head.column = c;
+			head.line = l - 1;
+			file_ajouter (head);
+		}
+		if ( c+1 < COLUMNS && path[l][c + 1] == -1 && (map[l][c + 1].type == EMPTY || map[l][c + 1].type == DOORWAY)) {
+			path[l][c + 1] = val + 1;
+			head.column = c + 1;
+			head.line = l;
+			file_ajouter (head);
+		}
+		if ( c-1 >= 0 && path[l][c - 1] == -1 && (map[l][c - 1].type == EMPTY || map[l][c - 1].type == DOORWAY)) {
+			path[l][c - 1] = val + 1;
+			head.column = c - 1;
+			head.line = l;
+			file_ajouter (head);
+		}
+		file_retirer(&head);
+	}
+	file_supprimer();
+
+	while (head.line != start.line || head.column != start.column) {
+		l = head.line;
+		c = head.column;
+		val = path[l][c] - 1;
+
+		if (l + 1 <  LINES   && path[l + 1][c] == val) dir[down]  = 1;
+		if (l - 1 >= 0       && path[l - 1][c] == val) dir[up]    = 1;
+		if (c + 1 <  COLUMNS && path[l][c + 1] == val) dir[right] = 1;
+		if (c - 1 >= 0       && path[l][c - 1] == val) dir[left]  = 1;
+
+		for (i = 0; i < 4; i++) {
+			if (dir[i] == 1) {
+				curDir = i;
+				dir[i] = 0;
+			}
+		}
+
+		switch (curDir) {
+			case 0 : l--; break;
+			case 1 : l++; break;
+			case 2 : c++; break;
+			case 3 : c--; break;
+		}
+
+		walkable[l][c] = 1;
+		head.line   = l;
+		head.column = c;
+	}
+
+}
+
+void chooseLink2 (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
+	int i, j, walkable[LINES][COLUMNS] = {{0}};
+
+	t_pos doorPos = chooseRandomWall (rooms[0]);
+	map[doorPos.line][doorPos.column].type = DOORWAY;
+	putRandomDoor (map, doorPos);
+	walkable[doorPos.line][doorPos.column] = 1;
+	for (i = 1; i < nbRoom; i++) connect(map, walkable, rooms[i]);
+	for (i = 0; i < LINES; i++)
+		for (j = 0; j < COLUMNS; j++)
+			if (walkable[i][j] == 1 && map[i][j].type == EMPTY) map[i][j].type = CORRIDOR;
 }
 
 /**
@@ -476,9 +563,9 @@ void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 	randomFreePlace (map, rooms, nbRoom, rExit, &lineEx, &colEx);
 
 	map[lineEn][colEn].obj[map[lineEn][colEn].nbObject].type = STAIRS_DOWN;
-	map[lineEn][colEn].obj[map[lineEn][colEn].nbObject].isDiscovered = FALSE;
+	map[lineEn][colEn].obj[map[lineEn][colEn].nbObject].isDiscovered = DEBUG;
 	map[lineEx][colEx].obj[map[lineEn][colEn].nbObject].type = STAIRS_UP;
-	map[lineEx][colEx].obj[map[lineEn][colEn].nbObject].isDiscovered = FALSE;
+	map[lineEx][colEx].obj[map[lineEn][colEn].nbObject].isDiscovered = DEBUG;
 
 	map[lineEn][colEn].nbObject++;
 	map[lineEx][colEx].nbObject++;
@@ -487,7 +574,7 @@ void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 	for (i = 0; i < (int)AV_NB_FOOD_ROOM * nbRoom; i++) {
 		randomFreePlace(map, rooms, nbRoom, -1, &lineFood, &colFood);
 		map[lineFood][colFood].obj[map[lineFood][colFood].nbObject].type = FOOD;
-		map[lineFood][colFood].obj[map[lineFood][colFood].nbObject].isDiscovered = FALSE;
+		map[lineFood][colFood].obj[map[lineFood][colFood].nbObject].isDiscovered = DEBUG;
 
 		map[lineFood][colFood].nbObject++;
 	}
@@ -496,7 +583,7 @@ void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 	for (i = 0; i < AV_NB_TRAP_ROOM * nbRoom; i++) {
 		randomFreePlace(map, rooms, nbRoom, -1, &lineTrap, &colTrap);
 		map[lineTrap][colTrap].obj[map[lineTrap][colTrap].nbObject].type = TRAP;
-		map[lineTrap][colTrap].obj[map[lineTrap][colTrap].nbObject].isDiscovered = FALSE;
+		map[lineTrap][colTrap].obj[map[lineTrap][colTrap].nbObject].isDiscovered = DEBUG;
 		map[lineTrap][colTrap].nbObject++;
 	}
 
@@ -519,8 +606,9 @@ void randomFloor (t_cell map[LINES][COLUMNS], int lvl) {
 	for (i = 0; i < nbRoom; i++) {
 		rooms[i] = randomRoom(map, rooms, i, &nbRoom);
 	}
-
-	chooseLink (map, rooms, nbRoom);
+	if (gChoix == TRUE) chooseLink2 (map, rooms, nbRoom);
+	else chooseLink (map, rooms, nbRoom);
+	gChoix = !gChoix;
 
 	placeObject (map, rooms, nbRoom);
 	if (gLvlId < NB_LVL) {
