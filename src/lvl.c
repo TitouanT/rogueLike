@@ -16,7 +16,6 @@
 
 #define MIN(a,b) (a < b) ? a : b
 
-int gChoix;
 /** tableau qui contient tous les étages de la partie */
 t_lvl gLvl[NB_LVL];
 
@@ -214,29 +213,8 @@ void putRandomDoor (t_cell map[][COLUMNS], t_pos pos) {
 	else map[pos.line][pos.column].state = dNONE;
 }
 
-/**
-  * \brief empeche le placement de deux porte qui se touche
-  * \fn void avoidTouchingDoors (t_cell map[][COLUMNS], t_pos * pos)
-  * \param map carte représenant l'étage
-  * \param pos position d'une porte que l'on veut tester
-  */
-void avoidTouchingDoors (t_cell map[][COLUMNS], t_pos * pos) {
-	if (map[pos->line + 1][pos->column].type != DOORWAY) {
-		if (map[pos->line - 1][pos->column].type != DOORWAY) {
-			if (map[pos->line][pos->column + 1].type != DOORWAY) {
-				if (map[pos->line][pos->column - 1].type != DOORWAY) {
-					// if all around you there are no doors, then you can be one!
-					map[pos->line][pos->column].type = DOORWAY;
-					putRandomDoor (map, *pos);
-				}
-				else (pos->column)--; // else you have to be in the shaddow of one surrounding you
-			} else (pos->column)++;
-		} else (pos->line)--;
-	} else (pos->line)++;
-}
 
-
-/* 	createLink use an algorithm call flood and fill to search a path from a door to another,
+/* 	connect use an algorithm call flood and fill to search a path from a door to the corridor network,
 		the principle is:
 			1- write a zero on the starting point
 			2- add it to the queue
@@ -253,188 +231,12 @@ void avoidTouchingDoors (t_cell map[][COLUMNS], t_pos * pos) {
 		After it start from the end and move back to the start following the decreasing value.
 */
 /**
-  * \brief fait un couloir entre deux pieces
-  * \fn void createLink (t_cell map[][COLUMNS], t_room r1, t_room r2)
+  * \brief connecte une pièces au reste du réseau
+  * \fn void connect(t_cell map[LINES][COLUMNS], int walkable[LINES][COLUMNS], t_room room)
   * \param map carte représenant l'étage
-  * \param r1 premiere piece
-  * \param r2 seconde piece
+  * \param walkable le réseau actuel
+  * \param room la pièce à connecter
   */
-void createLink (t_cell map[][COLUMNS], t_room r1, t_room r2) {
-	int path[LINES][COLUMNS];
-	int up = 0, down = 1, right = 2, left = 3, curDir;
-	int i, j, val, c, l, dir[4] = {0};
-	t_pos start = chooseRandomWall (r1), finish = chooseRandomWall (r2), head;
-
-	for (i = 0; i < LINES; i++) for (j = 0; j < COLUMNS; j++) path[i][j] = -1;
-
-	avoidTouchingDoors (map, &start);
-	avoidTouchingDoors (map, &finish);
-
-	file_init();
-	head=start;
-	path[head.line][head.column] = 0;
-
-	while (head.line != finish.line || head.column != finish.column) {
-		l = head.line;
-		c = head.column;
-		val = path[l][c];
-		if ( l+1 < LINES && path[l + 1][c] == -1 && (map[l + 1][c].type == CORRIDOR || map[l + 1][c].type == EMPTY || map[l + 1][c].type == DOORWAY)) {
-			path[l + 1][c] = val + 1;
-			head.column = c;
-			head.line = l + 1;
-			file_ajouter (head);
-		}
-		if ( l-1 >= 0 && path[l - 1][c] == -1 && (map[l - 1][c].type == CORRIDOR || map[l - 1][c].type == EMPTY || map[l - 1][c].type == DOORWAY)) {
-			path[l - 1][c] = val + 1;
-			head.column = c;
-			head.line = l - 1;
-			file_ajouter (head);
-		}
-		if ( c+1 < COLUMNS && path[l][c + 1] == -1 && (map[l][c + 1].type == CORRIDOR || map[l][c + 1].type == EMPTY || map[l][c + 1].type == DOORWAY)) {
-			path[l][c + 1] = val + 1;
-			head.column = c + 1;
-			head.line = l;
-			file_ajouter (head);
-		}
-		if ( c-1 >= 0 && path[l][c - 1] == -1 && (map[l][c - 1].type == CORRIDOR || map[l][c - 1].type == EMPTY || map[l][c - 1].type == DOORWAY)) {
-			path[l][c - 1] = val + 1;
-			head.column = c - 1;
-			head.line = l;
-			file_ajouter (head);
-		}
-		file_retirer(&head);
-	}
-	file_supprimer();
-
-
-	while (head.line != start.line || head.column != start.column) {
-		l = head.line;
-		c = head.column;
-		val = path[l][c] - 1;
-
-		if ( l + 1 <  LINES   && path[l + 1][c] == val ) dir[down]  = 1;
-		if ( l - 1 >= 0       && path[l - 1][c] == val ) dir[up]    = 1;
-		if ( c + 1 <  COLUMNS && path[l][c + 1] == val ) dir[right] = 1;
-		if ( c - 1 >= 0       && path[l][c - 1] == val ) dir[left]  = 1;
-
-		for (i = 0; i < 4; i++) {
-			if (dir[i] == 1) {
-				curDir = i;
-				dir[i] = 0;
-			}
-		}
-
-		switch (curDir) {
-			case 0 : l--; break;
-			case 1 : l++; break;
-			case 2 : c++; break;
-			case 3 : c--; break;
-		}
-
-		if (map[l][c].type != DOORWAY) {
-			map[l][c].type = CORRIDOR;
-		}
-		head.line   = l;
-		head.column = c;
-	}
-
-}
-/*
-methode:
-	1. verifier si il y a un chemin direct.
-	2. sinon, créé un chemin sans toucher de couloir
-	3. sinon, se raccorder au chemin le plus proche
-*/
-
-/**
-  * \brief test si un chemin existe deja entre deux pieces
-  * \fn int isThereAnExistingPath (t_cell map[][COLUMNS], t_room r1, t_room r2)
-  * \param map carte représenant l'étage
-  * \param r1 premiere piece
-  * \param r2 seconde piece
-  * \return TRUE si un lien existe
-  * \return FALSE sinon.
-  */
-int isThereAnExistingPath (t_cell map[][COLUMNS], t_room r1, t_room r2) {
-	t_pos start, finish, head;
-	int path[LINES][COLUMNS], l, c, seen = 1, notSeen = 0;
-
-	for (l = 0; l < LINES; l++)
-		for (c = 0; c < COLUMNS; c++)
-			path[l][c] = notSeen;
-
-	start.line = r1.line + 1;
-	start.column = r1.column + 1;
-
-	finish.line = r2.line + 1;
-	finish.column = r2.column + 1;
-	//FILE * file = fopen ("err", "a");
-	//fprintf(file, "wall: %d, finish: %d\n", WALL, map[finish.line][finish.column].type);
-
-	file_init();
-	file_ajouter (start);
-	path[start.line][start.column] = seen;
-	path[finish.line][finish.column] = 4;
-	while (file_est_vide() == 0 && path[finish.line][finish.column] != seen) {
-		file_retirer(&head);
-		l = head.line;
-		c = head.column;
-
-		if ( l+1 < LINES && path[l + 1][c] == notSeen && (map[l + 1][c].type == CORRIDOR || map[l + 1][c].type == ROOM || map[l + 1][c].type == DOORWAY)) {
-			/*  if legal   AND  not already seen        AND (                                          walkable                                            )  */
-			head.column = c;
-			head.line = l + 1;
-			path[l+1][c] = seen;
-			file_ajouter (head);
-		}
-		if ( l-1 >= 0 && path[l - 1][c] == notSeen && (map[l - 1][c].type == CORRIDOR || map[l - 1][c].type == ROOM || map[l - 1][c].type == DOORWAY)) {
-			head.column = c;
-			head.line = l - 1;
-			path[l - 1][c] = seen;
-			file_ajouter (head);
-		}
-		if ( c+1 < COLUMNS && path[l][c + 1] == notSeen && (map[l][c + 1].type == CORRIDOR || map[l][c + 1].type == ROOM || map[l][c + 1].type == DOORWAY)) {
-			head.column = c + 1;
-			head.line = l;
-			path[l][c + 1] = seen;
-			file_ajouter (head);
-		}
-		if ( c-1 >= 0 && path[l][c - 1] == notSeen && (map[l][c - 1].type == CORRIDOR || map[l][c - 1].type == ROOM || map[l][c - 1].type == DOORWAY)) {
-			head.column = c - 1;
-			head.line = l;
-			path[l][c - 1] = seen;
-			file_ajouter (head);
-		}
-	}
-	file_supprimer();
-	int i, j;
-	// for (i = 0; i < LINES; i++) {
-	// 	for (j = 0; j < COLUMNS; j++) fprintf (file, "%c", (path[i][j] == 4) ? 'X' : (path[i][j]) ? '#' : ' ');
-	// 	fprintf (file, "\n");
-	// }
-	// fprintf (file, "\n");
-	// fclose(file);
-	if (path[finish.line][finish.column] == seen) return TRUE;
-	else return FALSE;
-
-}
-
-/**
-  * \brief choisi quelles pieces lier
-  * \fn void chooseLink (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom)
-  * \param map carte représenant l'étage
-  * \param rooms tableau contenant les pieces existantes
-  * \param nbRoom nombre de pieces existantes
-  */
-void chooseLink (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
-	int i;
-	for (i = 0; i < nbRoom-1; i++) {
-		if (isThereAnExistingPath(map, rooms[i], rooms[i+1]) == FALSE) // a direct path doesn't exist yet.
-			createLink(map, rooms[i], rooms[i+1]);
-		else while(1);
-	}
-}
-
 void connect(t_cell map[LINES][COLUMNS], int walkable[LINES][COLUMNS], t_room room) {
 	int path[LINES][COLUMNS], i, j, l, c, val;
 	int up = 0, down = 1, right = 2, left = 3, curDir, dir[4] = {0};
@@ -509,7 +311,15 @@ void connect(t_cell map[LINES][COLUMNS], int walkable[LINES][COLUMNS], t_room ro
 
 }
 
-void chooseLink2 (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
+
+/**
+  * \brief choisi quelles pieces lier
+  * \fn void chooseLink (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom)
+  * \param map carte représenant l'étage
+  * \param rooms tableau contenant les pieces existantes
+  * \param nbRoom nombre de pieces existantes
+  */
+void chooseLink (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 	int i, j, walkable[LINES][COLUMNS] = {{0}};
 
 	t_pos doorPos = chooseRandomWall (rooms[0]);
@@ -606,9 +416,7 @@ void randomFloor (t_cell map[LINES][COLUMNS], int lvl) {
 	for (i = 0; i < nbRoom; i++) {
 		rooms[i] = randomRoom(map, rooms, i, &nbRoom);
 	}
-	if (gChoix == TRUE) chooseLink2 (map, rooms, nbRoom);
-	else chooseLink (map, rooms, nbRoom);
-	gChoix = !gChoix;
+	chooseLink (map, rooms, nbRoom);
 
 	placeObject (map, rooms, nbRoom);
 	if (gLvlId < NB_LVL) {
