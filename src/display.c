@@ -68,6 +68,33 @@ void init_screen(){
 }
 
 /**
+	* \brief Compte le nombre de lignes d'un fichier
+	*	\fn int numberLinesFile(char * file)
+	* \param file Fichier à ouvrir pour compter les lignes
+	* \return Le nombre de ligne du fichier, 0 si l'ouverture n'a pas marché.
+	*/
+int numberLinesFile(char * file){
+
+	char tmp;
+	int line = 1;
+	FILE * fic;
+
+	fic = fopen(file, "r");
+
+	if(fic != NULL){
+		fscanf(fic, "%c", &tmp);
+		while(!feof(fic)){
+			if(tmp == '\n') line++;
+			fscanf(fic, "%c", &tmp);
+		}
+		fclose(fic);
+	}
+	else return 0;
+
+	return line;
+}
+
+/**
 	* \brief Afficher le contenu d'un fichier
 	* Permet d'afficher des messages ASCII
 	*	\fn void printASCIIText(char * file, int * line, int xShift, WINDOW *win)
@@ -109,7 +136,7 @@ void startScreen(WINDOW *win){
 
 	getmaxyx(win,lines,columns);
 
-	int line = (lines - 6) / 2;
+	int line = (lines - numberLinesFile("include/logo.txt")) / 2;
 	int xShift = (columns - 83) / 2;
 
 	wattron(win, COLOR_PAIR(COLOR_TITLE));
@@ -278,9 +305,9 @@ void selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *playe
 		key = getch();
 
 		switch (key) {
-			case '\n'       : quit = TRUE; break;
-			case 'q'        : quit = TRUE; break;
-			case KEY_RETURN : quit = TRUE; break;
+			case '\n'           : quit = TRUE; break;
+			case KEY_RETURN     : quit = TRUE; break;
+			case KEY_RETURN_MAC : quit = TRUE; break;
 
 			case KEY_UP     : if(selectedGame >= 2) selectedGame--; break;
 			case KEY_DOWN   : if(selectedGame <= 2) selectedGame++; break;
@@ -395,15 +422,17 @@ void displayFloor(t_cell map[LINES][COLUMNS], WINDOW *win) {
 		for (j = 0; j < COLUMNS; j++) {
 			if (map[i][j].isDiscovered) {
 				switch (map[i][j].type) {
+
 					case EMPTY: 	 printCell(GENERAL_COLOR,' ', win); break;
+
 					case DOORWAY:
 						switch (map[i][j].state) {
 							case dNONE:  printCell(CORRIDOR_COLOR,'c', win); break;
 							case dOPEN:  printCell(OPENED_DOOR,'c', win); break;
 							case dCLOSE: printCell(GENERAL_COLOR,'c', win); break;
 							default: printCell(GENERAL_COLOR,'?', win); break;
-						}
-						break;
+						} break;
+
 					case ROOM:
 						if (map[i][j].nbObject == 0 || !map[i][j].obj[0].isDiscovered) printCell(ROOM_COLOR,' ', win);
 						else {
@@ -416,8 +445,8 @@ void displayFloor(t_cell map[LINES][COLUMNS], WINDOW *win) {
 									case objNONE: printCell(ROOM_COLOR,' ', win); break;
 								}
 							}
-						}
-						break;
+						} break;
+
 
 					case CORRIDOR:
 						if (map[i][j].nbObject == 0) printCell(CORRIDOR_COLOR,'c', win);
@@ -426,10 +455,10 @@ void displayFloor(t_cell map[LINES][COLUMNS], WINDOW *win) {
 								case STAIRS_UP: printCell(OBJECTS_COLOR,'<', win); break;
 								case STAIRS_DOWN: printCell(OBJECTS_COLOR, '>', win); break;
 								case objNONE: printCell(CORRIDOR_COLOR,' ', win); break;
+								default: break;
 							}
 						}
 						break;
-
 					case WALL: 		 printCell(WALL_COLOR,'c', win); break;
 				}
 			}
@@ -616,13 +645,15 @@ void displayEnd(t_character player, WINDOW *win){
 
 
 	if(player.hp <= 0){
-		yShift = (lines - 6) / 2;
+		yShift = (lines - numberLinesFile("include/game_over.txt")) / 2;
 		xShift = (columns - 83) / 2;
 
 		wmove(win, yShift++, xShift);
 		printASCIIText("include/game_over.txt", &yShift, xShift, win);
-	}
 
+		printLineCenter("Appuyez sur q pour quitter.", columns, yShift+2, win);
+
+	}
 
 	wrefresh(win);
 }
