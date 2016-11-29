@@ -19,8 +19,7 @@ int main () {
 
 	initRandom();
 	t_cell map[LINES][COLUMNS];
-	t_character player = {"valentin", 0, 0, 0, 10, 10, 10, 0, MAX_FOOD, FALSE};
-
+	t_character player = {"valentin", 0, 0, 0, 10, 10, 10, 0, MAX_FOOD, FALSE, FALSE};
 
 	init_screen();
 	getmaxyx(stdscr,heightScreen,widthScreen);
@@ -40,8 +39,6 @@ int main () {
 	WINDOW *win_stats = createWindow(0, LINES_GAME, COLS_STATS, LINES_STATS, "Statistiques");
 	WINDOW *win_logs  = createWindow(COLS_GAME, 0, COLS_LOGS, LINES_LOGS, "Logs");
 
-	// On déplace le joueur au spawn de celui-ci
-	move2spawn(map, &player, STAIRS_DOWN);
 	// On affiche les objectifs
 	displayObjectives(&lineLog, win_logs);
 	// On affiche la map et le joueur
@@ -55,6 +52,11 @@ int main () {
 	while (continueGame && player.hp > 0) {
 
 	key = getch();
+	if (key == 'N') {
+		randomFloor(map, 6);
+		displayFloor(map, win_game);
+		displayPlayer(player, map, win_game, win_logs, &lineLog);
+	}
 
 	clearLog(&lineLog, win_logs);
 	continueGame = handleInteraction(key, map, &player, win_logs, win_game, &lineLog);

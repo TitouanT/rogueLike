@@ -98,7 +98,6 @@ void augmenterFaim(t_character *player){
 	}
 }
 
-
 /**
 	* \brief Permet au joueur de manger la nourriture sur laquelle il se trouve
 	*	\fn void eatFood(t_character *player, t_cell map[LINES][COLUMNS])
@@ -107,11 +106,10 @@ void augmenterFaim(t_character *player){
 	*/
 void eatFood(t_character *player, t_cell map[LINES][COLUMNS]){
 
-
 	int minFood = 20; /// minFood : Apport minimal de la nourriture à la faim du joueur
 	int maxFood = 30; /// maxFood : Apport maximal de la nourriture à la faim du joueur
 
-	map[player->line][player->column].obj[0] = objNONE;
+	map[player->line][player->column].obj[0].type = objNONE;
 	map[player->line][player->column].nbObject = 0;
 
 	player->food += randab(minFood, maxFood);
@@ -124,15 +122,14 @@ void eatFood(t_character *player, t_cell map[LINES][COLUMNS]){
 
 }
 
-
-
 /**
 	* \brief Fonction principale d'intéraction avec l'utilisateur
-	*	\fn int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, WINDOW * win_logs, int *lineLog)
+	* \fn int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, WINDOW * win_logs, WINDOW * win_game, int *lineLog)
 	* \param key Touche que l'utilisateur a appuyé
 	* \param map Carte où se trouve le joueur
 	* \param player Joueur
 	* \param win_logs Fenêtre de logs où afficher le message
+	* \param win_game Fenêtre de jeu
 	* \param lineLog Ligne d'écriture du message
 	* \return FALSE si l'utilisateur à demandé de quitter la partie
 	* \return TRUE sinon
@@ -146,17 +143,18 @@ int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, 
 		case 'h': case KEY_LEFT:  move_perso(LEFT,  map, player);  break;
 		case 'l': case KEY_RIGHT: move_perso(RIGHT, map, player);  break;
 
-		case 'y': move_perso(UP_LEFT, map, player);  break;
-		case 'u': move_perso(UP_RIGHT, map, player);  break;
+		case 'y': move_perso(UP_LEFT, map, player);    break;
+		case 'u': move_perso(UP_RIGHT, map, player);   break;
 		case 'b': move_perso(DOWN_LEFT, map, player);  break;
-		case 'n': move_perso(DOWN_RIGHT, map, player);  break;
+		case 'n': move_perso(DOWN_RIGHT, map, player); break;
 
-    case '\n':      traiterEntree(map, player,  win_logs,     lineLog); break;
-    case 'o' :      traiterPorte (map, player, key, win_logs, lineLog); break;
-    case 'c' :      traiterPorte (map, player, key, win_logs, lineLog); break;
-		case 's' :  		saveGame(map, player); break;//
-    case 'q' : return FALSE;
-    case 'Q' : return !askConfirmationToQuit(win_logs, lineLog);
+
+    	case '\n': traiterEntree(map, player,  win_logs,     lineLog); break;
+    	case 'o' : traiterPorte (map, player, key, win_logs, lineLog); break;
+    	case 'c' : traiterPorte (map, player, key, win_logs, lineLog); break;
+		case 's' : saveGame(map, player); addLog("Partie Sauvegardée", lineLog, win_logs); break;//
+    	case 'q' : return FALSE;
+    	case 'Q' : return !askConfirmationToQuit(win_logs, lineLog);
 
 		case '_' : cheat(win_logs, win_game, map, player); break;
 
@@ -259,7 +257,7 @@ void traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW *win,
 
   if(map[player->line][player->column].nbObject > 0){
 
-    switch (map[player->line][player->column].obj[0]) {
+    switch (map[player->line][player->column].obj[0].type) {
 
       case STAIRS_UP:
         if(player->lvl < NB_LVL - 1){
@@ -308,7 +306,7 @@ int askConfirmationToQuit(WINDOW * win, int *lineLog) {
 
 	int key;
 
-	addLog("Etes-vous sur de vouloir quitter ? (y/n)", lineLog, win);
+	addLog("Etes-vous sur de vouloir quitter sans sauvegarder ? (y/n)", lineLog, win);
 
 	key = getch();
 
@@ -319,6 +317,31 @@ int askConfirmationToQuit(WINDOW * win, int *lineLog) {
 		default: wrongKey(win, lineLog);
 	}
 	return FALSE;
+}
+
+
+void passOut(t_cell map[LINES][COLUMNS]){
+
+	int line, column, height, width, maxHeight, maxWidth;
+	int i, j;
+
+	int aMinLen = 10, aMaxHeight = 15, aMaxWidth = 20;
+
+	line   = randab(1, LINES - aMinLen -1);
+	column = randab(1, COLUMNS - aMinLen -1);
+
+	maxHeight = min(LINES - line - 1, aMaxHeight);
+	height    = randab(aMinLen, maxHeight +1);
+
+	maxWidth = min(COLUMNS - column - 1, aMaxWidth);
+	width    = randab(aMinLen, maxWidth +1);
+
+	for(i = line ; i < maxHeight + line ; i++){
+		for(j = column ; j < maxWidth + column ; j++){
+			map[i][j].isDiscovered = FALSE;
+		}
+	}
+
 }
 
 
@@ -343,9 +366,24 @@ void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_cha
 	else if(strcmp(cheatSTR, "food") == 0){
 		player->food = MAX_FOOD;
 	}
+	else if(strcmp(cheatSTR, "food++") == 0){
+		if(player->food < MAX_FOOD) player->food += 10;
+	}
+	else if(strcmp(cheatSTR, "food--") == 0){
+		if(player->food >= 10) player->food -= 10;
+	}
+	else if(strcmp(cheatSTR, "I WANT TO EAT") == 0){
+		player->food = 0;
+	}
 	else if(strcmp(cheatSTR, "heal") == 0){
 		player->hp = MAX_HP;
 		player->isSick = FALSE;
+	}
+	else if(strcmp(cheatSTR, "damage") == 0){
+		player->hp -= 1;
+	}
+	else if(strcmp(cheatSTR, "suicide fail") == 0){
+		player->hp = 1;
 	}
 	else if(strcmp(cheatSTR, "kill") == 0){
 		player->hp = 0;
@@ -371,16 +409,21 @@ void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_cha
 
 		addLog("", &lineLog, win_logs);
 
-		addLog("?           : Affiche cette liste d'aide", &lineLog, win_logs);
-		addLog("help        : Affiche cette liste d'aide", &lineLog, win_logs);
-		addLog("ToWinICheat : Affiche la map au complet", &lineLog, win_logs);
-		addLog("food        : Met 100% de la nourriture", &lineLog, win_logs);
-		addLog("heal        : Met 100% de la vie", &lineLog, win_logs);
-		addLog("kill        : Tue le joueur", &lineLog, win_logs);
-		addLog("sick        : Rend le joueur malade", &lineLog, win_logs);
-		addLog("up          : Monte le joueur d'un étage", &lineLog, win_logs);
-		addLog("down        : Descend le joueur d'un étage", &lineLog, win_logs);
-		addLog("exit        : Sortir de ce menu", &lineLog, win_logs);
+		addLog("?             : Affiche cette liste d'aide", &lineLog, win_logs);
+		addLog("help          : Affiche cette liste d'aide", &lineLog, win_logs);
+		addLog("ToWinICheat   : Affiche la map au complet", &lineLog, win_logs);
+		addLog("food          : Met 100% de la nourriture", &lineLog, win_logs);
+		addLog("food++        : Ajoute 1pt de nourriture", &lineLog, win_logs);
+		addLog("food--        : Enlève 1pt de nourriture", &lineLog, win_logs);
+		addLog("I WANT TO EAT : Met 0% de la nourriture", &lineLog, win_logs);
+		addLog("heal          : Met 100% de la vie", &lineLog, win_logs);
+		addLog("damage        : Enlève 1pt de vie", &lineLog, win_logs);
+		addLog("suicide fail  : Met la vie à 1", &lineLog, win_logs);
+		addLog("kill          : Tue le joueur", &lineLog, win_logs);
+		addLog("sick          : Rend le joueur malade", &lineLog, win_logs);
+		addLog("up            : Monte le joueur d'un étage", &lineLog, win_logs);
+		addLog("down          : Descend le joueur d'un étage", &lineLog, win_logs);
+		addLog("exit          : Sortir de ce menu", &lineLog, win_logs);
 
 		cheat(win_logs, win_game, map, player);
 
