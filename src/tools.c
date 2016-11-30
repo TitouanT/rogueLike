@@ -162,7 +162,9 @@ char low2up (char car) {
 }
 
 void err (char msg[]) {
-	FILE * err = fopen("err", "a");
-	if(PRINT_ERROR) fprintf(err, "%s\n", msg);
-	fclose(err);
+	if(PRINT_ERROR){
+		FILE * err = fopen("err", "a");
+		fprintf(err, "%s\n", msg);
+		fclose(err);
+	}
 }
