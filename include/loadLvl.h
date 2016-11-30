@@ -1,6 +1,9 @@
 #ifndef LOADLVL_H
 #define LOADLVL_H
 
+#define CONTINUE_GAME 1
+#define NEW_GAME 0
+
 void readLvl (t_cell map[][COLUMNS], int nbLvl, char *dossier);
 void writeLvl (t_cell map[][COLUMNS], int nbLvl, char *dossier);
 void initGameMap(t_cell map[LINES][COLUMNS], int choix, int nbFichierSauvegarde, t_character *player);

@@ -13,7 +13,9 @@
 #include <ncurses.h> // a cause du TRUE
 
 /** Si mit à TRUE, les étages sont entièrements découverts par défaut */
-#define DEBUG TRUE
+#define DEBUG FALSE
+
+#define PRINT_ERROR TRUE
 
 /** Nombre de ligne d'un étage */
 #define LINES 36

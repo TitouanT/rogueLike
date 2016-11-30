@@ -11,7 +11,7 @@
 #include "global.h"
 
 int main () {
-
+	remove("err");
 	int key;
 	int lineLog = 0;
 	int widthScreen, heightScreen;
@@ -51,21 +51,21 @@ int main () {
 	/* Ici se déroule tout le jeu */
 	while (continueGame && player.hp > 0) {
 
-	key = getch();
-	if (key == 'N') {
-		randomFloor(map, 6);
+		key = getch();
+		if (key == 'N') {
+			randomFloor(map, 6);
+			displayFloor(map, win_game);
+			displayPlayer(player, map, win_game, win_logs, &lineLog);
+		}
+
+		clearLog(&lineLog, win_logs);
+		continueGame = handleInteraction(key, map, &player, win_logs, win_game, &lineLog);
+
+		markDiscoverRoom(map, player);
+
 		displayFloor(map, win_game);
 		displayPlayer(player, map, win_game, win_logs, &lineLog);
-	}
-
-	clearLog(&lineLog, win_logs);
-	continueGame = handleInteraction(key, map, &player, win_logs, win_game, &lineLog);
-
-	markDiscoverRoom(map, player);
-
-	displayFloor(map, win_game);
-	displayPlayer(player, map, win_game, win_logs, &lineLog);
-	displayStats(player, win_stats);
+		displayStats(player, win_stats);
 
 	}
 
