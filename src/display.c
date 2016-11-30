@@ -352,6 +352,8 @@ WINDOW *createWindow(int startX, int startY, int width, int height, char * label
 
 	WINDOW *localWindow;
 
+	err ("\n**Création d'une nouvelle fenêtre**\n");
+
 	localWindow = newwin(height, width, startY, startX);
 
 
@@ -373,6 +375,9 @@ WINDOW *createWindow(int startX, int startY, int width, int height, char * label
 void deleteWindow(WINDOW *window){
 
 	int lines, cols;
+
+	err ("\n**Suppresion d'une fenêtre**\n");
+
 
 	getmaxyx(window, lines, cols);
 
