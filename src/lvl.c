@@ -11,8 +11,6 @@
 #include "filePos.h"
 #include "tools.h"
 
-#define MIN(a,b) (a < b) ? a : b
-
 /** tableau qui contient tous les étages de la partie */
 t_lvl gLvl[NB_LVL];
 
@@ -140,10 +138,10 @@ t_room randomRoom (t_cell map[][COLUMNS], t_room * rooms, int nbRoom, int *nbTot
 		room.column = randab(1, COLUMNS - ROOM_MIN_LEN - 1);
 
 		// the door dimensions are choose between the min length and the maximum they can be without going out of the map
-		maxHeight = MIN(LINES - room.line - 1, ROOM_MAX_HEIGHT);
+		maxHeight = min(LINES - room.line - 1, ROOM_MAX_HEIGHT);
 		room.height = randab(ROOM_MIN_LEN, maxHeight + 1);
 
-		maxWidth = MIN(COLUMNS - room.column - 1, ROOM_MAX_WIDTH);
+		maxWidth = min(COLUMNS - room.column - 1, ROOM_MAX_WIDTH);
 		room.width  = randab(ROOM_MIN_LEN, maxWidth + 1);
 
 		// if the room is touching another one then try another
