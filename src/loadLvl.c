@@ -155,7 +155,6 @@ void initGameMap(t_cell map[LINES][COLUMNS], int choix, int choixFichierSauvegar
 		}
 		readLvl(map, 0);
 		move2spawn(map, player, STAIRS_DOWN);
-		writePosition(*player);
 	}
 	else{
 		readPosition(player);
@@ -213,7 +212,7 @@ int bFileSaveEmpty(int choixFichierSauvegarde){
 	err("\n***Debut is File Save Empty***");
 	int i;
 	char fileName[50];
-	sprintf(fileName, "./partie/sauvegarde%i/0.txt", choixFichierSauvegarde);
+	sprintf(fileName, "./partie/sauvegarde%i/position.txt", choixFichierSauvegarde);
 	err(fileName);
 
 	if(fopen(fileName, "r") == NULL){

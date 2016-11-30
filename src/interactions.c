@@ -152,11 +152,11 @@ int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, 
     	case '\n': traiterEntree(map, player,  win_logs,     lineLog); break;
     	case 'o' : traiterPorte (map, player, key, win_logs, lineLog); break;
     	case 'c' : traiterPorte (map, player, key, win_logs, lineLog); break;
-		case 's' : saveGame(map, player); addLog("Partie Sauvegardée", lineLog, win_logs); break;//
+			case 's' : saveGame(map, player); addLog("Partie Sauvegardée", lineLog, win_logs); break;//
     	case 'q' : return FALSE;
     	case 'Q' : return !askConfirmationToQuit(win_logs, lineLog);
 
-		case '_' : cheat(win_logs, win_game, map, player); break;
+			case '_' : cheat(win_logs, win_game, map, player); break;
 
 
 		//case 'n' : randomFloor(map, 5); move2spawn(map, player, STAIRS_DOWN); break; // a mettre dans cheat
@@ -312,10 +312,22 @@ int askConfirmationToQuit(WINDOW * win, int *lineLog) {
 
 	switch (key) {
 		case 'y': return TRUE;
-		case 'n': return FALSE;
+		case 'n': break;
 
 		default: wrongKey(win, lineLog);
 	}
+
+ /*	addLog("Voulez-vous sauvegarder et quitter ? (y/n)", lineLog, win);
+
+	key = getch();
+
+	switch (key) {
+		case 'y': saveGame(map, player); addLog("Partie Sauvegardée", lineLog, win); return TRUE;
+		case 'n': return FALSE;
+		default: wrongKey(win, lineLog);
+	}
+	*/
+
 	return FALSE;
 }
 
