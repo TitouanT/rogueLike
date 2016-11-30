@@ -4,8 +4,8 @@
 #define CONTINUE_GAME 1
 #define NEW_GAME 0
 
-void readLvl (t_cell map[][COLUMNS], int nbLvl, char *dossier);
-void writeLvl (t_cell map[][COLUMNS], int nbLvl, char *dossier);
+void readLvl (t_cell map[][COLUMNS], int nbLvl);
+void writeLvl (t_cell map[][COLUMNS], int nbLvl);
 void initGameMap(t_cell map[LINES][COLUMNS], int choix, int nbFichierSauvegarde, t_character *player);
 void changeLvl(t_cell map[LINES][COLUMNS],t_character *player, int dir);
 void saveGame(t_cell map[LINES][COLUMNS], t_character *player);

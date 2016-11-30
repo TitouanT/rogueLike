@@ -30,7 +30,7 @@ void initNameOfFile (int choixDeSauvegarde) {
 	err("***fin init name of file***\n");
 }
 
-void readLvl ( t_cell map[][COLUMNS], int nbLvl, char dossier[]) {
+void readLvl ( t_cell map[][COLUMNS], int nbLvl) {
 /* Lit un fichier dans un dossier donné */
 
 	int i, j, k, type, state, isDiscovered, nbObject, object, isDiscoveredObject;
@@ -60,7 +60,7 @@ void readLvl ( t_cell map[][COLUMNS], int nbLvl, char dossier[]) {
 	fclose(lvlFile);
 }
 
-void writePosition ( t_character player, char dossier[]) {
+void writePosition ( t_character player) {
 /* enregistre les paramètres du joueur dans les dossiers de sauvegardes */
 	// char fileName[50];
 	// strcat(fileName,dossier);
@@ -74,7 +74,7 @@ void writePosition ( t_character player, char dossier[]) {
 	fclose(positionFile);
 }
 
-void readPosition ( t_character *player, char dossier[]){
+void readPosition ( t_character *player){
 	err ("debut lecture position");
 	// char fileName[50];
 	// strcat(fileName,dossier);
@@ -94,7 +94,7 @@ void readPosition ( t_character *player, char dossier[]){
 }
 
 
-void writeLvl ( t_cell map[][COLUMNS], int nbLvl, char dossier[]) {
+void writeLvl ( t_cell map[][COLUMNS], int nbLvl) {
 /* enregistre la partie soit dans le dossier temporaire ou dans les dossiers de sauvegardes */
 
 	int i, j, k;
@@ -135,16 +135,16 @@ void initGameMap(t_cell map[LINES][COLUMNS], int choix, int nbFichierSauvegarde,
 		remove(NOM_POSITION);
 		for(i = 0; i < NB_LVL; i++) {
 			randomFloor(map, i);
-			writeLvl(map, i, DOSSIER_SAUVEGARDE);
+			writeLvl(map, i);
 		}
-		readLvl(map, 0, DOSSIER_SAUVEGARDE);
+		readLvl(map, 0);
 		move2spawn(map, player, STAIRS_DOWN);
-		writePosition(*player, "bilumbilum");
+		writePosition(*player);
 	}
 	else  {
-		readPosition(player, DOSSIER_SAUVEGARDE);
+		readPosition(player);
 		err( "lecture de l'étage");
-		readLvl(map, player->lvl ,DOSSIER_SAUVEGARDE);
+		readLvl(map, player->lvl);
 	}
 }
 
@@ -152,22 +152,23 @@ void changeLvl(t_cell map[LINES][COLUMNS], t_character *player, int dir){
 /* Fonction permettant de changer de niveaux */
 
 	
-	if (isBetween(player->lvl + dir, 0, NB_LVL-1) ) {
-		writeLvl(map,(player->lvl),DOSSIER_SAUVEGARDE);
+	if (isBetween (player->lvl + dir, 0, NB_LVL-1) ) {
+		writeLvl (map, player->lvl);
 		(player->lvl)+= dir;
-		readLvl(map,(player->lvl),DOSSIER_SAUVEGARDE);
-		if (dir > 0){
-			move2spawn(map, player, STAIRS_DOWN);
-		}else{
-			 move2spawn(map, player, STAIRS_UP);
+		readLvl (map, player->lvl);
+		if (dir > 0) {
+			move2spawn (map, player, STAIRS_DOWN);
+		}
+		else {
+			 move2spawn (map, player, STAIRS_UP);
 		}
 	}
 }
 
 void saveGame(t_cell map[LINES][COLUMNS], t_character *player){
 /* Fonction permettant de sauvegarder la partie à l'instant t */
-	writeLvl(map,(player->lvl),DOSSIER_SAUVEGARDE);
-	writePosition(*player, DOSSIER_SAUVEGARDE);
+	writeLvl (map, player->lvl);
+	writePosition (*player);
 }
 
 int bFileSaveEmpty(int nbFichierSauvegarde){ 
