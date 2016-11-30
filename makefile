@@ -1,4 +1,4 @@
-LIB = -lncursesw
+LIB = -lncurses
 FLAGS = -Wall
 
 # all:
