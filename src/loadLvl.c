@@ -34,13 +34,6 @@ void readLvl ( t_cell map[][COLUMNS], int nbLvl) {
 /* Lit un fichier dans un dossier donné */
 
 	int i, j, k, type, state, isDiscovered, nbObject, object, isDiscoveredObject;
-	// char fileName[40];
-	// strcpy(fileName,dossier);
-	// char texte[20];
-	// sprintf(texte, "%i", nbLvl);
-	// strcat(fileName,texte);
-	// char texte2[20]=".txt";
-	// strcat(fileName,texte2);
 	FILE * lvlFile;
 	lvlFile = fopen (/*fileName*/ NOM_NIVEAU[nbLvl], "r");
 	for (i = 0; i < LINES; i++) {
@@ -62,10 +55,6 @@ void readLvl ( t_cell map[][COLUMNS], int nbLvl) {
 
 void writePosition ( t_character player) {
 /* enregistre les paramètres du joueur dans les dossiers de sauvegardes */
-	// char fileName[50];
-	// strcat(fileName,dossier);
-	// char texte[40]="position.txt";
-	// strcat(fileName,texte);
 	FILE * positionFile;
 	positionFile = fopen (NOM_POSITION, "w");
 	fprintf (positionFile, "%i %i %i %i %i %i %i %i ", (player).line, (player).column, (player).lvl, (player).hp, (player).pw, (player).xp, (player).nbMove, (player).food);
@@ -76,10 +65,6 @@ void writePosition ( t_character player) {
 
 void readPosition ( t_character *player){
 	err ("debut lecture position");
-	// char fileName[50];
-	// strcat(fileName,dossier);
-	// char texte[40]="position.txt";
-	// strcat(fileName,texte);
 	FILE * positionFile = NULL;
 	err("juste avant d' ouvrir le fichier position");
 	
@@ -98,13 +83,6 @@ void writeLvl ( t_cell map[][COLUMNS], int nbLvl) {
 /* enregistre la partie soit dans le dossier temporaire ou dans les dossiers de sauvegardes */
 
 	int i, j, k;
-	// char fileName[40];
-	// strcpy(fileName,dossier);
-	// char texte[20];
-	// sprintf(texte, "%i", nbLvl);
-	// strcat(fileName,texte);
-	// char texte2[20]=".txt";
-	// strcat(fileName,texte2);
 	FILE * lvlFile;
 	lvlFile = fopen (NOM_NIVEAU[nbLvl], "w");
 	for (i = 0; i < LINES; i++) {
@@ -177,11 +155,6 @@ int bFileSaveEmpty(int nbFichierSauvegarde){
 	int i;
 	char fileName[50];
 	sprintf(fileName, "./partie/sauvegarde%i/0.txt", nbFichierSauvegarde);
-	// char texte[10];
-	// sprintf(texte, "%i", nbFichierSauvegarde);
-	// strcat(fileName,texte);
-	// char texte2[10]="0.txt";
-	// strcat(fileName,texte2);
 	err(fileName);
 
 	if(fopen(fileName, "r") == NULL){
