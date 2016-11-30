@@ -29,4 +29,6 @@ int car2val (char car);
 char up2low (char car);
 char low2up (char car);
 
+void err (char msg[]);
+
 #endif /* end of include guard: RANDOM_H */

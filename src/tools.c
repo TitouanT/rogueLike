@@ -9,6 +9,7 @@
   */
 
 #include "tools.h"
+#include "mapConst.h"
 
 /**
   * \brief initialise le tirage de nombres aléatoires
@@ -158,4 +159,10 @@ char low2up (char car) {
 	if (car >= 'A' && car <= 'Z') return car;
 	else if (car >= 'a' && car <= 'z') return car - 'a' + 'A';
 	else return -1;
+}
+
+void err (char msg[]) {
+	FILE * err = fopen("err", "a");
+	if(PRINT_ERROR) fprintf(err, "%s\n", msg);
+	fclose(err);
 }

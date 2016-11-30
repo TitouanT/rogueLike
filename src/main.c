@@ -11,12 +11,13 @@
 #include "global.h"
 
 int main () {
-
+	remove("err");
+	err ("\n***DEBUT DU MAIN***\n");
 	int key;
 	int lineLog = 0;
 	int widthScreen, heightScreen;
 	int continueGame = TRUE;
-
+	
 	initRandom();
 	t_cell map[LINES][COLUMNS];
 	t_character player = {"valentin", 0, 0, 0, 10, 10, 10, 0, MAX_FOOD, FALSE, FALSE};
@@ -47,39 +48,50 @@ int main () {
 	displayStats(player, win_stats);
 
 
-
+	err ("\nmain***ENTREE DANS LA BOUCLE DU JEU***\n");
 	/* Ici se déroule tout le jeu */
 	while (continueGame && player.hp > 0) {
+		err ("\nmain*** debut d'un tour de jeu ***");
+		key = getch();
+		if (key == 'N') {
+			randomFloor(map, 6);
+			displayFloor(map, win_game);
+			displayPlayer(player, map, win_game, win_logs, &lineLog);
+		}
 
-	key = getch();
-	if (key == 'N') {
-		randomFloor(map, 6);
+		clearLog(&lineLog, win_logs);
+		continueGame = handleInteraction(key, map, &player, win_logs, win_game, &lineLog);
+
+		markDiscoverRoom(map, player);
+
 		displayFloor(map, win_game);
 		displayPlayer(player, map, win_game, win_logs, &lineLog);
+		displayStats(player, win_stats);
+
+		err ("main*** fin d'un tour de jeu ***\n");
 	}
-
-	clearLog(&lineLog, win_logs);
-	continueGame = handleInteraction(key, map, &player, win_logs, win_game, &lineLog);
-
-	markDiscoverRoom(map, player);
-
-	displayFloor(map, win_game);
-	displayPlayer(player, map, win_game, win_logs, &lineLog);
-	displayStats(player, win_stats);
-
-	}
+	err ("\nmain***SORTIS DE LA BOUCLE DU JEU***\n");
 
 	// ----- UNE FOIS QUE LE JEU EST TERMINE ----- //
 
 	// Si le joueur est sorti du jeu sans vouloir quitter manuellement
 	if(key != 'q' && key != 'Q'){
+		err ("main*** Affichage du gameOver ***");
 		WINDOW *win_end = newwin(heightScreen, widthScreen, 0, 0);
 		displayEnd(player, win_end);
 		while((key = getch()) != 'q' && key != 'Q');
+		err ("main*** Fin Affichage du gameOver ***");
 	}
 
 
 	endwin(); //Fermeture de la fenetre
+	err ("\n***FIN DU MAIN***\n");
 	return 0;
 
 }
+
+
+
+
+
+
