@@ -4,8 +4,8 @@
  * \author MOTTIER Emeric
  * \author PELLOIN Valentin
  * \author TEYSSIER Titouan
- * \version 1.1
- * \date 19 novembre 2016
+ * \version 1.3
+ * \date 30 novembre 2016
  */
 
 #include "global.h"
@@ -13,6 +13,11 @@ char DOSSIER_SAUVEGARDE[30];
 char NOM_NIVEAU[NB_LVL][30];
 char NOM_POSITION[40];
 
+/**
+	* \brief initialise les chemins d'accès au dossier de sauvegarde
+	*	\fn void initNameOfFile (int choixDeSauvegarde)
+	* \param choixDeSauvegarde
+	*/
 void initNameOfFile (int choixDeSauvegarde) {
 	err("\n***debut init name of file***");
 	/*take the right place to save the game*/
@@ -23,12 +28,19 @@ void initNameOfFile (int choixDeSauvegarde) {
 		sprintf(NOM_NIVEAU[i], "%s%i.txt",DOSSIER_SAUVEGARDE, i);
 		err(NOM_NIVEAU[i]);
 	}
-	
+
 	/*give the name for the position's file*/
 	sprintf(NOM_POSITION, "%sposition.txt",DOSSIER_SAUVEGARDE);
 	err(NOM_POSITION);
 	err("***fin init name of file***\n");
 }
+
+/**
+	* \brief lit le fichier du niveau mis en paramètre dans le dossier de sauvegarde
+	*	\fn void readLvl (t_cell map[][COLUMNS], int nbLvl)
+	* \param map Carte où se trouve le joueur
+	* \param nbLvl niveau où le joueur se situe
+	*/
 
 void readLvl ( t_cell map[][COLUMNS], int nbLvl) {
 /* Lit un fichier dans un dossier donné */
@@ -53,6 +65,12 @@ void readLvl ( t_cell map[][COLUMNS], int nbLvl) {
 	fclose(lvlFile);
 }
 
+/**
+	* \brief enregistre les stats du joueur dans un fichier "position.txt"
+	*	\fn void writePosition (t_character player)
+	* \param player joueur
+	*/
+
 void writePosition ( t_character player) {
 /* enregistre les paramètres du joueur dans les dossiers de sauvegardes */
 	FILE * positionFile;
@@ -63,21 +81,33 @@ void writePosition ( t_character player) {
 	fclose(positionFile);
 }
 
+/**
+	* \brief lit les stats du joueur dans un fichier "position.txt"
+	*	\fn void readPosition (t_character player)
+	* \param player joueur
+	*/
+
 void readPosition ( t_character *player){
 	err ("debut lecture position");
 	FILE * positionFile = NULL;
 	err("juste avant d' ouvrir le fichier position");
-	
+
 	positionFile = fopen (NOM_POSITION, "r");
-	
+
 	if (positionFile == NULL) err( "erreur de lecture !");
-	
+
 	fscanf(positionFile, "%i %i %i %i %i %i %i %i ", &(*player).line, &(*player).column, &(*player).lvl, &(*player).hp, &(*player).pw, &(*player).xp, &(*player).nbMove, &(*player).food);
-	
+
 	fclose(positionFile);
 	err("fin lecture position\n");
 }
 
+/**
+	* \brief enregistre le fichier du niveau mis en paramètre dans le dossier de sauvegarde
+	*	\fn void writeLvl (t_cell map[][COLUMNS], int nbLvl)
+	* \param map Carte où se trouve le joueur
+	* \param nbLvl niveau où le joueur se situe
+	*/
 
 void writeLvl ( t_cell map[][COLUMNS], int nbLvl) {
 /* enregistre la partie soit dans le dossier temporaire ou dans les dossiers de sauvegardes */
@@ -102,13 +132,21 @@ void writeLvl ( t_cell map[][COLUMNS], int nbLvl) {
 
 }
 
+/**
+	* \brief Initialise la partie du joueur
+	*	\fn void initGameMap (t_cell map[][COLUMNS], int choix, int choixFichierSauvegarde, t_character *player)
+	* \param map Carte où se trouve le joueur
+	* \param choix Choix 0 ou 1 (0 nouvelle partie, 1 reprendre partie)
+	* \param choixFichierSauvegarde Choix de la sauvegarde
+	* \param player Joueur
+	*/
 
-void initGameMap(t_cell map[LINES][COLUMNS], int choix, int nbFichierSauvegarde, t_character *player){
+void initGameMap(t_cell map[LINES][COLUMNS], int choix, int choixFichierSauvegarde, t_character *player){
 /* Initialise les niveaux soit une nouvelle partie soit une sauvegarde */
 	int i;
-	initNameOfFile (nbFichierSauvegarde);
-	
-	
+	initNameOfFile (choixFichierSauvegarde);
+
+
 	if (choix == NEW_GAME) {
 		remove(NOM_POSITION);
 		for(i = 0; i < NB_LVL; i++) {
@@ -119,17 +157,25 @@ void initGameMap(t_cell map[LINES][COLUMNS], int choix, int nbFichierSauvegarde,
 		move2spawn(map, player, STAIRS_DOWN);
 		writePosition(*player);
 	}
-	else  {
+	else{
 		readPosition(player);
 		err( "lecture de l'étage");
 		readLvl(map, player->lvl);
 	}
 }
 
+/**
+	* \brief Permet de changer de niveaux
+	*	\fn void readLvl (t_cell map[][COLUMNS], t_character *player, int dir)
+	* \param map Carte où se trouve le joueur
+	* \param player Joueur
+	* \param dir Nombre d'étage que l'on descencd ou que l'on monte
+	*/
+
 void changeLvl(t_cell map[LINES][COLUMNS], t_character *player, int dir){
 /* Fonction permettant de changer de niveaux */
 
-	
+
 	if (isBetween (player->lvl + dir, 0, NB_LVL-1) ) {
 		writeLvl (map, player->lvl);
 		(player->lvl)+= dir;
@@ -143,18 +189,31 @@ void changeLvl(t_cell map[LINES][COLUMNS], t_character *player, int dir){
 	}
 }
 
+/**
+	* \brief Permet de sauvegarder la partie
+	*	\fn void saveGame (t_cell map[][COLUMNS], t_character *playerr)
+	* \param map Carte où se trouve le joueur
+	* \param player Joueur
+	*/
+
 void saveGame(t_cell map[LINES][COLUMNS], t_character *player){
 /* Fonction permettant de sauvegarder la partie à l'instant t */
 	writeLvl (map, player->lvl);
 	writePosition (*player);
 }
 
-int bFileSaveEmpty(int nbFichierSauvegarde){ 
+/**
+	* \brief Permet de vérifier si une partie existe dans un dossier de sauvegarde
+	*	\fn void bFileSaveEmpty (int choixFichierSauvegarde)
+	* \param choixFichierSauvegarde Numéro du dossier de sauvegarde
+	*/
+
+int bFileSaveEmpty(int choixFichierSauvegarde){
 /* Fonction vérifiant si un dossier est vide */
 	err("\n***Debut is File Save Empty***");
 	int i;
 	char fileName[50];
-	sprintf(fileName, "./partie/sauvegarde%i/0.txt", nbFichierSauvegarde);
+	sprintf(fileName, "./partie/sauvegarde%i/0.txt", choixFichierSauvegarde);
 	err(fileName);
 
 	if(fopen(fileName, "r") == NULL){
