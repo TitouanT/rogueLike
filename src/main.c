@@ -17,7 +17,7 @@ int main () {
 	int lineLog = 0;
 	int widthScreen, heightScreen;
 	int continueGame = TRUE;
-	
+
 	initRandom();
 	t_cell map[LINES][COLUMNS];
 	t_character player = {"valentin", 0, 0, 0, 10, 10, 10, 0, MAX_FOOD, FALSE, FALSE};
@@ -70,7 +70,7 @@ int main () {
 
 		err ("main*** fin d'un tour de jeu ***\n");
 	}
-	err ("\nmain***SORTIS DE LA BOUCLE DU JEU***\n");
+	err ("\nmain***SORTIE DE LA BOUCLE DU JEU***\n");
 
 	// ----- UNE FOIS QUE LE JEU EST TERMINE ----- //
 
@@ -89,9 +89,3 @@ int main () {
 	return 0;
 
 }
-
-
-
-
-
-
