@@ -250,13 +250,11 @@ void connect(t_cell map[LINES][COLUMNS], int walkable[LINES][COLUMNS], t_room ro
 		val = path[l][c];
 		if ( l+1 < LINES && path[l + 1][c] == -1 && (map[l + 1][c].type == EMPTY || map[l + 1][c].type == DOORWAY)) {
 			path[l + 1][c] = val + 1;
-			head.column = c;
 			head.line = l + 1;
 			file_ajouter (head);
 		}
 		if ( l-1 >= 0 && path[l - 1][c] == -1 && (map[l - 1][c].type == EMPTY || map[l - 1][c].type == DOORWAY)) {
 			path[l - 1][c] = val + 1;
-			head.column = c;
 			head.line = l - 1;
 			file_ajouter (head);
 		}

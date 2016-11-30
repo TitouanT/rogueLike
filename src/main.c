@@ -7,11 +7,12 @@
  * \version 1.2
  * \date 12 novembre 2016
  */
-
+#include <locale.h>
 #include "global.h"
 
 int main () {
 	remove("err");
+	setlocale(LC_ALL, "");
 	err ("\n***DEBUT DU MAIN***\n");
 	int key;
 	int lineLog = 0;
