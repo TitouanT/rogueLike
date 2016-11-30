@@ -152,7 +152,7 @@ t_room randomRoom (t_cell map[][COLUMNS], t_room * rooms, int nbRoom, int *nbTot
 		acc++;
 	} while (posNotOk && acc < maxTour); // maxTour is there to protect against infinite loop
 
-	if (acc >= maxTour) { //seconde piece if acc reach maxTour then give up one room
+	if (acc >= maxTour) { //if acc reach maxTour then give up
 		*nbTotal = nbRoom;
 		return room;
 	}
