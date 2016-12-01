@@ -471,3 +471,13 @@ void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_cha
 
 
 }
+
+void fallTrap(t_cell map[LINES][COLUMNS], t_character *perso){
+	int trapType=randab(0, 2);
+	int lostLvl, lostHp;
+
+	switch(trapType){
+		case 0 : lostLvl=randab(0,perso->lvl+1)*-1; changeLvl(map, *&perso, lostLvl); 			
+		case 1 : lostHp=randab(0,5); (perso->hp)= (perso->hp)-lostHp; break;
+	}
+}
