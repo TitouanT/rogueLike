@@ -469,8 +469,6 @@ void displayFloor(t_cell map[LINES][COLUMNS], t_character player, WINDOW *win) {
 								case FOOD: printCell(OBJECTS_COLOR, '%', win); break;
 								case TRAP: printCell(OBJECTS_COLOR, '^', win); break;
 								case objNONE: printCell(CORRIDOR_COLOR,' ', win); break;
-								case TRAP: exit(1); printCell(OBJECTS_COLOR, '^', win); break;
-								case FOOD: printCell(OBJECTS_COLOR, '%', win); break;
 								default: break;
 							}
 						}
