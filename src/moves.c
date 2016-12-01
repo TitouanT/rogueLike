@@ -67,6 +67,9 @@ void markDiscover(t_cell map[LINES][COLUMNS], t_character player) {
 	int col = player.column - 1;
 
 	int i, j;
+	if(map[player.line][player.column].obj[0].type==TRAP){
+		map[player.line][player.column].obj[0].isDiscovered=TRUE;
+	}
 	for (i = 0; i < 3; i++) {
 		for (j = 0; j < 3; j++) {
 			if (line+i >= 0 && line+i < LINES && col+j >= 0 && col+j < COLUMNS) map[line+i][col+j].isDiscovered = TRUE; map[i][j].obj[0].isDiscovered=TRUE;
@@ -212,6 +215,16 @@ int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso){
 			// Probabilité de ne plus être malade
 			if(didItHappen(35)) perso->isSick = FALSE;
 
+		}
+		
+		if(mat[perso->line][perso->column].obj[0].type==TRAP){
+			int trapType=randab(0, 2);
+			int lostLvl, lostHp;
+
+			switch(trapType){
+				case 0 : lostLvl=randab(0,perso->lvl+1)*-1; changeLvl(mat, *&perso, lostLvl); break;				
+				case 1 : lostHp=randab(0,5); (perso->hp)= (perso->hp)-lostHp; break;
+			}
 		}
 	}
 

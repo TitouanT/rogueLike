@@ -183,8 +183,10 @@ void changeLvl(t_cell map[LINES][COLUMNS], t_character *player, int dir){
 		if (dir > 0) {
 			move2spawn (map, player, STAIRS_DOWN);
 		}
-		else {
-			 move2spawn (map, player, STAIRS_UP);
+		else{
+			if(dir<0){
+				move2spawn (map, player, STAIRS_UP);
+			}
 		}
 	}
 }
