@@ -161,6 +161,12 @@ char low2up (char car) {
 	else return -1;
 }
 
+
+/**
+	* \brief Enregistre un message d'erreur dans le fichier "err"
+	* \fn void err (char msg[])
+	* \param msg Message à enregistrer dans le fichier
+	*/
 void err (char msg[]) {
 	FILE * err;
 	if(PRINT_ERROR){
@@ -168,4 +174,64 @@ void err (char msg[]) {
 		fprintf(err, "%s\n", msg);
 		fclose(err);
 	}
+}
+
+
+/**
+	* \brief Compte le nombre de lignes d'un fichier
+	*	\fn int numberLinesFile(char * file)
+	* \param file Fichier à ouvrir pour compter les lignes
+	* \return Le nombre de ligne du fichier, 0 si l'ouverture n'a pas marché.
+	*/
+int numberLinesFile(char * file){
+
+	char tmp;
+	int line = 1;
+	FILE * fic;
+
+	fic = fopen(file, "r");
+
+	if(fic != NULL){
+		fscanf(fic, "%c", &tmp);
+		while(!feof(fic)){
+			if(tmp == '\n') line++;
+			fscanf(fic, "%c", &tmp);
+		}
+		fclose(fic);
+	}
+	else return 0;
+
+	return line;
+}
+
+/**
+	* \brief Compte le maximum de colonnes d'un fichier
+	*	\fn int maxColsFile(char * file)
+	* \param file Fichier à ouvrir pour compter les colonnes
+	* \return Le nombre max de colonnes du fichier, 0 si l'ouverture n'a pas marché.
+	*/
+int maxColsFile(char * file){
+
+	char tmp;
+	int maxCol = 0;
+	int tmpCol = 0;
+	FILE * fic;
+
+	fic = fopen(file, "r");
+
+	if(fic != NULL){
+		fscanf(fic, "%c", &tmp);
+		while(!feof(fic)){
+			if(tmp == '\n'){
+				maxCol = max(maxCol, tmpCol);
+				tmpCol = 0;
+			}
+			else tmpCol++;
+			fscanf(fic, "%c", &tmp);
+		}
+		fclose(fic);
+	}
+	else return 0;
+
+	return maxCol;
 }

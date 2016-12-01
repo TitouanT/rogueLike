@@ -81,32 +81,6 @@ void printLineCenter(char *msg, int widthScreen, int line, WINDOW *win){
 
 }
 
-/**
-	* \brief Compte le nombre de lignes d'un fichier
-	*	\fn int numberLinesFile(char * file)
-	* \param file Fichier à ouvrir pour compter les lignes
-	* \return Le nombre de ligne du fichier, 0 si l'ouverture n'a pas marché.
-	*/
-int numberLinesFile(char * file){
-
-	char tmp;
-	int line = 1;
-	FILE * fic;
-
-	fic = fopen(file, "r");
-
-	if(fic != NULL){
-		fscanf(fic, "%c", &tmp);
-		while(!feof(fic)){
-			if(tmp == '\n') line++;
-			fscanf(fic, "%c", &tmp);
-		}
-		fclose(fic);
-	}
-	else return 0;
-
-	return line;
-}
 
 /**
 	* \brief Afficher le contenu d'un fichier
@@ -142,7 +116,7 @@ void printASCIIText(char * file, int * line, int xShift, WINDOW *win){
 	* \param file Fichier ASCII à afficher
 	* \param win Fenetre où afficher le message
 	*/
-void printASCIICenter(char *file, WINDOW * win){
+void printASCIICenter(char *file, char * message, WINDOW * win){
 
 	int lines, columns;
 	int yShift, xShift;
@@ -151,12 +125,12 @@ void printASCIICenter(char *file, WINDOW * win){
 	wattron(win, COLOR_PAIR(COLOR_TITLE));
 
 	yShift = (lines - numberLinesFile(file)) / 2;
-	xShift = (columns - 83) / 2;
+	xShift = (columns - maxColsFile(file)) / 2;
 
 	wmove(win, yShift++, xShift);
 	printASCIIText(file, &yShift, xShift, win);
 
-	printLineCenter("Appuyez sur q pour quitter.", columns, yShift+2, win);
+	printLineCenter(message, columns, yShift+2, win);
 
 }
 
@@ -168,18 +142,9 @@ void printASCIICenter(char *file, WINDOW * win){
 void startScreen(WINDOW *win){
 
 	int lines, columns;
-	char * continuer = "Appuyez sur une touche pour jouer.";
+	getmaxyx(win, lines, columns);
 
-	getmaxyx(win,lines,columns);
-
-	int line = (lines - numberLinesFile("include/logo.txt")) / 2;
-	int xShift = (columns - 83) / 2;
-
-	wattron(win, COLOR_PAIR(COLOR_TITLE));
-	wmove(win, line++, xShift);
-	printASCIIText("include/logo.txt", &line, xShift, win);
-
-	mvwprintw(win, line + 1, (columns - strlen(continuer)) / 2, "%s", continuer);
+	printASCIICenter("include/logo.txt", "Appuyez sur une touche pour jouer.", win);
 
 	mvwprintw(win, lines - 1, 0, "Roguelike créé par MOTTIER Emeric - PELLOIN Valentin - TEYSSIER Titouan.");
 	wrefresh(win);
@@ -673,10 +638,10 @@ void displayEnd(t_character player, WINDOW *win){
 
 
 	if(player.hp <= 0){
-		printASCIICenter("include/game_over.txt", win);
+		printASCIICenter("include/game_over.txt", "Appuyez sur q pour quitter.", win);
 	}
-	if(player.hasFoundObj == TRUE){
-		printASCIICenter("include/well_done.txt", win);
+	else if(player.hasFoundObj == TRUE){
+		printASCIICenter("include/well_done.txt", "Appuyez sur q pour quitter.", win);
 	}
 
 	wrefresh(win);

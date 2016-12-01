@@ -31,4 +31,7 @@ char low2up (char car);
 
 void err (char msg[]);
 
+int numberLinesFile(char * file);
+int maxColsFile(char * file);
+
 #endif /* end of include guard: RANDOM_H */
