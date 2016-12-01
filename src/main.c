@@ -52,10 +52,14 @@ int main () {
 
 
 	err ("\nmain***ENTREE DANS LA BOUCLE DU JEU***\n");
+
 	/* Ici se déroule tout le jeu */
+
 	while (continueGame && player.hp > 0) {
+
 		err ("\nmain*** debut d'un tour de jeu ***");
 		key = getch();
+
 		if (key == 'N') {
 			randomFloor(map, 6);
 			displayFloor(map, win_game);
@@ -72,8 +76,11 @@ int main () {
 		displayStats(player, win_stats);
 
 		err ("main*** fin d'un tour de jeu ***\n");
+
 	}
 	err ("\nmain***SORTIE DE LA BOUCLE DU JEU***\n");
+
+
 
 	// ----- UNE FOIS QUE LE JEU EST TERMINE ----- //
 

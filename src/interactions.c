@@ -23,7 +23,7 @@ typedef struct {char * msg;} t_msg;
 
 
 void traiterPorte(t_cell map[LINES][COLUMNS],  t_character *player, int key, WINDOW * win, int *lineLog);
-void traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW * win, int *lineLog);
+int traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW * win, int *lineLog);
 int askConfirmationToQuit(WINDOW * win, int *lineLog);
 
 
@@ -149,9 +149,9 @@ int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, 
 		case 'n': move_perso(DOWN_RIGHT, map, player); break;
 
 
-    	case '\n': traiterEntree(map, player,  win_logs,     lineLog); break;
-    	case 'o' : traiterPorte (map, player, key, win_logs, lineLog); break;
-    	case 'c' : traiterPorte (map, player, key, win_logs, lineLog); break;
+    	case '\n': return (traiterEntree(map, player, win_logs, lineLog));
+    	case 'o' : traiterPorte (map, player, key, win_logs, lineLog);   break;
+    	case 'c' : traiterPorte (map, player, key, win_logs, lineLog);   break;
 			case 's' : saveGame(map, player); addLog("Partie Sauvegardée", lineLog, win_logs); break;//
     	case 'q' : return FALSE;
     	case 'Q' : return !askConfirmationToQuit(win_logs, lineLog);
@@ -246,13 +246,15 @@ void traiterPorte(t_cell map[LINES][COLUMNS], t_character *player, int key, WIND
 
 /**
 	* \brief Traite l'appui sur la touche entrée
-	*	\fn void traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW *win, int *lineLog)
+	*	\fn int traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW *win, int *lineLog)
 	* \param map Carte où se trouve le joueur
 	* \param player Joueur sur la carte
 	* \param win Fenêtre de logs
 	* \param lineLog Ligne où afficher les logs
+	* \return FALSE si le joueur souhaite sortir du chateau
+	* \return TRUE sinon
 	*/
-void traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW *win, int *lineLog){
+int traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW *win, int *lineLog){
 
 
   if(map[player->line][player->column].nbObject > 0){
@@ -264,7 +266,7 @@ void traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW *win,
           changeLvl(map,player,1);
         }
         else {
-          addLog("Vous êtes déjà au niveau le plus haut !", lineLog, win);
+          player->hasFoundObj = TRUE;
         }
       break;
 
@@ -273,7 +275,10 @@ void traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW *win,
           changeLvl(map,player, -1);
 				}
         else {
-          addLog("Vous êtes déjà en bas !", lineLog, win);
+					if(player->hasFoundObj == FALSE) {
+						addLog("Vous ne pouvez pas sortir du chateau sans avoir trouvé l'objet !", lineLog, win);
+					}
+					else return FALSE;
         }
         break;
 			case FOOD:
@@ -291,6 +296,7 @@ void traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW *win,
     addLog("Commande invalide.", lineLog, win);
   }
 
+	return TRUE;
 }
 
 

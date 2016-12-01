@@ -68,6 +68,20 @@ void init_screen(){
 }
 
 /**
+* \brief Affichage une ligne centrée horizontalement
+*	\fn void printLineCenter(char *msg, int widthScreen, int line, WINDOW *win)
+* \param msg Message à afficher
+* \param widthScreen Largeur de l'écran
+* \param line Ligne sur laquelle on veut écrire le message
+* \param win Fenêtre où afficher le message
+*/
+void printLineCenter(char *msg, int widthScreen, int line, WINDOW *win){
+
+	mvwprintw(win, line, (widthScreen - strlen(msg)) / 2, "%s", msg);
+
+}
+
+/**
 	* \brief Compte le nombre de lignes d'un fichier
 	*	\fn int numberLinesFile(char * file)
 	* \param file Fichier à ouvrir pour compter les lignes
@@ -120,7 +134,29 @@ void printASCIIText(char * file, int * line, int xShift, WINDOW *win){
 		}
 		fclose(texte);
 	}
+}
 
+/**
+	* \brief Afficher le contenu d'un fichier au centre de l'écran
+	*	\fn void printASCIICenter(char *file, WINDOW *win)
+	* \param file Fichier ASCII à afficher
+	* \param win Fenetre où afficher le message
+	*/
+void printASCIICenter(char *file, WINDOW * win){
+
+	int lines, columns;
+	int yShift, xShift;
+	getmaxyx(win, lines, columns);
+
+	wattron(win, COLOR_PAIR(COLOR_TITLE));
+
+	yShift = (lines - numberLinesFile(file)) / 2;
+	xShift = (columns - 83) / 2;
+
+	wmove(win, yShift++, xShift);
+	printASCIIText(file, &yShift, xShift, win);
+
+	printLineCenter("Appuyez sur q pour quitter.", columns, yShift+2, win);
 
 }
 
@@ -150,19 +186,6 @@ void startScreen(WINDOW *win){
 	getch();
 }
 
-/**
-	* \brief Affichage une ligne centrée horizontalement
-	*	\fn void printLineCenter(char *msg, int widthScreen, int line, WINDOW *win)
-	* \param msg Message à afficher
-	* \param widthScreen Largeur de l'écran
-	* \param line Ligne sur laquelle on veut écrire le message
-	* \param win Fenêtre où afficher le message
-	*/
-void printLineCenter(char *msg, int widthScreen, int line, WINDOW *win){
-
-	mvwprintw(win, line, (widthScreen - strlen(msg)) / 2, "%s", msg);
-
-}
 
 
 /**
@@ -650,14 +673,10 @@ void displayEnd(t_character player, WINDOW *win){
 
 
 	if(player.hp <= 0){
-		yShift = (lines - numberLinesFile("include/game_over.txt")) / 2;
-		xShift = (columns - 83) / 2;
-
-		wmove(win, yShift++, xShift);
-		printASCIIText("include/game_over.txt", &yShift, xShift, win);
-
-		printLineCenter("Appuyez sur q pour quitter.", columns, yShift+2, win);
-
+		printASCIICenter("include/game_over.txt", win);
+	}
+	if(player.hasFoundObj == TRUE){
+		printASCIICenter("include/well_done.txt", win);
 	}
 
 	wrefresh(win);
