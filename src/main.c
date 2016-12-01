@@ -12,7 +12,9 @@
 
 int main () {
 	remove("err");
-	setlocale(LC_ALL, "");
+	setlocale(LC_ALL, NULL);
+	//setlocale(LC_ALL, "");
+	//printf ("Locale is: %s\n", setlocale(LC_ALL,NULL) );
 	err ("\n***DEBUT DU MAIN***\n");
 	int key;
 	int lineLog = 0;
