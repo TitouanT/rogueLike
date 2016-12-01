@@ -81,7 +81,7 @@ void startScreen(WINDOW *win);
 void selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *player);
 WINDOW *createWindow(int startX, int startY, int width, int height, char * label);
 void deleteWindow(WINDOW *window);
-void displayFloor(t_cell map[LINES][COLUMNS], WINDOW *win);
+void displayFloor(t_cell map[LINES][COLUMNS], t_character player, WINDOW *win);
 void addLog(char * message, int * line, WINDOW *win);
 void clearArea(WINDOW *win, int startX, int startY, int width, int height);
 void clearLog(int *line, WINDOW *win);
