@@ -384,7 +384,7 @@ void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 	}
 
 	// Génération des pièges aléatoirement sur la carte
-	for (i = 0; i < AV_NB_TRAP_ROOM * nbRoom; i++) {
+	for (i = 0; i < (int)AV_NB_TRAP_ROOM * nbRoom; i++) {
 		randomFreePlace(map, rooms, nbRoom, -1, &lineTrap, &colTrap);
 		map[lineTrap][colTrap].obj[map[lineTrap][colTrap].nbObject].type = TRAP;
 		map[lineTrap][colTrap].obj[map[lineTrap][colTrap].nbObject].isDiscovered = DEBUG;

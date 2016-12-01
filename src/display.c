@@ -448,6 +448,8 @@ void displayFloor(t_cell map[LINES][COLUMNS], WINDOW *win) {
 								case STAIRS_UP: printCell(OBJECTS_COLOR,'<', win); break;
 								case STAIRS_DOWN: printCell(OBJECTS_COLOR, '>', win); break;
 								case objNONE: printCell(CORRIDOR_COLOR,' ', win); break;
+								case TRAP: exit(1); printCell(OBJECTS_COLOR, '^', win); break;
+								case FOOD: printCell(OBJECTS_COLOR, '%', win); break;
 								default: break;
 							}
 						}
