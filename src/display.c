@@ -258,6 +258,14 @@ void printSaveInfos(WINDOW *win, int saveNB, int selectedGame){
 
 }
 
+/**
+	* \brief Ferme le jeu
+	*	\fn void abortGame()
+	*/
+void abortGame(){
+	endwin(); //Fermeture de la fenetre
+	exit(1);
+}
 
 /**
 	* \brief Gère l'affichage de l'écran de sélection de la sauvegarde
@@ -276,10 +284,12 @@ void selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *playe
 	int quit = FALSE;
 
 	printLineCenter("Choisissez un emplacement de sauvegarde :", columns, 5, win);
+	printLineCenter("(utiliser les flèches)", columns, 6, win);
 
 
-	printLineCenter("Entrée : Valider                ", columns, 40, win);
-	printLineCenter("Del   : Supprimer la sauvegarde", columns, 41, win);
+	printLineCenter("Entrée : Valider               ", columns, 40, win);
+	printLineCenter("Del    : Supprimer la sauvegarde", columns, 41, win);
+	printLineCenter("q      : Sortir du jeu          ", columns, 42, win);
 
 
 	while(quit == FALSE){
@@ -294,6 +304,7 @@ void selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *playe
 
 		switch (key) {
 			case '\n'           : quit = TRUE; break;
+			case 'q'            : abortGame();
 			case KEY_RETURN     : quit = TRUE; break;
 			case KEY_RETURN_MAC : quit = TRUE; break;
 
@@ -455,6 +466,8 @@ void displayFloor(t_cell map[LINES][COLUMNS], t_character player, WINDOW *win) {
 							switch (map[i][j].obj[0].type) {
 								case STAIRS_UP: printCell(OBJECTS_COLOR,'<', win); break;
 								case STAIRS_DOWN: printCell(OBJECTS_COLOR, '>', win); break;
+								case FOOD: printCell(OBJECTS_COLOR, '%', win); break;
+								case TRAP: printCell(OBJECTS_COLOR, '^', win); break;
 								case objNONE: printCell(CORRIDOR_COLOR,' ', win); break;
 								default: break;
 							}
@@ -557,8 +570,11 @@ void displayPlayer(t_character player, t_cell mat[LINES][COLUMNS], WINDOW *win, 
 
 		switch (mat[player.line][player.column].obj[0].type) {
 			case STAIRS_UP:
-				if(!player.hasFoundObj){
+				if(player.lvl < NB_LVL -1){
 					addLog("Vous pouvez monter les escaliers avec :           > Entrée", line, logs);
+				}
+				else if(!player.hasFoundObj){
+					addLog("Recuperez l'objet avec :                          > Entrée", line, logs);
 				}
 				break;
 			case STAIRS_DOWN: addLog("Vous pouvez déscendre les éscaliers avec :      > Entrée", line, logs); break;

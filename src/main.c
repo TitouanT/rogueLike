@@ -96,6 +96,6 @@ int main () {
 
 	endwin(); //Fermeture de la fenetre
 	err ("\n***FIN DU MAIN***\n");
-	return 0;
+	return 1;
 
 }
