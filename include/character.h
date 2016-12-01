@@ -34,6 +34,7 @@ typedef struct {
 	int food;        /*!< faible lorsqu'il a faim, haut lorsqu'il n'as pas faim*/
 	int isSick;      /*!< un booléen pour savoir si il est malade*/
 	int hasFoundObj; /*!< un booléen pour savoir si il a trouvé l'OBJET du jeu*/
+	t_typeObject inventory[SIZE_INVENTORY]; /*!< un tableau contenant son inventaire */
 } t_character;
 
 #endif

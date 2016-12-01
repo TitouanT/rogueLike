@@ -263,7 +263,9 @@ void printSaveInfos(WINDOW *win, int saveNB, int selectedGame){
 	*	\fn void abortGame()
 	*/
 void abortGame(){
+	err("**** ON QUITTE LE JEU, LA FONCTION abortGame() A ETE APPELEE ****");
 	endwin(); //Fermeture de la fenetre
+	err("**** good bye ****");
 	exit(1);
 }
 
@@ -279,9 +281,12 @@ void selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *playe
 	int lines, columns;
 	getmaxyx(win,lines,columns);
 
+	char message[100];
 	int selectedGame = 2;
 	int key;
 	int quit = FALSE;
+
+	err("** Affichage de l'écran de sélection de partie **");
 
 	printLineCenter("Choisissez un emplacement de sauvegarde :", columns, 5, win);
 	printLineCenter("(utiliser les flèches)", columns, 6, win);
@@ -304,7 +309,7 @@ void selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *playe
 
 		switch (key) {
 			case '\n'           : quit = TRUE; break;
-			case 'q'            : abortGame();
+			case 'q'            : err("On a demandé de quitter le jeu"); abortGame();
 			case KEY_RETURN     : quit = TRUE; break;
 			case KEY_RETURN_MAC : quit = TRUE; break;
 
@@ -320,6 +325,10 @@ void selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *playe
 	}else{
 			initGameMap (map, NEW_GAME, selectedGame, player);
 	}
+
+	err("** La sélection à été faite **");
+
+
 
 }
 
@@ -386,14 +395,6 @@ void deleteWindow(WINDOW *window){
 
 }
 
-
-/**
-	* \brief Déplace le curseur en dessous du jeu
-	*	\fn void gotoEndGame()
-	*/
-void gotoEndGame(){
-	move(LINES_STATS + LINES_GAME, 0); //On déplace le curseur à la fin
-}
 
 /**
 	* \brief Affiche le contenu d'une cellule
@@ -481,7 +482,7 @@ void displayFloor(t_cell map[LINES][COLUMNS], t_character player, WINDOW *win) {
 
 	}
 	wrefresh(win);
-	gotoEndGame();
+
 }
 
 /**
@@ -542,7 +543,7 @@ void addLog(char * message, int * line, WINDOW *win){
 	// Si on a plus de place pour clear la zone de logs
 	if(*line >= LINES_LOGS - 3) clearLog(line, win);
 	else (*line)++;
-	gotoEndGame();
+
 }
 
 
@@ -610,6 +611,31 @@ void printBar(int value, int max, WINDOW * win){
 
 	wrefresh(win);
 	wattroff(win, COLOR_PAIR(BAR_RED));
+
+}
+
+/**
+	* \brief Affiche l'inventaire du joueur
+	*	\fn void printInventory(t_character player, WINDOW *win)
+	* \param player Joueur à afficher son inventaire
+	* \param win Fenêtre où afficher son inventaire
+	* \param lineLog Ligne de logs
+	*/
+void printInventory(t_character player, WINDOW *win, int *lineLog){
+
+	int i;
+	char message[100];
+
+	addLog("Voici le contenu de votre inventaire :", lineLog, win);
+	addLog("", lineLog, win);
+
+	for(i = 0 ; i < SIZE_INVENTORY ; i++){
+		sprintf(message, "Item : %i", player.inventory[i]);
+		addLog(message, lineLog, win);
+	}
+
+	addLog("", lineLog, win);
+
 
 }
 

@@ -149,15 +149,16 @@ int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, 
 		case 'n': move_perso(DOWN_RIGHT, map, player); break;
 
 
-    	case '\n': return (traiterEntree(map, player, win_logs, lineLog));
-    	case 'o' : traiterPorte (map, player, key, win_logs, lineLog);   break;
-    	case 'c' : traiterPorte (map, player, key, win_logs, lineLog);   break;
-			case 's' : saveGame(map, player); addLog("Partie sauvegardée", lineLog, win_logs); break;//
-    	case 'q' : return FALSE;
-    	case 'Q' : return !askConfirmationToQuit(win_logs, lineLog);
+    case '\n': return (traiterEntree(map, player, win_logs, lineLog));
+    case 'o' : traiterPorte (map, player, key, win_logs, lineLog);   break;
+    case 'c' : traiterPorte (map, player, key, win_logs, lineLog);   break;
+		case 's' : saveGame(map, player); addLog("Partie sauvegardée", lineLog, win_logs); break;//
+    case 'q' : return FALSE;
+    case 'Q' : return !askConfirmationToQuit(win_logs, lineLog);
 
-			case '_' : cheat(win_logs, win_game, map, player); break;
+		case '_' : cheat(win_logs, win_game, map, player); break;
 
+		case 'i' : printInventory(*player, win_logs, lineLog); break;
 
 		//case 'n' : randomFloor(map, 5); move2spawn(map, player, STAIRS_DOWN); break; // a mettre dans cheat
 		//case 'N' : randomFloor(map, 5); move2spawn(map, player, STAIRS_UP); break; // a mettre dans cheat

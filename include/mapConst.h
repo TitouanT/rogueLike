@@ -53,4 +53,7 @@
 /** Nombres moyen de piège par pièce */
 #define AV_NB_TRAP_ROOM 0.5
 
+/** Nombre d'items maximum dans l'inventaire du joueur */
+#define SIZE_INVENTORY 5
+
 #endif

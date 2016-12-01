@@ -89,5 +89,8 @@ void displayPlayer(t_character player, t_cell mat[LINES][COLUMNS], WINDOW *win, 
 void displayStats(t_character player, WINDOW *win);
 void setFloorCheat(t_cell map[LINES][COLUMNS]);
 void displayEnd(t_character player, WINDOW *win);
+void abortGame();
+void printInventory(t_character player, WINDOW *win, int *lineLog);
+
 
 #endif
