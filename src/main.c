@@ -46,7 +46,7 @@ int main () {
 	// On affiche les objectifs
 	displayObjectives(&lineLog, win_logs);
 	// On affiche la map et le joueur
-	displayFloor(map, win_game);
+	displayFloor(map, player, win_game);
 	displayPlayer(player, map, win_game, win_logs, &lineLog);
 	displayStats(player, win_stats);
 
@@ -62,7 +62,7 @@ int main () {
 
 		if (key == 'N') {
 			randomFloor(map, 6);
-			displayFloor(map, win_game);
+			displayFloor(map, player, win_game);
 			displayPlayer(player, map, win_game, win_logs, &lineLog);
 		}
 
@@ -71,7 +71,7 @@ int main () {
 
 		markDiscoverRoom(map, player);
 
-		displayFloor(map, win_game);
+		displayFloor(map, player, win_game);
 		displayPlayer(player, map, win_game, win_logs, &lineLog);
 		displayStats(player, win_stats);
 
@@ -96,6 +96,6 @@ int main () {
 
 	endwin(); //Fermeture de la fenetre
 	err ("\n***FIN DU MAIN***\n");
-	return 0;
+	return 1;
 
 }

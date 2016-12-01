@@ -258,6 +258,14 @@ void printSaveInfos(WINDOW *win, int saveNB, int selectedGame){
 
 }
 
+/**
+	* \brief Ferme le jeu
+	*	\fn void abortGame()
+	*/
+void abortGame(){
+	endwin(); //Fermeture de la fenetre
+	exit(1);
+}
 
 /**
 	* \brief Gère l'affichage de l'écran de sélection de la sauvegarde
@@ -276,10 +284,12 @@ void selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *playe
 	int quit = FALSE;
 
 	printLineCenter("Choisissez un emplacement de sauvegarde :", columns, 5, win);
+	printLineCenter("(utiliser les flèches)", columns, 6, win);
 
 
-	printLineCenter("Entrée : Valider                ", columns, 40, win);
-	printLineCenter("Del   : Supprimer la sauvegarde", columns, 41, win);
+	printLineCenter("Entrée : Valider               ", columns, 40, win);
+	printLineCenter("Del    : Supprimer la sauvegarde", columns, 41, win);
+	printLineCenter("q      : Sortir du jeu          ", columns, 42, win);
 
 
 	while(quit == FALSE){
@@ -294,6 +304,7 @@ void selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *playe
 
 		switch (key) {
 			case '\n'           : quit = TRUE; break;
+			case 'q'            : abortGame();
 			case KEY_RETURN     : quit = TRUE; break;
 			case KEY_RETURN_MAC : quit = TRUE; break;
 
@@ -402,11 +413,12 @@ void printCell(int pair, char cell, WINDOW *win){
 
 /**
 	* \brief Affiche l'étage de la map donnée en paramètre
-	*	\fn void displayFloor(t_cell map[LINES][COLUMNS], WINDOW *win)
+	*	\fn void displayFloor(t_cell map[LINES][COLUMNS], t_character player, WINDOW *win)
 	* \param map Carte à afficher
+	* \param player Joueur
 	* \param win Fenêtre où afficher la carte
 	*/
-void displayFloor(t_cell map[LINES][COLUMNS], WINDOW *win) {
+void displayFloor(t_cell map[LINES][COLUMNS], t_character player, WINDOW *win) {
 
 	int i, j;
 
@@ -431,7 +443,14 @@ void displayFloor(t_cell map[LINES][COLUMNS], WINDOW *win) {
 						else {
 							if(map[i][j].obj[0].isDiscovered){
 								switch (map[i][j].obj[0].type) {
-									case STAIRS_UP: printCell(OBJECTS_COLOR,'<', win); break;
+									case STAIRS_UP:
+										if(player.lvl >= NB_LVL -1){
+											if(player.hasFoundObj) printCell(ROOM_COLOR,' ', win);
+											else                   printCell(OBJECTS_COLOR,'O', win);
+										}
+										else
+											printCell(OBJECTS_COLOR,'<', win);
+									break;
 									case STAIRS_DOWN: printCell(OBJECTS_COLOR, '>', win); break;
 									case FOOD: printCell(OBJECTS_COLOR, '%', win); break;
 									case TRAP: printCell(OBJECTS_COLOR, '^', win); break;
@@ -447,6 +466,8 @@ void displayFloor(t_cell map[LINES][COLUMNS], WINDOW *win) {
 							switch (map[i][j].obj[0].type) {
 								case STAIRS_UP: printCell(OBJECTS_COLOR,'<', win); break;
 								case STAIRS_DOWN: printCell(OBJECTS_COLOR, '>', win); break;
+								case FOOD: printCell(OBJECTS_COLOR, '%', win); break;
+								case TRAP: printCell(OBJECTS_COLOR, '^', win); break;
 								case objNONE: printCell(CORRIDOR_COLOR,' ', win); break;
 								case TRAP: exit(1); printCell(OBJECTS_COLOR, '^', win); break;
 								case FOOD: printCell(OBJECTS_COLOR, '%', win); break;
@@ -550,7 +571,14 @@ void displayPlayer(t_character player, t_cell mat[LINES][COLUMNS], WINDOW *win, 
 	if(mat[player.line][player.column].nbObject != 0){
 
 		switch (mat[player.line][player.column].obj[0].type) {
-			case STAIRS_UP: addLog("Vous pouvez monter les escaliers avec :           > Entrée", line, logs); break;
+			case STAIRS_UP:
+				if(player.lvl < NB_LVL -1){
+					addLog("Vous pouvez monter les escaliers avec :           > Entrée", line, logs);
+				}
+				else if(!player.hasFoundObj){
+					addLog("Recuperez l'objet avec :                          > Entrée", line, logs);
+				}
+				break;
 			case STAIRS_DOWN: addLog("Vous pouvez déscendre les éscaliers avec :      > Entrée", line, logs); break;
 			default: break;
 		}
@@ -597,7 +625,6 @@ void displayStats(t_character player, WINDOW *win){
 
 	clearArea(win, 1, 1, COLS_STATS - 1, LINES_STATS - 1);
 
-
 	wmove(win, 1, 1);
 	wrefresh(win);
 
@@ -613,12 +640,17 @@ void displayStats(t_character player, WINDOW *win){
 	mvwprintw(win, 2, 30, "Déplacements : %i", player.nbMove);
 	mvwprintw(win, 3, 30, "Joueur       : %s", player.name);
 
+	wattron(win, COLOR_PAIR(GENERAL_COLOR));
+	wmove(win, 4, 30);
 	// Si le joueur est malade
 	if(player.isSick){
-		wattron(win, COLOR_PAIR(GENERAL_COLOR));
-		mvwprintw(win, 4, 30, "Empoisonné");
-		wattroff(win, COLOR_PAIR(GENERAL_COLOR));
+		wprintw(win, "Empoisonné");
 	}
+	if(player.hasFoundObj){
+		if(player.isSick) wprintw(win, " | ");
+		wprintw(win, "Objet trouvé");
+	}
+	wattroff(win, COLOR_PAIR(GENERAL_COLOR));
 
 	wrefresh(win);
 

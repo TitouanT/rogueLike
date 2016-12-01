@@ -152,7 +152,7 @@ int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, 
     	case '\n': return (traiterEntree(map, player, win_logs, lineLog));
     	case 'o' : traiterPorte (map, player, key, win_logs, lineLog);   break;
     	case 'c' : traiterPorte (map, player, key, win_logs, lineLog);   break;
-			case 's' : saveGame(map, player); addLog("Partie Sauvegardée", lineLog, win_logs); break;//
+			case 's' : saveGame(map, player); addLog("Partie sauvegardée", lineLog, win_logs); break;//
     	case 'q' : return FALSE;
     	case 'Q' : return !askConfirmationToQuit(win_logs, lineLog);
 
@@ -206,14 +206,19 @@ void traiterPorte(t_cell map[LINES][COLUMNS], t_character *player, int key, WIND
   direction = getch();
 
   switch (direction) {
+
 		case 'k':
     case KEY_UP    : (doorPos.line)--;   break;
+
 		case 'j':
     case KEY_DOWN  : (doorPos.line)++;   break;
+
 		case 'h':
     case KEY_LEFT  : (doorPos.column)--; break;
+
 		case 'l':
     case KEY_RIGHT : (doorPos.column)++; break;
+
 		default: wrongKey(win, lineLog);
   }
 
@@ -338,6 +343,12 @@ int askConfirmationToQuit(WINDOW * win, int *lineLog) {
 }
 
 
+/**
+	* \brief Evanouissement du joueur
+	* Selectionne un endroit aléatoire de la carte, et le dé-mémorise
+	*	\fn void passOut(t_cell map[LINES][COLUMNS])
+	* \param map Carte
+	*/
 void passOut(t_cell map[LINES][COLUMNS]){
 
 	int line, column, height, width, maxHeight, maxWidth;
@@ -363,6 +374,14 @@ void passOut(t_cell map[LINES][COLUMNS]){
 }
 
 
+/**
+	* \brief Demande à l'utilisateur de saisir un code de triche
+	*	\fn void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_character *player)
+	* \param win_logs Fenêtre de logs
+	* \param win_game Fenêtre de jeu
+	* \param map Carte
+	* \param player Joueur
+	*/
 void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_character *player){
 
 	char cheatSTR[COLS_LOGS];
