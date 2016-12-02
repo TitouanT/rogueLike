@@ -52,7 +52,7 @@ void markDiscoverRoom(t_cell map[LINES][COLUMNS], t_character player){
 		for(i = start.line ; bIsPartOfRoom(map[i][start.column]); i++){
 			for(j = start.column ; bIsPartOfRoom(map[i][j]) ; j++){
 				map[i][j].isDiscovered = TRUE;
-				if(map[i][j].obj[0].type!=TRAP){
+				if(map[i][j].nbObject > 0 && map[i][j].obj[0].type != TRAP){
 					map[i][j].obj[0].isDiscovered=TRUE;
 				}
 			}
@@ -62,19 +62,24 @@ void markDiscoverRoom(t_cell map[LINES][COLUMNS], t_character player){
 
 /* Marque les cellules autour du joueur comme découverte */
 void markDiscover(t_cell map[LINES][COLUMNS], t_character player) {
-
+	err ("***debut mark Discover");
 	int line = player.line - 1;
 	int col = player.column - 1;
 
 	int i, j;
-	if(map[player.line][player.column].obj[0].type==TRAP){
+	if(map[player.line][player.column].nbObject > 0 && map[player.line][player.column].obj[0].type == TRAP){
 		map[player.line][player.column].obj[0].isDiscovered=TRUE;
 	}
 	for (i = 0; i < 3; i++) {
 		for (j = 0; j < 3; j++) {
-			if (line+i >= 0 && line+i < LINES && col+j >= 0 && col+j < COLUMNS) map[line+i][col+j].isDiscovered = TRUE; map[i][j].obj[0].isDiscovered=TRUE;
+			if (line+i >= 0 && line+i < LINES && col+j >= 0 && col+j < COLUMNS) {
+				map[line+i][col+j].isDiscovered = TRUE;
+				if (map[i][j].nbObject > 0 && map[i][j].obj[0].type != TRAP)
+					map[i][j].obj[0].isDiscovered=TRUE;
+			}
 		}
 	}
+	err ("***fin mark Discover");
 }
 
 /* Déplace le joueur au spawn */
@@ -224,7 +229,7 @@ int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso){
 		}
 	}
 
-	err("***debut move perso***");
+	err("***fin move perso***");
   	return success;
 
 }

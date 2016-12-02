@@ -432,6 +432,21 @@ void displayFloor(t_cell map[LINES][COLUMNS], t_character player, WINDOW *win) {
 				switch (map[i][j].type) {
 
 					case EMPTY: 	 printCell(GENERAL_COLOR,' ', win); break;
+					
+					case CORRIDOR:
+						if (map[i][j].nbObject <= 0 || map[i][j].obj[0].isDiscovered == FALSE)
+							printCell(CORRIDOR_COLOR,'c', win);
+						else {
+							switch (map[i][j].obj[0].type) {
+								case STAIRS_UP: printCell(OBJECTS_COLOR,'<', win); break;
+								case STAIRS_DOWN: printCell(OBJECTS_COLOR, '>', win); break;
+								case FOOD: printCell(OBJECTS_COLOR, '%', win); break;
+								case TRAP: printCell(OBJECTS_COLOR, '^', win); break;
+								case objNONE: printCell(CORRIDOR_COLOR,' ', win); break;
+								default: break;
+							}
+						}
+						break;
 
 					case DOORWAY:
 						switch (map[i][j].state) {
@@ -463,19 +478,6 @@ void displayFloor(t_cell map[LINES][COLUMNS], t_character player, WINDOW *win) {
 						} break;
 
 
-					case CORRIDOR:
-						if (map[i][j].nbObject == 0) printCell(CORRIDOR_COLOR,'c', win);
-						else {
-							switch (map[i][j].obj[0].type) {
-								case STAIRS_UP: printCell(OBJECTS_COLOR,'<', win); break;
-								case STAIRS_DOWN: printCell(OBJECTS_COLOR, '>', win); break;
-								case FOOD: printCell(OBJECTS_COLOR, '%', win); break;
-								case TRAP: printCell(OBJECTS_COLOR, '^', win); break;
-								case objNONE: printCell(CORRIDOR_COLOR,' ', win); break;
-								default: break;
-							}
-						}
-						break;
 					case WALL: 		 printCell(WALL_COLOR,'c', win); break;
 				}
 			}
