@@ -10,15 +10,6 @@
 #include <locale.h>
 #include "global.h"
 
-int fileExist (char * fileName) {
-	FILE * file = fopen(fileName, "r");
-	if (file == NULL) return FALSE;
-	else {
-		fclose (file);
-		return TRUE;
-	}
-}
-
 int main () {
 	remove("err"); // comme il est ouvert en mode ajout a chaque fois on le supprime en début d'execution
 	if (fileExist("./accentNeeded")) setlocale(LC_ALL, "");
@@ -113,6 +104,6 @@ int main () {
 
 	endwin(); //Fermeture de la fenetre
 	err ("\n***FIN DU MAIN***\n");
-	return 1;
+	return EXIT_SUCCESS;
 
 }

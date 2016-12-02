@@ -266,7 +266,7 @@ void abortGame(){
 	err("**** ON QUITTE LE JEU, LA FONCTION abortGame() A ETE APPELEE ****");
 	endwin(); //Fermeture de la fenetre
 	err("**** good bye ****");
-	exit(1);
+	exit(EXIT_SUCCESS);
 }
 
 /**

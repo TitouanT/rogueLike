@@ -12,6 +12,22 @@
 #include "mapConst.h"
 
 /**
+  * \brief test si un fichier existe
+  * \fn int fileExist (char * fileName)
+  * \param fileName Le nom du fichier à tester
+  * \return TRUE si le fichier existe
+  * \return FALSE sinon
+  */
+int fileExist (char * fileName) {
+	FILE * file = fopen(fileName, "r");
+	if (file == NULL) return FALSE;
+	else {
+		fclose (file);
+		return TRUE;
+	}
+}
+
+/**
   * \brief initialise le tirage de nombres aléatoires
   * \fn void initRandom ()
   */

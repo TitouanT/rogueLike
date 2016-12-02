@@ -15,6 +15,8 @@
 #include <stdlib.h>
 #include <ncurses.h> // pour TRUE et FALSE
 
+int fileExist (char * fileName);
+
 void initRandom (void);
 int randab (int a, int b);
 int didItHappen (int chance);
