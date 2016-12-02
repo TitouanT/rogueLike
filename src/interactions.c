@@ -135,9 +135,9 @@ void eatFood(t_character *player, t_cell map[LINES][COLUMNS]){
 	* \return TRUE sinon
 	*/
 int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, WINDOW * win_logs, WINDOW * win_game, int *lineLog){
-
-
-  switch (key) {
+	
+	err("*** debut handleInteraction ***");
+	switch (key) {
 		case 'k': case KEY_UP:    move_perso(UP,    map, player);  break;
 		case 'j': case KEY_DOWN:  move_perso(DOWN,  map, player);  break;
 		case 'h': case KEY_LEFT:  move_perso(LEFT,  map, player);  break;
@@ -149,25 +149,23 @@ int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, 
 		case 'n': move_perso(DOWN_RIGHT, map, player); break;
 
 
-    case '\n': return (traiterEntree(map, player, win_logs, lineLog));
-    case 'o' : traiterPorte (map, player, key, win_logs, lineLog);   break;
-    case 'c' : traiterPorte (map, player, key, win_logs, lineLog);   break;
+    	case '\n': return (traiterEntree(map, player, win_logs, lineLog));
+    	case 'o' : traiterPorte (map, player, key, win_logs, lineLog);   break;
+    	case 'c' : traiterPorte (map, player, key, win_logs, lineLog);   break;
 		case 's' : saveGame(map, player); addLog("Partie sauvegardée", lineLog, win_logs); break;//
-    case 'q' : return FALSE;
-    case 'Q' : return !askConfirmationToQuit(win_logs, lineLog);
+    	case 'q' : return FALSE;
+    	case 'Q' : return !askConfirmationToQuit(win_logs, lineLog);
 
 		case '_' : cheat(win_logs, win_game, map, player); break;
 
 		case 'i' : printInventory(*player, win_logs, lineLog); break;
-
-		//case 'n' : randomFloor(map, 5); move2spawn(map, player, STAIRS_DOWN); break; // a mettre dans cheat
-		//case 'N' : randomFloor(map, 5); move2spawn(map, player, STAIRS_UP); break; // a mettre dans cheat
 
 		default: wrongKey(win_logs, lineLog);
 	}
 
   markDiscover(map, *player);
 
+  err("*** fin handleInteraction ***");
   return TRUE;
 
 }

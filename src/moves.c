@@ -115,10 +115,10 @@ int bIsWalkable(t_cell cell){
 }
 
 int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso){
-
+	err("***debut move perso***");
 	int success = FALSE;
-  int line   = perso->line;
-  int column = perso->column;
+	int line   = perso->line;
+	int column = perso->column;
 
 	if(!canPlayerMove(perso)) return FALSE;
 
@@ -219,10 +219,12 @@ int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso){
 		
 		if(mat[perso->line][perso->column].obj[0].type==TRAP){
 			fallTrap(mat,perso);
+			err("***tombé dans un piege !!***");
 			exit(1);
 		}
 	}
 
-  return success;
+	err("***debut move perso***");
+  	return success;
 
 }

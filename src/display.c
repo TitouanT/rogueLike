@@ -298,6 +298,8 @@ void selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *playe
 
 
 	while(quit == FALSE){
+		if (selectedGame == 4) selectedGame = 1;
+		else if (selectedGame == 0) selectedGame = 3;
 
 		printSaveInfos(win, 1, selectedGame);
 		printSaveInfos(win, 2, selectedGame);
@@ -313,8 +315,8 @@ void selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *playe
 			case KEY_RETURN     : quit = TRUE; break;
 			case KEY_RETURN_MAC : quit = TRUE; break;
 
-			case KEY_UP     : if(selectedGame >= 2) selectedGame--; break;
-			case KEY_DOWN   : if(selectedGame <= 2) selectedGame++; break;
+			case KEY_UP     : /*if(selectedGame >= 2)*/ selectedGame--; break;
+			case KEY_DOWN   : /*if(selectedGame <= 2)*/ selectedGame++; break;
 
 			default : break;
 		}
