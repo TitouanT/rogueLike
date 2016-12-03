@@ -135,18 +135,18 @@ void eatFood(t_character *player, t_cell map[LINES][COLUMNS]){
 	* \return TRUE sinon
 	*/
 int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, WINDOW * win_logs, WINDOW * win_game, int *lineLog){
-	
+
 	err("*** debut handleInteraction ***");
 	switch (key) {
-		case 'k': case KEY_UP:    move_perso(UP,    map, player);  break;
-		case 'j': case KEY_DOWN:  move_perso(DOWN,  map, player);  break;
-		case 'h': case KEY_LEFT:  move_perso(LEFT,  map, player);  break;
-		case 'l': case KEY_RIGHT: move_perso(RIGHT, map, player);  break;
+		case 'k': case KEY_UP:    move_perso(UP,    map, player, win_logs, lineLog);  break;
+		case 'j': case KEY_DOWN:  move_perso(DOWN,  map, player, win_logs, lineLog);  break;
+		case 'h': case KEY_LEFT:  move_perso(LEFT,  map, player, win_logs, lineLog);  break;
+		case 'l': case KEY_RIGHT: move_perso(RIGHT, map, player, win_logs, lineLog);  break;
 
-		case 'y': move_perso(UP_LEFT, map, player);    break;
-		case 'u': move_perso(UP_RIGHT, map, player);   break;
-		case 'b': move_perso(DOWN_LEFT, map, player);  break;
-		case 'n': move_perso(DOWN_RIGHT, map, player); break;
+		case 'y': move_perso(UP_LEFT, map, player, win_logs, lineLog);    break;
+		case 'u': move_perso(UP_RIGHT, map, player, win_logs, lineLog);   break;
+		case 'b': move_perso(DOWN_LEFT, map, player, win_logs, lineLog);  break;
+		case 'n': move_perso(DOWN_RIGHT, map, player, win_logs, lineLog); break;
 
 
     	case '\n': return (traiterEntree(map, player, win_logs, lineLog));
@@ -470,12 +470,13 @@ void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_cha
 
 }
 
-void fallTrap(t_cell map[LINES][COLUMNS], t_character *perso){
-	int trapType=randab(0, 2);
-	int lostLvl, lostHp;
+void fallTrap(t_cell map[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, int *lineLog, t_dir direction){
+	int trapType=randab(0, 3);
+	int lostLvl, lostHp, glisser;
 
 	switch(trapType){
-		case 0 : lostLvl=randab(0,perso->lvl+1)*-1; changeLvl(map, *&perso, lostLvl); 			
-		case 1 : lostHp=randab(0,5); (perso->hp)= (perso->hp)-lostHp; break;
+		case 0 : lostLvl=randab(0,perso->lvl+1)*-1; changeLvl(map, *&perso, lostLvl); addLog("Vous êtes tombé dans un trou", lineLog, win_logs); break;
+		case 1 : lostHp=randab(0,5); (perso->hp)= (perso->hp)-lostHp; addLog("Attention, un L1 vous a jeté une carte, vous vous êtes écorché", lineLog, win_logs); break;
+		case 2 : glisser=randab(2,8); for(int i=0; i<glisser;i++) move_perso(direction, map, perso, win_logs, lineLog); addLog("Regardez où vous mettez vos pieds, la femme de ménage à lustrer le sol", lineLog, win_logs);
 	}
 }
