@@ -39,7 +39,7 @@ void initGame () {
 	box(gWGame, ACS_VLINE, ACS_HLINE);
 	box(gWStats, ACS_VLINE, ACS_HLINE);
 
-	mvwprintw(gWGame, 0, 1, " Snake IT! --- <> with ♥ by TT --- ");
+	mvwprintw(gWGame, 0, 1, " Snake IT! --- <> with ♥ by T2 --- ");
 	mvwprintw(gWStats, 0, 1, " Stats ");
 
 	wrefresh(gWGame);
