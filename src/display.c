@@ -285,7 +285,7 @@ void selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *playe
 	int selectedGame = 2;
 	int key;
 	int quit = FALSE;
-
+caCEstDuPropre:
 	err("** Affichage de l'écran de sélection de partie **");
 
 	printLineCenter("Choisissez un emplacement de sauvegarde :↑, ↓", columns, 5, win);
@@ -308,7 +308,9 @@ void selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *playe
 		wrefresh(win);
 
 		key = getch();
-
+		
+		if(konami(key)) goto caCEstDuPropre; // hehe :p
+		
 		switch (key) {
 			case '\n'           : quit = TRUE; break;
 			case 'q'            : err("On a demandé de quitter le jeu"); abortGame();
@@ -317,7 +319,7 @@ void selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *playe
 
 			case KEY_UP     : /*if(selectedGame >= 2)*/ selectedGame--; break;
 			case KEY_DOWN   : /*if(selectedGame <= 2)*/ selectedGame++; break;
-
+			
 			default : break;
 		}
 	}

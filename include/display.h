@@ -92,5 +92,6 @@ void displayEnd(t_character player, WINDOW *win);
 void abortGame();
 void printInventory(t_character player, WINDOW *win, int *lineLog);
 
+int konami (int key);
 
 #endif
