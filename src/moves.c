@@ -119,7 +119,7 @@ int bIsWalkable(t_cell cell){
 
 }
 
-int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso){
+int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, int *lineLog){
 	err("***debut move perso***");
 	int success = FALSE;
 	int line   = perso->line;
@@ -221,11 +221,10 @@ int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso){
 			if(didItHappen(35)) perso->isSick = FALSE;
 
 		}
-		
+
 		if(mat[perso->line][perso->column].obj[0].type==TRAP){
-			fallTrap(mat,perso);
+			fallTrap(mat,perso, win_logs, lineLog, direction);
 			err("***tombé dans un piege !!***");
-			exit(1);
 		}
 	}
 
