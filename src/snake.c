@@ -88,6 +88,7 @@ void displaySnake (int isAlive, int currDir) {
 // display some information about the game
 void displayStatsSnake(int foodEat, int length, int foodQtt) {
 	mvwprintw(gWStats, 1, 1, "foodEat: %d, length: %d, foodQtt: %d, you can%s eat yourself %s you can%s go through the wall", foodEat, length, foodQtt, CAN_CROWL_ON_HIM ? "" : "'t",(CAN_CROWL_ON_HIM == CAN_GO_THROUGH_BORDER) ? "AND" : "BUT", CAN_GO_THROUGH_BORDER ? "" : "'t");
+	wprintw(gWStats, " | Press 'q' to quit");
 	wrefresh(gWStats);
 }
 
