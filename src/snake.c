@@ -13,8 +13,8 @@
 #define WAIT_TIME 50                // the time to wait for a user input
 #define GROWTH 5                    // length's gain when one food is eat
 #define MAX_FOOD 10                 // Maximum food quantity in the game at the same time
-#define CAN_CROWL_ON_HIM FALSE      // obvious
-#define CAN_GO_THROUGH_BORDER FALSE // "
+#define CAN_CROWL_ON_HIM TRUE       // obvious
+#define CAN_GO_THROUGH_BORDER TRUE  // "
 
 WINDOW *gWGame, *gWStats;
 typedef enum {UP, DOWN, LEFT, RIGHT} t_dir;
@@ -218,26 +218,7 @@ int snake(void) {
 		listPtr_appendHead (prev);
 
 		// is it a legal movment ?
-<<<<<<< HEAD
 		if ((head.line >= lines - 3 - 1 || head.line <= 0 || head.col >= cols - 1 || head.col <= 0) && CAN_GO_THROUGH_BORDER == FALSE) {
-=======
-		if (head.line >= lines - 3 - 1 || head.line <= 0 || head.col >= cols - 1 || head.col <= 0) {
-			if (CAN_GO_THROUGH_BORDER == FALSE) {
-				continueGame = FALSE;
-				continue;
-			}
-			else {
-				if (head.line >= lines - 3 - 1) head.line = 1;
-				else if (head.line <= 0) head.line = lines - 3 - 2;
-
-				if (head.col >= cols - 1) head.col = 1;
-				else if (head.col <= 0) head.col = cols - 2;
-			}
-		}
-
-
-		if (listPtr_isInList(head) && CAN_CROWL_ON_HIM == FALSE) {
->>>>>>> 473b0723b6e084a512c401fa826d9fe8b9b778d7
 			continueGame = FALSE;
 		} else {
 			if (head.line >= lines - 3 - 1) head.line = 1;
@@ -262,7 +243,6 @@ int snake(void) {
 				growth--;
 				length++;
 			}
-<<<<<<< HEAD
 			
 			
 			if (listPtr_isInList(head) && CAN_CROWL_ON_HIM == FALSE) {
@@ -276,31 +256,18 @@ int snake(void) {
 				
 				displayStatsSnake(foodEat, length, foodQtt);
 			}
-=======
-
-
-
-			displaySnake(continueGame, currDir);
-			displayFood(foods, foodQtt);
-			wrefresh(gWGame);
-
-			displayStatsSnake(foodEat, length, foodQtt);
->>>>>>> 473b0723b6e084a512c401fa826d9fe8b9b778d7
 		}
 	}
 
 	/*******************/
 	/* End of the Game */
 	/*******************/
-<<<<<<< HEAD
+
 	listPtr_move2end ();
 	listPtr_readData(&end);
 	mvwprintw(gWGame, end.line, end.col, " ");
 	listPtr_removeElt ();
-	
-=======
 
->>>>>>> 473b0723b6e084a512c401fa826d9fe8b9b778d7
 	listPtr_appendHead (head);
 	
 	displaySnake(continueGame, currDir);
