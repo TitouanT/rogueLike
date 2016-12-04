@@ -70,7 +70,7 @@ void displaySnake (int isAlive, int currDir) {
 	
 	listPtr_move2end();
 	listPtr_readData(&pos);
-	if (isAlive) mvwprintw(gWGame, pos.line, pos.col, "☣");
+	mvwprintw(gWGame, pos.line, pos.col, "0");//"☣");
 	
 	listPtr_move2head();
 	listPtr_readData (&pos);
@@ -217,27 +217,17 @@ int snake(void) {
 		listPtr_appendHead (prev);
 		
 		// is it a legal movment ?
-		if (head.line >= lines - 3 - 1 || head.line <= 0 || head.col >= cols - 1 || head.col <= 0) {
-			if (CAN_GO_THROUGH_BORDER == FALSE) {
-				continueGame = FALSE;
-				continue;
-			}
-			else {
-				if (head.line >= lines - 3 - 1) head.line = 1;
-				else if (head.line <= 0) head.line = lines - 3 - 2;
-				
-				if (head.col >= cols - 1) head.col = 1;
-				else if (head.col <= 0) head.col = cols - 2;
-			}
-		}
-		
-		
-		if (listPtr_isInList(head) && CAN_CROWL_ON_HIM == FALSE) {
+		if ((head.line >= lines - 3 - 1 || head.line <= 0 || head.col >= cols - 1 || head.col <= 0) && CAN_GO_THROUGH_BORDER == FALSE) {
 			continueGame = FALSE;
-			continue;
-		}
-		else {
-			listPtr_appendHead (head);
+		} else {
+			if (head.line >= lines - 3 - 1) head.line = 1;
+			else if (head.line <= 0) head.line = lines - 3 - 2;
+			
+			if (head.col >= cols - 1) head.col = 1;
+			else if (head.col <= 0) head.col = cols - 2;
+			
+			
+			
 			if (eat(head, foods, foodQtt, &foodEat, &growth) && foodQtt < MAX_FOOD) {
 				randomFood(foods, foodQtt);
 				foodQtt++;
@@ -248,27 +238,36 @@ int snake(void) {
 				listPtr_readData(&end);
 				mvwprintw(gWGame, end.line, end.col, " ");
 				listPtr_removeElt ();
-			}
-			else {
+			} else {
 				growth--;
 				length++;
 			}
 			
 			
-			
-			displaySnake(continueGame, currDir);
-			displayFood(foods, foodQtt);
-			wrefresh(gWGame);
-			
-			displayStatsSnake(foodEat, length, foodQtt);
+			if (listPtr_isInList(head) && CAN_CROWL_ON_HIM == FALSE) {
+				continueGame = FALSE;
+			} else {
+				listPtr_appendHead (head);
+				
+				displaySnake(continueGame, currDir);
+				displayFood(foods, foodQtt);
+				wrefresh(gWGame);
+				
+				displayStatsSnake(foodEat, length, foodQtt);
+			}
 		}
 	}
 	
 	/*******************/
 	/* End of the Game */
 	/*******************/
+	listPtr_move2end ();
+	listPtr_readData(&end);
+	mvwprintw(gWGame, end.line, end.col, " ");
+	listPtr_removeElt ();
 	
 	listPtr_appendHead (head);
+	
 	displaySnake(continueGame, currDir);
 	wrefresh(gWGame);
 	
