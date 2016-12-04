@@ -13,8 +13,10 @@
 #define WAIT_TIME 50                // the time to wait for a user input
 #define GROWTH 5                    // length's gain when one food is eat
 #define MAX_FOOD 10                 // Maximum food quantity in the game at the same time
-#define CAN_CROWL_ON_HIM TRUE       // obvious
-#define CAN_GO_THROUGH_BORDER TRUE  // "
+
+// they both take a value in initGame()
+int CAN_CROWL_ON_HIM;               // obvious 
+int CAN_GO_THROUGH_BORDER;          // "
 
 WINDOW *gWGame, *gWStats;
 typedef enum {UP, DOWN, LEFT, RIGHT} t_dir;
@@ -44,6 +46,10 @@ void initGame () {
 
 	wrefresh(gWGame);
 	wrefresh(gWStats);
+	
+	CAN_CROWL_ON_HIM      = (rand()%2 == 0) ? TRUE : FALSE;
+	CAN_GO_THROUGH_BORDER = (rand()%2 == 0) ? TRUE : FALSE;
+	
 
 
 }
@@ -136,6 +142,65 @@ int eat(t_pos head, t_pos * foods, int foodQtt, int * foodEat, int * growth) {
 	return eatSometh;
 }
 
+void randPosOnWall (t_pos * pos, t_dir * currDir) {
+	int wall = rand()%4;
+	int bounce = rand()%2;
+	if (bounce) {
+		
+	}
+	if (bounce == 0) {
+		switch (wall) {
+			case 0:
+				*currDir = UP;
+				pos -> line = lines - 5;
+				pos -> col = randab(1, cols - 2);
+				break;
+			
+			case 1:
+				*currDir = DOWN;
+				pos -> line = 1;
+				pos -> col = randab(1, cols - 2);
+				break;
+			
+			case 2:
+				*currDir = RIGHT;
+				pos -> line = randab(1, lines - 5);
+				pos -> col = 1;
+				break;
+			
+			case 3:
+				*currDir = LEFT;
+				pos -> line = randab(1, lines - 5);
+				pos -> col = cols - 2;
+				break;				
+		}
+	}
+	else {
+		// *currDir = (*currDir == UP) ? DOWN : (*currDir == DOWN) ? UP : (*currDir == RIGHT) ? LEFT : RIGHT; // not eazy to understand..
+		switch (*currDir) {
+			case UP:
+				*currDir = DOWN;
+				(pos -> line)++;
+				break;
+			
+			case DOWN:
+				*currDir = UP;
+				(pos -> line)--;
+				break;
+				
+			case RIGHT:
+				*currDir = LEFT;
+				(pos -> col)--;
+				break;
+					
+			case LEFT:
+				*currDir = RIGHT;
+				(pos -> col)++;
+				break;
+		}
+	}
+}
+
 int snake(void) {
 	err("*** Debut du snake ***");
 	/**********************************/
@@ -174,6 +239,7 @@ int snake(void) {
 		switch (key) {
 			case 'q': // quit
 				continueGame = FALSE; break;
+			
 
 			// the player can't go to the opposite direction
 			case KEY_UP: // go up
@@ -235,11 +301,17 @@ int snake(void) {
 		if ((head.line >= lines - 3 - 1 || head.line <= 0 || head.col >= cols - 1 || head.col <= 0) && CAN_GO_THROUGH_BORDER == FALSE) {
 			continueGame = FALSE;
 		} else {
-			if (head.line >= lines - 3 - 1) head.line = 1;
-			else if (head.line <= 0) head.line = lines - 3 - 2;
-			
-			if (head.col >= cols - 1) head.col = 1;
-			else if (head.col <= 0) head.col = cols - 2;
+			if (head.line >= lines - 3 - 1 || head.line <= 0 || head.col >= cols - 1 || head.col <= 0) {
+				
+				if (CAN_GO_THROUGH_BORDER && CAN_CROWL_ON_HIM) randPosOnWall(&head, &currDir);
+				else {
+					if (head.line >= lines - 3 - 1) head.line = 1;
+					else if (head.line <= 0) head.line = lines - 3 - 2;
+					
+					if (head.col >= cols - 1) head.col = 1;
+					else if (head.col <= 0) head.col = cols - 2;
+				}
+			}
 			
 			
 			
