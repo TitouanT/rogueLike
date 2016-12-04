@@ -238,8 +238,20 @@ int snake(void) {
 		prevDir = currDir;
 		switch (key) {
 			case 'q': // quit
-				continueGame = FALSE; break;
+				continueGame = FALSE;
+				break;
 			
+			case ' ':
+				growth += GROWTH;
+				break;
+			
+			case 'b':
+				CAN_GO_THROUGH_BORDER = !CAN_GO_THROUGH_BORDER;
+				break;
+				
+			case 'h':
+				CAN_CROWL_ON_HIM = !CAN_CROWL_ON_HIM;
+				break;
 
 			// the player can't go to the opposite direction
 			case KEY_UP: // go up
