@@ -88,8 +88,20 @@ void displaySnake (int isAlive, int currDir) {
 
 // display some information about the game
 void displayStatsSnake(int foodEat, int length, int foodQtt) {
-	mvwprintw(gWStats, 1, 1, "foodEat: %d, length: %d, foodQtt: %d, you can%s eat yourself %s you can%s go through the wall", foodEat, length, foodQtt, CAN_CROWL_ON_HIM ? "" : "'t",(CAN_CROWL_ON_HIM == CAN_GO_THROUGH_BORDER) ? "AND" : "BUT", CAN_GO_THROUGH_BORDER ? "" : "'t");
-	wprintw(gWStats, " | Press 'q' to quit");
+	mvwprintw(gWStats, 1, 1, "nourriture mangée: %d, longueur: %d, nourriture présente: %d, ", foodEat, length, foodQtt);
+	
+	if (CAN_CROWL_ON_HIM) wprintw(gWStats, "le serpent peu se manger lui-même");
+	else wprintw(gWStats, "le serpent ne peu pas se manger lui-même");
+	
+	wprintw(gWStats, " %s ", (CAN_CROWL_ON_HIM == CAN_GO_THROUGH_BORDER) ? "ET" : "MAIS");
+	
+	if (CAN_GO_THROUGH_BORDER) wprintw(gWStats, "il peut aller au travers des murs");
+	else wprintw(gWStats, "il ne peut pas aller au travers des murs");
+	
+	
+	wprintw(gWStats, " | 'q' pour quitter");
+	
+	
 	wrefresh(gWStats);
 }
 
@@ -97,7 +109,9 @@ void displayStatsSnake(int foodEat, int length, int foodQtt) {
 void displayFood(t_pos * foods, int foodQtt) {
 	int i;
 	for (i = 0; i < foodQtt; i++) {
+		wattron(gWGame, COLOR_PAIR(1));
 		mvwprintw(gWGame, foods[i].line, foods[i].col, "♥");//"◉");
+		wattroff(gWGame, COLOR_PAIR(1));
 	}
 
 }
