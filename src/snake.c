@@ -12,7 +12,7 @@
 
 #define WAIT_TIME 50                // the time to wait for a user input
 #define GROWTH 5                    // length's gain when one food is eat
-#define MAX_FOOD 10                 // Maximum food quantity in the game at the same time 
+#define MAX_FOOD 10                 // Maximum food quantity in the game at the same time
 #define CAN_CROWL_ON_HIM FALSE      // obvious
 #define CAN_GO_THROUGH_BORDER FALSE // "
 
@@ -35,7 +35,7 @@ void initGame () {
 	getmaxyx(stdscr, lines, cols);
 	gWGame= subwin(stdscr, lines - 3, cols, 0, 0);
 	gWStats= subwin(stdscr, 3, cols, lines - 3, 0);
-	
+
 	box(gWGame, ACS_VLINE, ACS_HLINE);
 	box(gWStats, ACS_VLINE, ACS_HLINE);
 
@@ -44,15 +44,15 @@ void initGame () {
 
 	wrefresh(gWGame);
 	wrefresh(gWStats);
-	
-	
+
+
 }
 
 // display the snake
 void displaySnake (int isAlive, int currDir) {
 	t_pos pos;
-	
-	
+
+
 	listPtr_move2head();
 	listPtr_next ();
 	while (!listPtr_isOut ()) {
@@ -67,11 +67,12 @@ void displaySnake (int isAlive, int currDir) {
 		}
 		listPtr_next();
 	}
-	
+
 	listPtr_move2end();
 	listPtr_readData(&pos);
-	mvwprintw(gWGame, pos.line, pos.col, "0");//"☣");
 	
+	mvwprintw(gWGame, pos.line, pos.col, "0");//"☣");
+	//if (isAlive) mvwprintw(gWGame, pos.line, pos.col, "☣");
 	listPtr_move2head();
 	listPtr_readData (&pos);
 	if (isAlive) {
@@ -98,7 +99,7 @@ void displayFood(t_pos * foods, int foodQtt) {
 	for (i = 0; i < foodQtt; i++) {
 		mvwprintw(gWGame, foods[i].line, foods[i].col, "♥");//"◉");
 	}
-	
+
 }
 
 // add a random food at the i position
@@ -141,50 +142,50 @@ int snake(void) {
 	      prev,
 		  end,
 	      foods[MAX_FOOD];
-	
+
 	initGame();
 	randomFood(foods, 0);
-	
+
 	listPtr_init ();
 	listPtr_appendHead (head);
-	
+
 	/********************/
 	/* Loop of the Game */
 	/********************/
-	
+
 	while (continueGame) {
 		// listen for the next player's action
 		key = getch();
 		prevDir = currDir;
-		switch (key) { 
+		switch (key) {
 			case 'q': // quit
 				continueGame = FALSE; break;
-			
+
 			// the player can't go to the opposite direction
 			case KEY_UP: // go up
 				if (currDir != DOWN) currDir = UP;
 				break;
-				
+
 			case KEY_DOWN: // go down
 				if (currDir != UP) currDir = DOWN;
 				break;
-				
+
 			case KEY_LEFT: // go left
 				if (currDir != RIGHT) currDir = LEFT;
 				break;
-				
+
 			case KEY_RIGHT: // go right
 				if (currDir != LEFT) currDir = RIGHT;
 				break;
-				
+
 			default: // anything else ? just continue
 				break;
 		}
-		
+
 		listPtr_move2head();
 		listPtr_readData (&head);
 		prev = head;
-		
+
 		// updating the position of the head
 		switch (currDir) {
 			case UP: head.line --; break;
@@ -192,7 +193,7 @@ int snake(void) {
 			case RIGHT: head.col ++; break;
 			case LEFT: head.col --; break;
 		}
-		
+
 		// find the symbol to represent the part nex to the head
 		if (prevDir == currDir) {
 			if (currDir == UP || currDir == DOWN) prev.body = VERTICAL;
@@ -201,13 +202,13 @@ int snake(void) {
 		else {
 			if ((prevDir == UP && currDir == RIGHT) || (prevDir == LEFT && currDir == DOWN))
 				prev.body = TOP_LEFT;
-				
+
 			else if ((prevDir == UP && currDir == LEFT) || (prevDir == RIGHT && currDir == DOWN))
 				prev.body = TOP_RIGHT;
-				
+
 			else if ((prevDir == DOWN && currDir == RIGHT) || (prevDir == LEFT && currDir == UP))
 				prev.body = BOTTOM_LEFT;
-				
+
 			else
 				prev.body = BOTTOM_RIGHT;
 		}
@@ -215,9 +216,28 @@ int snake(void) {
 		listPtr_move2head();
 		listPtr_removeElt (); // an update element primitive should be nice
 		listPtr_appendHead (prev);
-		
+
 		// is it a legal movment ?
+<<<<<<< HEAD
 		if ((head.line >= lines - 3 - 1 || head.line <= 0 || head.col >= cols - 1 || head.col <= 0) && CAN_GO_THROUGH_BORDER == FALSE) {
+=======
+		if (head.line >= lines - 3 - 1 || head.line <= 0 || head.col >= cols - 1 || head.col <= 0) {
+			if (CAN_GO_THROUGH_BORDER == FALSE) {
+				continueGame = FALSE;
+				continue;
+			}
+			else {
+				if (head.line >= lines - 3 - 1) head.line = 1;
+				else if (head.line <= 0) head.line = lines - 3 - 2;
+
+				if (head.col >= cols - 1) head.col = 1;
+				else if (head.col <= 0) head.col = cols - 2;
+			}
+		}
+
+
+		if (listPtr_isInList(head) && CAN_CROWL_ON_HIM == FALSE) {
+>>>>>>> 473b0723b6e084a512c401fa826d9fe8b9b778d7
 			continueGame = FALSE;
 		} else {
 			if (head.line >= lines - 3 - 1) head.line = 1;
@@ -232,7 +252,7 @@ int snake(void) {
 				randomFood(foods, foodQtt);
 				foodQtt++;
 			}
-			
+
 			if (growth == 0) {
 				listPtr_move2end ();
 				listPtr_readData(&end);
@@ -242,6 +262,7 @@ int snake(void) {
 				growth--;
 				length++;
 			}
+<<<<<<< HEAD
 			
 			
 			if (listPtr_isInList(head) && CAN_CROWL_ON_HIM == FALSE) {
@@ -255,40 +276,54 @@ int snake(void) {
 				
 				displayStatsSnake(foodEat, length, foodQtt);
 			}
+=======
+
+
+
+			displaySnake(continueGame, currDir);
+			displayFood(foods, foodQtt);
+			wrefresh(gWGame);
+
+			displayStatsSnake(foodEat, length, foodQtt);
+>>>>>>> 473b0723b6e084a512c401fa826d9fe8b9b778d7
 		}
 	}
-	
+
 	/*******************/
 	/* End of the Game */
 	/*******************/
+<<<<<<< HEAD
 	listPtr_move2end ();
 	listPtr_readData(&end);
 	mvwprintw(gWGame, end.line, end.col, " ");
 	listPtr_removeElt ();
 	
+=======
+
+>>>>>>> 473b0723b6e084a512c401fa826d9fe8b9b778d7
 	listPtr_appendHead (head);
 	
 	displaySnake(continueGame, currDir);
 	wrefresh(gWGame);
-	
+
 	listPtr_removeList ();
-	
+
 	displayStatsSnake(foodEat, length, foodQtt);
-	
+
 	timeout(-1);
 	if (key != 'q') {
 		do key = getch();
 		while (key != 'q');
 	}
-	
+
 	//endwin();
 	for (i = 0; i < lines; i++)
 		for (j = 0; j < cols; j++)
 			mvprintw (i, j, " ");
-		 
+
 	delwin(gWGame);
 	delwin(gWStats);
-	
+
 	err("*** Fin du Snake ***");
 	return 0;
 }
