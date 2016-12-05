@@ -175,6 +175,10 @@ t_room randomRoom (t_cell map[][COLUMNS], t_room * rooms, int nbRoom, int *nbTot
 
 	if (acc >= maxTour) { //if acc reach maxTour then give up
 		*nbTotal = nbRoom;
+		room.line = 42;
+		room.column = 42;
+		room.height = 42;
+		room.width = 42;
 		return room;
 	}
 
@@ -440,7 +444,8 @@ void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
   */
 void randomFloor (t_cell map[LINES][COLUMNS], int lvl) {
 	err("***Debut Random Floor*****************************************************");
-	int nbRoom = randab (ROOM_NB_MIN + lvl, ROOM_NB_MAX + 1 + lvl), i;
+	int nbRoom = randab (ROOM_NB_MIN + lvl, ROOM_NB_MAX + 1 + lvl), i, j;
+	char msg[100];
 
 	t_room rooms[ROOM_NB_MAX + NB_LVL];
 	initFloor (map);
@@ -458,6 +463,29 @@ void randomFloor (t_cell map[LINES][COLUMNS], int lvl) {
 			gLvl[gLvlId].rooms[i] = rooms[i];
 		}
 		gLvlId++;
+	}
+	err("\ncontenu gLvl");
+	for (i = 0; i < NB_LVL; i++) {
+		sprintf(msg, "lvl %d: \n\t%d pieces", i, gLvl[i].nbRoom);
+		err(msg);
+		for (j = 0; j < gLvl[i].nbRoom; j++) {
+			sprintf(msg, "\t\troom %d", j);
+			err(msg);
+
+			sprintf(msg, "\t\t\t line %d", gLvl[i].rooms[j].line);
+			err(msg);
+
+			sprintf(msg, "\t\t\t column %d", gLvl[i].rooms[j].column);
+			err(msg);
+
+			sprintf(msg, "\t\t\t height %d", gLvl[i].rooms[j].height);
+			err(msg);
+
+			sprintf(msg, "\t\t\t width %d", gLvl[i].rooms[j].width);
+			err(msg);
+
+		}
+
 	}
 	err("***Fin Random Floor*******************************************************");
 }

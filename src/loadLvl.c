@@ -143,7 +143,7 @@ void writeLvlData (t_lvl tabLvl[NB_LVL]) {
 		sprintf (msg, "\técriture du nombre de pieces : %d/%d", i, NB_LVL-1);
 		err(msg);
 		nbRoom = tabLvl[i].nbRoom;
-		fprintf (file, "%d ", nbRoom);
+		fprintf (file, "\n%d\n", nbRoom);
 		for (j = 0; j < nbRoom; j++) {
 			sprintf (msg, "\t\técriture de la piece %d/%d", j, tabLvl[i].nbRoom - 1);
 			err(msg);
@@ -151,9 +151,11 @@ void writeLvlData (t_lvl tabLvl[NB_LVL]) {
 			column = tabLvl[i].rooms[j].column;
 			height = tabLvl[i].rooms[j].height;
 			width = tabLvl[i].rooms[j].width;
-			fprintf (file, "%d %d %d %d ", line, column, height, width);
+			fprintf (file, "%d %d %d %d\n", line, column, height, width);
+			//fprintf (file, "%d %d %d %d\n", 0, 0, 0, 0);
 		}
 	}
+	fclose(file);
 	err ("*** fin write lvl data ***");
 }
 
@@ -187,6 +189,7 @@ int readLvlData (t_lvl tabLvl[NB_LVL]) {
 		}
 
 	}
+	fclose(file);
 	err ("*** fin read lvl data (success) ***");
 	return TRUE; // success
 }

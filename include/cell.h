@@ -89,7 +89,7 @@ typedef struct {
  */
 typedef struct {
 	int nbRoom;                /**< le nombre de pieces qu'il contient*/
-	t_room rooms[ROOM_NB_MAX]; /**< un tableau qui liste les pieces de l'étage*/
+	t_room rooms[ROOM_NB_MAX + NB_LVL]; /**< un tableau qui liste les pieces de l'étage*/
 } t_lvl;
 
 #endif /* end of include guard: CELL_H */
