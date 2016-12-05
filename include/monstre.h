@@ -27,9 +27,9 @@ typedef enum {
 	L1,     /*<! Les L1 qui sont les mins forts ;p*/
 	L2,     /*<! Les L2 de loin les meilleurs */
 	L3,     /*<! Les L3 presque aussi bon que les L2*/
-	MASTER, /*<! Les Master, discret mais peuvent devenir très violent si on les taquine trop*/
-	DOC,    /*<! Les Doctorant, très discret, fuire à vue*/
-	GHOST   /*<! Les Fantome, parfois utile parfois moins, tres dangereux car on ne peu pas les tuer*/
+	MASTER, /*<! Les Masters, discret mais peuvent devenir très violent si on les taquine trop*/
+	DOC,    /*<! Les Doctorants, très discret, fuire à vue*/
+	GHOST   /*<! Les Fantomes, parfois utile parfois moins, tres dangereux car on ne peut pas les tuer*/
 } t_type_monster;
 
 

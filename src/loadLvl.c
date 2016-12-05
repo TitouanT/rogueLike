@@ -35,7 +35,7 @@ void initNameOfFile (int choixDeSauvegarde) {
 	err(NOM_POSITION);
 
 	/*give the name for the lvl data*/
-	sprintf(NOM_POSITION, "%slvlData.txt",DOSSIER_SAUVEGARDE);
+	sprintf(NOM_LVLDATA, "%slvlData.txt",DOSSIER_SAUVEGARDE);
 
 	err("***fin init name of file***\n");
 }

@@ -1,16 +1,22 @@
 #include "monstre.h"
 #include "tools.h"
+#include "lvl.h"
+#include "t_cell.h"
 
 int nbMonster;
 t_monster monsters[NB_MONSTER_MAX];
 
-void initMonster () {
-	int i;
+void createMonster () {
+	int i, nbRoomGame = 0;
+	t_lvl lvlData[NB_LVL];
 	nbMonster = randab(NB_MONSTER_MIN, NB_MONSTER_MAX + 1);
 	monster[0] = {GHOST, "Claude", randab(0, LINES), randab(0, COLUMNS),
 								randab(NB_LVL - 3, NB_LVL), 100, 1, 1, 0, 0, 0};
 	monster[1] = {GHOST, "Chappe", randab(0, LINES), randab(0, COLUMNS),
 								randab(NB_LVL - 3, NB_LVL), 100, 1, 1, 1, 0, 0};
+
+	queryLvlData(lvlData);
+	for (i = 0; i < NB_LVL) nbRoomGame += lvlData[i].nbRoom;
 
 	for (i = 2; i < nbMonster; i++) {
 		// mm c
