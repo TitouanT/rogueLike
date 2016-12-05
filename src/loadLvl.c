@@ -209,6 +209,7 @@ void initGameMap(t_cell map[LINES][COLUMNS], int choix, int choixFichierSauvegar
 
 	if (choix == NEW_GAME) {
 		remove(NOM_POSITION);
+		initStatRoom ();
 		for(i = 0; i < NB_LVL; i++) {
 			randomFloor(map, i);
 			writeLvl(map, i);

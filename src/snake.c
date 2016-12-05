@@ -93,7 +93,7 @@ void displaySnake (int isAlive, int currDir) {
 	listPtr_move2end();
 	listPtr_readData(&pos);
 
-	mvwprintw(gWGame, pos.line, pos.col, "0");//"☣");
+	mvwprintw(gWGame, pos.line, pos.col, "*");//"☣");
 	//if (isAlive) mvwprintw(gWGame, pos.line, pos.col, "☣");
 	listPtr_move2head();
 	listPtr_readData (&pos);

@@ -22,5 +22,7 @@ int queryLvlData (t_lvl tabLvl[NB_LVL]);
 /** en cas de lecture du niveau, met les infos*/
 void setLvlData (t_lvl tabLvl[NB_LVL]);
 
+void initStatRoom (void);
+
 
 #endif /* end of include guard: LVL_H */
