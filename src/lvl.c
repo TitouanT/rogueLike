@@ -301,7 +301,7 @@ void chooseLink (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
   * \param nbRoom nombre de pieces existantes
   * \param iRoom index de la pieces que l'on veut, -1 si indifférent
   * \param line contiendra la ligne choisi
-  * \param colonne contiendra la colonne choisi
+  * \param col contiendra la colonne choisi
   */
 void randomFreePlace (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom, int iRoom, int * line, int * col) {
 	if (!isBetween(iRoom, 0, nbRoom - 1)) iRoom = rand()%nbRoom;
