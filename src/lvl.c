@@ -26,11 +26,13 @@ void initStatRoom () {
 }
 
 void setLvlData (t_lvl tabLvl[NB_LVL]) {
+	err("*** debut set lvl data ***");
 	int i;
 	for (i = 0; i < NB_LVL; i++) {
 		gLvl[i] = tabLvl[i];
 	}
 	gLvlId = NB_LVL;
+	err("*** fin set lvl data ***");
 }
 
 /**
@@ -41,15 +43,18 @@ void setLvlData (t_lvl tabLvl[NB_LVL]) {
   * \return FALSE sinon
   */
 int queryLvlData (t_lvl tabLvl[NB_LVL]) {
+	err("*** debut query lvl data ***");
 	int i;
 	if (gLvlId == NB_LVL) {
 		for (i = 0; i < NB_LVL; i++) {
 			tabLvl[i] = gLvl[i];
 		}
+		err("*** fin query lvl data ***");
 		return TRUE;
 	}
 	else {
 		err ("queryLvlData: impossible d'avoir toutes les informations sur les étage");
+		err("*** fin query lvl data ***");
 		return FALSE;
 	}
 }
@@ -62,6 +67,7 @@ int queryLvlData (t_lvl tabLvl[NB_LVL]) {
   * \param map matrice qui représente le niveau
   */
 void initFloor (t_cell map[LINES][COLUMNS]) {
+	err("*** debut init floor ***");
 	int i, j;
 	for (i = 0; i < LINES; i++) for (j = 0; j < COLUMNS; j++) {
 		map[i][j].type = EMPTY;
@@ -70,6 +76,7 @@ void initFloor (t_cell map[LINES][COLUMNS]) {
 		map[i][j].nbObject = 0;
 
 	}
+	err("*** fin init floor ***");
 }
 
 /**
@@ -385,6 +392,7 @@ void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
   * \param lvl hauteur de l'étage
   */
 void randomFloor (t_cell map[LINES][COLUMNS], int lvl) {
+	err("***Debut Random Floor*****************************************************");
 	int nbRoom = randab (ROOM_NB_MIN + lvl, ROOM_NB_MAX + 1 + lvl), i;
 
 	t_room rooms[ROOM_NB_MAX + NB_LVL];
@@ -404,4 +412,5 @@ void randomFloor (t_cell map[LINES][COLUMNS], int lvl) {
 		}
 		gLvlId++;
 	}
+	err("***Fin Random Floor*******************************************************");
 }

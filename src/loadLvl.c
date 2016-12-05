@@ -107,18 +107,28 @@ void writeLvl ( t_cell map[][COLUMNS], int nbLvl) {
   * \param fileName nom du fichier à écrire
   */
 void writeLvlData (t_lvl tabLvl[NB_LVL]) {
+	err ("*** debut write lvl data ***");
+	char msg[100];
 	FILE * file = fopen (NOM_LVLDATA, "w");
-	int i, j, line, column, height, width;
+	int i, j, line, column, height, width, nbRoom;
+
+
 	for (i = 0; i < NB_LVL; i++) {
-		fprintf (file, "%d ", tabLvl[i].nbRoom);
-		for (j = 0; j < tabLvl[i].nbRoom; j++) {
-			tabLvl[i].rooms[j].line = line;
-			tabLvl[i].rooms[j].column = column;
-			tabLvl[i].rooms[j].height = height;
-			tabLvl[i].rooms[j].width = width;
+		sprintf (msg, "\técriture du nombre de pieces : %d/%d", i, NB_LVL-1);
+		err(msg);
+		nbRoom = tabLvl[i].nbRoom;
+		fprintf (file, "%d ", nbRoom);
+		for (j = 0; j < nbRoom; j++) {
+			sprintf (msg, "\t\técriture de la piece %d/%d", j, tabLvl[i].nbRoom - 1);
+			err(msg);
+			line = tabLvl[i].rooms[j].line;
+			column = tabLvl[i].rooms[j].column;
+			height = tabLvl[i].rooms[j].height;
+			width = tabLvl[i].rooms[j].width;
 			fprintf (file, "%d %d %d %d ", line, column, height, width);
 		}
 	}
+	err ("*** fin write lvl data ***");
 }
 
 /**
@@ -130,8 +140,12 @@ void writeLvlData (t_lvl tabLvl[NB_LVL]) {
   * \return FALSE sinon.
   */
 int readLvlData (t_lvl tabLvl[NB_LVL]) {
+	err ("*** debut read lvl data ***");
 	FILE * file = fopen (NOM_LVLDATA, "r");
-	if (file == NULL) return FALSE; // failure
+	if (file == NULL) {
+		err ("*** fin read lvl data (failure) ***");
+		return FALSE; // failure
+	}
 	int i, j, nbRoom, line, column, height, width;
 	for (i = 0; i < NB_LVL; i++) {
 
@@ -147,6 +161,7 @@ int readLvlData (t_lvl tabLvl[NB_LVL]) {
 		}
 
 	}
+	err ("*** fin read lvl data (success) ***");
 	return TRUE; // success
 }
 
@@ -202,12 +217,14 @@ void readPosition ( t_character *player){
 
 void initGameMap(t_cell map[LINES][COLUMNS], int choix, int choixFichierSauvegarde, t_character *player){
 	/* Initialise les niveaux soit une nouvelle partie soit une sauvegarde */
+	err("*** Debut init Game Map ****");
 	int i;
 	t_lvl lvlData[NB_LVL];
 	initNameOfFile (choixFichierSauvegarde);
 
 
 	if (choix == NEW_GAME) {
+		err("Debut traitement new_game");
 		remove(NOM_POSITION);
 		initStatRoom ();
 		for(i = 0; i < NB_LVL; i++) {
@@ -218,14 +235,18 @@ void initGameMap(t_cell map[LINES][COLUMNS], int choix, int choixFichierSauvegar
 		if (queryLvlData (lvlData)) writeLvlData (lvlData);
 		readLvl(map, 0);
 		move2spawn(map, player, STAIRS_DOWN);
+		err("Fin traitement new_game");
 	}
 	else{
+		err("Debut traitement CONTINUE_GAME");
 		readPosition(player);
 		err( "lecture de l'étage");
 		readLvl(map, player->lvl);
 		readLvlData (lvlData);
 		setLvlData (lvlData);
+		err("Fin traitement CONTINUE_GAME");
 	}
+	err("*** Fin init Game Map ****");
 }
 
 /**

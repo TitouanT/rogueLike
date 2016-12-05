@@ -7,7 +7,8 @@ int nbMonster;
 t_monster monsters[NB_MONSTER_MAX];
 
 void createMonster () {
-	int i, nbRoomGame = 0;
+	int i, nbRoomGame = 0, nbMonsterLvl[NB_LVL];
+	float nbMonsterPerRoom;
 	t_lvl lvlData[NB_LVL];
 	nbMonster = randab(NB_MONSTER_MIN, NB_MONSTER_MAX + 1);
 	monster[0] = {GHOST, "Claude", randab(0, LINES), randab(0, COLUMNS),
@@ -17,6 +18,9 @@ void createMonster () {
 
 	queryLvlData(lvlData);
 	for (i = 0; i < NB_LVL) nbRoomGame += lvlData[i].nbRoom;
+
+	nbMonsterPerRoom = (float) nbMonster / (float) nbRoomGame;
+
 
 	for (i = 2; i < nbMonster; i++) {
 		// mm c

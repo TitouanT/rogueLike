@@ -279,7 +279,7 @@ void abortGame(){
 	* \param player Infos du joueur
 	*/
 void selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *player){
-
+	err ("*** Debut Selection screen ***");
 	int lines, columns;
 	getmaxyx(win,lines,columns);
 
@@ -288,7 +288,7 @@ void selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *playe
 	int key;
 	int quit = FALSE;
 caCEstDuPropre:
-	err("** Affichage de l'écran de sélection de partie **");
+	err(" Affichage de l'écran de sélection de partie ");
 
 	printLineCenter("Choisissez un emplacement de sauvegarde :", columns, 5, win);
 	printLineCenter("(utiliser les flèches)", columns, 6, win);
@@ -326,14 +326,14 @@ caCEstDuPropre:
 		}
 	}
 
-	if(key == '\n' && bFileSaveEmpty (selectedGame) == FALSE ){
-			initGameMap (map, CONTINUE_GAME, selectedGame, player);
+	if(bFileSaveEmpty (selectedGame) == FALSE ){
+		initGameMap (map, CONTINUE_GAME, selectedGame, player);
 	}
-	if(key == '\n' && bFileSaveEmpty (selectedGame) == TRUE ){
-			initGameMap (map, NEW_GAME, selectedGame, player);
+	else {
+		initGameMap (map, NEW_GAME, selectedGame, player);
 	}
 
-	err("** La sélection à été faite **");
+	err ("*** Fin Selection screen ***");
 
 
 
