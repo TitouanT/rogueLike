@@ -152,7 +152,7 @@ int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, 
     case '\n': return (traiterEntree(map, player, win_logs, lineLog));
     case 'o' : traiterPorte (map, player, key, win_logs, lineLog);   break;
     case 'c' : traiterPorte (map, player, key, win_logs, lineLog);   break;
-		case 's' : saveGame(map, player); addLog("Partie sauvegardée", lineLog, win_logs); break;//
+		case 's' : err("****** Sauvegarde en cours ******"); saveGame(map, player); addLog("Partie sauvegardée", lineLog, win_logs); err("****** Partie sauvegardée ******"); break;//
     case 'q' : return FALSE;
     case 'Q' : return !askConfirmationToQuit(win_logs, lineLog);
 

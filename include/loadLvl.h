@@ -1,3 +1,13 @@
+/**
+  * \file
+  * \brief Fonctions de sauvegarde et chargement de niveaux
+  * \author MOTTIER Emeric
+  * \author PELLOIN Valentin
+  * \author TEYSSIER Titouan
+  * \date 05 decembre 2016
+  * \version 3.14159265359
+  */
+
 #ifndef LOADLVL_H
 #define LOADLVL_H
 

@@ -1,6 +1,16 @@
+/**
+  * \file
+  * \brief Fonctions de déplacement du joueur
+  * \author MOTTIER Emeric
+  * \author PELLOIN Valentin
+  * \author TEYSSIER Titouan
+  * \date 05 decembre 2016
+  * \version 2.71828182846
+  */
+
+
 #ifndef MOVES_H
 #define MOVES_H
-
 
 typedef enum {UP, DOWN, LEFT, RIGHT, UP_LEFT, UP_RIGHT, DOWN_LEFT, DOWN_RIGHT} t_dir;
 
