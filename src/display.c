@@ -290,7 +290,7 @@ void selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *playe
 caCEstDuPropre:
 	err("** Affichage de l'écran de sélection de partie **");
 
-	printLineCenter("Choisissez un emplacement de sauvegarde :↑, ↓", columns, 5, win);
+	printLineCenter("Choisissez un emplacement de sauvegarde :", columns, 5, win);
 	printLineCenter("(utiliser les flèches)", columns, 6, win);
 
 
@@ -316,8 +316,8 @@ caCEstDuPropre:
 		switch (key) {
 			case '\n'           : quit = TRUE; break;
 			case 'q'            : err("On a demandé de quitter le jeu"); abortGame();
-			case KEY_RETURN     : quit = TRUE; break;
-			case KEY_RETURN_MAC : quit = TRUE; break;
+			case KEY_RETURN     :
+			case KEY_RETURN_MAC : deleteGame(selectedGame); break;
 
 			case KEY_UP     : /*if(selectedGame >= 2)*/ selectedGame--; break;
 			case KEY_DOWN   : /*if(selectedGame <= 2)*/ selectedGame++; break;
@@ -328,7 +328,8 @@ caCEstDuPropre:
 
 	if(key == '\n' && bFileSaveEmpty (selectedGame) == FALSE ){
 			initGameMap (map, CONTINUE_GAME, selectedGame, player);
-	}else{
+	}
+	if(key == '\n' && bFileSaveEmpty (selectedGame) == TRUE ){
 			initGameMap (map, NEW_GAME, selectedGame, player);
 	}
 

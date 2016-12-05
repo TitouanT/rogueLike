@@ -15,7 +15,7 @@
 t_lvl gLvl[NB_LVL];
 
 /** permet de savoir quel étage est actuellement en cours de génération */
-int gLvlId = NB_LVL;
+int gLvlId = NB_LVL + 1;
 
 /**
   * \brief initialise la gestion des informations sur les étages
@@ -26,73 +26,35 @@ void initStatRoom () {
 }
 
 void setLvlData (t_lvl tabLvl[NB_LVL]) {
-
+	int i;
+	for (i = 0; i < NB_LVL; i++) {
+		gLvl[i] = tabLvl[i];
+	}
+	gLvlId = NB_LVL;
 }
 
 /**
   * \brief donne les informations sur les étages
-  * \fn void queryLvlData (t_lvl tabLvl[NB_LVL])
+  * \fn int queryLvlData (t_lvl tabLvl[NB_LVL])
   * \param tabLvl tableau qui contiendra chaque niveau
+  * \return TRUE si les infos sont présentent
+  * \return FALSE sinon
   */
-void queryLvlData (t_lvl tabLvl[NB_LVL]) {
+int queryLvlData (t_lvl tabLvl[NB_LVL]) {
 	int i;
-	if (gLvlId >= NB_LVL) {
+	if (gLvlId == NB_LVL) {
 		for (i = 0; i < NB_LVL; i++) {
 			tabLvl[i] = gLvl[i];
 		}
+		return TRUE;
 	}
-	else err ("queryLvlData: impossible d'avoir toutes les informations sur les étage");
-}
-
-/**
-  * \brief écrit dans un fichier les données sur les étages
-  * \fn void writeLvlData (t_lvl tabLvl[NB_LVL], char * fileName)
-  * \param tabLvl tableau qui contient chaque niveau
-  * \param fileName nom du fichier à écrire
-  */
-void writeLvlData (t_lvl tabLvl[NB_LVL], char * fileName) {
-	FILE * file = fopen (fileName, "w");
-	int i, j, line, column, height, width;
-	for (i = 0; i < NB_LVL; i++) {
-		fprintf (file, "%d ", tabLvl[i].nbRoom);
-		for (j = 0; j < tabLvl[i].nbRoom; j++) {
-			tabLvl[i].rooms[j].line = line;
-			tabLvl[i].rooms[j].column = column;
-			tabLvl[i].rooms[j].height = height;
-			tabLvl[i].rooms[j].width = width;
-			fprintf (file, "%d %d %d %d ", line, column, height, width);
-		}
+	else {
+		err ("queryLvlData: impossible d'avoir toutes les informations sur les étage");
+		return FALSE;
 	}
 }
 
-/**
-  * \brief lit dans un fichier les données sur les étages
-  * \fn int readLvlData (t_lvl tabLvl[NB_LVL], char * fileName)
-  * \param tabLvl tableau qui contiendra chaque niveau
-  * \param fileName nom du fichier à lire
-  * \return TRUE si la lecture c'est bien passée.
-  * \return FALSE sinon.
-  */
-int readLvlData (t_lvl tabLvl[NB_LVL], char * fileName) {
-	FILE * file = fopen (fileName, "r");
-	if (file == NULL) return FALSE; // failure
-	int i, j, nbRoom, line, column, height, width;
-	for (i = 0; i < NB_LVL; i++) {
 
-		fscanf (file, "%d", &nbRoom);
-		tabLvl[i].nbRoom = nbRoom;
-
-		for (j = 0; j < nbRoom; j++) {
-			fscanf (file, "%d%d%d%d", &line, &column, &height, &width);
-			tabLvl[i].rooms[j].line = line;
-			tabLvl[i].rooms[j].column = column;
-			tabLvl[i].rooms[j].height = height;
-			tabLvl[i].rooms[j].width = width;
-		}
-
-	}
-	return TRUE; // success
-}
 
 /**
   * \brief initialise l'étage a créer

@@ -27,10 +27,10 @@ make install
 
 ## Comment jouer ?
 
-Pour se déplacer, utilisez les flèches de direction. 
-Pour ouvrir une porte rouge, appuyez sur la touche 'o' et signalez la direction de la porte avec les flèches de direction.
-Pour fermer une porte verte, appuyez sur la touche 'f' et signalez la direction de la porte avec les flèches de direction.
-Pour passer à l'étage suivant ou à l'étage précédent, placez vous sur un escalier et appuyez sur la touche "entrée".
+- Pour se déplacer, utilisez les flèches de direction.
+- Pour ouvrir une porte rouge, appuyez sur la touche 'o' et signalez la direction de la porte avec les flèches de direction.
+- Pour fermer une porte verte, appuyez sur la touche 'f' et signalez la direction de la porte avec les flèches de direction.
+- Pour passer à l'étage suivant ou à l'étage précédent, placez vous sur un escalier et appuyez sur la touche "entrée".
 
 ## Autres
 
