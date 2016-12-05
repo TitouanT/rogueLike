@@ -308,25 +308,26 @@ caCEstDuPropre:
 		wrefresh(win);
 
 		key = getch();
-		
+
 		if(konami(key)) goto caCEstDuPropre; // hehe :p
-		
+
 		switch (key) {
 			case '\n'           : quit = TRUE; break;
 			case 'q'            : err("On a demandé de quitter le jeu"); abortGame();
-			case KEY_RETURN     : quit = TRUE; break;
-			case KEY_RETURN_MAC : quit = TRUE; break;
+			case KEY_RETURN     :
+			case KEY_RETURN_MAC : deleteGame(selectedGame); break;
 
 			case KEY_UP     : /*if(selectedGame >= 2)*/ selectedGame--; break;
 			case KEY_DOWN   : /*if(selectedGame <= 2)*/ selectedGame++; break;
-			
+
 			default : break;
 		}
 	}
 
 	if(key == '\n' && bFileSaveEmpty (selectedGame) == FALSE ){
 			initGameMap (map, CONTINUE_GAME, selectedGame, player);
-	}else{
+	}
+	if(key == '\n' && bFileSaveEmpty (selectedGame) == TRUE ){
 			initGameMap (map, NEW_GAME, selectedGame, player);
 	}
 
@@ -434,7 +435,7 @@ void displayFloor(t_cell map[LINES][COLUMNS], t_character player, WINDOW *win) {
 				switch (map[i][j].type) {
 
 					case EMPTY: 	 printCell(GENERAL_COLOR,' ', win); break;
-					
+
 					case CORRIDOR:
 						if (map[i][j].nbObject <= 0 || map[i][j].obj[0].isDiscovered == FALSE)
 							printCell(CORRIDOR_COLOR,'c', win);
