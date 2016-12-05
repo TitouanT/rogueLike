@@ -88,7 +88,7 @@ typedef struct {
  * \brief contient les informations nécessaire à la manipulation d'un étage
  */
 typedef struct {
-	int nbRoom;                /**< le nombre de pieces qu'il contient*/
+	int nbRoom;                         /**< le nombre de pieces qu'il contient*/
 	t_room rooms[ROOM_NB_MAX + NB_LVL]; /**< un tableau qui liste les pieces de l'étage*/
 } t_lvl;
 
