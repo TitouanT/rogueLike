@@ -149,16 +149,18 @@ int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, 
 		case 'n': move_perso(DOWN_RIGHT, map, player, win_logs, lineLog); break;
 
 
-    	case '\n': return (traiterEntree(map, player, win_logs, lineLog));
-    	case 'o' : traiterPorte (map, player, key, win_logs, lineLog);   break;
-    	case 'c' : traiterPorte (map, player, key, win_logs, lineLog);   break;
+    case '\n': return (traiterEntree(map, player, win_logs, lineLog));
+    case 'o' : traiterPorte (map, player, key, win_logs, lineLog);   break;
+    case 'c' : traiterPorte (map, player, key, win_logs, lineLog);   break;
 		case 's' : saveGame(map, player); addLog("Partie sauvegardée", lineLog, win_logs); break;//
-    	case 'q' : return FALSE;
-    	case 'Q' : return !askConfirmationToQuit(win_logs, lineLog);
+    case 'q' : return FALSE;
+    case 'Q' : return !askConfirmationToQuit(win_logs, lineLog);
 
 		case '_' : cheat(win_logs, win_game, map, player); break;
 
 		case 'i' : printInventory(*player, win_logs, lineLog); break;
+		case 'g' : grabItem(player, map, win_logs, lineLog); break;
+		case 'd' : dropItem(player, map, win_logs, lineLog); break;
 
 		default: wrongKey(win_logs, lineLog);
 	}
@@ -167,6 +169,107 @@ int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, 
 
   err("*** fin handleInteraction ***");
   return TRUE;
+
+}
+
+/**
+	* \brief Drop un item par terre
+	* \fn void dropItem(t_character *player, t_cell map[LINES][COLUMNS], WINDOW *win_logs, int *lineLog)
+	* \param player Joueur
+	* \param map Carte où se trouve le joueur
+	* \param win_logs Fenêtre de logs
+	* \param lineLog Ligne d'écriture des logs
+	*/
+void dropItem(t_character *player, t_cell map[LINES][COLUMNS], WINDOW *win_logs, int *lineLog){
+
+	int key;
+	int i;
+
+	printInventory(*player, win_logs, lineLog);
+	addLog("", lineLog, win_logs);
+	addLog("Quel item voulez vous jeter ?", lineLog, win_logs);
+	addLog(" (donnez son numéro)  > ", lineLog, win_logs);
+
+	key = getch();
+	waddch(win_logs, key);
+	i = key - '0';
+
+	wrefresh(win_logs);
+
+	if(isBetween(i, 0, SIZE_INVENTORY-1)){
+
+		if(player->inventory[i] != objNONE){
+			if(map[player->line][player->column].nbObject == 0){
+				map[player->line][player->column].obj[0].type = player->inventory[i];
+				map[player->line][player->column].nbObject = 1;
+				player->inventory[i] = objNONE;
+				addLog("L'objet a bien été posé au sol.", lineLog, win_logs);
+			}
+			else {
+				addLog("Il y a déjà un objet à cet endroit.", lineLog, win_logs);
+			}
+		}
+		else {
+			addLog("Votre inventaire est vide à cet endroit !", lineLog, win_logs);
+		}
+
+
+
+
+
+	}
+	else {
+		addLog("Ce slot n'existe pas !", lineLog, win_logs);
+	}
+}
+
+/**
+	* \brief Récupère l'objet sur lequel le joueur se trouve
+	* \fn void grabItem(t_character *player, t_cell map[LINES][COLUMNS], WINDOW *win_logs, int *lineLog)
+	* \param player Joueur
+	* \param map Carte où se trouve le joueur
+	* \param win_logs Fenêtre de logs
+	* \param lineLog Ligne d'écriture des logs
+	*/
+void grabItem(t_character *player, t_cell map[LINES][COLUMNS], WINDOW *win_logs, int *lineLog){
+
+	int i;
+	err("*** on entre dans la fonction de grab d'un item ***");
+
+//err((char *)map[player->line][player->column].obj[map[player->line][player->column].nbObject].type);
+
+	if(map[player->line][player->column].nbObject > 0){
+
+		err(" > Le joueur se trouve sur une case avec au minimum un objet");
+
+		for(i = 0 ; i < SIZE_INVENTORY && player->inventory[i] != objNONE; i++);
+
+		if(i < SIZE_INVENTORY && player->inventory[i] == objNONE){
+
+			switch (map[player->line][player->column].obj[0].type) {
+				case MED_KIT:
+				case FOOD   :
+				case TRAP   :
+					player->inventory[i] = map[player->line][player->column].obj[0].type;
+					map[player->line][player->column].obj[0].type = objNONE;
+					map[player->line][player->column].nbObject = 0;
+					break;
+				default     : addLog("Vous ne pouvez pas récupérer cet objet !", lineLog, win_logs);
+			}
+
+		}
+		else {
+			addLog("Votre inventaire est plein !", lineLog, win_logs);
+			addLog("  > Lachez des objets avec la touche 'd'", lineLog, win_logs);
+		}
+
+		addLog("", lineLog, win_logs);
+		printInventory(*player, win_logs, lineLog);
+	}
+	else {
+		addLog("Il n'y a aucun item à récupérer !", lineLog, win_logs);
+	}
+
 
 }
 
@@ -291,7 +394,14 @@ int traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW *win, 
 				}
 				else {
 					eatFood(player, map);
-				}
+				} break;
+			case MED_KIT:
+				if(player->hp < MAX_HP || player->isSick){
+					player->hp = min(MAX_HP, player->hp + randab(5, 10));
+					player->isSick = FALSE;
+					map[player->line][player->column].obj[0].type = objNONE;
+					map[player->line][player->column].nbObject = 0;
+				} break;
       default: break ;
 
     }

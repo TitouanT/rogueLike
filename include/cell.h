@@ -34,6 +34,7 @@ typedef enum {
 	STAIRS_UP,   /*!< un escalier vers l'étage supérieur*/
 	STAIRS_DOWN, /*!< un escalier vers l'étage inférieur*/
 	FOOD,        /*!< de la nourriture*/
+	MED_KIT,     /*!< des kits de santé*/
 	TRAP         /*!< un piège*/
 } t_typeObject;
 

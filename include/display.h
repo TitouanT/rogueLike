@@ -50,6 +50,8 @@
 /** Paire de couleur du titre */
 #define COLOR_TITLE    11
 
+/** Paire de couleur des kits de santé */
+#define MED_KIT_COLOR  12
 
 
 /** Hauteur de la fenêtre du jeu */

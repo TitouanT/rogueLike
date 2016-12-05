@@ -44,13 +44,16 @@
 /** Nombre d'objets maximal sur une cellule */
 #define OBJ_NB_MAX 20
 
-/** Nombres moyen de nourriture par pièce */
+/** Nombre moyen de nourriture par pièce */
 #define AV_NB_FOOD_ROOM 2
+
+/** Nombre moyen de kits de santé par pièce */
+#define AV_NB_MED_KIT_ROOM 0.5
 
 /** Chance de tomber malade lorsqu'il mange de la nourriture */
 #define CHANCE_SICK 20
 
-/** Nombres moyen de piège par pièce */
+/** Nombre moyen de piège par pièce */
 #define AV_NB_TRAP_ROOM 0.5
 
 /** Nombre d'items maximum dans l'inventaire du joueur */
