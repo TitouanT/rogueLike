@@ -15,7 +15,7 @@
 #define MAX_FOOD 10                 // Maximum food quantity in the game at the same time
 
 // they both take a value in initGame()
-int CAN_CROWL_ON_HIM;               // obvious 
+int CAN_CROWL_ON_HIM;               // obvious
 int CAN_GO_THROUGH_BORDER;          // "
 
 WINDOW *gWGame, *gWStats;
@@ -41,15 +41,19 @@ void initGame () {
 	box(gWGame, ACS_VLINE, ACS_HLINE);
 	box(gWStats, ACS_VLINE, ACS_HLINE);
 
-	mvwprintw(gWGame, 0, 1, " Snake IT! --- <> with ♥ by T2 --- ");
+	if (fileExist("./accentNeeded"))
+		mvwprintw(gWGame, 0, 1, " Snake IT! --- <> with ♥ by T2 --- ");
+	else
+		mvwprintw(gWGame, 0, 1, " Snake IT! --- <> with love by T2 --- ");
+
 	mvwprintw(gWStats, 0, 1, " Stats ");
 
 	wrefresh(gWGame);
 	wrefresh(gWStats);
-	
+
 	CAN_CROWL_ON_HIM      = (rand()%2 == 0) ? TRUE : FALSE;
 	CAN_GO_THROUGH_BORDER = (rand()%2 == 0) ? TRUE : FALSE;
-	
+
 
 
 }
@@ -63,20 +67,32 @@ void displaySnake (int isAlive, int currDir) {
 	listPtr_next ();
 	while (!listPtr_isOut ()) {
 		listPtr_readData (&pos);
-		switch (pos.body) {
-			case HORIZONTAL:   mvwprintw(gWGame, pos.line, pos.col, "═"); break;
-			case VERTICAL:     mvwprintw(gWGame, pos.line, pos.col, "║"); break;
-			case TOP_LEFT:     mvwprintw(gWGame, pos.line, pos.col, "╔"); break;
-			case TOP_RIGHT:    mvwprintw(gWGame, pos.line, pos.col, "╗"); break;
-			case BOTTOM_LEFT:  mvwprintw(gWGame, pos.line, pos.col, "╚"); break;
-			case BOTTOM_RIGHT: mvwprintw(gWGame, pos.line, pos.col, "╝"); break;
+		if (fileExist("./accentNeeded")) {
+			switch (pos.body) {
+				case HORIZONTAL:   mvwprintw(gWGame, pos.line, pos.col, "═"); break;
+				case VERTICAL:     mvwprintw(gWGame, pos.line, pos.col, "║"); break;
+				case TOP_LEFT:     mvwprintw(gWGame, pos.line, pos.col, "╔"); break;
+				case TOP_RIGHT:    mvwprintw(gWGame, pos.line, pos.col, "╗"); break;
+				case BOTTOM_LEFT:  mvwprintw(gWGame, pos.line, pos.col, "╚"); break;
+				case BOTTOM_RIGHT: mvwprintw(gWGame, pos.line, pos.col, "╝"); break;
+			}
+		}
+		else {
+			switch (pos.body) {
+				case HORIZONTAL:   mvwprintw(gWGame, pos.line, pos.col, "-"); break;
+				case VERTICAL:     mvwprintw(gWGame, pos.line, pos.col, "|"); break;
+				case TOP_LEFT:     mvwprintw(gWGame, pos.line, pos.col, "+"); break;
+				case TOP_RIGHT:    mvwprintw(gWGame, pos.line, pos.col, "+"); break;
+				case BOTTOM_LEFT:  mvwprintw(gWGame, pos.line, pos.col, "+"); break;
+				case BOTTOM_RIGHT: mvwprintw(gWGame, pos.line, pos.col, "+"); break;
+			}
 		}
 		listPtr_next();
 	}
 
 	listPtr_move2end();
 	listPtr_readData(&pos);
-	
+
 	mvwprintw(gWGame, pos.line, pos.col, "0");//"☣");
 	//if (isAlive) mvwprintw(gWGame, pos.line, pos.col, "☣");
 	listPtr_move2head();
@@ -94,20 +110,23 @@ void displaySnake (int isAlive, int currDir) {
 
 // display some information about the game
 void displayStatsSnake(int foodEat, int length, int foodQtt) {
+	mvwprintw(gWStats, 1, 1, "                                                              ");
+	wprintw(gWStats,      "                                                                                                           ");
+	wrefresh(gWStats);
 	mvwprintw(gWStats, 1, 1, "nourriture mangée: %d, longueur: %d, nourriture présente: %d, ", foodEat, length, foodQtt);
-	
+
 	if (CAN_CROWL_ON_HIM) wprintw(gWStats, "le serpent peu se manger lui-même");
 	else wprintw(gWStats, "le serpent ne peu pas se manger lui-même");
-	
+
 	wprintw(gWStats, " %s ", (CAN_CROWL_ON_HIM == CAN_GO_THROUGH_BORDER) ? "ET" : "MAIS");
-	
+
 	if (CAN_GO_THROUGH_BORDER) wprintw(gWStats, "il peut aller au travers des murs");
 	else wprintw(gWStats, "il ne peut pas aller au travers des murs");
-	
-	
+
+
 	wprintw(gWStats, " | 'q' pour quitter");
-	
-	
+
+
 	wrefresh(gWStats);
 }
 
@@ -116,7 +135,8 @@ void displayFood(t_pos * foods, int foodQtt) {
 	int i;
 	for (i = 0; i < foodQtt; i++) {
 		wattron(gWGame, COLOR_PAIR(1));
-		mvwprintw(gWGame, foods[i].line, foods[i].col, "♥");//"◉");
+		if (fileExist("./accentNeeded")) mvwprintw(gWGame, foods[i].line, foods[i].col, "♥");//"◉");
+		else mvwprintw(gWGame, foods[i].line, foods[i].col, "#");
 		wattroff(gWGame, COLOR_PAIR(1));
 	}
 
@@ -146,7 +166,7 @@ void randPosOnWall (t_pos * pos, t_dir * currDir) {
 	int wall = rand()%4;
 	int bounce = rand()%2;
 	if (bounce) {
-		
+
 	}
 	if (bounce == 0) {
 		switch (wall) {
@@ -155,24 +175,24 @@ void randPosOnWall (t_pos * pos, t_dir * currDir) {
 				pos -> line = lines - 5;
 				pos -> col = randab(1, cols - 2);
 				break;
-			
+
 			case 1:
 				*currDir = DOWN;
 				pos -> line = 1;
 				pos -> col = randab(1, cols - 2);
 				break;
-			
+
 			case 2:
 				*currDir = RIGHT;
 				pos -> line = randab(1, lines - 5);
 				pos -> col = 1;
 				break;
-			
+
 			case 3:
 				*currDir = LEFT;
 				pos -> line = randab(1, lines - 5);
 				pos -> col = cols - 2;
-				break;				
+				break;
 		}
 	}
 	else {
@@ -182,17 +202,17 @@ void randPosOnWall (t_pos * pos, t_dir * currDir) {
 				*currDir = DOWN;
 				(pos -> line)++;
 				break;
-			
+
 			case DOWN:
 				*currDir = UP;
 				(pos -> line)--;
 				break;
-				
+
 			case RIGHT:
 				*currDir = LEFT;
 				(pos -> col)--;
 				break;
-					
+
 			case LEFT:
 				*currDir = RIGHT;
 				(pos -> col)++;
@@ -240,15 +260,15 @@ int snake(void) {
 			case 'q': // quit
 				continueGame = FALSE;
 				break;
-			
+
 			case ' ':
 				growth += GROWTH;
 				break;
-			
+
 			case 'b':
 				CAN_GO_THROUGH_BORDER = !CAN_GO_THROUGH_BORDER;
 				break;
-				
+
 			case 'h':
 				CAN_CROWL_ON_HIM = !CAN_CROWL_ON_HIM;
 				break;
@@ -314,19 +334,19 @@ int snake(void) {
 			continueGame = FALSE;
 		} else {
 			if (head.line >= lines - 3 - 1 || head.line <= 0 || head.col >= cols - 1 || head.col <= 0) {
-				
+
 				if (CAN_GO_THROUGH_BORDER && CAN_CROWL_ON_HIM) randPosOnWall(&head, &currDir);
 				else {
 					if (head.line >= lines - 3 - 1) head.line = 1;
 					else if (head.line <= 0) head.line = lines - 3 - 2;
-					
+
 					if (head.col >= cols - 1) head.col = 1;
 					else if (head.col <= 0) head.col = cols - 2;
 				}
 			}
-			
-			
-			
+
+
+
 			if (eat(head, foods, foodQtt, &foodEat, &growth) && foodQtt < MAX_FOOD) {
 				randomFood(foods, foodQtt);
 				foodQtt++;
@@ -341,17 +361,17 @@ int snake(void) {
 				growth--;
 				length++;
 			}
-			
-			
+
+
 			if (listPtr_isInList(head) && CAN_CROWL_ON_HIM == FALSE) {
 				continueGame = FALSE;
 			} else {
 				listPtr_appendHead (head);
-				
+
 				displaySnake(continueGame, currDir);
 				displayFood(foods, foodQtt);
 				wrefresh(gWGame);
-				
+
 				displayStatsSnake(foodEat, length, foodQtt);
 			}
 		}
@@ -367,7 +387,7 @@ int snake(void) {
 	listPtr_removeElt ();
 
 	listPtr_appendHead (head);
-	
+
 	displaySnake(continueGame, currDir);
 	wrefresh(gWGame);
 

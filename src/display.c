@@ -288,7 +288,7 @@ void selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *playe
 caCEstDuPropre:
 	err("** Affichage de l'écran de sélection de partie **");
 
-	printLineCenter("Choisissez un emplacement de sauvegarde :↑, ↓", columns, 5, win);
+	printLineCenter("Choisissez un emplacement de sauvegarde :", columns, 5, win);
 	printLineCenter("(utiliser les flèches)", columns, 6, win);
 
 
@@ -308,9 +308,9 @@ caCEstDuPropre:
 		wrefresh(win);
 
 		key = getch();
-		
+
 		if(konami(key)) goto caCEstDuPropre; // hehe :p
-		
+
 		switch (key) {
 			case '\n'           : quit = TRUE; break;
 			case 'q'            : err("On a demandé de quitter le jeu"); abortGame();
@@ -319,7 +319,7 @@ caCEstDuPropre:
 
 			case KEY_UP     : /*if(selectedGame >= 2)*/ selectedGame--; break;
 			case KEY_DOWN   : /*if(selectedGame <= 2)*/ selectedGame++; break;
-			
+
 			default : break;
 		}
 	}
@@ -434,7 +434,7 @@ void displayFloor(t_cell map[LINES][COLUMNS], t_character player, WINDOW *win) {
 				switch (map[i][j].type) {
 
 					case EMPTY: 	 printCell(GENERAL_COLOR,' ', win); break;
-					
+
 					case CORRIDOR:
 						if (map[i][j].nbObject <= 0 || map[i][j].obj[0].isDiscovered == FALSE)
 							printCell(CORRIDOR_COLOR,'c', win);
