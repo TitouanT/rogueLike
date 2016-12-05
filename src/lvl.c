@@ -25,6 +25,10 @@ void initStatRoom () {
 	gLvlId = 0;
 }
 
+void setLvlData (t_lvl tabLvl[NB_LVL]) {
+
+}
+
 /**
   * \brief donne les informations sur les étages
   * \fn void queryLvlData (t_lvl tabLvl[NB_LVL])
@@ -37,6 +41,7 @@ void queryLvlData (t_lvl tabLvl[NB_LVL]) {
 			tabLvl[i] = gLvl[i];
 		}
 	}
+	else err ("queryLvlData: impossible d'avoir toutes les informations sur les étage")
 }
 
 /**
@@ -413,10 +418,11 @@ void randomFloor (t_cell map[LINES][COLUMNS], int lvl) {
 	chooseLink (map, rooms, nbRoom);
 
 	placeObject (map, rooms, nbRoom);
+	
 	if (gLvlId < NB_LVL) {
 		gLvl[gLvlId].nbRoom = nbRoom;
 		for (i = 0; i < nbRoom; i++) {
-			gLvl[i].rooms[i] = rooms[i];
+			gLvl[gLvlId].rooms[i] = rooms[i];
 		}
 		gLvlId++;
 	}
