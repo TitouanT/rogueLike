@@ -41,7 +41,7 @@ void queryLvlData (t_lvl tabLvl[NB_LVL]) {
 			tabLvl[i] = gLvl[i];
 		}
 	}
-	else err ("queryLvlData: impossible d'avoir toutes les informations sur les étage")
+	else err ("queryLvlData: impossible d'avoir toutes les informations sur les étage");
 }
 
 /**
@@ -371,11 +371,11 @@ void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 
 	randomFreePlace (map, rooms, nbRoom, rEnterance, &lineEn, &colEn);
 	randomFreePlace (map, rooms, nbRoom, rExit, &lineEx, &colEx);
-	
+
 	err("placement escalier vers le bas ...");
 	map[lineEn][colEn].obj[map[lineEn][colEn].nbObject].type = STAIRS_DOWN;
 	map[lineEn][colEn].obj[map[lineEn][colEn].nbObject].isDiscovered = DEBUG;
-	
+
 	err("et vers le haut !!");
 	map[lineEx][colEx].obj[map[lineEn][colEn].nbObject].type = STAIRS_UP;
 	map[lineEx][colEx].obj[map[lineEn][colEn].nbObject].isDiscovered = DEBUG;
@@ -424,7 +424,7 @@ void randomFloor (t_cell map[LINES][COLUMNS], int lvl) {
 	chooseLink (map, rooms, nbRoom);
 
 	placeObject (map, rooms, nbRoom);
-	
+
 	if (gLvlId < NB_LVL) {
 		gLvl[gLvlId].nbRoom = nbRoom;
 		for (i = 0; i < nbRoom; i++) {
