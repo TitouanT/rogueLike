@@ -17,7 +17,10 @@
 void randomFloor (t_cell map[LINES][COLUMNS], int lvl);
 
 /** fournit des information sur les niveau générés */
-void queryLvlData (t_lvl tabLvl[NB_LVL]);
+int queryLvlData (t_lvl tabLvl[NB_LVL]);
+
+/** en cas de lecture du niveau, met les infos*/
+void setLvlData (t_lvl tabLvl[NB_LVL]);
 
 
 #endif /* end of include guard: LVL_H */
