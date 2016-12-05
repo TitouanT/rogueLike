@@ -28,9 +28,11 @@ void init_colors(){
 	init_pair(OPENED_DOOR   , COLOR_WHITE, COLOR_GREEN);
 	init_pair(PLAYER_C_COLOR, COLOR_GREEN, COLOR_BLACK);
 
-	init_pair(BAR_GREEN     , COLOR_GREEN,   COLOR_GREEN);
+	init_pair(BAR_GREEN     , COLOR_GREEN, COLOR_GREEN);
 	init_pair(BAR_RED       , COLOR_RED  ,   COLOR_RED);
 	init_pair(COLOR_TITLE   , COLOR_GREEN, COLOR_BLACK);
+	init_pair(MED_KIT_COLOR , COLOR_RED,   COLOR_WHITE);
+
 
 }
 
@@ -308,9 +310,9 @@ caCEstDuPropre:
 		wrefresh(win);
 
 		key = getch();
-		
+
 		if(konami(key)) goto caCEstDuPropre; // hehe :p
-		
+
 		switch (key) {
 			case '\n'           : quit = TRUE; break;
 			case 'q'            : err("On a demandé de quitter le jeu"); abortGame();
@@ -319,7 +321,7 @@ caCEstDuPropre:
 
 			case KEY_UP     : /*if(selectedGame >= 2)*/ selectedGame--; break;
 			case KEY_DOWN   : /*if(selectedGame <= 2)*/ selectedGame++; break;
-			
+
 			default : break;
 		}
 	}
@@ -434,7 +436,7 @@ void displayFloor(t_cell map[LINES][COLUMNS], t_character player, WINDOW *win) {
 				switch (map[i][j].type) {
 
 					case EMPTY: 	 printCell(GENERAL_COLOR,' ', win); break;
-					
+
 					case CORRIDOR:
 						if (map[i][j].nbObject <= 0 || map[i][j].obj[0].isDiscovered == FALSE)
 							printCell(CORRIDOR_COLOR,'c', win);
@@ -472,9 +474,10 @@ void displayFloor(t_cell map[LINES][COLUMNS], t_character player, WINDOW *win) {
 											printCell(OBJECTS_COLOR,'<', win);
 									break;
 									case STAIRS_DOWN: printCell(OBJECTS_COLOR, '>', win); break;
-									case FOOD: printCell(OBJECTS_COLOR, '%', win); break;
-									case TRAP: printCell(OBJECTS_COLOR, '^', win); break;
-									case objNONE: printCell(ROOM_COLOR,' ', win); break;
+									case FOOD       : printCell(OBJECTS_COLOR, '%', win); break;
+									case MED_KIT    : printCell(MED_KIT_COLOR, '%', win); break;
+									case TRAP       : printCell(OBJECTS_COLOR, '^', win); break;
+									case objNONE    : printCell(ROOM_COLOR,' ', win);     break;
 								}
 							}
 						} break;
@@ -631,12 +634,19 @@ void printInventory(t_character player, WINDOW *win, int *lineLog){
 
 	int i;
 	char message[100];
+	char nomItem[100];
 
 	addLog("Voici le contenu de votre inventaire :", lineLog, win);
 	addLog("", lineLog, win);
 
 	for(i = 0 ; i < SIZE_INVENTORY ; i++){
-		sprintf(message, "Item : %i", player.inventory[i]);
+		switch (player.inventory[i]) {
+			case MED_KIT : sprintf(nomItem, "Kit de santé"); break;
+			case FOOD    : sprintf(nomItem, "Nourriture");   break;
+			case TRAP    : sprintf(nomItem, "Piége");        break;
+			default      : sprintf(nomItem, "Vide");
+		}
+		sprintf(message, "Slot n°%i : %s", i, nomItem);
 		addLog(message, lineLog, win);
 	}
 

@@ -384,10 +384,20 @@ void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 	map[lineEx][colEx].nbObject++;
 
 	// Génération de la nourriture aléatoirement sur la carte
-	for (i = 0; i < (int)AV_NB_FOOD_ROOM * nbRoom; i++) {
+	for (i = 0; i < (int)(AV_NB_FOOD_ROOM * nbRoom); i++) {
 		err("placement de nourriture !");
 		randomFreePlace(map, rooms, nbRoom, -1, &lineFood, &colFood);
 		map[lineFood][colFood].obj[map[lineFood][colFood].nbObject].type = FOOD;
+		map[lineFood][colFood].obj[map[lineFood][colFood].nbObject].isDiscovered = DEBUG;
+
+		map[lineFood][colFood].nbObject++;
+	}
+
+	// Génération des kits de santé aléatoirement sur la carte
+	for (i = 0; i < (int)(AV_NB_MED_KIT_ROOM * nbRoom); i++) {
+		err("placement des kits de santé !");
+		randomFreePlace(map, rooms, nbRoom, -1, &lineFood, &colFood);
+		map[lineFood][colFood].obj[map[lineFood][colFood].nbObject].type = MED_KIT;
 		map[lineFood][colFood].obj[map[lineFood][colFood].nbObject].isDiscovered = DEBUG;
 
 		map[lineFood][colFood].nbObject++;
