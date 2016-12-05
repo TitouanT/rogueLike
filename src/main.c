@@ -11,8 +11,8 @@
 #include "global.h"
 
 int main () {
-	remove("err");
-	setlocale(LC_ALL, NULL);
+	remove("err"); // comme il est ouvert en mode ajout a chaque fois on le supprime en début d'execution
+	if (fileExist("./accentNeeded")) setlocale(LC_ALL, "");
 	//setlocale(LC_ALL, "");
 	//printf ("Locale is: %s\n", setlocale(LC_ALL,NULL) );
 	err ("\n***DEBUT DU MAIN***\n");
@@ -20,24 +20,27 @@ int main () {
 	int lineLog = 0;
 	int widthScreen, heightScreen;
 	int continueGame = TRUE;
-
+	err ("main: initialisations");
 	initRandom();
 	t_cell map[LINES][COLUMNS];
-	t_character player = {"valentin", 0, 0, 0, 10, 10, 10, 0, MAX_FOOD, FALSE, FALSE};
+	t_character player = {"root", 0, 0, 0, 10, 10, 10, 0, MAX_FOOD, FALSE, FALSE, {objNONE}};
 
 	init_screen();
 	getmaxyx(stdscr,heightScreen,widthScreen);
-
+	
+	err ("main: Affichage du screen de départ");
 	WINDOW *win_start = newwin(heightScreen, widthScreen, 0, 0);
 	startScreen(win_start);
 
 	deleteWindow(win_start);
 
+	err ("main: Affichage du screen de choix");
 	WINDOW *win_choice = newwin(heightScreen, widthScreen, 0, 0);
 	selectionScreen(win_choice, map, &player);
 
 	deleteWindow(win_choice);
-
+	
+	err ("main: Affichage du screen avec map, logs et stats");
 	/* Initialisation des fenetres */
 	WINDOW *win_game  = createWindow(0, 0, COLS_GAME, LINES_GAME, "RogueLike");
 	WINDOW *win_stats = createWindow(0, LINES_GAME, COLS_STATS, LINES_STATS, "Statistiques");
@@ -46,34 +49,46 @@ int main () {
 	// On affiche les objectifs
 	displayObjectives(&lineLog, win_logs);
 	// On affiche la map et le joueur
-	displayFloor(map, win_game);
+	displayFloor(map, player, win_game);
 	displayPlayer(player, map, win_game, win_logs, &lineLog);
 	displayStats(player, win_stats);
 
 
 	err ("\nmain***ENTREE DANS LA BOUCLE DU JEU***\n");
+
 	/* Ici se déroule tout le jeu */
+
 	while (continueGame && player.hp > 0) {
+
 		err ("\nmain*** debut d'un tour de jeu ***");
 		key = getch();
+
 		if (key == 'N') {
+			err("main: cheat N pour une nouvelle map");
 			randomFloor(map, 6);
-			displayFloor(map, win_game);
+			displayFloor(map, player, win_game);
 			displayPlayer(player, map, win_game, win_logs, &lineLog);
+			err("main: fin du cheat N");
 		}
 
 		clearLog(&lineLog, win_logs);
+		err("main: passe la main a handle interaction");
 		continueGame = handleInteraction(key, map, &player, win_logs, win_game, &lineLog);
-
+		err("main: recuperation apres handle interaction");
 		markDiscoverRoom(map, player);
-
-		displayFloor(map, win_game);
+		
+		err("main: affichage etage, player, stats");
+		displayFloor(map, player, win_game);
 		displayPlayer(player, map, win_game, win_logs, &lineLog);
 		displayStats(player, win_stats);
+		err("main: fin affichage etage, player, stats");
 
 		err ("main*** fin d'un tour de jeu ***\n");
+
 	}
 	err ("\nmain***SORTIE DE LA BOUCLE DU JEU***\n");
+
+
 
 	// ----- UNE FOIS QUE LE JEU EST TERMINE ----- //
 
@@ -89,6 +104,6 @@ int main () {
 
 	endwin(); //Fermeture de la fenetre
 	err ("\n***FIN DU MAIN***\n");
-	return 0;
+	return EXIT_SUCCESS;
 
 }

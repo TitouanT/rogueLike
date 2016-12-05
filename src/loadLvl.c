@@ -76,7 +76,7 @@ void writePosition ( t_character player) {
 	FILE * positionFile;
 	positionFile = fopen (NOM_POSITION, "w");
 	fprintf (positionFile, "%i %i %i %i %i %i %i %i ", (player).line, (player).column, (player).lvl, (player).hp, (player).pw, (player).xp, (player).nbMove, (player).food);
-	fprintf(positionFile, "%i ", (player).isSick);
+	fprintf(positionFile, "%i %i ", (player).isSick, (player).hasFoundObj);
 	fprintf(positionFile, "\n");
 	fclose(positionFile);
 }
@@ -97,6 +97,7 @@ void readPosition ( t_character *player){
 	if (positionFile == NULL) err( "erreur de lecture !");
 
 	fscanf(positionFile, "%i %i %i %i %i %i %i %i ", &(*player).line, &(*player).column, &(*player).lvl, &(*player).hp, &(*player).pw, &(*player).xp, &(*player).nbMove, &(*player).food);
+	fscanf(positionFile, "%i %i ", &(*player).isSick, &(*player).hasFoundObj);
 
 	fclose(positionFile);
 	err("fin lecture position\n");
@@ -182,8 +183,10 @@ void changeLvl(t_cell map[LINES][COLUMNS], t_character *player, int dir){
 		if (dir > 0) {
 			move2spawn (map, player, STAIRS_DOWN);
 		}
-		else {
-			 move2spawn (map, player, STAIRS_UP);
+		else{
+			if(dir<0){
+				move2spawn (map, player, STAIRS_UP);
+			}
 		}
 	}
 }

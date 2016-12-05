@@ -15,6 +15,8 @@
 #include <stdlib.h>
 #include <ncurses.h> // pour TRUE et FALSE
 
+int fileExist (char * fileName);
+
 void initRandom (void);
 int randab (int a, int b);
 int didItHappen (int chance);
@@ -30,5 +32,8 @@ char up2low (char car);
 char low2up (char car);
 
 void err (char msg[]);
+
+int numberLinesFile(char * file);
+int maxColsFile(char * file);
 
 #endif /* end of include guard: RANDOM_H */

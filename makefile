@@ -4,7 +4,7 @@ FLAGS = -Wall
 # all:
 # 	gcc -Wall -I ./include  src/main.c src/lvl.c src/filePos.c src/loadLvl.c src/display.c src/moves.c -lncurses -o rogueLike
 
-rogueLike: main.o lvl.o filePos.o loadLvl.o display.o moves.o interactions.o tools.o
+rogueLike: main.o lvl.o filePos.o loadLvl.o display.o moves.o interactions.o tools.o snake.o snake_list_ptr.o
 	gcc -o $@ ${FLAGS} $^ ${LIB}
 
 main.o: src/main.c include/global.h                                                      include/cell.h include/character.h include/mapConst.h include/lvl.h include/display.h include/moves.h include/loadLvl.h include/tools.h
@@ -29,6 +29,12 @@ interactions.o: src/interactions.c include/global.h include/tools.h             
 	gcc -c -I ./include $<
 
 tools.o: src/tools.c include/tools.h
+	gcc -c -I ./include $<
+
+snake.o: src/snake.c include/snake_list_ptr.h
+	gcc -c -I ./include $<
+
+snake_list_ptr.o: src/snake_list_ptr.c include/snake_list_ptr.h
 	gcc -c -I ./include $<
 
 # ce qui suit n'est utile que pour garder en mémoire les dépendances des header

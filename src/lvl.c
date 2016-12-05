@@ -360,6 +360,7 @@ void randomFreePlace (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom, in
   * \param nbRoom nombre de pieces existantes
   */
 void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
+	err("*** debut de placement Objet ***");
 	int rEnterance = rand()%nbRoom, rExit, lineEn, colEn, lineEx, colEx;
 	int lineFood, colFood;
 	int lineTrap, colTrap;
@@ -370,9 +371,12 @@ void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 
 	randomFreePlace (map, rooms, nbRoom, rEnterance, &lineEn, &colEn);
 	randomFreePlace (map, rooms, nbRoom, rExit, &lineEx, &colEx);
-
+	
+	err("placement escalier vers le bas ...");
 	map[lineEn][colEn].obj[map[lineEn][colEn].nbObject].type = STAIRS_DOWN;
 	map[lineEn][colEn].obj[map[lineEn][colEn].nbObject].isDiscovered = DEBUG;
+	
+	err("et vers le haut !!");
 	map[lineEx][colEx].obj[map[lineEn][colEn].nbObject].type = STAIRS_UP;
 	map[lineEx][colEx].obj[map[lineEn][colEn].nbObject].isDiscovered = DEBUG;
 
@@ -381,6 +385,7 @@ void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 
 	// Génération de la nourriture aléatoirement sur la carte
 	for (i = 0; i < (int)AV_NB_FOOD_ROOM * nbRoom; i++) {
+		err("placement de nourriture !");
 		randomFreePlace(map, rooms, nbRoom, -1, &lineFood, &colFood);
 		map[lineFood][colFood].obj[map[lineFood][colFood].nbObject].type = FOOD;
 		map[lineFood][colFood].obj[map[lineFood][colFood].nbObject].isDiscovered = DEBUG;
@@ -389,14 +394,15 @@ void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 	}
 
 	// Génération des pièges aléatoirement sur la carte
-	for (i = 0; i < AV_NB_TRAP_ROOM * nbRoom; i++) {
+	for (i = 0; i < (int)(AV_NB_TRAP_ROOM * nbRoom); i++) {
+		err("placement d'un piege !");
 		randomFreePlace(map, rooms, nbRoom, -1, &lineTrap, &colTrap);
 		map[lineTrap][colTrap].obj[map[lineTrap][colTrap].nbObject].type = TRAP;
 		map[lineTrap][colTrap].obj[map[lineTrap][colTrap].nbObject].isDiscovered = DEBUG;
 		map[lineTrap][colTrap].nbObject++;
 	}
 
-
+	err("*** fin de placement Objet ***");
 }
 
 

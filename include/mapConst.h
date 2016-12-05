@@ -13,7 +13,7 @@
 #include <ncurses.h> // a cause du TRUE
 
 /** Si mit à TRUE, les étages sont entièrements découverts par défaut */
-#define DEBUG FALSE
+#define DEBUG TRUE
 
 #define PRINT_ERROR TRUE
 
@@ -52,5 +52,8 @@
 
 /** Nombres moyen de piège par pièce */
 #define AV_NB_TRAP_ROOM 0.5
+
+/** Nombre d'items maximum dans l'inventaire du joueur */
+#define SIZE_INVENTORY 5
 
 #endif

@@ -68,31 +68,19 @@ void init_screen(){
 }
 
 /**
-	* \brief Compte le nombre de lignes d'un fichier
-	*	\fn int numberLinesFile(char * file)
-	* \param file Fichier à ouvrir pour compter les lignes
-	* \return Le nombre de ligne du fichier, 0 si l'ouverture n'a pas marché.
-	*/
-int numberLinesFile(char * file){
+* \brief Affichage une ligne centrée horizontalement
+*	\fn void printLineCenter(char *msg, int widthScreen, int line, WINDOW *win)
+* \param msg Message à afficher
+* \param widthScreen Largeur de l'écran
+* \param line Ligne sur laquelle on veut écrire le message
+* \param win Fenêtre où afficher le message
+*/
+void printLineCenter(char *msg, int widthScreen, int line, WINDOW *win){
 
-	char tmp;
-	int line = 1;
-	FILE * fic;
+	mvwprintw(win, line, (widthScreen - strlen(msg)) / 2, "%s", msg);
 
-	fic = fopen(file, "r");
-
-	if(fic != NULL){
-		fscanf(fic, "%c", &tmp);
-		while(!feof(fic)){
-			if(tmp == '\n') line++;
-			fscanf(fic, "%c", &tmp);
-		}
-		fclose(fic);
-	}
-	else return 0;
-
-	return line;
 }
+
 
 /**
 	* \brief Afficher le contenu d'un fichier
@@ -120,7 +108,29 @@ void printASCIIText(char * file, int * line, int xShift, WINDOW *win){
 		}
 		fclose(texte);
 	}
+}
 
+/**
+	* \brief Afficher le contenu d'un fichier au centre de l'écran
+	*	\fn void printASCIICenter(char *file, WINDOW *win)
+	* \param file Fichier ASCII à afficher
+	* \param win Fenetre où afficher le message
+	*/
+void printASCIICenter(char *file, char * message, WINDOW * win){
+
+	int lines, columns;
+	int yShift, xShift;
+	getmaxyx(win, lines, columns);
+
+	wattron(win, COLOR_PAIR(COLOR_TITLE));
+
+	yShift = (lines - numberLinesFile(file)) / 2;
+	xShift = (columns - maxColsFile(file)) / 2;
+
+	wmove(win, yShift++, xShift);
+	printASCIIText(file, &yShift, xShift, win);
+
+	printLineCenter(message, columns, yShift+2, win);
 
 }
 
@@ -132,37 +142,15 @@ void printASCIIText(char * file, int * line, int xShift, WINDOW *win){
 void startScreen(WINDOW *win){
 
 	int lines, columns;
-	char * continuer = "Appuyez sur une touche pour jouer.";
+	getmaxyx(win, lines, columns);
 
-	getmaxyx(win,lines,columns);
-
-	int line = (lines - numberLinesFile("include/logo.txt")) / 2;
-	int xShift = (columns - 83) / 2;
-
-	wattron(win, COLOR_PAIR(COLOR_TITLE));
-	wmove(win, line++, xShift);
-	printASCIIText("include/logo.txt", &line, xShift, win);
-
-	mvwprintw(win, line + 1, (columns - strlen(continuer)) / 2, "%s", continuer);
+	printASCIICenter("include/logo.txt", "Appuyez sur une touche pour jouer.", win);
 
 	mvwprintw(win, lines - 1, 0, "Roguelike créé par MOTTIER Emeric - PELLOIN Valentin - TEYSSIER Titouan.");
 	wrefresh(win);
 	getch();
 }
 
-/**
-	* \brief Affichage une ligne centrée horizontalement
-	*	\fn void printLineCenter(char *msg, int widthScreen, int line, WINDOW *win)
-	* \param msg Message à afficher
-	* \param widthScreen Largeur de l'écran
-	* \param line Ligne sur laquelle on veut écrire le message
-	* \param win Fenêtre où afficher le message
-	*/
-void printLineCenter(char *msg, int widthScreen, int line, WINDOW *win){
-
-	mvwprintw(win, line, (widthScreen - strlen(msg)) / 2, "%s", msg);
-
-}
 
 
 /**
@@ -270,6 +258,16 @@ void printSaveInfos(WINDOW *win, int saveNB, int selectedGame){
 
 }
 
+/**
+	* \brief Ferme le jeu
+	*	\fn void abortGame()
+	*/
+void abortGame(){
+	err("**** ON QUITTE LE JEU, LA FONCTION abortGame() A ETE APPELEE ****");
+	endwin(); //Fermeture de la fenetre
+	err("**** good bye ****");
+	exit(EXIT_SUCCESS);
+}
 
 /**
 	* \brief Gère l'affichage de l'écran de sélection de la sauvegarde
@@ -283,18 +281,25 @@ void selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *playe
 	int lines, columns;
 	getmaxyx(win,lines,columns);
 
+	char message[100];
 	int selectedGame = 2;
 	int key;
 	int quit = FALSE;
+caCEstDuPropre:
+	err("** Affichage de l'écran de sélection de partie **");
 
-	printLineCenter("Choisissez un emplacement de sauvegarde :", columns, 5, win);
+	printLineCenter("Choisissez un emplacement de sauvegarde :↑, ↓", columns, 5, win);
+	printLineCenter("(utiliser les flèches)", columns, 6, win);
 
 
-	printLineCenter("Entrée : Valider                ", columns, 40, win);
-	printLineCenter("Del   : Supprimer la sauvegarde", columns, 41, win);
+	printLineCenter("Entrée : Valider               ", columns, 40, win);
+	printLineCenter("Del    : Supprimer la sauvegarde", columns, 41, win);
+	printLineCenter("q      : Sortir du jeu          ", columns, 42, win);
 
 
 	while(quit == FALSE){
+		if (selectedGame == 4) selectedGame = 1;
+		else if (selectedGame == 0) selectedGame = 3;
 
 		printSaveInfos(win, 1, selectedGame);
 		printSaveInfos(win, 2, selectedGame);
@@ -303,15 +308,18 @@ void selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *playe
 		wrefresh(win);
 
 		key = getch();
-
+		
+		if(konami(key)) goto caCEstDuPropre; // hehe :p
+		
 		switch (key) {
 			case '\n'           : quit = TRUE; break;
+			case 'q'            : err("On a demandé de quitter le jeu"); abortGame();
 			case KEY_RETURN     : quit = TRUE; break;
 			case KEY_RETURN_MAC : quit = TRUE; break;
 
-			case KEY_UP     : if(selectedGame >= 2) selectedGame--; break;
-			case KEY_DOWN   : if(selectedGame <= 2) selectedGame++; break;
-
+			case KEY_UP     : /*if(selectedGame >= 2)*/ selectedGame--; break;
+			case KEY_DOWN   : /*if(selectedGame <= 2)*/ selectedGame++; break;
+			
 			default : break;
 		}
 	}
@@ -321,6 +329,10 @@ void selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *playe
 	}else{
 			initGameMap (map, NEW_GAME, selectedGame, player);
 	}
+
+	err("** La sélection à été faite **");
+
+
 
 }
 
@@ -389,14 +401,6 @@ void deleteWindow(WINDOW *window){
 
 
 /**
-	* \brief Déplace le curseur en dessous du jeu
-	*	\fn void gotoEndGame()
-	*/
-void gotoEndGame(){
-	move(LINES_STATS + LINES_GAME, 0); //On déplace le curseur à la fin
-}
-
-/**
 	* \brief Affiche le contenu d'une cellule
 	*	\fn void printCell(int pair, char cell, WINDOW *win)
 	* \param pair Paire à choisir pour la couleur
@@ -414,11 +418,12 @@ void printCell(int pair, char cell, WINDOW *win){
 
 /**
 	* \brief Affiche l'étage de la map donnée en paramètre
-	*	\fn void displayFloor(t_cell map[LINES][COLUMNS], WINDOW *win)
+	*	\fn void displayFloor(t_cell map[LINES][COLUMNS], t_character player, WINDOW *win)
 	* \param map Carte à afficher
+	* \param player Joueur
 	* \param win Fenêtre où afficher la carte
 	*/
-void displayFloor(t_cell map[LINES][COLUMNS], WINDOW *win) {
+void displayFloor(t_cell map[LINES][COLUMNS], t_character player, WINDOW *win) {
 
 	int i, j;
 
@@ -429,6 +434,21 @@ void displayFloor(t_cell map[LINES][COLUMNS], WINDOW *win) {
 				switch (map[i][j].type) {
 
 					case EMPTY: 	 printCell(GENERAL_COLOR,' ', win); break;
+					
+					case CORRIDOR:
+						if (map[i][j].nbObject <= 0 || map[i][j].obj[0].isDiscovered == FALSE)
+							printCell(CORRIDOR_COLOR,'c', win);
+						else {
+							switch (map[i][j].obj[0].type) {
+								case STAIRS_UP: printCell(OBJECTS_COLOR,'<', win); break;
+								case STAIRS_DOWN: printCell(OBJECTS_COLOR, '>', win); break;
+								case FOOD: printCell(OBJECTS_COLOR, '%', win); break;
+								case TRAP: printCell(OBJECTS_COLOR, '^', win); break;
+								case objNONE: printCell(CORRIDOR_COLOR,' ', win); break;
+								default: break;
+							}
+						}
+						break;
 
 					case DOORWAY:
 						switch (map[i][j].state) {
@@ -443,7 +463,14 @@ void displayFloor(t_cell map[LINES][COLUMNS], WINDOW *win) {
 						else {
 							if(map[i][j].obj[0].isDiscovered){
 								switch (map[i][j].obj[0].type) {
-									case STAIRS_UP: printCell(OBJECTS_COLOR,'<', win); break;
+									case STAIRS_UP:
+										if(player.lvl >= NB_LVL -1){
+											if(player.hasFoundObj) printCell(ROOM_COLOR,' ', win);
+											else                   printCell(OBJECTS_COLOR,'O', win);
+										}
+										else
+											printCell(OBJECTS_COLOR,'<', win);
+									break;
 									case STAIRS_DOWN: printCell(OBJECTS_COLOR, '>', win); break;
 									case FOOD: printCell(OBJECTS_COLOR, '%', win); break;
 									case TRAP: printCell(OBJECTS_COLOR, '^', win); break;
@@ -453,17 +480,6 @@ void displayFloor(t_cell map[LINES][COLUMNS], WINDOW *win) {
 						} break;
 
 
-					case CORRIDOR:
-						if (map[i][j].nbObject == 0) printCell(CORRIDOR_COLOR,'c', win);
-						else {
-							switch (map[i][j].obj[0].type) {
-								case STAIRS_UP: printCell(OBJECTS_COLOR,'<', win); break;
-								case STAIRS_DOWN: printCell(OBJECTS_COLOR, '>', win); break;
-								case objNONE: printCell(CORRIDOR_COLOR,' ', win); break;
-								default: break;
-							}
-						}
-						break;
 					case WALL: 		 printCell(WALL_COLOR,'c', win); break;
 				}
 			}
@@ -472,7 +488,7 @@ void displayFloor(t_cell map[LINES][COLUMNS], WINDOW *win) {
 
 	}
 	wrefresh(win);
-	gotoEndGame();
+
 }
 
 /**
@@ -533,7 +549,7 @@ void addLog(char * message, int * line, WINDOW *win){
 	// Si on a plus de place pour clear la zone de logs
 	if(*line >= LINES_LOGS - 3) clearLog(line, win);
 	else (*line)++;
-	gotoEndGame();
+
 }
 
 
@@ -560,7 +576,14 @@ void displayPlayer(t_character player, t_cell mat[LINES][COLUMNS], WINDOW *win, 
 	if(mat[player.line][player.column].nbObject != 0){
 
 		switch (mat[player.line][player.column].obj[0].type) {
-			case STAIRS_UP: addLog("Vous pouvez monter les escaliers avec :           > Entrée", line, logs); break;
+			case STAIRS_UP:
+				if(player.lvl < NB_LVL -1){
+					addLog("Vous pouvez monter les escaliers avec :           > Entrée", line, logs);
+				}
+				else if(!player.hasFoundObj){
+					addLog("Recuperez l'objet avec :                          > Entrée", line, logs);
+				}
+				break;
 			case STAIRS_DOWN: addLog("Vous pouvez déscendre les éscaliers avec :      > Entrée", line, logs); break;
 			default: break;
 		}
@@ -598,6 +621,31 @@ void printBar(int value, int max, WINDOW * win){
 }
 
 /**
+	* \brief Affiche l'inventaire du joueur
+	*	\fn void printInventory(t_character player, WINDOW *win)
+	* \param player Joueur à afficher son inventaire
+	* \param win Fenêtre où afficher son inventaire
+	* \param lineLog Ligne de logs
+	*/
+void printInventory(t_character player, WINDOW *win, int *lineLog){
+
+	int i;
+	char message[100];
+
+	addLog("Voici le contenu de votre inventaire :", lineLog, win);
+	addLog("", lineLog, win);
+
+	for(i = 0 ; i < SIZE_INVENTORY ; i++){
+		sprintf(message, "Item : %i", player.inventory[i]);
+		addLog(message, lineLog, win);
+	}
+
+	addLog("", lineLog, win);
+
+
+}
+
+/**
 	* \brief Affiche les statistiques du joueur
 	*	\fn void displayStats(t_character player, WINDOW *win)
 	* \param player Joueur à afficher ses statistiques
@@ -606,7 +654,6 @@ void printBar(int value, int max, WINDOW * win){
 void displayStats(t_character player, WINDOW *win){
 
 	clearArea(win, 1, 1, COLS_STATS - 1, LINES_STATS - 1);
-
 
 	wmove(win, 1, 1);
 	wrefresh(win);
@@ -623,12 +670,17 @@ void displayStats(t_character player, WINDOW *win){
 	mvwprintw(win, 2, 30, "Déplacements : %i", player.nbMove);
 	mvwprintw(win, 3, 30, "Joueur       : %s", player.name);
 
+	wattron(win, COLOR_PAIR(GENERAL_COLOR));
+	wmove(win, 4, 30);
 	// Si le joueur est malade
 	if(player.isSick){
-		wattron(win, COLOR_PAIR(GENERAL_COLOR));
-		mvwprintw(win, 4, 30, "Empoisonné");
-		wattroff(win, COLOR_PAIR(GENERAL_COLOR));
+		wprintw(win, "Empoisonné");
 	}
+	if(player.hasFoundObj){
+		if(player.isSick) wprintw(win, " | ");
+		wprintw(win, "Objet trouvé");
+	}
+	wattroff(win, COLOR_PAIR(GENERAL_COLOR));
 
 	wrefresh(win);
 
@@ -650,14 +702,10 @@ void displayEnd(t_character player, WINDOW *win){
 
 
 	if(player.hp <= 0){
-		yShift = (lines - numberLinesFile("include/game_over.txt")) / 2;
-		xShift = (columns - 83) / 2;
-
-		wmove(win, yShift++, xShift);
-		printASCIIText("include/game_over.txt", &yShift, xShift, win);
-
-		printLineCenter("Appuyez sur q pour quitter.", columns, yShift+2, win);
-
+		printASCIICenter("include/game_over.txt", "Appuyez sur q pour quitter.", win);
+	}
+	else if(player.hasFoundObj == TRUE){
+		printASCIICenter("include/well_done.txt", "Appuyez sur q pour quitter.", win);
 	}
 
 	wrefresh(win);

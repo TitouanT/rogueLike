@@ -23,7 +23,7 @@ typedef struct {char * msg;} t_msg;
 
 
 void traiterPorte(t_cell map[LINES][COLUMNS],  t_character *player, int key, WINDOW * win, int *lineLog);
-void traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW * win, int *lineLog);
+int traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW * win, int *lineLog);
 int askConfirmationToQuit(WINDOW * win, int *lineLog);
 
 
@@ -136,37 +136,36 @@ void eatFood(t_character *player, t_cell map[LINES][COLUMNS]){
 	*/
 int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, WINDOW * win_logs, WINDOW * win_game, int *lineLog){
 
+	err("*** debut handleInteraction ***");
+	switch (key) {
+		case 'k': case KEY_UP:    move_perso(UP,    map, player, win_logs, lineLog);  break;
+		case 'j': case KEY_DOWN:  move_perso(DOWN,  map, player, win_logs, lineLog);  break;
+		case 'h': case KEY_LEFT:  move_perso(LEFT,  map, player, win_logs, lineLog);  break;
+		case 'l': case KEY_RIGHT: move_perso(RIGHT, map, player, win_logs, lineLog);  break;
 
-  switch (key) {
-		case 'k': case KEY_UP:    move_perso(UP,    map, player);  break;
-		case 'j': case KEY_DOWN:  move_perso(DOWN,  map, player);  break;
-		case 'h': case KEY_LEFT:  move_perso(LEFT,  map, player);  break;
-		case 'l': case KEY_RIGHT: move_perso(RIGHT, map, player);  break;
-
-		case 'y': move_perso(UP_LEFT, map, player);    break;
-		case 'u': move_perso(UP_RIGHT, map, player);   break;
-		case 'b': move_perso(DOWN_LEFT, map, player);  break;
-		case 'n': move_perso(DOWN_RIGHT, map, player); break;
+		case 'y': move_perso(UP_LEFT, map, player, win_logs, lineLog);    break;
+		case 'u': move_perso(UP_RIGHT, map, player, win_logs, lineLog);   break;
+		case 'b': move_perso(DOWN_LEFT, map, player, win_logs, lineLog);  break;
+		case 'n': move_perso(DOWN_RIGHT, map, player, win_logs, lineLog); break;
 
 
-    	case '\n': traiterEntree(map, player,  win_logs,     lineLog); break;
-    	case 'o' : traiterPorte (map, player, key, win_logs, lineLog); break;
-    	case 'c' : traiterPorte (map, player, key, win_logs, lineLog); break;
-			case 's' : saveGame(map, player); addLog("Partie Sauvegardée", lineLog, win_logs); break;//
+    	case '\n': return (traiterEntree(map, player, win_logs, lineLog));
+    	case 'o' : traiterPorte (map, player, key, win_logs, lineLog);   break;
+    	case 'c' : traiterPorte (map, player, key, win_logs, lineLog);   break;
+		case 's' : saveGame(map, player); addLog("Partie sauvegardée", lineLog, win_logs); break;//
     	case 'q' : return FALSE;
     	case 'Q' : return !askConfirmationToQuit(win_logs, lineLog);
 
-			case '_' : cheat(win_logs, win_game, map, player); break;
+		case '_' : cheat(win_logs, win_game, map, player); break;
 
-
-		//case 'n' : randomFloor(map, 5); move2spawn(map, player, STAIRS_DOWN); break; // a mettre dans cheat
-		//case 'N' : randomFloor(map, 5); move2spawn(map, player, STAIRS_UP); break; // a mettre dans cheat
+		case 'i' : printInventory(*player, win_logs, lineLog); break;
 
 		default: wrongKey(win_logs, lineLog);
 	}
 
   markDiscover(map, *player);
 
+  err("*** fin handleInteraction ***");
   return TRUE;
 
 }
@@ -206,14 +205,19 @@ void traiterPorte(t_cell map[LINES][COLUMNS], t_character *player, int key, WIND
   direction = getch();
 
   switch (direction) {
+
 		case 'k':
     case KEY_UP    : (doorPos.line)--;   break;
+
 		case 'j':
     case KEY_DOWN  : (doorPos.line)++;   break;
+
 		case 'h':
     case KEY_LEFT  : (doorPos.column)--; break;
+
 		case 'l':
     case KEY_RIGHT : (doorPos.column)++; break;
+
 		default: wrongKey(win, lineLog);
   }
 
@@ -246,13 +250,15 @@ void traiterPorte(t_cell map[LINES][COLUMNS], t_character *player, int key, WIND
 
 /**
 	* \brief Traite l'appui sur la touche entrée
-	*	\fn void traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW *win, int *lineLog)
+	*	\fn int traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW *win, int *lineLog)
 	* \param map Carte où se trouve le joueur
 	* \param player Joueur sur la carte
 	* \param win Fenêtre de logs
 	* \param lineLog Ligne où afficher les logs
+	* \return FALSE si le joueur souhaite sortir du chateau
+	* \return TRUE sinon
 	*/
-void traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW *win, int *lineLog){
+int traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW *win, int *lineLog){
 
 
   if(map[player->line][player->column].nbObject > 0){
@@ -264,7 +270,7 @@ void traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW *win,
           changeLvl(map,player,1);
         }
         else {
-          addLog("Vous êtes déjà au niveau le plus haut !", lineLog, win);
+          player->hasFoundObj = TRUE;
         }
       break;
 
@@ -273,7 +279,10 @@ void traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW *win,
           changeLvl(map,player, -1);
 				}
         else {
-          addLog("Vous êtes déjà en bas !", lineLog, win);
+					if(player->hasFoundObj == FALSE) {
+						addLog("Vous ne pouvez pas sortir du chateau sans avoir trouvé l'objet !", lineLog, win);
+					}
+					else return FALSE;
         }
         break;
 			case FOOD:
@@ -291,6 +300,7 @@ void traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW *win,
     addLog("Commande invalide.", lineLog, win);
   }
 
+	return TRUE;
 }
 
 
@@ -332,6 +342,12 @@ int askConfirmationToQuit(WINDOW * win, int *lineLog) {
 }
 
 
+/**
+	* \brief Evanouissement du joueur
+	* Selectionne un endroit aléatoire de la carte, et le dé-mémorise
+	*	\fn void passOut(t_cell map[LINES][COLUMNS])
+	* \param map Carte
+	*/
 void passOut(t_cell map[LINES][COLUMNS]){
 
 	int line, column, height, width, maxHeight, maxWidth;
@@ -357,6 +373,14 @@ void passOut(t_cell map[LINES][COLUMNS]){
 }
 
 
+/**
+	* \brief Demande à l'utilisateur de saisir un code de triche
+	*	\fn void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_character *player)
+	* \param win_logs Fenêtre de logs
+	* \param win_game Fenêtre de jeu
+	* \param map Carte
+	* \param player Joueur
+	*/
 void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_character *player){
 
 	char cheatSTR[COLS_LOGS];
@@ -444,4 +468,15 @@ void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_cha
 	}
 
 
+}
+
+void fallTrap(t_cell map[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, int *lineLog, t_dir direction){
+	int trapType=randab(0, 3);
+	int lostLvl, lostHp, glisser;
+
+	switch(trapType){
+		case 0 : lostLvl=randab(0,perso->lvl+1)*-1; changeLvl(map, *&perso, lostLvl); addLog("Vous êtes tombé dans un trou", lineLog, win_logs); break;
+		case 1 : lostHp=randab(0,5); (perso->hp)= (perso->hp)-lostHp; addLog("Attention, un L1 vous a jeté une carte, vous vous êtes écorché", lineLog, win_logs); break;
+		case 2 : glisser=randab(2,8); for(int i=0; i<glisser;i++) move_perso(direction, map, perso, win_logs, lineLog); addLog("Regardez où vous mettez vos pieds, la femme de ménage à lustrer le sol", lineLog, win_logs);
+	}
 }
