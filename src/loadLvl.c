@@ -26,17 +26,17 @@ void initNameOfFile (int choixDeSauvegarde) {
 	err(DOSSIER_SAUVEGARDE);
 	/*give the name for level's file*/
 	for (int i = 0; i < NB_LVL; i++) {
-		sprintf(NOM_NIVEAU[i], "%s%i.txt",DOSSIER_SAUVEGARDE, i);
+		sprintf(NOM_NIVEAU[i], "%s%i.txt", DOSSIER_SAUVEGARDE, i);
 		err(NOM_NIVEAU[i]);
 	}
 
 	/*give the name for the position's file*/
-	sprintf(NOM_POSITION, "%sposition.txt",DOSSIER_SAUVEGARDE);
+	sprintf(NOM_POSITION, "%sposition.txt", DOSSIER_SAUVEGARDE);
 	err(NOM_POSITION);
 
 	/*give the name for the lvl data*/
-	sprintf(NOM_LVLDATA, "%slvlData.txt",DOSSIER_SAUVEGARDE);
-
+	sprintf(NOM_LVLDATA, "%slvlData.txt", DOSSIER_SAUVEGARDE);
+	err(NOM_LVLDATA);
 	err("***fin init name of file***\n");
 }
 
@@ -111,6 +111,32 @@ void writeLvlData (t_lvl tabLvl[NB_LVL]) {
 	char msg[100];
 	FILE * file = fopen (NOM_LVLDATA, "w");
 	int i, j, line, column, height, width, nbRoom;
+	sprintf(msg, "ecriture des infos dans : %s", NOM_LVLDATA);
+	err(msg);
+
+	for (i = 0; i < NB_LVL; i++) {
+		sprintf(msg, "lvl %d: \n\t%d pieces", i, tabLvl[i].nbRoom);
+		err(msg);
+		for (j = 0; j < tabLvl[i].nbRoom; j++) {
+			sprintf(msg, "\t\troom %d", j);
+			err(msg);
+
+			sprintf(msg, "\t\t\t line %d", tabLvl[i].rooms[j].line);
+			err(msg);
+
+			sprintf(msg, "\t\t\t column %d", tabLvl[i].rooms[j].column);
+			err(msg);
+
+			sprintf(msg, "\t\t\t height %d", tabLvl[i].rooms[j].height);
+			err(msg);
+
+			sprintf(msg, "\t\t\t width %d", tabLvl[i].rooms[j].width);
+			err(msg);
+
+		}
+
+	}
+
 
 
 	for (i = 0; i < NB_LVL; i++) {
@@ -174,12 +200,18 @@ int readLvlData (t_lvl tabLvl[NB_LVL]) {
 
 void writePosition ( t_character player) {
 	/* enregistre les paramètres du joueur dans les dossiers de sauvegardes */
+	err("*** Début write Position ***");
+	char msg[100];
+	sprintf(msg, "ecriture de la position dans : %s", NOM_POSITION);
 	FILE * positionFile;
 	positionFile = fopen (NOM_POSITION, "w");
+	if (positionFile == NULL) err("WTF ??");
+	err(msg);
 	fprintf (positionFile, "%i %i %i %i %i %i %i %i ", (player).line, (player).column, (player).lvl, (player).hp, (player).pw, (player).xp, (player).nbMove, (player).food);
 	fprintf(positionFile, "%i %i ", (player).isSick, (player).hasFoundObj);
 	fprintf(positionFile, "\n");
 	fclose(positionFile);
+	err("*** Fin write Position ***");
 }
 
 /**
@@ -225,7 +257,7 @@ void initGameMap(t_cell map[LINES][COLUMNS], int choix, int choixFichierSauvegar
 
 	if (choix == NEW_GAME) {
 		err("Debut traitement new_game");
-		remove(NOM_POSITION);
+		//remove(NOM_POSITION);
 		initStatRoom ();
 		for(i = 0; i < NB_LVL; i++) {
 			randomFloor(map, i);
@@ -285,11 +317,13 @@ void changeLvl(t_cell map[LINES][COLUMNS], t_character *player, int dir){
 
 void saveGame(t_cell map[LINES][COLUMNS], t_character *player){
 	/* Fonction permettant de sauvegarder la partie à l'instant t */
+	err("*** Début Save Game ***");
 	t_lvl lvlData[NB_LVL];
 	if (queryLvlData (lvlData)) writeLvlData (lvlData);
 
 	writeLvl (map, player->lvl);
 	writePosition (*player);
+	err("*** Fin Save Game ***");
 }
 
 /**
@@ -317,11 +351,12 @@ int bFileSaveEmpty(int choixFichierSauvegarde){
 }
 
 void deleteGame(int choixFichierSauvegarde){
-		char fileName[50];
-		initNameOfFile (choixFichierSauvegarde);
-		remove(NOM_POSITION);
-		for(int i=0; i<NB_LVL;i++){
-			remove(NOM_NIVEAU[i]);
-		}
+	char fileName[50];
+	initNameOfFile (choixFichierSauvegarde);
+	remove(NOM_POSITION);
+	for(int i=0; i<NB_LVL;i++){
+		remove(NOM_NIVEAU[i]);
+	}
+	remove(NOM_LVLDATA);
 
 }

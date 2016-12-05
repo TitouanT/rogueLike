@@ -149,12 +149,12 @@ int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, 
 		case 'n': move_perso(DOWN_RIGHT, map, player, win_logs, lineLog); break;
 
 
-    case '\n': return (traiterEntree(map, player, win_logs, lineLog));
-    case 'o' : traiterPorte (map, player, key, win_logs, lineLog);   break;
-    case 'c' : traiterPorte (map, player, key, win_logs, lineLog);   break;
+		case '\n': return (traiterEntree(map, player, win_logs, lineLog));
+		case 'o' : traiterPorte (map, player, key, win_logs, lineLog);   break;
+		case 'c' : traiterPorte (map, player, key, win_logs, lineLog);   break;
 		case 's' : err("****** Sauvegarde en cours ******"); saveGame(map, player); addLog("Partie sauvegardée", lineLog, win_logs); err("****** Partie sauvegardée ******"); break;//
-    case 'q' : return FALSE;
-    case 'Q' : return !askConfirmationToQuit(win_logs, lineLog);
+		case 'q' : return FALSE;
+		case 'Q' : return !askConfirmationToQuit(win_logs, lineLog);
 
 		case '_' : cheat(win_logs, win_game, map, player); break;
 
@@ -506,7 +506,7 @@ void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_cha
 	getstr(cheatSTR);
 	noecho();
 
-	if(strcmp(cheatSTR, "ToWinICheat") == 0){
+	if(strcmp(cheatSTR, "lumos") == 0){
 		setFloorCheat(map);
 	}
 	else if(strcmp(cheatSTR, "food") == 0){
@@ -557,7 +557,7 @@ void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_cha
 
 		addLog("?             : Affiche cette liste d'aide", &lineLog, win_logs);
 		addLog("help          : Affiche cette liste d'aide", &lineLog, win_logs);
-		addLog("ToWinICheat   : Affiche la map au complet", &lineLog, win_logs);
+		addLog("lumos         : Affiche la map au complet", &lineLog, win_logs);
 		addLog("food          : Met 100% de la nourriture", &lineLog, win_logs);
 		addLog("food++        : Ajoute 1pt de nourriture", &lineLog, win_logs);
 		addLog("food--        : Enlève 1pt de nourriture", &lineLog, win_logs);

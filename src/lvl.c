@@ -27,11 +27,58 @@ void initStatRoom () {
 
 void setLvlData (t_lvl tabLvl[NB_LVL]) {
 	err("*** debut set lvl data ***");
-	int i;
+	int i, j;
+	char msg[100];
 	for (i = 0; i < NB_LVL; i++) {
 		gLvl[i] = tabLvl[i];
 	}
+	err("\ncontenu tabLvl");
 	gLvlId = NB_LVL;
+	for (i = 0; i < NB_LVL; i++) {
+		sprintf(msg, "lvl %d: \n\t%d pieces", i, tabLvl[i].nbRoom);
+		err(msg);
+		for (j = 0; j < tabLvl[i].nbRoom; j++) {
+			sprintf(msg, "\t\troom %d", j);
+			err(msg);
+
+			sprintf(msg, "\t\t\t line %d", tabLvl[i].rooms[j].line);
+			err(msg);
+
+			sprintf(msg, "\t\t\t column %d", tabLvl[i].rooms[j].column);
+			err(msg);
+
+			sprintf(msg, "\t\t\t height %d", tabLvl[i].rooms[j].height);
+			err(msg);
+
+			sprintf(msg, "\t\t\t width %d", tabLvl[i].rooms[j].width);
+			err(msg);
+
+		}
+
+	}
+	err("\ncontenu gLvl");
+	for (i = 0; i < NB_LVL; i++) {
+		sprintf(msg, "lvl %d: \n\t%d pieces", i, gLvl[i].nbRoom);
+		err(msg);
+		for (j = 0; j < gLvl[i].nbRoom; j++) {
+			sprintf(msg, "\t\troom %d", j);
+			err(msg);
+
+			sprintf(msg, "\t\t\t line %d", gLvl[i].rooms[j].line);
+			err(msg);
+
+			sprintf(msg, "\t\t\t column %d", gLvl[i].rooms[j].column);
+			err(msg);
+
+			sprintf(msg, "\t\t\t height %d", gLvl[i].rooms[j].height);
+			err(msg);
+
+			sprintf(msg, "\t\t\t width %d", gLvl[i].rooms[j].width);
+			err(msg);
+
+		}
+
+	}
 	err("*** fin set lvl data ***");
 }
 
