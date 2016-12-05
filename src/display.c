@@ -288,7 +288,7 @@ void selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *playe
 caCEstDuPropre:
 	err("** Affichage de l'écran de sélection de partie **");
 
-	printLineCenter("Choisissez un emplacement de sauvegarde :↑, ↓", columns, 5, win);
+	printLineCenter("Choisissez un emplacement de sauvegarde :", columns, 5, win);
 	printLineCenter("(utiliser les flèches)", columns, 6, win);
 
 
