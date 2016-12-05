@@ -10,5 +10,6 @@ void initGameMap(t_cell map[LINES][COLUMNS], int choix, int nbFichierSauvegarde,
 void changeLvl(t_cell map[LINES][COLUMNS],t_character *player, int dir);
 void saveGame(t_cell map[LINES][COLUMNS], t_character *player);
 int bFileSaveEmpty(int nbFichierSauvegarde);
+void deleteGame(int choixFichierSauvegarde);
 
 #endif

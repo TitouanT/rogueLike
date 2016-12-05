@@ -314,8 +314,8 @@ caCEstDuPropre:
 		switch (key) {
 			case '\n'           : quit = TRUE; break;
 			case 'q'            : err("On a demandé de quitter le jeu"); abortGame();
-			case KEY_RETURN     : quit = TRUE; break;
-			case KEY_RETURN_MAC : quit = TRUE; break;
+			case KEY_RETURN     :
+			case KEY_RETURN_MAC : deleteGame(selectedGame); break;
 
 			case KEY_UP     : /*if(selectedGame >= 2)*/ selectedGame--; break;
 			case KEY_DOWN   : /*if(selectedGame <= 2)*/ selectedGame++; break;
@@ -326,7 +326,8 @@ caCEstDuPropre:
 
 	if(key == '\n' && bFileSaveEmpty (selectedGame) == FALSE ){
 			initGameMap (map, CONTINUE_GAME, selectedGame, player);
-	}else{
+	}
+	if(key == '\n' && bFileSaveEmpty (selectedGame) == TRUE ){
 			initGameMap (map, NEW_GAME, selectedGame, player);
 	}
 

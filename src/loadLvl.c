@@ -293,3 +293,13 @@ int bFileSaveEmpty(int choixFichierSauvegarde){
 	err("***Fin is File Save Empty***\n");
 	return i;
 }
+
+void deleteGame(int choixFichierSauvegarde){
+		char fileName[50];
+		initNameOfFile (choixFichierSauvegarde);
+		remove(NOM_POSITION);
+		for(int i=0; i<NB_LVL;i++){
+			remove(NOM_NIVEAU[i]);
+		}
+
+}
