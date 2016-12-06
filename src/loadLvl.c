@@ -114,29 +114,6 @@ void writeLvlData (t_lvl tabLvl[NB_LVL]) {
 	sprintf(msg, "ecriture des infos dans : %s", NOM_LVLDATA);
 	err(msg);
 
-	for (i = 0; i < NB_LVL; i++) {
-		sprintf(msg, "lvl %d: \n\t%d pieces", i, tabLvl[i].nbRoom);
-		err(msg);
-		for (j = 0; j < tabLvl[i].nbRoom; j++) {
-			sprintf(msg, "\t\troom %d", j);
-			err(msg);
-
-			sprintf(msg, "\t\t\t line %d", tabLvl[i].rooms[j].line);
-			err(msg);
-
-			sprintf(msg, "\t\t\t column %d", tabLvl[i].rooms[j].column);
-			err(msg);
-
-			sprintf(msg, "\t\t\t height %d", tabLvl[i].rooms[j].height);
-			err(msg);
-
-			sprintf(msg, "\t\t\t width %d", tabLvl[i].rooms[j].width);
-			err(msg);
-
-		}
-
-	}
-
 
 
 	for (i = 0; i < NB_LVL; i++) {
@@ -243,14 +220,14 @@ void readPosition ( t_character *player){
 
 /**
 	* \brief Initialise la partie du joueur
-	*	\fn void initGameMap (t_cell map[][COLUMNS], int choix, int choixFichierSauvegarde, t_character *player)
+	*	\fn void initGameMap (t_cell map[][COLUMNS], int choix, int choixFichierSauvegarde, t_character *player, t_monster monsters[NB_MONSTER_MAX], int * nbMonsters)
 	* \param map Carte où se trouve le joueur
 	* \param choix Choix 0 ou 1 (0 nouvelle partie, 1 reprendre partie)
 	* \param choixFichierSauvegarde Choix de la sauvegarde
 	* \param player Joueur
 	*/
 
-void initGameMap(t_cell map[LINES][COLUMNS], int choix, int choixFichierSauvegarde, t_character *player){
+void initGameMap(t_cell map[LINES][COLUMNS], int choix, int choixFichierSauvegarde, t_character *player, t_monster monsters[NB_MONSTER_MAX], int * nbMonsters){
 	/* Initialise les niveaux soit une nouvelle partie soit une sauvegarde */
 	err("*** Debut init Game Map ****");
 	int i;
@@ -270,6 +247,8 @@ void initGameMap(t_cell map[LINES][COLUMNS], int choix, int choixFichierSauvegar
 		if (queryLvlData (lvlData)) writeLvlData (lvlData);
 		readLvl(map, 0);
 		move2spawn(map, player, STAIRS_DOWN);
+		
+		createMonster (monsters, nbMonsters);
 		err("Fin traitement new_game");
 	}
 	else{

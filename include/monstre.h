@@ -12,12 +12,16 @@
 #define MONSTER_H
 
 #include "cell.h"
+//#include "character.h"
 
 /** Nombre maximal de monstre dans une partie */
-#define NB_MONSTER_MAX 50
+#define NB_MONSTER_MAX 100
 
 /** Nombre minimal de monstre dans une partie */
-#define NB_MONSTER_MIN 20
+#define NB_MONSTER_MIN 50
+
+
+
 
 /**
   * \enum t_type_monster
@@ -54,7 +58,8 @@ typedef struct {
 	int data3;           /*<! ...*/
 } t_monster;
 
-
+void createMonster (t_monster monsters[NB_MONSTER_MAX], int * nbMonster);
+//void moveMonster (t_cell map[][COLUMNS], t_monster monsters[NB_MONSTER_MAX], int nbMonster, t_character player);
 
 
 

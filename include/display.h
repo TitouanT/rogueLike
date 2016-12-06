@@ -80,7 +80,7 @@
 void displayObjectives(int *lineLog, WINDOW *win_logs);
 void init_screen();
 void startScreen(WINDOW *win);
-void selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *player);
+void selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *player, t_monster monsters[NB_MONSTER_MAX], int * nbMonsters);
 WINDOW *createWindow(int startX, int startY, int width, int height, char * label);
 void deleteWindow(WINDOW *window);
 void displayFloor(t_cell map[LINES][COLUMNS], t_character player, WINDOW *win);
@@ -95,5 +95,6 @@ void abortGame();
 void printInventory(t_character player, WINDOW *win, int *lineLog);
 
 int konami (int key);
+void displayMonster (WINDOW * win, t_monster monsters[NB_MONSTER_MAX], t_cell map[LINES][COLUMNS], int nbMonsters, int currentLvl);
 
 #endif

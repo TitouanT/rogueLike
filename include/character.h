@@ -10,7 +10,7 @@
 
 #ifndef CHARACTER_H
 #define CHARACTER_H
-
+#include "cell.h"
 /** Nombres de points de vie maximum pour le personnage */
 #define MAX_HP 10
 

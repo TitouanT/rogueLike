@@ -24,6 +24,7 @@
 #include "loadLvl.h"
 #include "tools.h"
 #include "interactions.h"
+#include "monstre.h"
 
 
 #endif

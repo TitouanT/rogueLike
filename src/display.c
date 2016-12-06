@@ -273,12 +273,12 @@ void abortGame(){
 
 /**
 	* \brief Gère l'affichage de l'écran de sélection de la sauvegarde
-	*	\fn void selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *player)
+	*	\fn void selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *player, t_monster monsters[NB_MONSTER_MAX], int * nbMonsters)
 	* \param win Fenêtre où afficher les informations
 	* \param map Carte du joueur
 	* \param player Infos du joueur
 	*/
-void selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *player){
+void selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *player, t_monster monsters[NB_MONSTER_MAX], int * nbMonsters){
 	err ("*** Debut Selection screen ***");
 	int lines, columns;
 	getmaxyx(win,lines,columns);
@@ -327,16 +327,39 @@ caCEstDuPropre:
 	}
 
 	if(bFileSaveEmpty (selectedGame) == FALSE ){
-		initGameMap (map, CONTINUE_GAME, selectedGame, player);
+		initGameMap (map, CONTINUE_GAME, selectedGame, player, monsters, nbMonsters);
 	}
 	else {
-		initGameMap (map, NEW_GAME, selectedGame, player);
+		initGameMap (map, NEW_GAME, selectedGame, player, monsters, nbMonsters);
 	}
 
 	err ("*** Fin Selection screen ***");
 
 
 
+}
+
+void displayMonster (WINDOW * win, t_monster monsters[NB_MONSTER_MAX], t_cell map[LINES][COLUMNS], int nbMonsters, int currentLvl) {
+	int i;
+	for (i = 0; i < nbMonsters; i++) {
+		if (monsters[i].lvl == currentLvl && map[monsters[i].line][monsters[i].col].isDiscovered) {
+			if(map[monsters[i].line][monsters[i].col].type == ROOM){
+				wattron(win, COLOR_PAIR(PLAYER_COLOR));
+			}
+			else wattron(win, COLOR_PAIR(PLAYER_C_COLOR));
+
+			wmove(win, (monsters[i].line)+1, (monsters[i].col)+1);
+			switch (monsters[i].type) {
+				case L1:     wprintw(win, "1"); break;
+				case L2:     wprintw(win, "2"); break;
+				case L3:     wprintw(win, "3"); break;
+				case MASTER: wprintw(win, "M"); break;
+				case DOC:    wprintw(win, "D"); break;
+				case GHOST:  wprintw(win, "G"); break;
+			}
+			wrefresh(win);
+		}
+	}
 }
 
 /**

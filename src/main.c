@@ -20,9 +20,11 @@ int main () {
 	int lineLog = 0;
 	int widthScreen, heightScreen;
 	int continueGame = TRUE;
+	int nbMonsters;
 	err ("main: initialisations");
 	initRandom();
 	t_cell map[LINES][COLUMNS];
+	t_monster monsters[NB_MONSTER_MAX];
 	t_character player = {"root", 0, 0, 0, 10, 10, 10, 0, MAX_FOOD, FALSE, FALSE, {objNONE}};
 
 	init_screen();
@@ -36,7 +38,7 @@ int main () {
 
 	err ("main: Affichage du screen de choix");
 	WINDOW *win_choice = newwin(heightScreen, widthScreen, 0, 0);
-	selectionScreen(win_choice, map, &player);
+	selectionScreen(win_choice, map, &player, monsters, &nbMonsters);
 
 	deleteWindow(win_choice);
 	
@@ -51,7 +53,9 @@ int main () {
 	// On affiche la map et le joueur
 	displayFloor(map, player, win_game);
 	displayPlayer(player, map, win_game, win_logs, &lineLog);
+	displayMonster (win_game, monsters, map, nbMonsters, player.lvl);
 	displayStats(player, win_stats);
+
 
 
 	err ("\nmain***ENTREE DANS LA BOUCLE DU JEU***\n");
@@ -77,9 +81,12 @@ int main () {
 		err("main: recuperation apres handle interaction");
 		markDiscoverRoom(map, player);
 		
+		//moveMonster(map, monsters, nbMonsters, player);
+		
 		err("main: affichage etage, player, stats");
 		displayFloor(map, player, win_game);
 		displayPlayer(player, map, win_game, win_logs, &lineLog);
+		displayMonster (win_game, monsters, map, nbMonsters, player.lvl);
 		displayStats(player, win_stats);
 		err("main: fin affichage etage, player, stats");
 

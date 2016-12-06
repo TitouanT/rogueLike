@@ -4,10 +4,10 @@ FLAGS = -Wall
 # all:
 # 	gcc -Wall -I ./include  src/main.c src/lvl.c src/filePos.c src/loadLvl.c src/display.c src/moves.c -lncurses -o rogueLike
 
-rogueLike: main.o lvl.o filePos.o loadLvl.o display.o moves.o interactions.o tools.o snake.o snake_list_ptr.o
+rogueLike: main.o lvl.o filePos.o loadLvl.o display.o moves.o interactions.o tools.o snake.o snake_list_ptr.o monstre.o
 	gcc -o $@ ${FLAGS} $^ ${LIB}
 
-main.o: src/main.c include/global.h                                                      include/cell.h include/character.h include/mapConst.h include/lvl.h include/display.h include/moves.h include/loadLvl.h include/tools.h
+main.o: src/main.c include/global.h                                                      include/cell.h include/character.h include/mapConst.h include/lvl.h include/display.h include/moves.h include/loadLvl.h include/tools.h include/monstre.h
 	gcc -c -I ./include $<
 
 lvl.o: src/lvl.c include/filePos.h include/cell.h include/filePos.h include/tools.h include/mapConst.h
@@ -29,6 +29,9 @@ interactions.o: src/interactions.c include/global.h include/tools.h             
 	gcc -c -I ./include $<
 
 tools.o: src/tools.c include/tools.h
+	gcc -c -I ./include $<
+	
+monstre.o: src/monstre.c include/monstre.h include/tools.h include/cell.h include/lvl.h 
 	gcc -c -I ./include $<
 
 snake.o: src/snake.c include/snake_list_ptr.h
@@ -80,3 +83,5 @@ clean:
 	rm -rf *.o rogueLike
 	rm -rf partie
 clear: clean
+	
+mrproper: clean createFolders rogueLike
