@@ -8,15 +8,15 @@
 	* \version 1.0
 	*/
 
-#include "cell.h" // OK
-#include "mapConst.h" // OK
+#include <ncurses.h>   // OK
+#include <string.h>    // OK
+#include <stdlib.h>    // OK
 
-#include <ncurses.h> // OK
-#include <string.h>  // OK
-#include <stdlib.h>  // OK
+#include "cell.h"      // OK
+#include "mapConst.h"  // OK
 #include "monstre.h"   // OK
-#include "tools.h" // OK
-#include "loadLvl.h" // OK
+#include "tools.h"     // OK
+#include "loadLvl.h"   // OK
 #include "character.h" // OK
 
 int konami (int key);

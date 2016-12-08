@@ -1,40 +1,37 @@
 LIB = -lncurses
 FLAGS = -Wall
 
-# all:
-# 	gcc -Wall -I ./include  src/main.c src/lvl.c src/filePos.c src/loadLvl.c src/display.c src/moves.c -lncurses -o rogueLike
-
 rogueLike: main.o lvl.o filePos.o loadLvl.o display.o moves.o interactions.o tools.o snake.o snake_list_ptr.o monstre.o
 	gcc -o $@ ${FLAGS} $^ ${LIB}
 
-main.o: src/main.c                                                      include/cell.h include/character.h include/mapConst.h include/lvl.h include/display.h include/moves.h include/loadLvl.h include/tools.h include/monstre.h
+main.o: src/main.c include/display.h include/cell.h include/character.h include/lvl.h include/mapConst.h include/moves.h include/interactions.h include/tools.h include/monstre.h
 	gcc -c -I ./include $<
 
-lvl.o: src/lvl.c include/filePos.h include/cell.h include/filePos.h include/tools.h include/mapConst.h
+lvl.o: src/lvl.c include/filePos.h include/cell.h include/tools.h include/mapConst.h
 	gcc -c -I ./include $<
 
-filePos.o: src/filePos.c include/filePos.h
+filePos.o: src/filePos.c include/cell.h
 	gcc -c -I ./include $<
 
-loadLvl.o: src/loadLvl.c include/global.h                                                 include/cell.h include/character.h include/mapConst.h include/lvl.h include/display.h include/moves.h include/loadLvl.h include/tools.h
+loadLvl.o: src/loadLvl.c include/cell.h include/mapConst.h include/lvl.h include/moves.h include/tools.h include/character.h include/monstre.h
 	gcc -c -I ./include $<
 
-display.o: src/display.c include/global.h include/display.h                               include/cell.h include/character.h include/mapConst.h include/lvl.h include/display.h include/moves.h include/loadLvl.h include/tools.h
+display.o: src/display.c include/cell.h include/mapConst.h include/monstre.h include/loadLvl.h include/tools.h include/character.h 
 	gcc -c -I ./include $<
 
-moves.o: src/moves.c include/global.h include/filePos.h                                   include/cell.h include/character.h include/mapConst.h include/lvl.h include/display.h include/moves.h include/loadLvl.h include/tools.h
+moves.o: src/moves.c include/moves.h include/loadLvl.h include/character.h include/cell.h include/mapConst.h include/display.h include/tools.h
 	gcc -c -I ./include $<
 
-interactions.o: src/interactions.c include/global.h include/tools.h                      include/cell.h include/character.h include/mapConst.h include/lvl.h include/display.h include/moves.h include/loadLvl.h include/tools.h
+interactions.o: src/interactions.c include/cell.h include/character.h include/moves.h include/mapConst.h include/display.h include/loadLvl.h include/tools.h
 	gcc -c -I ./include $<
 
-tools.o: src/tools.c include/tools.h
+tools.o: src/tools.c include/mapConst.h
 	gcc -c -I ./include $<
 
-monstre.o: src/monstre.c include/monstre.h include/tools.h include/cell.h include/lvl.h
+monstre.o: src/monstre.c include/monstre.h include/tools.h include/cell.h include/lvl.h include/mapConst.h
 	gcc -c -I ./include $<
 
-snake.o: src/snake.c include/snake_list_ptr.h
+snake.o: src/snake.c include/snake_list_ptr.h include/tools.h
 	gcc -c -I ./include $<
 
 snake_list_ptr.o: src/snake_list_ptr.c include/snake_list_ptr.h
