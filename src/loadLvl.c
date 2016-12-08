@@ -15,7 +15,7 @@
 #include "lvl.h" // OK
 #include "moves.h" // OK
 #include "tools.h" // OK
-#include "monstre.h" // pour t_monster
+#include "monstre.h" // OK
 #include "character.h" // OK
 
 

@@ -16,7 +16,7 @@
 #include "cell.h"      // OK
 #include "mapConst.h"  // OK
 #include "character.h" // OK
-#include "monstre.h"   // pour l'affichage des monstres
+#include "monstre.h"   // OK
 
 void displayObjectives(int *lineLog, WINDOW *win_logs);
 void init_screen();

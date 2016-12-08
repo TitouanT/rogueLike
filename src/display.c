@@ -14,7 +14,7 @@
 #include <ncurses.h> // pour les fonction d'affichages
 #include <string.h>  // pour strlen
 #include <stdlib.h>  // pour exit
-#include "monstre.h" // pour l'affichage des monstres
+#include "monstre.h"   // OK
 #include "tools.h" // OK
 #include "loadLvl.h" // OK
 #include "character.h" // OK

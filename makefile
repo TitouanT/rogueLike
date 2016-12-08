@@ -7,7 +7,7 @@ FLAGS = -Wall
 rogueLike: main.o lvl.o filePos.o loadLvl.o display.o moves.o interactions.o tools.o snake.o snake_list_ptr.o monstre.o
 	gcc -o $@ ${FLAGS} $^ ${LIB}
 
-main.o: src/main.c include/global.h                                                      include/cell.h include/character.h include/mapConst.h include/lvl.h include/display.h include/moves.h include/loadLvl.h include/tools.h include/monstre.h
+main.o: src/main.c                                                      include/cell.h include/character.h include/mapConst.h include/lvl.h include/display.h include/moves.h include/loadLvl.h include/tools.h include/monstre.h
 	gcc -c -I ./include $<
 
 lvl.o: src/lvl.c include/filePos.h include/cell.h include/filePos.h include/tools.h include/mapConst.h
@@ -39,30 +39,6 @@ snake.o: src/snake.c include/snake_list_ptr.h
 
 snake_list_ptr.o: src/snake_list_ptr.c include/snake_list_ptr.h
 	gcc -c -I ./include $<
-
-# ce qui suit n'est utile que pour garder en mémoire les dépendances des header
-include/cell.h:
-
-include/character.h:
-
-include/display.h: include/cell.h include/character.h include/mapConst.h
-
-include/filePos.h:
-
-include/global.h: include/cell.h include/character.h include/mapConst.h include/lvl.h include/display.h include/moves.h include/loadLvl.h include/tools.h
-
-include/loadLvl.h:
-
-include/lvl.h: include/cell.h include/mapConst.h
-
-include/mapConst.h:
-
-include/moves.h:
-
-include/interactions.h:
-
-include/tools.h:
-
 
 # Compile les tests unitaires
 test: tools.o

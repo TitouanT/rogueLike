@@ -1,4 +1,4 @@
-#include "monstre.h" // pour les structures et les constantes
+#include "monstre.h" // OK
 #include "tools.h" // OK
 #include "lvl.h"     // OK
 #include "cell.h"    // OK
@@ -174,6 +174,6 @@ void readMonster (t_monster monsters[NB_MONSTER_MAX]) {
 
 }
 
-// void moveMonster (t_cell map[][COLUMNS], t_monster monsters[NB_MONSTER_MAX], int nbMonster, t_player player) {
-//
-// }
+void moveMonster (t_cell map[][COLUMNS], t_monster monsters[NB_MONSTER_MAX], int nbMonster, t_character player) {
+
+}

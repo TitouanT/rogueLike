@@ -14,7 +14,7 @@
 #include "cell.h" // OK
 #include "mapConst.h" // OK
 #include "character.h" // OK
-#include "monstre.h"
+#include "monstre.h"   // OK
 
 void initGameMap(t_cell map[LINES][COLUMNS], int choix, int nbFichierSauvegarde, t_character *player, t_monster monsters[NB_MONSTER_MAX], int * nbMonsters);
 void changeLvl(t_cell map[LINES][COLUMNS],t_character *player, int dir);
