@@ -14,7 +14,7 @@
 #include "character.h" // pour le t_character 
 #include "moves.h" // pour t_dir
 #include "display.h" // OK
-#include "loadLvl.h" // pour saveGame
+#include "loadLvl.h" // OK
 #include "tools.h" // pour presque tous les outils
 
 /** Nombre de messages d'erreurs différents */
@@ -25,12 +25,6 @@
 	*	\struct t_msg
 	*/
 typedef struct {char * msg;} t_msg;
-
-
-void traiterPorte(t_cell map[LINES][COLUMNS],  t_character *player, int key, WINDOW * win, int *lineLog);
-int traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW * win, int *lineLog);
-int askConfirmationToQuit(WINDOW * win, int *lineLog);
-
 
 /**
 	* \var error_msg
@@ -75,32 +69,6 @@ t_msg error_msg[NB_ERROR_MESSAGES] = {
 	*/
 void wrongKey(WINDOW * win, int *lineLog) {
 	addLog(error_msg[randab(0, NB_ERROR_MESSAGES)].msg, lineLog, win);
-}
-
-/**
-	* \brief Teste si le joueur peut se déplacer (si il a suffisament de nourriture)
-	* Le joueur a 25% de chance de pouvoir se déplacer même en ayant plus de nourriture
-	*	\fn int canPlayerMove(t_character *player)
-	* \param player Joueur
-	* \return TRUE si le joueur peut se déplacer
-	*/
-int canPlayerMove(t_character *player){
-	if(player->food == 0){
-		return didItHappen(25);
-	}
-	return TRUE;
-}
-
-/**
-	* \brief Augmente la faim du joueur de façon aléatoire
-	* Le joueur a 30% de chance de perdre de la nourriture à chaque mouvement
-	*	\fn void augmenterFaim(t_character *player)
-	* \param player Joueur
-	*/
-void augmenterFaim(t_character *player){
-	if(canPlayerMove(player)){
-		if(player->food > 0 && didItHappen(30)) (player->food)--;
-	}
 }
 
 /**
@@ -322,56 +290,6 @@ void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_cha
 }
 
 /**
-	* \brief Fonction principale d'intéraction avec l'utilisateur
-	* \fn int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, WINDOW * win_logs, WINDOW * win_game, int *lineLog)
-	* \param key Touche que l'utilisateur a appuyé
-	* \param map Carte où se trouve le joueur
-	* \param player Joueur
-	* \param win_logs Fenêtre de logs où afficher le message
-	* \param win_game Fenêtre de jeu
-	* \param lineLog Ligne d'écriture du message
-	* \return FALSE si l'utilisateur à demandé de quitter la partie
-	* \return TRUE sinon
-	*/
-int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, WINDOW * win_logs, WINDOW * win_game, int *lineLog){
-
-	err("*** debut handleInteraction ***");
-	switch (key) {
-		case 'k': case KEY_UP:    move_perso(UP,    map, player, win_logs, lineLog);  break;
-		case 'j': case KEY_DOWN:  move_perso(DOWN,  map, player, win_logs, lineLog);  break;
-		case 'h': case KEY_LEFT:  move_perso(LEFT,  map, player, win_logs, lineLog);  break;
-		case 'l': case KEY_RIGHT: move_perso(RIGHT, map, player, win_logs, lineLog);  break;
-
-		case 'y': move_perso(UP_LEFT, map, player, win_logs, lineLog);    break;
-		case 'u': move_perso(UP_RIGHT, map, player, win_logs, lineLog);   break;
-		case 'b': move_perso(DOWN_LEFT, map, player, win_logs, lineLog);  break;
-		case 'n': move_perso(DOWN_RIGHT, map, player, win_logs, lineLog); break;
-
-
-		case '\n': return (traiterEntree(map, player, win_logs, lineLog));
-		case 'o' : traiterPorte (map, player, key, win_logs, lineLog);   break;
-		case 'c' : traiterPorte (map, player, key, win_logs, lineLog);   break;
-		case 's' : err("****** Sauvegarde en cours ******"); saveGame(map, player); addLog("Partie sauvegardée", lineLog, win_logs); err("****** Partie sauvegardée ******"); break;//
-		case 'q' : return FALSE;
-		case 'Q' : return !askConfirmationToQuit(win_logs, lineLog);
-
-		case '_' : cheat(win_logs, win_game, map, player); break;
-
-		case 'i' : printInventory(*player, win_logs, lineLog); break;
-		case 'g' : grabItem(player, map, win_logs, lineLog); break;
-		case 'd' : dropItem(player, map, win_logs, lineLog); break;
-
-		default: wrongKey(win_logs, lineLog);
-	}
-
-  markDiscover(map, *player);
-
-  err("*** fin handleInteraction ***");
-  return TRUE;
-
-}
-
-/**
 	* \brief Teste si la porte est valide
 	*	\fn int bIsValidDoor(t_cell map[LINES][COLUMNS], t_pos position)
 	* \param map Carte où se trouve le joueur
@@ -545,42 +463,51 @@ int askConfirmationToQuit(WINDOW * win, int *lineLog) {
 }
 
 /**
-	* \brief Evanouissement du joueur
-	* Selectionne un endroit aléatoire de la carte, et le dé-mémorise
-	*	\fn void passOut(t_cell map[LINES][COLUMNS])
-	* \param map Carte
+	* \brief Fonction principale d'intéraction avec l'utilisateur
+	* \fn int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, WINDOW * win_logs, WINDOW * win_game, int *lineLog)
+	* \param key Touche que l'utilisateur a appuyé
+	* \param map Carte où se trouve le joueur
+	* \param player Joueur
+	* \param win_logs Fenêtre de logs où afficher le message
+	* \param win_game Fenêtre de jeu
+	* \param lineLog Ligne d'écriture du message
+	* \return FALSE si l'utilisateur à demandé de quitter la partie
+	* \return TRUE sinon
 	*/
-void passOut(t_cell map[LINES][COLUMNS]){
+int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, WINDOW * win_logs, WINDOW * win_game, int *lineLog){
 
-	int line, column, height, width, maxHeight, maxWidth;
-	int i, j;
+	err("*** debut handleInteraction ***");
+	switch (key) {
+		case 'k': case KEY_UP:    move_perso(UP,    map, player, win_logs, lineLog);  break;
+		case 'j': case KEY_DOWN:  move_perso(DOWN,  map, player, win_logs, lineLog);  break;
+		case 'h': case KEY_LEFT:  move_perso(LEFT,  map, player, win_logs, lineLog);  break;
+		case 'l': case KEY_RIGHT: move_perso(RIGHT, map, player, win_logs, lineLog);  break;
 
-	int aMinLen = 10, aMaxHeight = 15, aMaxWidth = 20;
+		case 'y': move_perso(UP_LEFT, map, player, win_logs, lineLog);    break;
+		case 'u': move_perso(UP_RIGHT, map, player, win_logs, lineLog);   break;
+		case 'b': move_perso(DOWN_LEFT, map, player, win_logs, lineLog);  break;
+		case 'n': move_perso(DOWN_RIGHT, map, player, win_logs, lineLog); break;
 
-	line   = randab(1, LINES - aMinLen -1);
-	column = randab(1, COLUMNS - aMinLen -1);
 
-	maxHeight = min(LINES - line - 1, aMaxHeight);
-	height    = randab(aMinLen, maxHeight +1);
+		case '\n': return (traiterEntree(map, player, win_logs, lineLog));
+		case 'o' : traiterPorte (map, player, key, win_logs, lineLog);   break;
+		case 'c' : traiterPorte (map, player, key, win_logs, lineLog);   break;
+		case 's' : err("****** Sauvegarde en cours ******"); saveGame(map, player); addLog("Partie sauvegardée", lineLog, win_logs); err("****** Partie sauvegardée ******"); break;//
+		case 'q' : return FALSE;
+		case 'Q' : return !askConfirmationToQuit(win_logs, lineLog);
 
-	maxWidth = min(COLUMNS - column - 1, aMaxWidth);
-	width    = randab(aMinLen, maxWidth +1);
+		case '_' : cheat(win_logs, win_game, map, player); break;
 
-	for(i = line ; i < maxHeight + line ; i++){
-		for(j = column ; j < maxWidth + column ; j++){
-			map[i][j].isDiscovered = FALSE;
-		}
+		case 'i' : printInventory(*player, win_logs, lineLog); break;
+		case 'g' : grabItem(player, map, win_logs, lineLog); break;
+		case 'd' : dropItem(player, map, win_logs, lineLog); break;
+
+		default: wrongKey(win_logs, lineLog);
 	}
 
-}
+  markDiscover(map, *player);
 
-void fallTrap(t_cell map[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, int *lineLog, t_dir direction){
-	int trapType=randab(0, 3);
-	int lostLvl, lostHp, glisser;
+  err("*** fin handleInteraction ***");
+  return TRUE;
 
-	switch(trapType){
-		case 0 : lostLvl=randab(0,perso->lvl+1)*-1; changeLvl(map, *&perso, lostLvl); addLog("Vous êtes tombé dans un trou", lineLog, win_logs); break;
-		case 1 : lostHp=randab(0,5); (perso->hp)= (perso->hp)-lostHp; addLog("Attention, un L1 vous a jeté une carte, vous vous êtes écorché", lineLog, win_logs); break;
-		case 2 : glisser=randab(2,8); for(int i=0; i<glisser;i++) move_perso(direction, map, perso, win_logs, lineLog); addLog("Regardez où vous mettez vos pieds, la femme de ménage à lustrer le sol", lineLog, win_logs);
-	}
 }

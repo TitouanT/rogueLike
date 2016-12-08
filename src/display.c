@@ -16,7 +16,7 @@
 #include <stdlib.h>  // pour exit
 #include "monstre.h" // pour l'affichage des monstres
 #include "tools.h" // pour numberLinesFile
-#include "loadLvl.h" // pour bFileSaveEmpty, et constantes
+#include "loadLvl.h" // OK
 
 int konami (int key);
 

@@ -9,6 +9,76 @@
  */
 #include <ncurses.h>
 #include "global.h"
+#include "loadLvl.h" // OK
+#include "display.h"
+
+
+/**
+	* \brief Teste si le joueur peut se déplacer (si il a suffisament de nourriture)
+	* Le joueur a 25% de chance de pouvoir se déplacer même en ayant plus de nourriture
+	*	\fn int canPlayerMove(t_character *player)
+	* \param player Joueur
+	* \return TRUE si le joueur peut se déplacer
+	*/
+int canPlayerMove(t_character *player){
+	if(player->food == 0){
+		return didItHappen(25);
+	}
+	return TRUE;
+}
+
+/**
+	* \brief Augmente la faim du joueur de façon aléatoire
+	* Le joueur a 30% de chance de perdre de la nourriture à chaque mouvement
+	*	\fn void augmenterFaim(t_character *player)
+	* \param player Joueur
+	*/
+void augmenterFaim(t_character *player){
+	if(canPlayerMove(player)){
+		if(player->food > 0 && didItHappen(30)) (player->food)--;
+	}
+}
+
+/**
+	* \brief Evanouissement du joueur
+	* Selectionne un endroit aléatoire de la carte, et le dé-mémorise
+	*	\fn void passOut(t_cell map[LINES][COLUMNS])
+	* \param map Carte
+	*/
+void passOut(t_cell map[LINES][COLUMNS]){
+
+	int line, column, height, width, maxHeight, maxWidth;
+	int i, j;
+
+	int aMinLen = 10, aMaxHeight = 15, aMaxWidth = 20;
+
+	line   = randab(1, LINES - aMinLen -1);
+	column = randab(1, COLUMNS - aMinLen -1);
+
+	maxHeight = min(LINES - line - 1, aMaxHeight);
+	height    = randab(aMinLen, maxHeight +1);
+
+	maxWidth = min(COLUMNS - column - 1, aMaxWidth);
+	width    = randab(aMinLen, maxWidth +1);
+
+	for(i = line ; i < maxHeight + line ; i++){
+		for(j = column ; j < maxWidth + column ; j++){
+			map[i][j].isDiscovered = FALSE;
+		}
+	}
+
+}
+
+void fallTrap(t_cell map[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, int *lineLog, t_dir direction){
+	int trapType=randab(0, 3);
+	int lostLvl, lostHp, glisser;
+
+	switch(trapType){
+		case 0 : lostLvl=randab(0,perso->lvl+1)*-1; changeLvl(map, *&perso, lostLvl); addLog("Vous êtes tombé dans un trou", lineLog, win_logs); break;
+		case 1 : lostHp=randab(0,5); (perso->hp)= (perso->hp)-lostHp; addLog("Attention, un L1 vous a jeté une carte, vous vous êtes écorché", lineLog, win_logs); break;
+		case 2 : glisser=randab(2,8); for(int i=0; i<glisser;i++) move_perso(direction, map, perso, win_logs, lineLog); addLog("Regardez où vous mettez vos pieds, la femme de ménage à lustrer le sol", lineLog, win_logs);
+	}
+}
 
 /* Renvoi les coordonnées de la pièce où le joueur se trouve */
 t_pos startRoom(t_cell map[LINES][COLUMNS], t_character player){
@@ -127,34 +197,34 @@ int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso, 
 	if(!canPlayerMove(perso)) return FALSE;
 
 
-  // On veut regarder si il est possible d'aller en haut
-  if(direction == UP){
-    if(line > 0 && bIsWalkable(mat[line-1][column])){
-      perso->line -= 1;
+	// On veut regarder si il est possible d'aller en haut
+	if(direction == UP){
+		if(line > 0 && bIsWalkable(mat[line-1][column])){
+			perso->line -= 1;
 			success = TRUE;
-    }
-  }
+    	}
+  	}
 
-  if(direction == DOWN){
-    if(line+1 < LINES && bIsWalkable(mat[line+1][column])){
-      perso->line += 1;
+  	if(direction == DOWN){
+    	if(line+1 < LINES && bIsWalkable(mat[line+1][column])){
+      		perso->line += 1;
 			success = TRUE;
-    }
-  }
+    	}
+  	}
 
-  if(direction == LEFT){
-    if(column > 0 && bIsWalkable(mat[line][column-1])){
-      perso->column -= 1;
+	if(direction == LEFT){
+		if(column > 0 && bIsWalkable(mat[line][column-1])){
+			perso->column -= 1;
 			success = TRUE;
-    }
-  }
+		}
+	}
 
-  if(direction == RIGHT){
-    if(column+1 < COLUMNS && bIsWalkable(mat[line][column+1])){
-      perso->column += 1;
+	if(direction == RIGHT){
+		if(column+1 < COLUMNS && bIsWalkable(mat[line][column+1])){
+			perso->column += 1;
 			success = TRUE;
-    }
-  }
+		}
+	}
 
 	if(direction == UP_LEFT){
 		if(line > 0 && column > 0 && bIsWalkable(mat[line - 1][column - 1])){
@@ -165,28 +235,28 @@ int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso, 
 	}
 
 	if(direction == UP_RIGHT){
-    if(line > 0 && column + 1 < COLUMNS  && bIsWalkable(mat[line - 1][column + 1])){
+    	if(line > 0 && column + 1 < COLUMNS  && bIsWalkable(mat[line - 1][column + 1])){
 			perso->column += 1;
 			perso->line   -= 1;
 			success = TRUE;
-    }
-  }
+    	}
+	}
 
 	if(direction == DOWN_LEFT){
-    if(line+1 < LINES && column > 0 && bIsWalkable(mat[line + 1][column - 1])){
+		if(line+1 < LINES && column > 0 && bIsWalkable(mat[line + 1][column - 1])){
 			perso->column -= 1;
 			perso->line   += 1;
 			success = TRUE;
-    }
-  }
+		}
+	}
 
 	if(direction == DOWN_RIGHT){
-    if(line+1 < LINES && column + 1 < COLUMNS  && bIsWalkable(mat[line + 1][column + 1])){
+    	if(line+1 < LINES && column + 1 < COLUMNS  && bIsWalkable(mat[line + 1][column + 1])){
 			perso->column += 1;
 			perso->line   += 1;
 			success = TRUE;
-    }
-  }
+    	}
+	}
 
 	// On effectue certaines actions si le joueur a réussi à se deplacer
 	if(success == TRUE){

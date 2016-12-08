@@ -9,6 +9,7 @@
  */
 #include <locale.h>
 #include "display.h" // OK
+#include "interactions.h" // OK
 #include "global.h"
 
 int main () {
