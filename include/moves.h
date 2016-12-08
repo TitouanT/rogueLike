@@ -12,6 +12,8 @@
 #ifndef MOVES_H
 #define MOVES_H
 
+#include "character.h"
+
 typedef enum {UP, DOWN, LEFT, RIGHT, UP_LEFT, UP_RIGHT, DOWN_LEFT, DOWN_RIGHT} t_dir;
 
 void markDiscoverRoom(t_cell map[LINES][COLUMNS], t_character player);

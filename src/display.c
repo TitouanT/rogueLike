@@ -7,8 +7,6 @@
 	* \date 22 novembre 2016
 	* \version 1.0
 	*/
-#include "display.h" // pour les constantes
-//#include "global.h"  //
 
 #include "cell.h" // pour le type t_cell
 #include "mapConst.h" // pour les constantes
@@ -17,7 +15,53 @@
 #include <string.h>  // pour strlen
 #include <stdlib.h>  // pour exit
 #include "monstre.h" // pour l'affichage des monstres
-#include "interactions.h"
+#include "tools.h" // pour numberLinesFile
+#include "loadLvl.h" // pour bFileSaveEmpty, et constantes
+
+int konami (int key);
+
+/***********************************************/
+/* Definition des constantes pour les couleurs */
+/***********************************************/
+/** Paire de couleur générale */
+#define GENERAL_COLOR   1
+
+/** Paire de couleur des couloirs */
+#define CORRIDOR_COLOR  2
+
+/** Paire de couleur des murs */
+#define WALL_COLOR      3
+
+/** Paire de couleur des pièces */
+#define ROOM_COLOR      4
+
+/** Paire de couleur du joueur */
+#define PLAYER_COLOR    5
+
+/** Paire de couleur des objets */
+#define OBJECTS_COLOR   6
+
+/** Paire de couleur d'une porte ouverte */
+#define OPENED_DOOR     7
+
+/** Paire de couleur du joueur dans un couloir */
+#define PLAYER_C_COLOR  8
+
+/** Paire de couleur de la barre verte */
+#define BAR_GREEN       9
+
+/** Paire de couleur de la barre rouge */
+#define BAR_RED        10
+
+/** Paire de couleur du titre */
+#define COLOR_TITLE    11
+
+/** Paire de couleur des kits de santé */
+#define MED_KIT_COLOR  12
+
+/** Touche retour en arrière (celle de ncurses ne fonctionne pas) */
+#define KEY_RETURN 263
+#define KEY_RETURN_MAC 127
 
 
 /**
@@ -43,6 +87,17 @@ void init_colors(){
 	init_pair(MED_KIT_COLOR , COLOR_RED,   COLOR_WHITE);
 
 
+}
+
+/**
+	* \brief Ferme le jeu
+	*	\fn void abortGame()
+	*/
+void abortGame(){
+	err("**** ON QUITTE LE JEU, LA FONCTION abortGame() A ETE APPELEE ****");
+	endwin(); //Fermeture de la fenetre
+	err("**** good bye ****");
+	exit(EXIT_SUCCESS);
 }
 
 /**
@@ -90,7 +145,6 @@ void printLineCenter(char *msg, int widthScreen, int line, WINDOW *win){
 	mvwprintw(win, line, (widthScreen - strlen(msg)) / 2, "%s", msg);
 
 }
-
 
 /**
 	* \brief Afficher le contenu d'un fichier
@@ -161,8 +215,6 @@ void startScreen(WINDOW *win){
 	getch();
 }
 
-
-
 /**
 * \brief Efface le contenu d'un zone d'une fenêtre
 *	\fn void clearArea(WINDOW *win, int startX, int startY, int width, int height)
@@ -184,7 +236,6 @@ void clearArea(WINDOW *win, int startX, int startY, int width, int height){
 	wrefresh(win);
 
 }
-
 
 /**
 	* \brief Affichage une boîte de taille et de coordonnées données
@@ -266,17 +317,6 @@ void printSaveInfos(WINDOW *win, int saveNB, int selectedGame){
 	wattroff(win, COLOR_PAIR(GENERAL_COLOR));
 
 
-}
-
-/**
-	* \brief Ferme le jeu
-	*	\fn void abortGame()
-	*/
-void abortGame(){
-	err("**** ON QUITTE LE JEU, LA FONCTION abortGame() A ETE APPELEE ****");
-	endwin(); //Fermeture de la fenetre
-	err("**** good bye ****");
-	exit(EXIT_SUCCESS);
 }
 
 /**
@@ -368,6 +408,49 @@ void displayMonster (WINDOW * win, t_monster monsters[NB_MONSTER_MAX], t_cell ma
 			wrefresh(win);
 		}
 	}
+}
+
+/**
+	* \brief Efface la fenetre de log
+	*	\fn void clearLog(int *line, WINDOW *win)
+	* \param line Ligne acutelle du log
+	* \param win Fenetre des logs
+	*/
+void clearLog(int *line, WINDOW *win){
+
+	clearArea(win, 1, 1, COLS_LOGS - 1, LINES_LOGS - 1);
+
+	*line = 0;
+}
+
+/**
+	* \brief Ajoute une ligne à la fenetre de log
+	*	\fn void addLog(char * message, int * line, WINDOW *win)
+	* \param message Message à ajouter
+	* \param line Ligne acutelle du log
+	* \param win Fenetre des logs
+	*/
+void addLog(char * message, int * line, WINDOW *win){
+
+	wattron(win, COLOR_PAIR(GENERAL_COLOR));
+
+	// On découpe le message en sous messages pour rentrer dans la zone de logs
+	while(strlen(message) > COLS_LOGS-1) {
+
+		wmove(win, (*line)+1, 1);
+  	wprintw(win, "%.*s", COLS_LOGS-2, message);
+
+		(*line)++;
+    message+=COLS_LOGS-2;
+  }
+	wmove(win, (*line)+1, 1);
+  wprintw(win, "%s", message);
+	wrefresh(win);
+
+	// Si on a plus de place pour clear la zone de logs
+	if(*line >= LINES_LOGS - 3) clearLog(line, win);
+	else (*line)++;
+
 }
 
 /**
@@ -543,50 +626,6 @@ void setFloorCheat(t_cell map[LINES][COLUMNS]) {
 	}
 
 }
-
-/**
-	* \brief Efface la fenetre de log
-	*	\fn void clearLog(int *line, WINDOW *win)
-	* \param line Ligne acutelle du log
-	* \param win Fenetre des logs
-	*/
-void clearLog(int *line, WINDOW *win){
-
-	clearArea(win, 1, 1, COLS_LOGS - 1, LINES_LOGS - 1);
-
-	*line = 0;
-}
-
-/**
-	* \brief Ajoute une ligne à la fenetre de log
-	*	\fn void addLog(char * message, int * line, WINDOW *win)
-	* \param message Message à ajouter
-	* \param line Ligne acutelle du log
-	* \param win Fenetre des logs
-	*/
-void addLog(char * message, int * line, WINDOW *win){
-
-	wattron(win, COLOR_PAIR(GENERAL_COLOR));
-
-	// On découpe le message en sous messages pour rentrer dans la zone de logs
-	while(strlen(message) > COLS_LOGS-1) {
-
-		wmove(win, (*line)+1, 1);
-  	wprintw(win, "%.*s", COLS_LOGS-2, message);
-
-		(*line)++;
-    message+=COLS_LOGS-2;
-  }
-	wmove(win, (*line)+1, 1);
-  wprintw(win, "%s", message);
-	wrefresh(win);
-
-	// Si on a plus de place pour clear la zone de logs
-	if(*line >= LINES_LOGS - 3) clearLog(line, win);
-	else (*line)++;
-
-}
-
 
 /**
 	* \brief Affiche le joueur sur le jeu

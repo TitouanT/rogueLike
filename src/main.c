@@ -8,6 +8,7 @@
  * \date 12 novembre 2016
  */
 #include <locale.h>
+#include "display.h" // OK
 #include "global.h"
 
 int main () {

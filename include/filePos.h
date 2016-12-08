@@ -11,14 +11,7 @@
 #ifndef FILEPOS_H
 #define FILEPOS_H
 
-/**
-  * \struct t_pos
-  * \brief décrit une position dans un étage
-  */
-typedef struct {
-	int line;   /*!< représente la ligne */
-	int column; /*!< représente la colonne */
-} t_pos;
+#include "cell.h"
 
 /** initialise la file */
 void file_init (void);

@@ -8,7 +8,7 @@
   * \version 1.0
   */
 #include "cell.h"
-#include "filePos.h"
+#include "filePos.h" // OK
 #include "tools.h"
 #include <stdlib.h>
 

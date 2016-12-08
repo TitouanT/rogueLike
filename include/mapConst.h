@@ -59,4 +59,27 @@
 /** Nombre d'items maximum dans l'inventaire du joueur */
 #define SIZE_INVENTORY 5
 
+/** Hauteur de la fenêtre du jeu */
+#define LINES_GAME  LINES + 2
+
+/** Largeur de la fenêtre du jeu */
+#define COLS_GAME   COLUMNS + 2
+
+/** Hauteur de la fenêtre de logs */
+#define LINES_LOGS LINES_GAME
+
+/** Largeur de la fenêtre de logs */
+#define COLS_LOGS   50
+
+/** Hauteur de la fenêtre de statistiques */
+#define LINES_STATS  6
+
+/** Largeur de la fenêtre de statistiques */
+#define COLS_STATS COLS_GAME + COLS_LOGS
+
+
+#define CONTINUE_GAME 1
+
+#define NEW_GAME 0
+
 #endif

@@ -12,13 +12,13 @@
 #define GLOBAL_H
 
 #include <stdlib.h>
-#include <ncurses.h>
+#include <ncurses.h> 
 
 #include "mapConst.h"
 #include "cell.h"
 #include "lvl.h"
 #include "character.h"
-#include "display.h"
+//#include "display.h"
 #include "moves.h"
 #include "loadLvl.h"
 #include "tools.h"

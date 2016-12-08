@@ -7,8 +7,17 @@
  * \version 1.3
  * \date 30 novembre 2016
  */
+ 
+#include <stdio.h>
 
-#include "global.h"
+#include "cell.h" // utilise t_cell
+#include "mapConst.h" // NB_LVL, LINES, COLUMNS
+#include "lvl.h" // pour randomFloor
+#include "moves.h" // pour move2spawn
+#include "tools.h" // pour isBetween
+#include "monstre.h" // pour t_monster
+
+
 char DOSSIER_SAUVEGARDE[30];
 char NOM_NIVEAU[NB_LVL][30];
 char NOM_POSITION[40];

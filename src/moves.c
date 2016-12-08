@@ -9,7 +9,6 @@
  */
 #include <ncurses.h>
 #include "global.h"
-#include "filePos.h"
 
 /* Renvoi les coordonnées de la pièce où le joueur se trouve */
 t_pos startRoom(t_cell map[LINES][COLUMNS], t_character player){

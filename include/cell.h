@@ -93,4 +93,14 @@ typedef struct {
 	t_room rooms[ROOM_NB_MAX + NB_LVL]; /**< un tableau qui liste les pieces de l'étage*/
 } t_lvl;
 
+/**
+  * \struct t_pos
+  * \brief décrit une position dans un étage
+  */
+typedef struct {
+	int line;   /*!< représente la ligne */
+	int column; /*!< représente la colonne */
+} t_pos;
+
+
 #endif /* end of include guard: CELL_H */

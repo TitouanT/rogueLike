@@ -1,6 +1,5 @@
-#include <stdio.h>
 #include <ncurses.h>
-#include <locale.h>
+#include <locale.h> 
 
 int main(){
   setlocale(LC_CTYPE, "");

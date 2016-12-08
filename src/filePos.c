@@ -8,8 +8,8 @@
   * \version 1.0
   */
 
-#include <stdlib.h>
-#include "filePos.h"
+#include <stdlib.h> // pour free
+#include "cell.h" // pour t_pos
 
 /**
   * \struct t_element

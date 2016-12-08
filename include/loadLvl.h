@@ -13,8 +13,7 @@
 
 #include "monstre.h"
 
-#define CONTINUE_GAME 1
-#define NEW_GAME 0
+
 
 void readLvl (t_cell map[][COLUMNS], int nbLvl);
 void writeLvl (t_cell map[][COLUMNS], int nbLvl);
