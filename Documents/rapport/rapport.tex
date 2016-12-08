@@ -1,4 +1,4 @@
-\documentclass[12pt]{article}
+\documentclass[12pt]{report}
 \usepackage[utf8x]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[francais]{babel}
@@ -7,6 +7,15 @@
 \usepackage[colorinlistoftodos]{todonotes}
 
 \usepackage[top=3cm, bottom=3cm,left=2.5cm, right=2.5cm]{geometry}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
 
 \begin{document}
 
@@ -40,8 +49,29 @@
 	\vfill
 \end{titlepage}
 
-\section{dsfsd}
+\tableofcontents
 
-dsfs
+\chapter{Introduction}
+
+\chapter{Organisation}
+
+\chapter{Analyse et Conception}
+	\section{Comment jouer ?}
+		\begin{itemize}
+			\item{Les déplacement :}
+				nous pouvons gérer nos déplacements sur la map grace aux fleches de direction. 
+			\item{Interactions avec des objets :}	
+				les interactions avec un objet (kit de soins, nourriture, escalier) se font avec la touche <<entrée>>.
+			\item{Ouvrir et fermer une porte :}	
+				si vous souhaitez ouvrir une porte, déplacez-vous devant la porte, appuyer sur la touche <<o>> et marqué la direction de la porte avec les fleches de direction.
+				Mais pour fermer, c'est le meme principe que pour ouvrir une porte sauf que la touche est <<c>> au lieu de <<o>>.
+			\intem{Gestion de l'inventaire :}
+				pour voir votre inventaire, vous devez appuyer sur la touche <<i>>. Pour prendre un objet (kit de soins, nourriture), vous devez appuyez sur la touche <<g>> mais pour poser votre inventaire, vous devez appuyez sur la touche <<d>> et indiquer la case  se trouve l'objet.
+		\end{itemize}
+		
+		
+\chapter{Codage, méthode et outil}
+
+\chapter{Résultat et conclusion}
 
 \end{document}
