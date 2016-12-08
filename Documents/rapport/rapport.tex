@@ -19,6 +19,8 @@
 
 \begin{document}
 
+
+%% Page de titre
 \begin{titlepage}
 	
 	\topskip0pt
@@ -60,14 +62,31 @@
 	
 \end{titlepage}
 
+%% Partie sommaire
 \tableofcontents
 
+%% Partie introduction
 \chapter{Introduction}
 
-Nous avons choisi le jeu \emph{Roguelike} car c'est un jeu que nous trouvons intéressant, puisqu'il est complet, et que c'est un jeu aux possibilités infinies :  il est toujours possible d'aj
+	Nous avons choisi le jeu \emph{Roguelike} car c'est un jeu que nous trouvons intéressant, puisqu'il est complet, et que c'est un jeu aux possibilités infinies :  il est toujours possible d'ajouter de nouvelles actions que le joueur pourra effectuer.
+	
+	\vspace{12pt}
+	
+	Notre jeu se déroule dans le bâtiment IC$^2$. Nous sommes un étudiant, nous partons du rez-de-chaussée, et nous devons aller chercher QUELQUE CHOSE tout en haut, pour le ramener. \\
+	
+	Nous devons cependant faire attention aux monstres : des L1, L2, L3, des masters, des doctorants, et certains fantômes : \textsc{Claude} et \textsc{Chappe}.\\
+	Sur notre chemin, nous pouvons trouver quelques pièges : des flaques d'eau laissées par les femmes de ménages qui nous font glisser, des trous entre les étages qui nous font tomber d'un étage à un autre inférieur, ou des cartes à jouer qui nous sont jetées dessus par des L1.\\
+	Durant notre parcours, nous devons aussi tenir compte de notre faim. Nous possédons une barre de vie, lorsqu'elle est à zéro, nous mourrons. Pour régénérer de la vie, il y a deux possibilités : ne plus avoir faim (en mangeant de la nourriture, attention, certaines sont empoisonnées), et des seringues de soin à s'injecter directement. Ces objets peuvent être consommés directement sur place quand le joueur le trouve, ou plus tard, en les gardant dans son inventaire.\\
+	Enfin, lorsque le joueur apparait, il ne voit pas entièrement la carte, il doit la découvrir pour cela. Lorsque le joueur a trop faim, en plus de perdre de la vie, il s'évanouit : il se déplace plus difficilement, et perd connaissance de ce qu'il a découvert.
+	
+	\vspace{12pt}
+	
+	Pour le projet, nous devions au minimum effectuer un jeu qui génère des niveaux (ici, des étages dans notre bâtiment) aléatoires, avec une taille variant en fonction de l'étage où se trouve le joueur. Il était aussi demandé, en fonction de l'avancement du projet, d'ajouter des fonctionnalités supplémentaires : des armes, des monstres, des pièges, ou autres.
 
+%% Partie organisation
 \chapter{Organisation}
 
+%% Partie analyse et conception
 \chapter{Analyse et Conception}
 	\section{Comment jouer ?}
 		\begin{itemize}
@@ -82,9 +101,10 @@ Nous avons choisi le jeu \emph{Roguelike} car c'est un jeu que nous trouvons int
 				pour voir votre inventaire, vous devez appuyer sur la touche <<i>>. Pour prendre un objet (kit de soins, nourriture), vous devez appuyez sur la touche <<g>> mais pour poser votre inventaire, vous devez appuyez sur la touche <<d>> et indiquer la case  se trouve l'objet.
 		\end{itemize}
 		
-		
+%% Partie codage
 \chapter{Codage, méthode et outil}
 
+%% Partie conclusion
 \chapter{Résultat et conclusion}
 
 \end{document}
