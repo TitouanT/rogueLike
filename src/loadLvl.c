@@ -12,7 +12,7 @@
 
 #include "cell.h" // OK
 #include "mapConst.h" // OK
-#include "lvl.h" // pour randomFloor
+#include "lvl.h" // OK
 #include "moves.h" // pour move2spawn
 #include "tools.h" // pour isBetween
 #include "monstre.h" // pour t_monster

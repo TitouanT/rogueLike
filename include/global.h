@@ -16,7 +16,7 @@
 
 //#include "mapConst.h"
 //#include "cell.h"
-#include "lvl.h"
+//#include "lvl.h"
 //#include "character.h"
 //#include "display.h"
 #include "moves.h"

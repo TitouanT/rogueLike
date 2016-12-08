@@ -1,6 +1,6 @@
 #include "monstre.h" // pour les structures et les constantes
 #include "tools.h"   // pour le randab
-#include "lvl.h"     // pour queryLvlData
+#include "lvl.h"     // OK
 #include "cell.h"    // OK
 #include "mapConst.h" // OK
 #include <stdlib.h>  // pour la fonction rand

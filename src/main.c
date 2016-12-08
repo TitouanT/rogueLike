@@ -11,6 +11,7 @@
 #include "display.h" // OK
 #include "cell.h" // OK
 #include "character.h" // OK
+#include "lvl.h"     // OK
 #include "mapConst.h" // OK
 #include "interactions.h" // OK
 #include "global.h"
