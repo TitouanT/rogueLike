@@ -1,12 +1,12 @@
 //#include <CUnit/CUnit.h>
 //#include <CUnit/Basic.h>
+#include <stdio.h>
 
 #include "/usr/local/include/CUnit/CUnit.h"
 #include "/usr/local/include/CUnit/Basic.h"
 
 #include "../include/tools.h"
 
-#include <stdio.h>
 
 /* Test Suite setup and cleanup functions */
 int init_suite(){

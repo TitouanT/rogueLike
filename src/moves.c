@@ -7,15 +7,15 @@
  * \version 1.1
  * \date 25 novembre 2016
  */
-#include <ncurses.h>
+#include <ncurses.h>   // OK
 
-#include "moves.h" // OK
-#include "loadLvl.h" // OK
+#include "moves.h"     // OK
+#include "loadLvl.h"   // OK
 #include "character.h" // OK
-#include "cell.h" // OK
-#include "mapConst.h" // OK
-#include "tools.h" // OK
-#include "display.h" // OK
+#include "cell.h"      // OK
+#include "mapConst.h"  // OK
+#include "tools.h"     // OK
+#include "display.h"   // OK
 
 
 /**

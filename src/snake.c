@@ -1,5 +1,6 @@
 #include <ncurses.h>        // OK
 #include <stdlib.h>         // OK
+
 #include "snake_list_ptr.h" // OK
 #include "tools.h"          // OK
 

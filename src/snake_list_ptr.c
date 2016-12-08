@@ -1,6 +1,7 @@
 /* Titouan Teyssier - 11/27/16 */
 
 #include <stdlib.h>         // OK
+
 #include "snake_list_ptr.h" // OK
 
 

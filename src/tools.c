@@ -8,8 +8,9 @@
   * \version 1.0
   */
 
-#include <time.h>     // pour l'initialisation du hasard
-#include <stdlib.h>   // pour la fonction rand
+#include <time.h>     // OK
+#include <stdlib.h>   // OK
+
 #include "mapConst.h" // OK
 
 FILE * error;

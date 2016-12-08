@@ -7,7 +7,10 @@
  * \version 1.2
  * \date 12 novembre 2016
  */
-#include <locale.h>
+#include <locale.h>       // OK
+#include <ncurses.h>      // OK
+#include <stdlib.h>       // OK
+
 #include "display.h"      // OK
 #include "cell.h"         // OK
 #include "character.h"    // OK
@@ -17,8 +20,6 @@
 #include "interactions.h" // OK
 #include "tools.h"        // OK
 #include "monstre.h"      // OK
-#include <ncurses.h>      // OK
-#include <stdlib.h>       // OK
 
 int main () {
 

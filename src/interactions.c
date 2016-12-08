@@ -7,16 +7,16 @@
 	* \date 24 novembre 2016
 	* \version 1.1
 	*/
-#include <ncurses.h> // OK
-#include <string.h> // OK
+#include <ncurses.h>   // OK
+#include <string.h>    // OK
 
-#include "cell.h" // OK
+#include "cell.h"      // OK
 #include "character.h" // OK
-#include "moves.h" // OK
-#include "display.h" // OK
-#include "mapConst.h" // OK
-#include "loadLvl.h" // OK
-#include "tools.h" // OK
+#include "moves.h"     // OK
+#include "display.h"   // OK
+#include "mapConst.h"  // OK
+#include "loadLvl.h"   // OK
+#include "tools.h"     // OK
 
 /** Nombre de messages d'erreurs différents */
 #define NB_ERROR_MESSAGES 26

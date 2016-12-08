@@ -8,8 +8,9 @@
   * \version 1.0
   */
 
-#include <stdlib.h> // pour free
-#include "cell.h" // OK
+#include <stdlib.h> // OK
+
+#include "cell.h"   // OK
 
 /**
   * \struct t_element
