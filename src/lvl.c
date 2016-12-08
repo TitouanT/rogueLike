@@ -10,6 +10,10 @@
 #include "cell.h"
 #include "filePos.h"
 #include "tools.h"
+#include <stdlib.h>
+
+
+
 
 /** tableau qui contient tous les étages de la partie */
 t_lvl gLvl[NB_LVL];
@@ -38,7 +42,7 @@ void setLvlData (t_lvl tabLvl[NB_LVL]) {
 	}
 	err("\ncontenu tabLvl");
 	gLvlId = NB_LVL;
-	
+
 	err("*** fin set lvl data ***");
 }
 

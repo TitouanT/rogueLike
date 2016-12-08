@@ -11,7 +11,6 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
-#include <time.h>
 #include <stdlib.h>
 #include <ncurses.h>
 

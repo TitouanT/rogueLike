@@ -11,6 +11,7 @@
 #include "global.h"
 #include "filePos.h"
 #include "tools.h"
+#include <string.h>
 
 /** Nombre de messages d'erreurs différents */
 #define NB_ERROR_MESSAGES 26

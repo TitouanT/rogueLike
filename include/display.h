@@ -10,12 +10,13 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
 
-#include <ncurses.h>
-#include <string.h>
+#include <ncurses.h>   // pour le type WINDOW
 
-#include "cell.h"
-#include "mapConst.h"
-#include "character.h"
+
+#include "cell.h"      // pour la map
+#include "mapConst.h"  // pour les dimensions de la map
+#include "character.h" // pour l'affichage du player
+#include "monstre.h"   // pour l'affichage des monstres
 
 /** Paire de couleur générale */
 #define GENERAL_COLOR   1

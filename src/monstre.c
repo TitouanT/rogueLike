@@ -1,7 +1,10 @@
-#include "monstre.h"
-#include "tools.h"
-#include "lvl.h"
-#include "cell.h"
+#include "monstre.h" // pour les structures et les constantes
+#include "tools.h"   // pour le randab
+#include "lvl.h"     // pour queryLvlData
+#include "cell.h"    // pour la fonction moveMonster
+#include <stdlib.h>  // pour la fonction rand
+
+
 
 
 void createMonster (t_monster monsters[NB_MONSTER_MAX], int * nbMonsterAtEnd) {

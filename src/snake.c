@@ -1,6 +1,5 @@
 #include <ncurses.h>
 #include <stdlib.h>
-#include <time.h>
 #include <locale.h>
 #include "snake_list_ptr.h"
 #include "tools.h"

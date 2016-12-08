@@ -11,6 +11,8 @@
 #ifndef LOADLVL_H
 #define LOADLVL_H
 
+#include "monstre.h"
+
 #define CONTINUE_GAME 1
 #define NEW_GAME 0
 

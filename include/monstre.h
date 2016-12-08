@@ -12,7 +12,7 @@
 #define MONSTER_H
 
 #include "cell.h"
-//#include "character.h"
+#include "character.h"
 
 /** Nombre maximal de monstre dans une partie */
 #define NB_MONSTER_MAX 100

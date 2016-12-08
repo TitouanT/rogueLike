@@ -7,8 +7,17 @@
 	* \date 22 novembre 2016
 	* \version 1.0
 	*/
-#include "display.h"
-#include "global.h"
+#include "display.h" // pour les constantes
+//#include "global.h"  //
+
+#include "cell.h" // pour le type t_cell
+#include "mapConst.h" // pour les constantes
+
+#include <ncurses.h> // pour les fonction d'affichages
+#include <string.h>  // pour strlen
+#include <stdlib.h>  // pour exit
+#include "monstre.h" // pour l'affichage des monstres
+#include "interactions.h"
 
 
 /**
@@ -62,8 +71,7 @@ void init_screen(){
 		mvprintw(lines / 2 + 1, (columns - 8) / 2, "%i x %i", COLS_GAME+COLS_LOGS, LINES_GAME+LINES_STATS);
 
 		getch();
-		endwin();
-		exit(0);
+		abortGame();
 	}
 
 	refresh();

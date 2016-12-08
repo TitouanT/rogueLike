@@ -12,7 +12,7 @@
 #define CELL_H
 
 #include "mapConst.h"
-#include "monstre.h"
+
 
 /**
  * \enum t_type

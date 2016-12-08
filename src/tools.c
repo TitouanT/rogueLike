@@ -8,8 +8,16 @@
   * \version 1.0
   */
 
-#include "tools.h"
-#include "mapConst.h"
+#include <ncurses.h>  // pour TRUE et FALSE
+#include <time.h>     // pour l'initialisation du hasard
+#include <stdlib.h>   // pour la fonction rand
+#include "mapConst.h" // pour PRINT_ERROR
+
+
+
+
+
+FILE * error;
 
 /**
   * \brief test si un fichier existe

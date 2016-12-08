@@ -8,14 +8,10 @@
   * \version 1.0
   */
 
-#ifndef RANDOM_H
-#define RANDOM_H
+#ifndef TOOLS_H
+#define TOOLS_H
 
-#include <time.h>
-#include <stdlib.h>
-#include <ncurses.h> // pour TRUE et FALSE
 
-FILE * error;
 void initErr();
 void unInitErr();
 
@@ -40,4 +36,4 @@ void err (char msg[]);
 int numberLinesFile(char * file);
 int maxColsFile(char * file);
 
-#endif /* end of include guard: RANDOM_H */
+#endif /* end of include guard: TOOLS_H */
