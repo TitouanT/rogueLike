@@ -177,12 +177,20 @@ char low2up (char car) {
 	else return -1;
 }
 
+/**
+	* \brief Initialise l'ouverture de notre fichier d'erreur
+	* \fn void initErr()
+	*/
 void initErr(){
 	if(PRINT_ERROR){
 		error = fopen("err", "a");
 	}
 }
 
+/**
+	* \brief Ferme notre fichier d'erreur
+	* \fn void unInitErr()
+	*/
 void unInitErr(){
 	if(PRINT_ERROR){
 		fclose(error);
