@@ -15,6 +15,7 @@ int main () {
 	if (fileExist("./accentNeeded")) setlocale(LC_ALL, "");
 	//setlocale(LC_ALL, "");
 	//printf ("Locale is: %s\n", setlocale(LC_ALL,NULL) );
+	initErr();
 	err ("\n***DEBUT DU MAIN***\n");
 	int key;
 	int lineLog = 0;
@@ -29,7 +30,7 @@ int main () {
 
 	init_screen();
 	getmaxyx(stdscr,heightScreen,widthScreen);
-	
+
 	err ("main: Affichage du screen de départ");
 	WINDOW *win_start = newwin(heightScreen, widthScreen, 0, 0);
 	startScreen(win_start);
@@ -41,7 +42,7 @@ int main () {
 	selectionScreen(win_choice, map, &player, monsters, &nbMonsters);
 
 	deleteWindow(win_choice);
-	
+
 	err ("main: Affichage du screen avec map, logs et stats");
 	/* Initialisation des fenetres */
 	WINDOW *win_game  = createWindow(0, 0, COLS_GAME, LINES_GAME, "RogueLike");
@@ -80,9 +81,9 @@ int main () {
 		continueGame = handleInteraction(key, map, &player, win_logs, win_game, &lineLog);
 		err("main: recuperation apres handle interaction");
 		markDiscoverRoom(map, player);
-		
+
 		//moveMonster(map, monsters, nbMonsters, player);
-		
+
 		err("main: affichage etage, player, stats");
 		displayFloor(map, player, win_game);
 		displayPlayer(player, map, win_game, win_logs, &lineLog);
@@ -111,6 +112,7 @@ int main () {
 
 	endwin(); //Fermeture de la fenetre
 	err ("\n***FIN DU MAIN***\n");
+	unInitErr();
 	return EXIT_SUCCESS;
 
 }
