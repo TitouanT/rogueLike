@@ -8,8 +8,8 @@
  * \date 25 novembre 2016
  */
 #include <ncurses.h>
+
 #include "moves.h" // OK
-#include "global.h"
 #include "loadLvl.h" // OK
 #include "character.h" // OK
 #include "cell.h" // OK

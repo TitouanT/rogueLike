@@ -1,9 +1,9 @@
-#include "monstre.h" // OK
-#include "tools.h" // OK
-#include "lvl.h"     // OK
-#include "cell.h"    // OK
+#include "monstre.h"  // OK
+#include "tools.h"    // OK
+#include "lvl.h"      // OK
+#include "cell.h"     // OK
 #include "mapConst.h" // OK
-#include <stdlib.h>  // pour la fonction rand
+#include <stdlib.h>   // OK
 
 
 

@@ -10,7 +10,7 @@
 
 #ifndef MAPCONST_H
 #define MAPCONST_H
-#include <ncurses.h> // a cause du TRUE
+#include <ncurses.h> // OK
 
 /** Si mit à TRUE, les étages sont entièrements découverts par défaut */
 #define DEBUG TRUE

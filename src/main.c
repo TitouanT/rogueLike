@@ -8,16 +8,17 @@
  * \date 12 novembre 2016
  */
 #include <locale.h>
-#include "display.h" // OK
-#include "cell.h" // OK
-#include "character.h" // OK
-#include "lvl.h"     // OK
-#include "mapConst.h" // OK
-#include "moves.h" // OK
+#include "display.h"      // OK
+#include "cell.h"         // OK
+#include "character.h"    // OK
+#include "lvl.h"          // OK
+#include "mapConst.h"     // OK
+#include "moves.h"        // OK
 #include "interactions.h" // OK
-#include "tools.h" // OK
-#include "monstre.h" // OK
-#include "global.h"
+#include "tools.h"        // OK
+#include "monstre.h"      // OK
+#include <ncurses.h>      // OK
+#include <stdlib.h>       // OK
 
 int main () {
 

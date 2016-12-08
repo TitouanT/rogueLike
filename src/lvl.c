@@ -7,11 +7,13 @@
   * \date 28 novembre 2016
   * \version 1.0
   */
-#include "cell.h" // OK
-#include "filePos.h" // OK
+
+#include <stdlib.h>   // OK 
+
+#include "cell.h"     // OK
+#include "filePos.h"  // OK
 #include "mapConst.h" // OK
-#include "tools.h" // OK
-#include <stdlib.h>
+#include "tools.h"    // OK
 
 
 

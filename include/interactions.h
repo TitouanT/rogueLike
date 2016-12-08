@@ -11,6 +11,7 @@
 #ifndef INTERACTION_H
 #define INTERACTION_H
 
+#include <ncurses.h>   // OK
 #include "cell.h" // OK
 #include "mapConst.h" // OK
 #include "character.h" // OK

@@ -11,9 +11,9 @@
 #include "cell.h" // OK
 #include "mapConst.h" // OK
 
-#include <ncurses.h> // pour les fonction d'affichages
-#include <string.h>  // pour strlen
-#include <stdlib.h>  // pour exit
+#include <ncurses.h> // OK
+#include <string.h>  // OK
+#include <stdlib.h>  // OK
 #include "monstre.h"   // OK
 #include "tools.h" // OK
 #include "loadLvl.h" // OK

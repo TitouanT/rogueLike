@@ -8,14 +8,14 @@
  * \date 30 novembre 2016
  */
  
-#include <stdio.h>
+#include <stdio.h>     // OK
 
-#include "cell.h" // OK
-#include "mapConst.h" // OK
-#include "lvl.h" // OK
-#include "moves.h" // OK
-#include "tools.h" // OK
-#include "monstre.h" // OK
+#include "cell.h"      // OK
+#include "mapConst.h"  // OK
+#include "lvl.h"       // OK
+#include "moves.h"     // OK
+#include "tools.h"     // OK
+#include "monstre.h"   // OK
 #include "character.h" // OK
 
 

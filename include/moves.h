@@ -12,6 +12,7 @@
 #ifndef MOVES_H
 #define MOVES_H
 
+#include <ncurses.h>   // OK
 #include "cell.h" // OK
 #include "mapConst.h" // OK
 #include "character.h" // OK

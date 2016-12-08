@@ -1,8 +1,7 @@
-#include <ncurses.h>
-#include <stdlib.h>
-#include <locale.h>
-#include "snake_list_ptr.h"
-#include "tools.h" // OK
+#include <ncurses.h>        // OK
+#include <stdlib.h>         // OK
+#include "snake_list_ptr.h" // OK
+#include "tools.h"          // OK
 
 
 /**************************/
@@ -24,15 +23,7 @@ int lines, cols;
 
 // initialize the ncurses library, the random, and print the screen
 void initGame () {
-	// srand(time(NULL));
-	// setlocale(LC_ALL, "");
-	// initscr();
-	timeout(WAIT_TIME); // if no no input then dont block
-	//cbreak();
-	//start_color();
-	// keypad(stdscr, TRUE); // use of the arrow keys
-	// noecho(); // no echo (obvious :p)
-	// curs_set(0); // no cursor
+	timeout(WAIT_TIME);
 	getmaxyx(stdscr, lines, cols);
 	gWGame= subwin(stdscr, lines - 3, cols, 0, 0);
 	gWStats= subwin(stdscr, 3, cols, lines - 3, 0);

@@ -7,8 +7,8 @@
 	* \date 24 novembre 2016
 	* \version 1.1
 	*/
-#include <ncurses.h> // pour WINDOW
-#include <string.h> // pour strcmp
+#include <ncurses.h> // OK
+#include <string.h> // OK
 
 #include "cell.h" // OK
 #include "character.h" // OK

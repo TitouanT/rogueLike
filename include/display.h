@@ -10,8 +10,7 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
 
-#include <ncurses.h>   // pour le type WINDOW
-
+#include <ncurses.h>   // OK
 
 #include "cell.h"      // OK
 #include "mapConst.h"  // OK
