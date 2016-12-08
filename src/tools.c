@@ -183,6 +183,7 @@ char low2up (char car) {
 	*/
 void initErr(){
 	if(PRINT_ERROR){
+		remove("err"); // comme il est ouvert en mode ajout a chaque fois on le supprime en début d'execution
 		error = fopen("err", "a");
 	}
 }

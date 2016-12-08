@@ -16,8 +16,6 @@
 #include <ncurses.h> // pour TRUE et FALSE
 
 FILE * error;
-void initErr();
-void unInitErr();
 
 int fileExist (char * fileName);
 
@@ -28,14 +26,16 @@ int didItHappen (int chance);
 int min(int a, int b);
 int max(int a, int b);
 
-int isBetween (int val, int a, int b);
-int intervalOverlaping (int a, int b, int c, int d);
+int isBetween(int val, int a, int b);
+int intervalOverlaping(int a, int b, int c, int d);
 
 int car2val (char car);
 char up2low (char car);
 char low2up (char car);
 
-void err (char msg[]);
+void err(char msg[]);
+void initErr();
+void unInitErr();
 
 int numberLinesFile(char * file);
 int maxColsFile(char * file);

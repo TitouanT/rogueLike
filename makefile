@@ -30,8 +30,8 @@ interactions.o: src/interactions.c include/global.h include/tools.h             
 
 tools.o: src/tools.c include/tools.h
 	gcc -c -I ./include $<
-	
-monstre.o: src/monstre.c include/monstre.h include/tools.h include/cell.h include/lvl.h 
+
+monstre.o: src/monstre.c include/monstre.h include/tools.h include/cell.h include/lvl.h
 	gcc -c -I ./include $<
 
 snake.o: src/snake.c include/snake_list_ptr.h
@@ -64,6 +64,10 @@ include/interactions.h:
 include/tools.h:
 
 
+# Compile les tests unitaires
+test: tools.o
+	gcc src/tools_tests.c $^ -o test.o
+
 # Permet de mettre à jour automatiquement le jeu
 upgrade: createFolders
 	git pull
@@ -83,5 +87,5 @@ clean:
 	rm -rf *.o rogueLike
 	rm -rf partie
 clear: clean
-	
+
 mrproper: clean createFolders rogueLike
