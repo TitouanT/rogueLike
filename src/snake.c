@@ -221,28 +221,52 @@ void randPosOnWall (t_pos * pos, t_dir * currDir) {
 	}
 }
 
+void endGame() {
+	int i, j;
+	for (i = 0; i < lines; i++)
+		for (j = 0; j < cols; j++)
+			mvprintw (i, j, " ");
+
+	delwin(gWGame);
+	delwin(gWStats);
+}
+
 int snake(void) {
 	err("*** Debut du snake ***");
-	/**********************************/
-	/* Declaration and Initialisation */
-	/**********************************/
+	/***************/
+	/* Declaration */
+	/***************/
 	int i, j,
-	    key = -1,
-	    foodEat = 0,
-	    length = 1,
-	    growth = 0,
-	    foodQtt = 1,
-	    continueGame = TRUE;
+	    key,
+	    foodEat,
+	    length,
+	    growth,
+	    foodQtt,
+	    continueGame;
 
-	t_dir currDir = RIGHT,
+	t_dir currDir,
 	      prevDir;
 
-	t_pos head = {1, 1, HORIZONTAL},
+	t_pos head,
 	      prev,
 		  end,
 	      foods[MAX_FOOD];
 
+
+	/******************/
+	/* Initialisation */
+	/******************/
+replay:
 	initGame();
+	key = -1,
+	foodEat = 0,
+	length = 1,
+	growth = 0,
+	foodQtt = 1,
+	continueGame = TRUE;
+	currDir = RIGHT;
+	head = (t_pos) {1, 1, HORIZONTAL};
+
 	randomFood(foods, 0);
 
 	listPtr_init ();
@@ -397,21 +421,21 @@ int snake(void) {
 
 	timeout(-1);
 	if (key != 'q') {
-		do key = getch();
-		while (key != 'q');
+		do {
+			key = getch();
+			if (key == 'r'/*eplay*/) {
+				endGame();
+				goto replay;
+			}
+		} while (key != 'q');
 	}
 
-	//endwin();
-	for (i = 0; i < lines; i++)
-		for (j = 0; j < cols; j++)
-			mvprintw (i, j, " ");
-
-	delwin(gWGame);
-	delwin(gWStats);
-
+	endGame();
 	err("*** Fin du Snake ***");
 	return 0;
 }
+
+
 
 int konami (int key) {
 	int code[10] = {KEY_UP, KEY_UP, KEY_DOWN, KEY_DOWN, KEY_LEFT, KEY_RIGHT, KEY_LEFT, KEY_RIGHT, 'b', 'a'};
