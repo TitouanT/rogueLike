@@ -1,4 +1,4 @@
-\documentclass[12pt]{article}
+\documentclass[12pt]{report}
 \usepackage[utf8x]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[francais]{babel}
@@ -6,42 +6,115 @@
 \usepackage{graphicx}
 \usepackage[colorinlistoftodos]{todonotes}
 
-\usepackage[top=3cm, bottom=3cm,left=2.5cm, right=2.5cm]{geometry}
+\usepackage[top=2cm, bottom=2cm,left=2cm, right=2cm]{geometry}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
 
 \begin{document}
 
+
+%% Page de titre
 \begin{titlepage}
 	
+	\topskip0pt
 	\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
 	\center
 	
-	\textsc{\LARGE Rapport de projet}\\[1.5cm]
+	\vspace*{30pt}
 	
+	\textsc{\Large UFR Sciences et techniques\\ Université du Maine}\\[1.5cm]
+	
+	\Large RAPPORT DE PROJET\\[1.5cm]
+	
+
+	\vspace*{\fill}
+	
+	%% Titre du rapport de projet %%
 	\HRule \\[0.4cm]
-	{ \huge \bfseries RogueLike}\\[0.4cm]
+	{ \huge \bfseries RogueLike}\\
 	\HRule \\[1.5cm]
+	 
+	 
+	 \vspace{12pt}
 	 
 	{\large \today}\\[1cm]
 	
-
-	Emeric \textsc{Mottier}\\
-	Valentin \textsc{Pelloin}\\
-	Titouan \textsc{Teyssier}\\
-	L2 Sciences pour l'ingénieur
+	\vspace{12pt}
 	
-	Université du maine\\
-	72000 Le Mans
-
-	\large Projet blabla\\[0.5cm]
+	\Large 
 	
+		Emeric \textsc{Mottier}\\
+		Valentin \textsc{Pelloin}\\
+		Titouan \textsc{Teyssier}\\
 	
-	{ \large \bfseries Cfkdsfsd}\\[0.4cm]
+		\vspace{12pt}
+		
+		L2 Sciences pour l'ingénieur
+		
+	\vspace*{\fill}
 	
-	\vfill
 \end{titlepage}
 
-\section{dsfsd}
+%% Partie sommaire
+\tableofcontents
 
-dsfs
+%% Partie introduction
+\chapter{Introduction}
+
+	Nous avons choisi le jeu \emph{Roguelike} car c'est un jeu que nous trouvons intéressant, puisqu'il est complet, et que c'est un jeu aux possibilités infinies :  il est toujours possible d'ajouter de nouvelles actions que le joueur pourra effectuer.
+	
+	\vspace{12pt}
+	
+	Notre jeu se déroule dans le bâtiment IC$^2$. Nous sommes un étudiant, nous partons du rez-de-chaussée, et nous devons aller chercher QUELQUE CHOSE tout en haut, pour le ramener. \\
+	
+	Nous devons cependant faire attention aux monstres : des L1, L2, L3, des masters, des doctorants, et certains fantômes : \textsc{Claude} et \textsc{Chappe}.\\
+	Sur notre chemin, nous pouvons trouver quelques pièges : des flaques d'eau laissées par les femmes de ménages qui nous font glisser, des trous entre les étages qui nous font tomber d'un étage à un autre inférieur, ou des cartes à jouer qui nous sont jetées dessus par des L1.\\
+	Durant notre parcours, nous devons aussi tenir compte de notre faim. Nous possédons une barre de vie, lorsqu'elle est à zéro, nous mourrons. Pour régénérer de la vie, il y a deux possibilités : ne plus avoir faim (en mangeant de la nourriture, attention, certaines sont empoisonnées), et des seringues de soin à s'injecter directement. Ces objets peuvent être consommés directement sur place quand le joueur le trouve, ou plus tard, en les gardant dans son inventaire.\\
+	Enfin, lorsque le joueur apparait, il ne voit pas entièrement la carte, il doit la découvrir pour cela. Lorsque le joueur a trop faim, en plus de perdre de la vie, il s'évanouit : il se déplace plus difficilement, et perd connaissance de ce qu'il a découvert.
+	
+	\vspace{12pt}
+	
+	Pour le projet, nous devions au minimum effectuer un jeu qui génère des niveaux (ici, des étages dans notre bâtiment) aléatoires, avec une taille variant en fonction de l'étage où se trouve le joueur. Il était aussi demandé, en fonction de l'avancement du projet, d'ajouter des fonctionnalités supplémentaires : des armes, des monstres, des pièges, ou autres.
+
+%% Partie organisation
+\chapter{Organisation}
+
+%% Partie analyse et conception
+\chapter{Analyse et Conception}
+	\section{Comment jouer ?}
+		\begin{itemize}
+			\item{Lancement du jeu : \\}
+				Pour commencer à jouer, vous devez télécharger le jeu à partir de l'adresse suivante : \href{https://github.com/TitouanT/rogueLike/} {rogueLike}; avec la commande suivante : git clone https://github.com/TitouanT/rogueLike/ (sur linux) et git clone git@github.com:TitouanT/rogueLike.git (sur Mac). \\
+				Vous faîtes : <<cd rogueLike>>. \\
+				Puis vous compilez grâce au makefile : <<make install>>. \\
+				Le jeu commence dès que vous faîtes : <<./rogueLike>>		
+			\item{Les déplacement : \\}
+				Nous pouvons gérer nos déplacements sur la carte grâce aux flèches de direction. 
+			\item{Interactions avec des objets : \\}	
+				Les interactions avec un objet (serringues de soins, nourriture, escalier) se font avec la touche <<entrée>>.
+			\item{Ouvrir et fermer une porte :\\}	
+				Si vous souhaitez ouvrir une porte, déplacez-vous devant la porte, appuyer sur la touche <<o>> et marqué la direction de la porte avec les flèches de direction.
+				Mais pour fermer, c'est le même principe que pour ouvrir une porte sauf que la touche est <<c>> au lieu de <<o>>.
+			\item{Gestion de l'inventaire : \\}
+				Pour voir votre inventaire, vous devez appuyer sur la touche <<i>>. Pour prendre un objet (serringues de soins, nourriture), vous devez appuyez sur la touche <<g>> mais pour poser votre inventaire, vous devez appuyez sur la touche <<d>> et indiquer la case se trouve l'objet.
+			\item{Sauvegarder sa partie :\\}
+				Vous pouvez sauvegarder la partie à tout moment avec la touche <<s>>, cette manoeuvre n'arrêtera pas votre expérience de jeu.		
+		\end{itemize}
+		
+%% Partie codage
+\chapter{Codage, méthode et outil}
+
+%% Partie conclusion
+\chapter{Résultat et conclusion}
+
+\chapter{Annexe}
+
 
 \end{document}
