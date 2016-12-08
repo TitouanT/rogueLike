@@ -12,6 +12,7 @@
 #define MONSTER_H
 
 #include "cell.h" // OK
+#include "mapConst.h" // OK
 #include "character.h" // OK
 
 /** Nombre maximal de monstre dans une partie */

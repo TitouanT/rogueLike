@@ -9,7 +9,7 @@
 	*/
 
 #include "cell.h" // OK
-#include "mapConst.h" // pour les constantes
+#include "mapConst.h" // OK
 
 #include <ncurses.h> // pour les fonction d'affichages
 #include <string.h>  // pour strlen

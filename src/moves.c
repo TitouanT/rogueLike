@@ -12,6 +12,7 @@
 #include "loadLvl.h" // OK
 #include "character.h" // OK
 #include "cell.h" // OK
+#include "mapConst.h" // OK
 #include "display.h" // OK
 
 

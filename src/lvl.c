@@ -9,6 +9,7 @@
   */
 #include "cell.h" // OK
 #include "filePos.h" // OK
+#include "mapConst.h" // OK
 #include "tools.h"
 #include <stdlib.h>
 

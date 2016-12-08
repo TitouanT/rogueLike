@@ -14,7 +14,7 @@
 
 
 #include "cell.h"      // OK
-#include "mapConst.h"  // pour les dimensions de la map
+#include "mapConst.h"  // OK
 #include "character.h" // OK
 #include "monstre.h"   // pour l'affichage des monstres
 

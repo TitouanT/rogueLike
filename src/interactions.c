@@ -14,6 +14,7 @@
 #include "character.h" // OK
 #include "moves.h" // pour t_dir
 #include "display.h" // OK
+#include "mapConst.h" // OK
 #include "loadLvl.h" // OK
 #include "tools.h" // pour presque tous les outils
 

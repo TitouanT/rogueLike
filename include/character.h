@@ -11,6 +11,8 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
 #include "cell.h" // OK
+#include "mapConst.h" // OK
+
 /** Nombres de points de vie maximum pour le personnage */
 #define MAX_HP 10
 

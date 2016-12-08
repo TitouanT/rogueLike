@@ -12,6 +12,7 @@
 #define LOADLVL_H
 
 #include "cell.h" // OK
+#include "mapConst.h" // OK
 #include "character.h" // OK
 #include "monstre.h"
 

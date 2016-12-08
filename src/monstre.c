@@ -2,6 +2,7 @@
 #include "tools.h"   // pour le randab
 #include "lvl.h"     // pour queryLvlData
 #include "cell.h"    // OK
+#include "mapConst.h" // OK
 #include <stdlib.h>  // pour la fonction rand
 
 

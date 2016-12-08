@@ -11,7 +11,7 @@
 #include <stdio.h>
 
 #include "cell.h" // OK
-#include "mapConst.h" // NB_LVL, LINES, COLUMNS
+#include "mapConst.h" // OK
 #include "lvl.h" // pour randomFloor
 #include "moves.h" // pour move2spawn
 #include "tools.h" // pour isBetween

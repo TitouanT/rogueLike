@@ -11,7 +11,7 @@
 #ifndef CELL_H
 #define CELL_H
 
-#include "mapConst.h"
+#include "mapConst.h" // OK
 
 
 /**

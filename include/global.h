@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <ncurses.h> 
 
-#include "mapConst.h"
+//#include "mapConst.h"
 //#include "cell.h"
 #include "lvl.h"
 //#include "character.h"

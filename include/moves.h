@@ -13,6 +13,7 @@
 #define MOVES_H
 
 #include "cell.h" // OK
+#include "mapConst.h" // OK
 #include "character.h" // OK
 
 typedef enum {UP, DOWN, LEFT, RIGHT, UP_LEFT, UP_RIGHT, DOWN_LEFT, DOWN_RIGHT} t_dir;

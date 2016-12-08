@@ -11,7 +11,7 @@
 #include <ncurses.h>  // pour TRUE et FALSE
 #include <time.h>     // pour l'initialisation du hasard
 #include <stdlib.h>   // pour la fonction rand
-#include "mapConst.h" // pour PRINT_ERROR
+#include "mapConst.h" // OK
 
 
 

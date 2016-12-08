@@ -12,6 +12,7 @@
 #define INTERACTION_H
 
 #include "cell.h" // OK
+#include "mapConst.h" // OK
 #include "character.h" // OK
 
 int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, WINDOW * win_logs, WINDOW *win_game, int *lineLog);

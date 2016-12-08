@@ -11,7 +11,7 @@
 #ifndef LVL_H
 #define LVL_H
 
-#include "mapConst.h" // pour LINSE, COLUMNS, NB_LVL
+#include "mapConst.h" // OK
 #include "cell.h" // OK
 
 /** Génère un étage du donjon de façons aléatoire */
