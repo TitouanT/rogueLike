@@ -1,7 +1,7 @@
 #include "monstre.h" // pour les structures et les constantes
 #include "tools.h"   // pour le randab
 #include "lvl.h"     // pour queryLvlData
-#include "cell.h"    // pour la fonction moveMonster
+#include "cell.h"    // OK
 #include <stdlib.h>  // pour la fonction rand
 
 

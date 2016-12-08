@@ -10,8 +10,8 @@
 #include <ncurses.h> // pour WINDOW
 #include <string.h> // pour strcmp
 
-#include "cell.h" // pour t_cell
-#include "character.h" // pour le t_character 
+#include "cell.h" // OK
+#include "character.h" // OK
 #include "moves.h" // pour t_dir
 #include "display.h" // OK
 #include "loadLvl.h" // OK

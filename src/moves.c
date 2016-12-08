@@ -10,7 +10,9 @@
 #include <ncurses.h>
 #include "global.h"
 #include "loadLvl.h" // OK
-#include "display.h"
+#include "character.h" // OK
+#include "cell.h" // OK
+#include "display.h" // OK
 
 
 /**

@@ -13,9 +13,9 @@
 #include <ncurses.h>   // pour le type WINDOW
 
 
-#include "cell.h"      // pour la map
+#include "cell.h"      // OK
 #include "mapConst.h"  // pour les dimensions de la map
-#include "character.h" // pour l'affichage du player
+#include "character.h" // OK
 #include "monstre.h"   // pour l'affichage des monstres
 
 void displayObjectives(int *lineLog, WINDOW *win_logs);

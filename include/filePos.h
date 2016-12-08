@@ -11,7 +11,7 @@
 #ifndef FILEPOS_H
 #define FILEPOS_H
 
-#include "cell.h"
+#include "cell.h" // OK
 
 /** initialise la file */
 void file_init (void);

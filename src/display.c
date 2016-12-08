@@ -8,7 +8,7 @@
 	* \version 1.0
 	*/
 
-#include "cell.h" // pour le type t_cell
+#include "cell.h" // OK
 #include "mapConst.h" // pour les constantes
 
 #include <ncurses.h> // pour les fonction d'affichages
@@ -17,6 +17,7 @@
 #include "monstre.h" // pour l'affichage des monstres
 #include "tools.h" // pour numberLinesFile
 #include "loadLvl.h" // OK
+#include "character.h" // OK
 
 int konami (int key);
 

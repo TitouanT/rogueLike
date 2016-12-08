@@ -12,7 +12,7 @@
 #define LVL_H
 
 #include "mapConst.h" // pour LINSE, COLUMNS, NB_LVL
-#include "cell.h" // pour t_cell et t_lvl
+#include "cell.h" // OK
 
 /** Génère un étage du donjon de façons aléatoire */
 void randomFloor (t_cell map[LINES][COLUMNS], int lvl);

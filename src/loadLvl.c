@@ -10,12 +10,13 @@
  
 #include <stdio.h>
 
-#include "cell.h" // utilise t_cell
+#include "cell.h" // OK
 #include "mapConst.h" // NB_LVL, LINES, COLUMNS
 #include "lvl.h" // pour randomFloor
 #include "moves.h" // pour move2spawn
 #include "tools.h" // pour isBetween
 #include "monstre.h" // pour t_monster
+#include "character.h" // OK
 
 
 char DOSSIER_SAUVEGARDE[30];

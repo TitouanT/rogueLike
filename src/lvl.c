@@ -7,7 +7,7 @@
   * \date 28 novembre 2016
   * \version 1.0
   */
-#include "cell.h"
+#include "cell.h" // OK
 #include "filePos.h" // OK
 #include "tools.h"
 #include <stdlib.h>

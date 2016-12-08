@@ -9,7 +9,7 @@
   */
 
 #include <stdlib.h> // pour free
-#include "cell.h" // pour t_pos
+#include "cell.h" // OK
 
 /**
   * \struct t_element
