@@ -71,20 +71,30 @@ Nous avons choisi le jeu \emph{Roguelike} car c'est un jeu que nous trouvons int
 \chapter{Analyse et Conception}
 	\section{Comment jouer ?}
 		\begin{itemize}
+			\item{Lancement du jeu : \\}
+				Pour commencer à jouer, vous devez télécharger le jeu à partir de l'adresse suivante : \href{https://github.com/TitouanT/rogueLike/} {rogueLike}; avec la commande suivante : git clone https://github.com/TitouanT/rogueLike/ (sur linux) et git clone git@github.com:TitouanT/rogueLike.git (sur Mac). \\
+				Vous faîtes : <<cd rogueLike>>. \\
+				Puis vous compilez grâce au makefile : <<make install>>. \\
+				Le jeu commence dès que vous faîtes : <<./rogueLike>>		
 			\item{Les déplacement : \\}
-				Nous pouvons gérer nos déplacements sur la map grâce aux flèches de direction. 
+				Nous pouvons gérer nos déplacements sur la carte grâce aux flèches de direction. 
 			\item{Interactions avec des objets : \\}	
-				Les interactions avec un objet (kit de soins, nourriture, escalier) se font avec la touche <<entrée>>.
+				Les interactions avec un objet (serringues de soins, nourriture, escalier) se font avec la touche <<entrée>>.
 			\item{Ouvrir et fermer une porte :\\}	
 				Si vous souhaitez ouvrir une porte, déplacez-vous devant la porte, appuyer sur la touche <<o>> et marqué la direction de la porte avec les flèches de direction.
 				Mais pour fermer, c'est le même principe que pour ouvrir une porte sauf que la touche est <<c>> au lieu de <<o>>.
 			\item{Gestion de l'inventaire : \\}
-				Pour voir votre inventaire, vous devez appuyer sur la touche <<i>>. Pour prendre un objet (kit de soins, nourriture), vous devez appuyez sur la touche <<g>> mais pour poser votre inventaire, vous devez appuyez sur la touche <<d>> et indiquer la case se trouve l'objet.
+				Pour voir votre inventaire, vous devez appuyer sur la touche <<i>>. Pour prendre un objet (serringues de soins, nourriture), vous devez appuyez sur la touche <<g>> mais pour poser votre inventaire, vous devez appuyez sur la touche <<d>> et indiquer la case se trouve l'objet.
+			\item{Sauvegarder sa partie :\\}
+				Vous pouvez sauvegarder la partie à tout moment avec la touche <<s>>, cette manoeuvre n'arrêtera pas votre expérience de jeu.		
 		\end{itemize}
 		
 		
 \chapter{Codage, méthode et outil}
 
 \chapter{Résultat et conclusion}
+
+\chapter{Annexe}
+
 
 \end{document}
