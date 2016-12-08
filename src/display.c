@@ -15,7 +15,7 @@
 #include <string.h>  // pour strlen
 #include <stdlib.h>  // pour exit
 #include "monstre.h" // pour l'affichage des monstres
-#include "tools.h" // pour numberLinesFile
+#include "tools.h" // OK
 #include "loadLvl.h" // OK
 #include "character.h" // OK
 

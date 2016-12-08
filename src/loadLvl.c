@@ -13,8 +13,8 @@
 #include "cell.h" // OK
 #include "mapConst.h" // OK
 #include "lvl.h" // OK
-#include "moves.h" // pour move2spawn
-#include "tools.h" // pour isBetween
+#include "moves.h" // OK
+#include "tools.h" // OK
 #include "monstre.h" // pour t_monster
 #include "character.h" // OK
 

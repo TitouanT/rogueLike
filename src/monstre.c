@@ -1,5 +1,5 @@
 #include "monstre.h" // pour les structures et les constantes
-#include "tools.h"   // pour le randab
+#include "tools.h" // OK
 #include "lvl.h"     // OK
 #include "cell.h"    // OK
 #include "mapConst.h" // OK

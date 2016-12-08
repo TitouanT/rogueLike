@@ -19,9 +19,9 @@
 //#include "lvl.h"
 //#include "character.h"
 //#include "display.h"
-#include "moves.h"
+//#include "moves.h"
 //#include "loadLvl.h"
-#include "tools.h"
+//#include "tools.h"
 //#include "interactions.h"
 #include "monstre.h"
 

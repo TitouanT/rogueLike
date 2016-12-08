@@ -13,10 +13,6 @@
 #include <stdlib.h>   // pour la fonction rand
 #include "mapConst.h" // OK
 
-
-
-
-
 FILE * error;
 
 /**

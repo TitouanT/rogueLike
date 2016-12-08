@@ -10,7 +10,7 @@
 #include "cell.h" // OK
 #include "filePos.h" // OK
 #include "mapConst.h" // OK
-#include "tools.h"
+#include "tools.h" // OK
 #include <stdlib.h>
 
 

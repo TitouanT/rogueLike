@@ -12,11 +12,11 @@
 
 #include "cell.h" // OK
 #include "character.h" // OK
-#include "moves.h" // pour t_dir
+#include "moves.h" // OK
 #include "display.h" // OK
 #include "mapConst.h" // OK
 #include "loadLvl.h" // OK
-#include "tools.h" // pour presque tous les outils
+#include "tools.h" // OK
 
 /** Nombre de messages d'erreurs différents */
 #define NB_ERROR_MESSAGES 26
