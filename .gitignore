@@ -32,6 +32,11 @@
 *.dSYM/
 *.su
 
+# Latex
+*.aux
+*.log
+*.synctex.gz
+
 
 # Roguelike
 accentNeeded

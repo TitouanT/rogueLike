@@ -15,6 +15,10 @@
 #include <stdlib.h>
 #include <ncurses.h> // pour TRUE et FALSE
 
+FILE * error;
+void initErr();
+void unInitErr();
+
 int fileExist (char * fileName);
 
 void initRandom (void);

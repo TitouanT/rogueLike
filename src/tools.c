@@ -177,6 +177,25 @@ char low2up (char car) {
 	else return -1;
 }
 
+/**
+	* \brief Initialise l'ouverture de notre fichier d'erreur
+	* \fn void initErr()
+	*/
+void initErr(){
+	if(PRINT_ERROR){
+		error = fopen("err", "a");
+	}
+}
+
+/**
+	* \brief Ferme notre fichier d'erreur
+	* \fn void unInitErr()
+	*/
+void unInitErr(){
+	if(PRINT_ERROR){
+		fclose(error);
+	}
+}
 
 /**
 	* \brief Enregistre un message d'erreur dans le fichier "err"
@@ -184,11 +203,8 @@ char low2up (char car) {
 	* \param msg Message à enregistrer dans le fichier
 	*/
 void err (char msg[]) {
-	FILE * err;
 	if(PRINT_ERROR){
-		err = fopen("err", "a");
-		fprintf(err, "%s\n", msg);
-		fclose(err);
+		fprintf(error, "%s\n", msg);
 	}
 }
 
