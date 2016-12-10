@@ -30,12 +30,13 @@ char NOM_LVLDATA[40];
 	* \param choixDeSauvegarde
 	*/
 void initNameOfFile (int choixDeSauvegarde) {
+	int i;
 	err("\n***debut init name of file***");
 	/*take the right place to save the game*/
 	sprintf(DOSSIER_SAUVEGARDE, "./partie/sauvegarde%i/", choixDeSauvegarde);
 	err(DOSSIER_SAUVEGARDE);
 	/*give the name for level's file*/
-	for (int i = 0; i < NB_LVL; i++) {
+	for (i = 0; i < NB_LVL; i++) {
 		sprintf(NOM_NIVEAU[i], "%s%i.txt", DOSSIER_SAUVEGARDE, i);
 		err(NOM_NIVEAU[i]);
 	}
@@ -344,9 +345,10 @@ int bFileSaveEmpty(int choixFichierSauvegarde){
 
 void deleteGame(int choixFichierSauvegarde){
 	char fileName[50];
+	int i;
 	initNameOfFile (choixFichierSauvegarde);
 	remove(NOM_POSITION);
-	for(int i=0; i<NB_LVL;i++){
+	for(i=0; i<NB_LVL;i++){
 		remove(NOM_NIVEAU[i]);
 	}
 	remove(NOM_LVLDATA);
