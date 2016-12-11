@@ -16,7 +16,7 @@ filePos.o: src/filePos.c include/cell.h
 loadLvl.o: src/loadLvl.c include/cell.h include/mapConst.h include/lvl.h include/moves.h include/tools.h include/character.h include/monstre.h
 	gcc -c -I ./include $<
 
-display.o: src/display.c include/cell.h include/mapConst.h include/monstre.h include/loadLvl.h include/tools.h include/character.h 
+display.o: src/display.c include/cell.h include/mapConst.h include/monstre.h include/loadLvl.h include/tools.h include/character.h
 	gcc -c -I ./include $<
 
 moves.o: src/moves.c include/moves.h include/loadLvl.h include/character.h include/cell.h include/mapConst.h include/display.h include/tools.h
@@ -39,7 +39,7 @@ snake_list_ptr.o: src/snake_list_ptr.c include/snake_list_ptr.h
 
 # Compile les tests unitaires
 test: tools.o
-	gcc src/tools_tests.c $^ -o test.o
+	gcc src/tools_tests.c $^ -o test.out -lcunit
 
 # Permet de mettre à jour automatiquement le jeu
 upgrade: createFolders
