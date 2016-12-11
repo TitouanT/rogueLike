@@ -23,6 +23,7 @@ int max(int a, int b);
 
 int isBetween(int val, int a, int b);
 int intervalOverlaping(int a, int b, int c, int d);
+int mapping(int value, int min, int max, int destMin, int destMax);
 
 int car2val (char car);
 char up2low (char car);

@@ -1,11 +1,12 @@
 LIB = -lncurses
 FLAGS = -Wall
+DEBUG = -g
 
 rogueLike: main.o lvl.o filePos.o loadLvl.o display.o moves.o interactions.o tools.o snake.o snake_list_ptr.o monstre.o
-	gcc -o $@ ${FLAGS} $^ ${LIB}
+	gcc -o $@ ${FLAGS} ${DEBUG} $^ ${LIB}
 
 main.o: src/main.c include/display.h include/cell.h include/character.h include/lvl.h include/mapConst.h include/moves.h include/interactions.h include/tools.h include/monstre.h
-	gcc -c -I ./include $<
+	gcc -c ${DEBUG} -I ./include $<
 
 lvl.o: src/lvl.c include/filePos.h include/cell.h include/tools.h include/mapConst.h
 	gcc -c -I ./include $<
