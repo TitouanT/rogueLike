@@ -25,8 +25,8 @@ void createMonster (t_monster monsters[NB_MONSTER_MAX], int * nbMonsterAtEnd) {
 	int nbMonster = randab(NB_MONSTER_MIN, NB_MONSTER_MAX + 1);
 	*nbMonsterAtEnd = nbMonster;
 
-	monsters[0] = (t_monster) {GHOST, "Claude", -1, -1, randab(NB_LVL - 3, NB_LVL), 100, 1, 1, 0, 0, 0};
-	monsters[1] = (t_monster) {GHOST, "Chappe", -1, -1, randab(NB_LVL - 3, NB_LVL), 100, 1, 1, 1, 0, 0};
+	monsters[0] = (t_monster) {GHOST, "Claude", -1, -1, randab(NB_LVL - 3, NB_LVL), 100, 1, 1, 50, 0, 0, 0};
+	monsters[1] = (t_monster) {GHOST, "Chappe", -1, -1, randab(NB_LVL - 3, NB_LVL), 100, 1, 1, 50, 1, 0, 0};
 
 	// determination du nombre de monstre par étage
 	queryLvlData(lvlData);
@@ -126,30 +126,35 @@ void createMonster (t_monster monsters[NB_MONSTER_MAX], int * nbMonsterAtEnd) {
 				monsters[i].hp = 5;
 				monsters[i].pw = 1;
 				monsters[i].speed = 1;
+				monsters[i].sight = 5;
 				break;
 
 			case L2:
 				monsters[i].hp = 10;
 				monsters[i].pw = 2;
 				monsters[i].speed = 1;
+				monsters[i].sight = 10;
 				break;
 
 			case L3:
 				monsters[i].hp = 15;
 				monsters[i].pw = 2;
 				monsters[i].speed = 1;
+				monsters[i].sight = 12;
 				break;
 
 			case MASTER:
 				monsters[i].hp = 15;
 				monsters[i].pw = 4;
 				monsters[i].speed = 1;
+				monsters[i].sight = 18;
 				break;
 
 			case DOC:
 				monsters[i].hp = 20;
 				monsters[i].pw = 4;
 				monsters[i].speed = 1;
+				monsters[i].sight = 20;
 				break;
 
 			default: break;
@@ -185,6 +190,14 @@ int isItWalkableForAMonster (t_cell cell) {
 			break;
 		default: return FALSE;
 	}
+}
+
+int canMove (t_monster monsters[NB_MONSTER_MAX], int nbMonster, int line, int col, int lvl) {
+	int i;
+	for (i = 0; i < nbMonster; i++) {
+		if (monsters[i].lvl == lvl && monsters[i].line == line && monsters[i].col == col) return FALSE;
+	}
+	return TRUE;
 }
 
 void monsterAttack (t_monster monster, t_character player) {
@@ -248,15 +261,21 @@ void moveMonster (t_cell map[][COLUMNS], t_monster monsters[NB_MONSTER_MAX], int
 			if (val > 0) {
 				if (val == 1) monsterAttack (monsters[i], player);
 				else {
-					if (val <= 40/*monsters[i].sight*/) {
+					if (val <= monsters[i].sight) {
 						
-						if (       l + 1 < LINES   && path[l + 1][c] == val - 1) {
+						if (l + 1 < LINES   && path[l + 1][c] == val - 1 && canMove(monsters, nbMonster, l + 1, c, player.lvl)) {
 							monsters[i].line = l + 1;
-						} else if (l - 1 >= 0      && path[l - 1][c] == val - 1) {
+						}
+						
+						else if (l - 1 >= 0 && path[l - 1][c] == val - 1 && canMove(monsters, nbMonster, l - 1, c, player.lvl)) {
 							monsters[i].line = l - 1;
-						} else if (c + 1 < COLUMNS && path[l][c + 1] == val - 1) {
+						}
+						
+						else if (c + 1 < COLUMNS && path[l][c + 1] == val - 1 && canMove(monsters, nbMonster, l, c + 1, player.lvl)) {
 							monsters[i].col  = c + 1;
-						} else if (c - 1 >= 0      && path[l][c - 1] == val - 1) {
+						}
+						
+						else if (c - 1 >= 0 && path[l][c - 1] == val - 1 && canMove(monsters, nbMonster, l, c - 1, player.lvl)) {
 							monsters[i].col  = c - 1;
 						}
 						
