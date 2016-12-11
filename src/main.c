@@ -86,6 +86,7 @@ int main () {
 		if (key == 'N') {
 			err("    main: cheat N pour une nouvelle map");
 			randomFloor(map, 6);
+			move2spawn(map, &player, STAIRS_DOWN);
 			displayFloor(map, player, win_game);
 			displayPlayer(player, map, win_game, win_logs, &lineLog);
 			err("    main: fin du cheat N");
