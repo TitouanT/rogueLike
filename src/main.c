@@ -97,7 +97,7 @@ int main () {
 		err("  main: recuperation apres handle interaction");
 		markDiscoverRoom(map, player);
 
-		moveMonster(map, monsters, nbMonsters, player);
+		moveMonster(map, monsters, nbMonsters, &player);
 
 		err("  main: affichage etage, player, stats");
 		displayFloor(map, player, win_game);
