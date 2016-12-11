@@ -297,7 +297,7 @@ int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso, 
 
 		}
 
-		if(mat[perso->line][perso->column].obj[0].type==TRAP){
+		if(mat[perso->line][perso->column].nbObject > 0 && mat[perso->line][perso->column].obj[0].type==TRAP){
 			fallTrap(mat,perso, win_logs, lineLog, direction);
 			err("***tombé dans un piege !!***");
 		}
