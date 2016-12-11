@@ -5,6 +5,7 @@
 #include "lvl.h"      // OK
 #include "cell.h"     // OK
 #include "mapConst.h" // OK
+#include "filePos.h"  // OK
 
 
 
@@ -175,6 +176,95 @@ void readMonster (t_monster monsters[NB_MONSTER_MAX]) {
 
 }
 
-void moveMonster (t_cell map[][COLUMNS], t_monster monsters[NB_MONSTER_MAX], int nbMonster, t_character player) {
+int isItWalkableForAMonster (t_cell cell) {
+	switch (cell.type) {
+		case ROOM: case CORRIDOR: return TRUE; break;
+		case DOORWAY:
+			if (cell.state == dCLOSE) return FALSE;
+			else return TRUE;
+			break;
+		default: return FALSE;
+	}
+}
 
+void monsterAttack (t_monster monster, t_character player) {
+	
+}
+
+void moveGhost(t_cell map[][COLUMNS], t_monster monsters[NB_MONSTER_MAX], int nbMonster, t_character player) {
+	
+}
+
+void moveMonster (t_cell map[][COLUMNS], t_monster monsters[NB_MONSTER_MAX], int nbMonster, t_character player) {
+	moveGhost(map, monsters, nbMonster, player);
+	int i, j, path[LINES][COLUMNS];
+	int l, c, val;
+	t_pos head;
+	
+	for (i = 0; i < LINES; i++) {
+		for (j = 0; j < COLUMNS; j++) path[i][j] = -1;
+	}
+	
+	head.line = player.line;
+	head.column = player.column;
+	
+	path[head.line][head.column] = 0;
+	file_init();
+	do {
+		l = head.line;
+		c = head.column;
+		val = path[l][c];
+		if ( l+1 < LINES && path[l + 1][c] == -1 && isItWalkableForAMonster(map[l + 1][c])) {
+			path[l + 1][c] = val + 1;
+			head.line = l + 1;
+			file_ajouter (head);
+		}
+		if ( l-1 >= 0 && path[l - 1][c] == -1 && isItWalkableForAMonster(map[l - 1][c])) {
+			path[l - 1][c] = val + 1;
+			head.line = l - 1;
+			file_ajouter (head);
+		}
+		if ( c+1 < COLUMNS && path[l][c + 1] == -1 && isItWalkableForAMonster(map[l][c + 1])) {
+			path[l][c + 1] = val + 1;
+			head.column = c + 1;
+			head.line = l;
+			file_ajouter (head);
+		}
+		if ( c-1 >= 0 && path[l][c - 1] == -1 && isItWalkableForAMonster(map[l][c - 1])) {
+			path[l][c - 1] = val + 1;
+			head.column = c - 1;
+			head.line = l;
+			file_ajouter (head);
+		}
+		file_retirer(&head);
+	} while (!file_est_vide());
+	file_supprimer();
+
+	for (i = 2; i < nbMonster; i++) {
+		if (monsters[i].lvl == player.lvl) {
+			l = monsters[i].line;
+			c = monsters[i].col;
+			val = path[l][c];
+			if (val > 0) {
+				if (val == 1) monsterAttack (monsters[i], player);
+				else {
+					if (val <= 40/*monsters[i].sight*/) {
+						
+						if (       l + 1 < LINES   && path[l + 1][c] == val - 1) {
+							monsters[i].line = l + 1;
+						} else if (l - 1 >= 0      && path[l - 1][c] == val - 1) {
+							monsters[i].line = l - 1;
+						} else if (c + 1 < COLUMNS && path[l][c + 1] == val - 1) {
+							monsters[i].col  = c + 1;
+						} else if (c - 1 >= 0      && path[l][c - 1] == val - 1) {
+							monsters[i].col  = c - 1;
+						}
+						
+					}
+				}
+			}
+		}
+	}
+	
+	
 }

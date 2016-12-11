@@ -53,6 +53,7 @@ typedef struct {
 	int hp;              /*<! ses points de vie*/
 	int pw;              /*<! ses points d'attaque*/
 	int speed;           /*<! sa vitesse de déplacement*/
+	int sight;
 
 	int data1;           /*<! .*/
 	int data2;           /*<! ..*/
