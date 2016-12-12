@@ -326,6 +326,8 @@ void printSaveInfos(WINDOW *win, int saveNB, int selectedGame){
 	* \param win Fenêtre où afficher les informations
 	* \param map Carte du joueur
 	* \param player Infos du joueur
+	* \param monsters L'ensemble des monstres du jeu
+	* \param nbMonster Nombre de monstres dans le jeu
 	*/
 void selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *player, t_monster monsters[NB_MONSTER_MAX], int * nbMonster){
 	err ("*** Debut Selection screen ***");

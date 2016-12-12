@@ -119,9 +119,8 @@ void writeLvl ( t_cell map[][COLUMNS], int nbLvl) {
 
 /**
   * \brief écrit dans un fichier les données sur les étages
-  * \fn void writeLvlData (t_lvl tabLvl[NB_LVL], char * fileName)
+  * \fn void writeLvlData (t_lvl tabLvl[NB_LVL])
   * \param tabLvl tableau qui contient chaque niveau
-  * \param fileName nom du fichier à écrire
   */
 void writeLvlData (t_lvl tabLvl[NB_LVL]) {
 	err ("*** debut write lvl data ***");
@@ -130,8 +129,6 @@ void writeLvlData (t_lvl tabLvl[NB_LVL]) {
 	int i, j, line, column, height, width, nbRoom;
 	sprintf(msg, "ecriture des infos dans : %s", NOM_LVLDATA);
 	err(msg);
-
-
 
 	for (i = 0; i < NB_LVL; i++) {
 		sprintf (msg, "\técriture du nombre de pieces : %d/%d", i, NB_LVL-1);
@@ -157,7 +154,6 @@ void writeLvlData (t_lvl tabLvl[NB_LVL]) {
   * \brief lit dans un fichier les données sur les étages
   * \fn int readLvlData (t_lvl tabLvl[NB_LVL])
   * \param tabLvl tableau qui contiendra chaque niveau
-  * \param fileName nom du fichier à lire
   * \return TRUE si la lecture c'est bien passée.
   * \return FALSE sinon.
   */
@@ -213,7 +209,7 @@ void writePosition ( t_character player) {
 
 /**
 	* \brief lit les stats du joueur dans un fichier "position.txt"
-	*	\fn void readPosition (t_character player)
+	*	\fn void readPosition (t_character *player)
 	* \param player joueur
 	*/
 
@@ -242,6 +238,8 @@ void readPosition ( t_character *player){
 	* \param choix Choix 0 ou 1 (0 nouvelle partie, 1 reprendre partie)
 	* \param choixFichierSauvegarde Choix de la sauvegarde
 	* \param player Joueur
+  * \param monsters L'ensemble des monstres du jeu
+  * \param nbMonster Nombre de monstres dans le jeu
 	*/
 
 void initGameMap(t_cell map[LINES][COLUMNS], int choix, int choixFichierSauvegarde, t_character *player, t_monster monsters[NB_MONSTER_MAX], int * nbMonster){
@@ -310,9 +308,11 @@ void changeLvl(t_cell map[LINES][COLUMNS], t_character *player, int dir){
 
 /**
 	* \brief Permet de sauvegarder la partie
-	*	\fn void saveGame (t_cell map[][COLUMNS], t_character *playerr)
+	*	\fn void saveGame (t_cell map[][COLUMNS], t_character *player, t_monster monsters[NB_MONSTER_MAX], int nbMonster)
 	* \param map Carte où se trouve le joueur
 	* \param player Joueur
+  * \param monsters L'ensemble des monstres du jeu
+  * \param nbMonster Nombre de monstres dans le jeu
 	*/
 
 void saveGame(t_cell map[LINES][COLUMNS], t_character *player, t_monster monsters[NB_MONSTER_MAX], int nbMonster){
@@ -353,7 +353,13 @@ int bFileSaveEmpty(int choixFichierSauvegarde){
 	return i;
 }
 
+/**
+	* \brief Permet de supprimer une partie existante
+	*	\fn void deleteGame (int choixFichierSauvegarde)
+	* \param choixFichierSauvegarde Numéro du dossier de sauvegarde
+	*/
 void deleteGame(int choixFichierSauvegarde){
+  /* Fonction permettant de supprimer une partie */
 	char fileName[50];
 	int i;
 	initNameOfFile (choixFichierSauvegarde);
@@ -365,15 +371,21 @@ void deleteGame(int choixFichierSauvegarde){
 
 }
 
-void writeMonster (t_monster monsters[NB_MONSTER_MAX], int nbMonsterAtEnd) {
-
+/**
+  * \brief Permet de sauvegarder toutes les données sur les montres
+  *	\fn void writeMonster (t_monster monsters[NB_MONSTER_MAX], int nbMonster)
+  * \param monsters L'ensemble des monstres du jeu
+  * \param nbMonster Nombre de monstres dans le jeu
+*/
+void writeMonster (t_monster monsters[NB_MONSTER_MAX], int nbMonster) {
+ /* Fonction permettant de sauvegarder toutes les données sur les montres */
 	FILE * lvlMonster;
 	lvlMonster = fopen (NOM_MONSTER, "w");
 
-	fprintf(lvlMonster, "%d ", nbMonsterAtEnd);
+	fprintf(lvlMonster, "%d ", nbMonster);
 	fprintf(lvlMonster, "\n");
 
-	for (int i = 0; i < nbMonsterAtEnd; i++) {
+	for (int i = 0; i < nbMonster; i++) {
 
 			fprintf (lvlMonster, "%d %d %d %d ", monsters[i].type, monsters[i].line, monsters[i].col, monsters[i].lvl);
 			fprintf(lvlMonster, "%d %d %d %d %d ", monsters[i].hp, monsters[i].pw, monsters[i].speed, monsters[i].sight, monsters[i].agility);
@@ -384,17 +396,23 @@ void writeMonster (t_monster monsters[NB_MONSTER_MAX], int nbMonsterAtEnd) {
 	fclose(lvlMonster);
 }
 
-void readMonster (t_monster monsters[NB_MONSTER_MAX], int *nbMonsterAtEnd) {
-
+/**
+  * \brief Permet de lire toutes les données sur les montres
+  *	\fn void writeMonster (t_monster monsters[NB_MONSTER_MAX], int *nbMonster)
+  * \param monsters L'ensemble des monstres du jeu
+  * \param nbMonster Nombre de monstres dans le jeu
+*/
+void readMonster (t_monster monsters[NB_MONSTER_MAX], int *nbMonster) {
+ /* Fonction permettant de lire toutes les données sur les montres */
 	FILE * lvlMonster;
 	int type,line,col,lvl,hp,pw,speed,sight,agility,data1,data2,data3;
 
 	lvlMonster = fopen (NOM_MONSTER, "r");
 
-	fscanf(lvlMonster, "%d ", nbMonsterAtEnd);
+	fscanf(lvlMonster, "%d ", nbMonster);
 	fscanf(lvlMonster, "\n");
 
-	for (int i = 0; i < *nbMonsterAtEnd; i++) {
+	for (int i = 0; i < *nbMonster; i++) {
 
 			fscanf(lvlMonster, "%d %d %d %d ", &type, &line, &col, &lvl);
 			fscanf(lvlMonster, "%d %d %d %d %d ", &hp, &pw, &speed, &sight, &agility);
