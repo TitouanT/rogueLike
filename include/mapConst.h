@@ -13,7 +13,7 @@
 #include <ncurses.h> // OK
 
 /** Si mit à TRUE, les étages sont entièrements découverts par défaut */
-#define DEBUG TRUE
+#define DEBUG FALSE
 
 #define PRINT_ERROR TRUE
 

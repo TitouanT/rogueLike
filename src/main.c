@@ -33,7 +33,7 @@ int main () {
 	int lineLog = 0;
 	int widthScreen, heightScreen;
 	int continueGame = TRUE;
-	int nbMonsters;
+	int nbMonster;
 
 
 	err ("  main: initialisations");
@@ -41,7 +41,8 @@ int main () {
 	initRandom();
 	t_cell map[LINES][COLUMNS];
 	t_monster monsters[NB_MONSTER_MAX];
-	t_character player = {"root", 0, 0, 0, 10, 10, 10, 0, MAX_FOOD, FALSE, FALSE, {objNONE}};
+	int visibleByGhost[LINES][COLUMNS] = {{0}};
+	t_character player = {"root", 0, 0, 0, 10, 10, 60, 10, 0, MAX_FOOD, FALSE, FALSE, {objNONE}};
 
 	init_screen();
 	getmaxyx(stdscr,heightScreen,widthScreen);
@@ -54,7 +55,7 @@ int main () {
 
 	err ("  main: Affichage du screen de choix");
 	WINDOW *win_choice = newwin(heightScreen, widthScreen, 0, 0);
-	selectionScreen(win_choice, map, &player, monsters, &nbMonsters);
+	selectionScreen(win_choice, map, &player, monsters, &nbMonster);
 
 	deleteWindow(win_choice);
 
@@ -67,9 +68,9 @@ int main () {
 	// On affiche les objectifs
 	displayObjectives(&lineLog, win_logs);
 	// On affiche la map et le joueur
-	displayFloor(map, player, win_game);
+	displayFloor(map, player, win_game, visibleByGhost);
 	displayPlayer(player, map, win_game, win_logs, &lineLog);
-	displayMonster (win_game, monsters, map, nbMonsters, player.lvl);
+	displayMonster (win_game, monsters, map, nbMonster, player.lvl, visibleByGhost);
 	displayStats(player, win_stats);
 
 
@@ -86,23 +87,24 @@ int main () {
 		if (key == 'N') {
 			err("    main: cheat N pour une nouvelle map");
 			randomFloor(map, 6);
-			displayFloor(map, player, win_game);
+			displayFloor(map, player, win_game, visibleByGhost);
 			displayPlayer(player, map, win_game, win_logs, &lineLog);
 			err("    main: fin du cheat N");
 		}
 
 		clearLog(&lineLog, win_logs);
 		err("  main: passe la main a handle interaction");
-		continueGame = handleInteraction(key, map, &player, win_logs, win_game, &lineLog);
+		continueGame = handleInteraction(key, map, &player, win_logs, win_game, &lineLog, monsters, nbMonster);
 		err("  main: recuperation apres handle interaction");
 		markDiscoverRoom(map, player);
 
-		moveMonster(map, monsters, nbMonsters, &player);
+		//moveMonster(map, monsters, nbMonster, &player);
+		setVisibleByGhost (monsters, visibleByGhost, player);
 
 		err("  main: affichage etage, player, stats");
-		displayFloor(map, player, win_game);
+		displayFloor(map, player, win_game, visibleByGhost);
 		displayPlayer(player, map, win_game, win_logs, &lineLog);
-		displayMonster (win_game, monsters, map, nbMonsters, player.lvl);
+		displayMonster (win_game, monsters, map, nbMonster, player.lvl, visibleByGhost);
 		displayStats(player, win_stats);
 		err("  main: fin affichage etage, player, stats");
 

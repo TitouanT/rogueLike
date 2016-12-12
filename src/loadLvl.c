@@ -231,14 +231,14 @@ void readPosition ( t_character *player){
 
 /**
 	* \brief Initialise la partie du joueur
-	*	\fn void initGameMap (t_cell map[][COLUMNS], int choix, int choixFichierSauvegarde, t_character *player, t_monster monsters[NB_MONSTER_MAX], int * nbMonsters)
+	*	\fn void initGameMap (t_cell map[][COLUMNS], int choix, int choixFichierSauvegarde, t_character *player, t_monster monsters[NB_MONSTER_MAX], int * nbMonster)
 	* \param map Carte où se trouve le joueur
 	* \param choix Choix 0 ou 1 (0 nouvelle partie, 1 reprendre partie)
 	* \param choixFichierSauvegarde Choix de la sauvegarde
 	* \param player Joueur
 	*/
 
-void initGameMap(t_cell map[LINES][COLUMNS], int choix, int choixFichierSauvegarde, t_character *player, t_monster monsters[NB_MONSTER_MAX], int * nbMonsters){
+void initGameMap(t_cell map[LINES][COLUMNS], int choix, int choixFichierSauvegarde, t_character *player, t_monster monsters[NB_MONSTER_MAX], int * nbMonster){
 	/* Initialise les niveaux soit une nouvelle partie soit une sauvegarde */
 	err("*** Debut init Game Map ****");
 	int i;
@@ -259,7 +259,7 @@ void initGameMap(t_cell map[LINES][COLUMNS], int choix, int choixFichierSauvegar
 		readLvl(map, 0);
 		move2spawn(map, player, STAIRS_DOWN);
 		
-		createMonster (monsters, nbMonsters);
+		createMonster (monsters, nbMonster);
 		err("Fin traitement new_game");
 	}
 	else{

@@ -74,7 +74,7 @@ void passOut(t_cell map[LINES][COLUMNS]){
 
 }
 
-void fallTrap(t_cell map[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, int *lineLog, t_dir direction){
+void fallTrap(t_cell map[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, int *lineLog, t_dir direction, t_monster monsters[NB_MONSTER_MAX], int nbMonster){
 	int trapType=randab(0, 3);
 	int lostLvl, lostHp, glisser;
 	int i;
@@ -82,7 +82,7 @@ void fallTrap(t_cell map[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, 
 	switch(trapType){
 		case 0 : lostLvl=randab(0,perso->lvl+1)*-1; changeLvl(map, *&perso, lostLvl); addLog("Vous êtes tombé dans un trou", lineLog, win_logs); break;
 		case 1 : lostHp=randab(0,5); (perso->hp)= (perso->hp)-lostHp; addLog("Attention, un L1 vous a jeté une carte, vous vous êtes écorché", lineLog, win_logs); break;
-		case 2 : glisser=randab(2,8); for(i=0; i<glisser;i++) move_perso(direction, map, perso, win_logs, lineLog); addLog("Regardez où vous mettez vos pieds, la femme de ménage à lustrer le sol", lineLog, win_logs);
+		case 2 : glisser=randab(2,8); for(i=0; i<glisser;i++) move_perso(direction, map, perso, win_logs, lineLog, monsters, nbMonster); addLog("Regardez où vous mettez vos pieds, la femme de ménage à lustrer le sol", lineLog, win_logs);
 	}
 }
 
@@ -194,11 +194,12 @@ int bIsWalkable(t_cell cell){
 
 }
 
-int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, int *lineLog){
+int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, int *lineLog, t_monster monsters[NB_MONSTER_MAX], int nbMonster) {
 	err("***debut move perso***");
 	int success = FALSE;
 	int line   = perso->line;
 	int column = perso->column;
+	int indexMonster;
 
 	if(!canPlayerMove(perso)) return FALSE;
 
@@ -266,8 +267,16 @@ int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso, 
 
 	// On effectue certaines actions si le joueur a réussi à se deplacer
 	if(success == TRUE){
-
+		
+		if (isThereAMonster (monsters, nbMonster, perso -> line, perso -> column, perso -> lvl, &indexMonster) == TRUE) {
+			playerAttackMonster (*perso, monsters, indexMonster);
+			perso -> line = line;
+			perso -> column = column;
+		}
+		
+		
 		perso->nbMove++;
+		moveMonster(mat, monsters, nbMonster, perso);
 
 		augmenterFaim(perso);
 
@@ -298,7 +307,7 @@ int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso, 
 		}
 
 		if(mat[perso->line][perso->column].nbObject > 0 && mat[perso->line][perso->column].obj[0].type==TRAP){
-			fallTrap(mat,perso, win_logs, lineLog, direction);
+			fallTrap(mat,perso, win_logs, lineLog, direction, monsters, nbMonster);
 			err("***tombé dans un piege !!***");
 		}
 	}

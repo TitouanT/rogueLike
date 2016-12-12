@@ -54,7 +54,7 @@ typedef struct {
 	int pw;              /*<! ses points d'attaque*/
 	int speed;           /*<! sa vitesse de déplacement*/
 	int sight;
-	int ability;
+	int agility;
 
 	int data1;           /*<! .*/
 	int data2;           /*<! ..*/
@@ -63,7 +63,8 @@ typedef struct {
 
 void createMonster (t_monster monsters[NB_MONSTER_MAX], int * nbMonster);
 void moveMonster (t_cell map[][COLUMNS], t_monster monsters[NB_MONSTER_MAX], int nbMonster, t_character * player);
-
-
+void setVisibleByGhost (t_monster monsters[NB_MONSTER_MAX], int visibleByGhost[LINES][COLUMNS], t_character player);
+int isThereAMonster (t_monster monsters[NB_MONSTER_MAX], int nbMonster, int line, int column, int lvl, int * indexMonster);
+void playerAttackMonster (t_character player, t_monster monsters[NB_MONSTER_MAX], int indexMonster);
 
 #endif /* end of include guard: MONSTER_H */

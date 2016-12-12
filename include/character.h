@@ -32,6 +32,7 @@ typedef struct {
 	int lvl;         /*!< l'étage auquel il se trouve*/
 	int hp;          /*!< ses points de vie*/
 	int pw;          /*!< ses points de dégat*/
+	int agility;     /*!< agilité (sur 100)*/
 	int xp;          /*!< son expérience*/
 	int nbMove;      /*!< le nombre de mouvement effectué*/
 	int food;        /*!< faible lorsqu'il a faim, haut lorsqu'il n'as pas faim*/

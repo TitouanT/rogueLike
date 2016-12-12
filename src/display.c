@@ -322,12 +322,12 @@ void printSaveInfos(WINDOW *win, int saveNB, int selectedGame){
 
 /**
 	* \brief Gère l'affichage de l'écran de sélection de la sauvegarde
-	*	\fn void selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *player, t_monster monsters[NB_MONSTER_MAX], int * nbMonsters)
+	*	\fn void selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *player, t_monster monsters[NB_MONSTER_MAX], int * nbMonster)
 	* \param win Fenêtre où afficher les informations
 	* \param map Carte du joueur
 	* \param player Infos du joueur
 	*/
-void selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *player, t_monster monsters[NB_MONSTER_MAX], int * nbMonsters){
+void selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *player, t_monster monsters[NB_MONSTER_MAX], int * nbMonster){
 	err ("*** Debut Selection screen ***");
 	int lines, columns;
 	getmaxyx(win,lines,columns);
@@ -376,22 +376,19 @@ caCEstDuPropre:
 	}
 
 	if(bFileSaveEmpty (selectedGame) == FALSE ){
-		initGameMap (map, CONTINUE_GAME, selectedGame, player, monsters, nbMonsters);
+		initGameMap (map, CONTINUE_GAME, selectedGame, player, monsters, nbMonster);
 	}
 	else {
-		initGameMap (map, NEW_GAME, selectedGame, player, monsters, nbMonsters);
+		initGameMap (map, NEW_GAME, selectedGame, player, monsters, nbMonster);
 	}
 
 	err ("*** Fin Selection screen ***");
-
-
-
 }
 
-void displayMonster (WINDOW * win, t_monster monsters[NB_MONSTER_MAX], t_cell map[LINES][COLUMNS], int nbMonsters, int currentLvl) {
+void displayMonster (WINDOW * win, t_monster monsters[NB_MONSTER_MAX], t_cell map[LINES][COLUMNS], int nbMonster, int currentLvl, int visibleByGhost[LINES][COLUMNS]) {
 	int i;
-	for (i = 0; i < nbMonsters; i++) {
-		if (monsters[i].lvl == currentLvl && map[monsters[i].line][monsters[i].col].isDiscovered) {
+	for (i = 0; i < nbMonster; i++) {
+		if (monsters[i].hp > 0 && monsters[i].lvl == currentLvl && (map[monsters[i].line][monsters[i].col].isDiscovered || visibleByGhost[monsters[i].line][monsters[i].col] == 1)) {
 			if(map[monsters[i].line][monsters[i].col].type == ROOM){
 				wattron(win, COLOR_PAIR(PLAYER_COLOR));
 			}
@@ -536,19 +533,20 @@ void printCell(int pair, char cell, WINDOW *win){
 
 /**
 	* \brief Affiche l'étage de la map donnée en paramètre
-	*	\fn void displayFloor(t_cell map[LINES][COLUMNS], t_character player, WINDOW *win)
+	*	\fn void displayFloor(t_cell map[LINES][COLUMNS], t_character player, WINDOW *win, int visibleByGhost[LINES][COLUMNS])
 	* \param map Carte à afficher
 	* \param player Joueur
 	* \param win Fenêtre où afficher la carte
+	* \param visibleByGhost matrice pour savoir ce que les fantomes rendent visible.
 	*/
-void displayFloor(t_cell map[LINES][COLUMNS], t_character player, WINDOW *win) {
+void displayFloor(t_cell map[LINES][COLUMNS], t_character player, WINDOW *win, int visibleByGhost[LINES][COLUMNS]) {
 
 	int i, j;
 
 	for (i = 0; i < LINES; i++) {
 		wmove(win, i+1,1);
 		for (j = 0; j < COLUMNS; j++) {
-			if (map[i][j].isDiscovered) {
+			if (map[i][j].isDiscovered || visibleByGhost[i][j] == 1) {
 				switch (map[i][j].type) {
 
 					case EMPTY: 	 printCell(GENERAL_COLOR,' ', win); break;

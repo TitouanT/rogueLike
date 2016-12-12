@@ -6,6 +6,7 @@
 #include "cell.h"     // OK
 #include "mapConst.h" // OK
 #include "filePos.h"  // OK
+//#include "display.h"
 
 
 
@@ -25,8 +26,8 @@ void createMonster (t_monster monsters[NB_MONSTER_MAX], int * nbMonsterAtEnd) {
 	int nbMonster = randab(NB_MONSTER_MIN, NB_MONSTER_MAX + 1);
 	*nbMonsterAtEnd = nbMonster;
 
-	monsters[0] = (t_monster) {GHOST, "Claude", -1, -1, randab(NB_LVL - 3, NB_LVL), 100, 1, 1, 50, 100, 0, 0, 0};
-	monsters[1] = (t_monster) {GHOST, "Chappe", -1, -1, randab(NB_LVL - 3, NB_LVL), 100, 1, 1, 50, 100, 1, 0, 0};
+	monsters[0] = (t_monster) {GHOST, "Claude", -1, -1, randab(NB_LVL - 3, NB_LVL), 100, 1, 1, 50, 100, 0, -1, -1};
+	monsters[1] = (t_monster) {GHOST, "Chappe", -1, -1, randab(NB_LVL - 3, NB_LVL), 100, 1, 1, 50, 100, 1, -1, -1};
 
 	// determination du nombre de monstre par étage
 	queryLvlData(lvlData);
@@ -127,7 +128,7 @@ void createMonster (t_monster monsters[NB_MONSTER_MAX], int * nbMonsterAtEnd) {
 				monsters[i].pw = 1;
 				monsters[i].speed = 1;
 				monsters[i].sight = 5;
-				monsters[i].ability = 50;
+				monsters[i].agility = 50;
 				break;
 
 			case L2:
@@ -135,7 +136,7 @@ void createMonster (t_monster monsters[NB_MONSTER_MAX], int * nbMonsterAtEnd) {
 				monsters[i].pw = 2;
 				monsters[i].speed = 1;
 				monsters[i].sight = 10;
-				monsters[i].ability = 60;
+				monsters[i].agility = 60;
 				break;
 
 			case L3:
@@ -143,7 +144,7 @@ void createMonster (t_monster monsters[NB_MONSTER_MAX], int * nbMonsterAtEnd) {
 				monsters[i].pw = 2;
 				monsters[i].speed = 1;
 				monsters[i].sight = 12;
-				monsters[i].ability = 70;
+				monsters[i].agility = 70;
 				break;
 
 			case MASTER:
@@ -151,7 +152,7 @@ void createMonster (t_monster monsters[NB_MONSTER_MAX], int * nbMonsterAtEnd) {
 				monsters[i].pw = 4;
 				monsters[i].speed = 1;
 				monsters[i].sight = 18;
-				monsters[i].ability = 80;
+				monsters[i].agility = 80;
 				break;
 
 			case DOC:
@@ -159,7 +160,7 @@ void createMonster (t_monster monsters[NB_MONSTER_MAX], int * nbMonsterAtEnd) {
 				monsters[i].pw = 4;
 				monsters[i].speed = 1;
 				monsters[i].sight = 20;
-				monsters[i].ability = 90;
+				monsters[i].agility = 90;
 				break;
 
 			default: break;
@@ -186,6 +187,17 @@ void readMonster (t_monster monsters[NB_MONSTER_MAX]) {
 
 }
 
+int isThereAMonster (t_monster monsters[NB_MONSTER_MAX], int nbMonster, int line, int col, int lvl, int * indexMonster) {
+	int i;
+	for (i = 0; i < nbMonster; i++) {
+		if (monsters[i].hp > 0 && monsters[i].lvl == lvl && monsters[i].line == line && monsters[i].col == col) {
+			*indexMonster = i;
+			return TRUE;
+		}
+	}
+	return FALSE;
+}
+
 int isItWalkableForAMonster (t_cell cell) {
 	switch (cell.type) {
 		case ROOM: case CORRIDOR: return TRUE; break;
@@ -205,17 +217,68 @@ int canMove (t_monster monsters[NB_MONSTER_MAX], int nbMonster, int line, int co
 	return TRUE;
 }
 
+void playerAttackMonster (t_character player, t_monster monsters[NB_MONSTER_MAX], int indexMonster) {
+	if (didItHappen(player.agility)) monsters[indexMonster].hp -= player.pw;
+}
+
+
 void monsterAttackPlayer (t_monster monster, t_character * player) {
-	if (didItHappen(monster.ability)) player -> hp -= monster.pw; // une attaque est faite !
+	if (didItHappen(monster.agility)) player -> hp -= monster.pw; // une attaque est faite !
 	// sinon le monstre rate son attaque;
 }
 
-void moveGhost(t_cell map[][COLUMNS], t_monster monsters[NB_MONSTER_MAX], int nbMonster, t_character *player) {
+void moveGhost(t_cell map[][COLUMNS], t_monster monsters[NB_MONSTER_MAX], int iGhost, t_character *player) {
 	
+	int line, col, hDir = 0, vDir = 0;
+	if (monsters[iGhost].data2 == -1 || monsters[iGhost].data3 == -1) {
+		monsters[iGhost].data2 = randab(0, LINES);
+		monsters[iGhost].data3 = randab(0, COLUMNS);
+	}
+	line = monsters[iGhost].data2;
+	col  = monsters[iGhost].data3;
+	
+	if (line > monsters[iGhost].line) vDir = 1;
+	else if (line < monsters[iGhost].line) vDir = -1;
+	
+	if (col > monsters[iGhost].col) hDir = 1;
+	else if (col < monsters[iGhost].col) hDir = -1;
+	
+	if (hDir == 0 && vDir == 0) monsters[iGhost].data2 = -1;
+	
+	monsters[iGhost].line += vDir;
+	monsters[iGhost].col  += hDir;
+}
+
+void setVisibleByGhost (t_monster monsters[NB_MONSTER_MAX], int visibleByGhost[LINES][COLUMNS], t_character player) {
+	int radius = 10, centerLine, centerCol, nbL, nbC, line, col, iGhost, i, j;
+	for (i = 0; i < LINES; i++) {
+		for (j = 0; j < COLUMNS; j++) visibleByGhost[i][j] = 0;
+	}
+	for (iGhost = 0; iGhost < 2; iGhost++) {
+		if (monsters[iGhost].lvl == player.lvl && monsters[iGhost].hp > 0) {
+			centerLine = monsters[iGhost].line;
+			centerCol = monsters[iGhost].col;
+			for (i = 0; i < radius * 2; i++) {
+				for (j = 0; j < radius * 2; j++) {
+					line = centerLine - radius + i;
+					col = centerCol - radius + j;
+					nbL = centerLine - line;
+					nbC = centerCol - col;
+					if (nbL * nbL + nbC * nbC < radius * radius && line >= 0 && line < LINES && col >= 0 && col < COLUMNS)
+					visibleByGhost[line][col] = 1;
+				}
+			}
+		}
+	}
 }
 
 void moveMonster (t_cell map[][COLUMNS], t_monster monsters[NB_MONSTER_MAX], int nbMonster, t_character *player) {
-	moveGhost(map, monsters, nbMonster, player);
+	if (monsters[0].lvl == player -> lvl && monsters[0].hp > 0)
+		moveGhost(map, monsters, 0, player);
+	
+	if (monsters[1].lvl == player -> lvl && monsters[0].hp > 0)
+		moveGhost(map, monsters, 1, player);
+	
 	int i, j, path[LINES][COLUMNS];
 	int l, c, val;
 	t_pos head;
@@ -260,7 +323,7 @@ void moveMonster (t_cell map[][COLUMNS], t_monster monsters[NB_MONSTER_MAX], int
 	file_supprimer();
 
 	for (i = 2; i < nbMonster; i++) {
-		if (monsters[i].lvl == player -> lvl) {
+		if (monsters[i].lvl == player -> lvl  && monsters[i].hp > 0) {
 			l = monsters[i].line;
 			c = monsters[i].col;
 			val = path[l][c];
