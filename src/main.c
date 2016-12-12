@@ -123,6 +123,7 @@ int main () {
 		displayEnd(player, win_end);
 		while((key = getch()) != 'q' && key != 'Q');
 		err ("main*** Fin Affichage du gameOver ***");
+		main();
 	}
 
 
