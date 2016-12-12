@@ -180,57 +180,6 @@ void createMonster (t_monster monsters[NB_MONSTER_MAX], int * nbMonsterAtEnd) {
 	err ("*** Fin create Monster ***");
 }
 
-void writeMonster (t_monster monsters[NB_MONSTER_MAX], int nbMonsterAtEnd) {
-
-	FILE * lvlMonster;
-	lvlMonster = fopen ("monster.txt", "w");
-
-	fprintf(lvlMonster, "%d ", nbMonsterAtEnd);
-	fprintf(lvlMonster, "\n");
-
-	for (int i = 0; i < nbMonsterAtEnd; i++) {
-
-			fprintf (lvlMonster, "%d %d %d %d ", monsters[i].type, monsters[i].line, monsters[i].col, monsters[i].lvl);
-			fprintf(lvlMonster, "%d %d %d %d %d ", monsters[i].hp, monsters[i].pw, monsters[i].speed, monsters[i].sight, monsters[i].agility);
-			fprintf(lvlMonster, "%d %d %d ", monsters[i].data1, monsters[i].data2, monsters[i].data3);
-			fprintf(lvlMonster, "\n");
-	}
-	fprintf(lvlMonster, "\n");
-	fclose(lvlMonster);
-}
-
-void readMonster (t_monster monsters[NB_MONSTER_MAX], int *nbMonsterAtEnd) {
-
-	FILE * lvlMonster;
-	int type,line,col,lvl,hp,pw,speed,sight,agility,data1,data2,data3;
-
-	lvlMonster = fopen ("monster.txt", "r");
-
-	fscanf(lvlMonster, "%d ", nbMonsterAtEnd);
-	fscanf(lvlMonster, "\n");
-
-	for (int i = 0; i < *nbMonsterAtEnd; i++) {
-
-			fscanf(lvlMonster, "%d %d %d %d ", &type, &line, &col, &lvl);
-			fscanf(lvlMonster, "%d %d %d %d %d ", &hp, &pw, &speed, &sight, &agility);
-			fscanf(lvlMonster, "%d %d %d ", &data1, &data2, &data3);
-
-			monsters[i].type = type;
-			monsters[i].line = line;
-			monsters[i].col = col;
-			monsters[i].lvl = lvl;
-			monsters[i].hp = hp;
-			monsters[i].pw = pw;
-			monsters[i].speed = speed;
-			monsters[i].sight = sight;
-			monsters[i].agility = agility;
-			monsters[i].data1 = data1;
-			monsters[i].data2 = data2;
-			monsters[i].data3 = data3;
-	}
-	fclose(lvlMonster);
-}
-
 int isThereAMonster (t_monster monsters[NB_MONSTER_MAX], int nbMonster, int line, int col, int lvl, int * indexMonster) {
 	int i;
 	for (i = 0; i < nbMonster; i++) {
