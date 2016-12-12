@@ -176,7 +176,6 @@ void createMonster (t_monster monsters[NB_MONSTER_MAX], int * nbMonsterAtEnd) {
 
 		monsters[i].col = randab(1, lvlData[ iLvl ].rooms[iRoom].width - 1) + lvlData[ iLvl ].rooms[iRoom].column;
 	}
-	writeMonster (monsters, *nbMonsterAtEnd);
 	err ("*** Fin create Monster ***");
 }
 
