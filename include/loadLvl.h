@@ -18,7 +18,7 @@
 
 void initGameMap(t_cell map[LINES][COLUMNS], int choix, int nbFichierSauvegarde, t_character *player, t_monster monsters[NB_MONSTER_MAX], int * nbMonster);
 void changeLvl(t_cell map[LINES][COLUMNS],t_character *player, int dir);
-void saveGame(t_cell map[LINES][COLUMNS], t_character *player);
+void saveGame(t_cell map[LINES][COLUMNS], t_character *player, t_monster monsters[NB_MONSTER_MAX], int nbMonster);
 int bFileSaveEmpty(int nbFichierSauvegarde);
 void deleteGame(int choixFichierSauvegarde);
 

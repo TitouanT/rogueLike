@@ -66,5 +66,7 @@ void moveMonster (t_cell map[][COLUMNS], t_monster monsters[NB_MONSTER_MAX], int
 void setVisibleByGhost (t_monster monsters[NB_MONSTER_MAX], int visibleByGhost[LINES][COLUMNS], t_character player);
 int isThereAMonster (t_monster monsters[NB_MONSTER_MAX], int nbMonster, int line, int column, int lvl, int * indexMonster);
 void playerAttackMonster (t_character player, t_monster monsters[NB_MONSTER_MAX], int indexMonster);
+void readMonster (t_monster monsters[NB_MONSTER_MAX], int *nbMonsterAtEnd);
+void writeMonster (t_monster monsters[NB_MONSTER_MAX], int nbMonsterAtEnd);
 
 #endif /* end of include guard: MONSTER_H */

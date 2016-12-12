@@ -7,7 +7,7 @@
  * \version 1.3
  * \date 30 novembre 2016
  */
- 
+
 #include <stdio.h>     // OK
 
 #include "cell.h"      // OK
@@ -23,6 +23,7 @@ char DOSSIER_SAUVEGARDE[30];
 char NOM_NIVEAU[NB_LVL][30];
 char NOM_POSITION[40];
 char NOM_LVLDATA[40];
+char NOM_MONSTER[40];
 
 /**
 	* \brief initialise les chemins d'accès au dossier de sauvegarde
@@ -48,6 +49,11 @@ void initNameOfFile (int choixDeSauvegarde) {
 	/*give the name for the lvl data*/
 	sprintf(NOM_LVLDATA, "%slvlData.txt", DOSSIER_SAUVEGARDE);
 	err(NOM_LVLDATA);
+
+  /*give the name for the monster*/
+	sprintf(NOM_MONSTER, "%sMonster.txt", DOSSIER_SAUVEGARDE);
+	err(NOM_MONSTER);
+
 	err("***fin init name of file***\n");
 }
 
@@ -258,7 +264,7 @@ void initGameMap(t_cell map[LINES][COLUMNS], int choix, int choixFichierSauvegar
 		if (queryLvlData (lvlData)) writeLvlData (lvlData);
 		readLvl(map, 0);
 		move2spawn(map, player, STAIRS_DOWN);
-		
+
 		createMonster (monsters, nbMonster);
 		err("Fin traitement new_game");
 	}
@@ -269,6 +275,7 @@ void initGameMap(t_cell map[LINES][COLUMNS], int choix, int choixFichierSauvegar
 		readLvl(map, player->lvl);
 		readLvlData (lvlData);
 		setLvlData (lvlData);
+    readMonster (monsters, nbMonster);
 		err("Fin traitement CONTINUE_GAME");
 	}
 	err("*** Fin init Game Map ****");
@@ -308,14 +315,17 @@ void changeLvl(t_cell map[LINES][COLUMNS], t_character *player, int dir){
 	* \param player Joueur
 	*/
 
-void saveGame(t_cell map[LINES][COLUMNS], t_character *player){
+void saveGame(t_cell map[LINES][COLUMNS], t_character *player, t_monster monsters[NB_MONSTER_MAX], int nbMonster){
 	/* Fonction permettant de sauvegarder la partie à l'instant t */
 	err("*** Début Save Game ***");
+
 	t_lvl lvlData[NB_LVL];
+
 	if (queryLvlData (lvlData)) writeLvlData (lvlData);
 
 	writeLvl (map, player->lvl);
 	writePosition (*player);
+  writeMonster (monsters, nbMonster);
 	err("*** Fin Save Game ***");
 }
 
