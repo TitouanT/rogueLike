@@ -204,7 +204,7 @@ int isItWalkableForAMonster (t_cell cell) {
 int canMove (t_monster monsters[NB_MONSTER_MAX], int nbMonster, int line, int col, int lvl) {
 	int i;
 	for (i = 0; i < nbMonster; i++) {
-		if (monsters[i].lvl == lvl && monsters[i].line == line && monsters[i].col == col) return FALSE;
+		if (monsters[i].hp > 0 && monsters[i].lvl == lvl && monsters[i].line == line && monsters[i].col == col) return FALSE;
 	}
 	return TRUE;
 }
