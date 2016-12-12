@@ -88,6 +88,7 @@ int main () {
 			err("    main: cheat N pour une nouvelle map");
 			randomFloor(map, 6);
 			displayFloor(map, player, win_game, visibleByGhost);
+			move2spawn(map, &player, STAIRS_DOWN);
 			displayPlayer(player, map, win_game, win_logs, &lineLog);
 			err("    main: fin du cheat N");
 		}
@@ -124,6 +125,7 @@ int main () {
 		displayEnd(player, win_end);
 		while((key = getch()) != 'q' && key != 'Q');
 		err ("main*** Fin Affichage du gameOver ***");
+		main();
 	}
 
 

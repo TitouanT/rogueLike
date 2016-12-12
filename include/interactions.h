@@ -17,6 +17,8 @@
 #include "character.h" // OK
 #include "monstre.h"   // OK
 
+
 int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, WINDOW * win_logs, WINDOW *win_game, int *lineLog, t_monster monsters[NB_MONSTER_MAX], int nbMonster);
+int jeu(t_cell map[LINES][COLUMNS], t_monster monsters[NB_MONSTER_MAX], t_character *player);
 
 #endif
