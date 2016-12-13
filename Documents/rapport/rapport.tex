@@ -4,6 +4,8 @@
 \usepackage[francais]{babel}
 \usepackage{amsmath}
 \usepackage{graphicx}
+\usepackage{listings}
+
 \usepackage[colorinlistoftodos]{todonotes}
 
 \usepackage[top=2cm, bottom=2cm,left=2cm, right=2cm]{geometry}
@@ -123,15 +125,18 @@
 
 	\section{Notre cahier des charges}
 
-	Avant de commencer à programmer notre jeu, nous nous sommes concertés autour d'un même fichier pour mettre en commun nos idées à propos du jeu. Notre jeu étant très libre dans son fonctionnement, c'était une étape cruciale. 
+	Avant de commencer à programmer notre jeu, nous nous sommes concertés autour d'un même fichier pour mettre en commun nos idées à propos du jeu. Notre jeu étant très libre dans son fonctionnement, c'était une étape cruciale.\\
+	Notre \emph{rogueLike} prend place dans le bâtiment IC$^2$. Chaque étage de ce bâtiment est généré aléatoirement, il doit comporter des pièces et des couloirs. Entre ceux-ci, peut se trouver des portes, ou juste un trou. Les portes sont aléatoirement ouvertes ou fermées, et le joueur peut essayer des les ouvrir manuellement (il a une probabilité de ne pas réussir). Le nombre de pièces par étage est défini en fonction de l'étage : les étages supérieurs sont plus compliqués car ils possèdent plus de pièces. Pour changer d'étages, le joueur doit emprunter des escaliers.\\
+	Lorsque le joueur apparait, il ne voit que la pièces où il se situe. Dans les couloirs, lorsqu'il progresse, les zones s'éclairent petit à petit, en revanche, dans dès qu'il entre dans une pièce, celle-ci s'éclaire entièrement.\\
+	Le joueur possède une barre de nourriture
 	
 	\section{Règles détaillées du jeu}
 	
 	\section{Comment jouer ?}
 		\begin{itemize}
 			\item{Lancement du jeu : \\}
-				Pour commencer à jouer, vous devez télécharger le jeu à partir de l'adresse suivante : \href{https://github.com/TitouanT/rogueLike/} {rogueLike}; avec la commande suivante : git clone https://github.com/TitouanT/rogueLike/ (sur linux) et git clone git@github.com:TitouanT/rogueLike.git (sur Mac). \\
-				Vous faîtes : <<cd rogueLike>>. \\
+				Pour commencer à jouer, vous devez télécharger le jeu à partir de l'adresse suivante : \href{https://github.com/TitouanT/rogueLike/} {rogueLike}; avec la commande suivante : \texttt{git clone git@github.com:TitouanT/rogueLike.git}
+				Vous faîtes : \texttt{cd rogueLike}. \\
 				Puis vous compilez grâce au makefile : <<make install>>. \\
 				Le jeu commence dès que vous faîtes : <<./rogueLike>>		
 			\item{Les déplacement : \\}
