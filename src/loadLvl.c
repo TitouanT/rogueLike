@@ -202,6 +202,9 @@ void writePosition ( t_character player) {
 	err(msg);
 	fprintf (positionFile, "%i %i %i %i %i %i %i %i ", (player).line, (player).column, (player).lvl, (player).hp, (player).pw, (player).xp, (player).nbMove, (player).food);
 	fprintf(positionFile, "%i %i ", (player).isSick, (player).hasFoundObj);
+	for(int i=0; i<SIZE_INVENTORY; i++){
+		fprintf(positionFile, "%i ", player.inventory[i] );
+	}
 	fprintf(positionFile, "\n");
 	fclose(positionFile);
 	err("*** Fin write Position ***");
@@ -217,6 +220,7 @@ void readPosition ( t_character *player){
 	err ("debut lecture position");
 	FILE * positionFile = NULL;
 	err("juste avant d' ouvrir le fichier position");
+	int inventory;
 
 	positionFile = fopen (NOM_POSITION, "r");
 
@@ -224,6 +228,10 @@ void readPosition ( t_character *player){
 
 	fscanf(positionFile, "%i %i %i %i %i %i %i %i ", &(*player).line, &(*player).column, &(*player).lvl, &(*player).hp, &(*player).pw, &(*player).xp, &(*player).nbMove, &(*player).food);
 	fscanf(positionFile, "%i %i ", &(*player).isSick, &(*player).hasFoundObj);
+	for(int i=0; i<SIZE_INVENTORY; i++){
+		fscanf(positionFile, "%i ", &inventory );
+			(*player).inventory[i]=inventory;
+	}
 
 	fclose(positionFile);
 	err("fin lecture position\n");
