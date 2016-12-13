@@ -299,7 +299,20 @@ int main(){
 		
 		\subsection{Les monstres}
 		
-		bla
+		Le nombre de monstre dans une partie est choisi aléatoirement entre deux bornes définient en constantes.
+		Les monstres sont équitablement répartient entre les étages proportionnellement au nombres de pièces qu'ils contiennent. Chaque étages a une proportion différentes de chaque monstres, plus l'étage est haut, plus les types de monstre présent sont difficile à battre.
+		
+		Pour animer les monstres, nous marquons toutes les cases de la matrice accessible par le joueur avec la distance de celle-ci par rapport au joueur. Ensuite chaque monstre fait un mouvement en direction du joueur si le joueur est dans son champ de vision. Sinon, ils ne bougent pas.
+		
+		Nous faisons attention à ce que les monstres n'aille pas sur le joueur et si le joueur est à porter alors ils l'attaquent. Et si le joueur fait un déplacement vers une case ou se trouve un monstre alors le joueur ne bouge pas et attaque. Ainsi, il n'y a jamais deux être vivant sur la même case.
+		
+		Les fantomes sont particuliés car:
+		\begin{itemize}
+			\item ils ne visent jamais le joueur,
+			\item ils peuvent se déplacer partout sur la map,
+			\item ils ont un halo lumineux autours d'eux, permettant au joueur d'apercevoir des zones qu'il n'a pas encore découvertes.
+		\end{itemize}
+		
 		
 		\subsection{La nourriture et la vie}
 		
