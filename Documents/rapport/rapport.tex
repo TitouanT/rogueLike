@@ -73,7 +73,6 @@
 	\vspace{12pt}
 	
 	Notre jeu se déroule dans le bâtiment IC$^2$. Nous sommes un étudiant, nous partons du rez-de-chaussée, et nous devons aller chercher QUELQUE CHOSE tout en haut, pour le ramener. \\
-	
 	Nous devons cependant faire attention aux monstres : des L1, L2, L3, des masters, des doctorants, et certains fantômes : \textsc{Claude} et \textsc{Chappe}.\\
 	Sur notre chemin, nous pouvons trouver quelques pièges : des flaques d'eau laissées par les femmes de ménages qui nous font glisser, des trous entre les étages qui nous font tomber d'un étage à un autre inférieur, ou des cartes à jouer qui nous sont jetées dessus par des L1.\\
 	Durant notre parcours, nous devons aussi tenir compte de notre faim. Nous possédons une barre de vie, lorsqu'elle est à zéro, nous mourrons. Pour régénérer de la vie, il y a deux possibilités : ne plus avoir faim (en mangeant de la nourriture, attention, certaines sont empoisonnées), et des seringues de soin à s'injecter directement. Ces objets peuvent être consommés directement sur place quand le joueur le trouve, ou plus tard, en les gardant dans son inventaire.\\
@@ -85,6 +84,33 @@
 
 %% Partie organisation
 \chapter{Organisation}
+
+	\section{Répartition des tâches}
+		Mettre ici notre répartition des tâches.
+		\subsection{Pourquoi cette répartition}
+
+	\section{Utilisation d'un gestionnaire de versions}
+	
+	\section{Utilisation des projets Github}
+
+	\section{Notre boîte à outils} 
+
+	\section{Doxygen, CUnit, GDB}
+	
+		Durant la réalisation de notre projet, nous avons utilisé divers outils d'aide à la programmation et au débogage. 
+		
+		\vspace{12pt}		
+		
+		La première chose que nous avons mis en place est la documentation à l'aide de \emph{Doxygen}. C'est un programme qui génère une documentation automatiquement, en fonction des fichiers d'en-têtes et sources. La documentation peut être générée de plusieurs formats, nous avons choisi au format HTML car il est plus facile de s'en servir. Celle-ci est sur internet, à l'adresse suivante : \url{https://roguelike.vlntn.pw/}. Elle se met à jour automatiquement en fonction de notre code (via un webhook mis en place sur Github).
+		
+		\vspace{12pt}
+		
+		Ensuite, nous avons utilisé \emph{CUnit}, un framework de tests unitaires pour le C. Toutes nos fonctions de notre boîte à outil ont été testés, avec des assertions que nous jugeons pertinentes (sur des valeurs qui pourraient poser problème dans certaines fonctions, comme des valeurs nulles, négatives, sur des fichiers inexistants, ...).
+		
+		\vspace{12pt}
+		
+		Enfin, lorsque nous avions certains bogues que nous n'arrivions pas à résoudre, nous avons utilisé le logiciel de debogage \emph{GDB} (\emph{GNU DeBugger}). Nous n'avions pas réussi à le faire fonctionner dès le début, car nous utilisons la libraire d'affichage \emph{ncurses}, qui utilise déjà le terminal pour afficher notre jeu. En le combinant avec \emph{GDB}, le terminal n'était plus utilisable.\\
+		La solution à été d'utiliser deux téléscripteurs (\textsc{TTY}) differents : un pour le jeu, et un pour le débogueur.
 
 %% Partie analyse et conception
 \chapter{Analyse et Conception}
