@@ -51,12 +51,13 @@ int file_est_vide () {
   * \param n adresse d'une position qui contiendra la position de l'élément retiré
   */
 void file_retirer (t_pos *n) {
-	t_element * tmp;
+	t_element * tmp = NULL;
 	if (tete != NULL) {
 		tmp = tete;
 		*n = tete->val;
 		tete = tete->suiv;
 		free(tmp);
+		tmp = NULL;
 	}
 }
 
@@ -80,10 +81,11 @@ void file_ajouter (t_pos n) {
   * \fn void file_supprimer ()
   */
 void file_supprimer () {
-	t_element * tmp;
+	t_element * tmp = NULL;
 	while (tete != NULL) {
 		tmp = tete;
 		tete = tete->suiv;
 		free(tmp);
+		tmp = NULL;
 	}
 }

@@ -49,7 +49,7 @@ void listPtr_readData (t_pos * data) {
 }
 
 void listPtr_removeElt (void) {
-	t_element * tmp;
+	t_element * tmp = NULL;
 	if (gCurrElt != gFlag) {// not out of list
 		tmp = gCurrElt;
 		// redo the chain
@@ -59,6 +59,7 @@ void listPtr_removeElt (void) {
 		gCurrElt = gCurrElt -> prev;
 		
 		free(tmp);
+		tmp = NULL;
 	}
 }
 
@@ -93,7 +94,10 @@ void listPtr_appendLeft (t_pos data) {
 		gCurrElt -> prev = tmp;
 		gCurrElt = tmp;
 	}
-	else free (tmp);
+	else {
+		free (tmp);
+		tmp = NULL;
+	}
 }
 
 void listPtr_appendRight (t_pos data) {
@@ -114,7 +118,10 @@ void listPtr_appendRight (t_pos data) {
 		gCurrElt -> next = tmp;
 		gCurrElt = tmp;
 	}
-	else free (tmp);
+	else {
+		free (tmp);
+		tmp = NULL;
+	}
 }
 
 void listPtr_appendEnd (t_pos data) {
