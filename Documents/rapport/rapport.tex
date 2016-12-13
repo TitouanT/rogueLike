@@ -125,10 +125,29 @@
 
 	\section{Notre cahier des charges}
 
-	Avant de commencer à programmer notre jeu, nous nous sommes concertés autour d'un même fichier pour mettre en commun nos idées à propos du jeu. Notre jeu étant très libre dans son fonctionnement, c'était une étape cruciale.\\
-	Notre \emph{rogueLike} prend place dans le bâtiment IC$^2$. Chaque étage de ce bâtiment est généré aléatoirement, il doit comporter des pièces et des couloirs. Entre ceux-ci, peut se trouver des portes, ou juste un trou. Les portes sont aléatoirement ouvertes ou fermées, et le joueur peut essayer des les ouvrir manuellement (il a une probabilité de ne pas réussir). Le nombre de pièces par étage est défini en fonction de l'étage : les étages supérieurs sont plus compliqués car ils possèdent plus de pièces. Pour changer d'étages, le joueur doit emprunter des escaliers.\\
+	Avant de commencer à programmer notre jeu, nous nous sommes concertés autour d'un même fichier pour mettre en commun nos idées à propos du jeu. Notre jeu étant très libre dans son fonctionnement, c'était une étape cruciale.
+	
+		\vspace{12pt}
+
+	Notre \emph{rogueLike} prend place dans le bâtiment IC$^2$. Le joueur démarre le jeu au premier étage. Il doit se rendre tout en haut, aller chercher l'objet, puis revenir en bas.\\
+	Chaque étage de ce bâtiment est généré aléatoirement, il doit comporter des pièces et des couloirs. Entre ceux-ci, peut se trouver des portes, ou juste un trou. Les portes sont aléatoirement ouvertes ou fermées, et le joueur peut essayer des les ouvrir manuellement (il a une probabilité de ne pas réussir). Le nombre de pièces par étage est défini en fonction de l'étage : les étages supérieurs sont plus compliqués car ils possèdent plus de pièces. Pour changer d'étages, le joueur doit emprunter des escaliers (un escalier pour monter, et un pour descendre par étage, ceux-ci ne peuvent pas se trouver dans la même pièce).\\
 	Lorsque le joueur apparait, il ne voit que la pièces où il se situe. Dans les couloirs, lorsqu'il progresse, les zones s'éclairent petit à petit, en revanche, dans dès qu'il entre dans une pièce, celle-ci s'éclaire entièrement.\\
-	Le joueur possède une barre de nourriture
+	Le joueur possède un certain nombre de point de vie (défini à 10) au maximum, lorsque celle-ci est à 0, il meurt. Au fur et à mesure de ses déplacements, il perd de la nourriture (une barre allant de 0 à 100). Lorsqu'il a trop faim (nourriture inférieure à 10), il ne se déplace plus correctement, il perd certaines zones de sa mémoire de la carte (elle ne sont plus éclairées), et il perd de la vie. Le joueur peut trouver de la nourriture aléatoirement par terre (un total de 2 objets de nourriture par pièce, par étage), tout comme il peut trouver des soins de santé pour lui faire régénérer sa vie. L'autre façon de re-gagner de la vie est de manger, ainsi certains point de nourritures seront utilisées pour la vie.\\
+	Lorsque le joueur mange de la nourriture, il a une faible probabilité de chance que celle-ci était empoisonnée. Le joueur perd de la vie à chaque déplacement lorsqu'il est empoisonné. Pour ne plus l'être, il doit soit attendre quelques déplacements de ne plus l'être, soit consommer un kit de santé.\\
+	Durant son chemin dans le bâtiment, le joueur peut se faire avoir par des pièges. Ceux-ci peuvent, au choix, enlever de la vie, nous faire glisser à travers la pièce, ou nous faire tomber d'un ou plusieurs étages (une chance sur 3 pour chaque).\\
+	Les objets tels que la nourriture, les soins de santé, ou les pièges peuvent être récupérés par le joueur dans son inventaire, pour les déposer ou les utiliser plus tard. L'inventaire du joueur possède 5 \emph{slots}, et il ne peut y déposer qu'un seul objet par \emph{slot}.\\
+	Des monstres se trouvent dans le jeu, ceux-ci nous attaquent, en se rapprochant de nous. Nous pouvons aussi les attaquer. Ils possèdent, tout comme nous, une agilité, qui est plus importante pour un monstre évolué. Cette agilité permet de faire plus de dégâts au combat, et de moins en subir. Ces monstres doivent avoir une mini-intelligence artificielle pour qu'ils puissent se déplacer de façon similaire à ce que un véritable joueur pourrait faire.
+	
+	\vspace{12pt}
+
+	A tout moment, l'utilisateur peut sauvegarder sa partie sur l'un des trois emplacements de sauvegarde prévus. Il peut aussi quitter le jeu à n'importe quelle étape. Au lancement, l'utilisateur doit avoir un écran lui indiquant les sauvegardes, il peut en charger une, ou en supprimer une. Si il lance le jeu sur un emplacement vide, une nouvelle partie est alors crée.\\
+	A la fin du jeu, lorsque le joueur perd, ou gagne, il se retrouve sur l'écran initial des sauvegardes.\\
+	Au lancement du jeu, un texte explicatif avec l'objectif de celui-ci doit être affiché. Le jeu est décomposé en trois parties :
+	\begin{itemize}
+	\item la zone de jeu
+	\item la zone de logs, où se trouve des informations sur ce que le joueur peut effectuer
+	\item la zone de statistiques, qui indique toutes les propriétés du joueur : étage, vie, faim, nombre de déplacements, si il est empoisonné, si il a trouvé l'objet, ...
+	\end{itemize}
 	
 	\section{Règles détaillées du jeu}
 	
