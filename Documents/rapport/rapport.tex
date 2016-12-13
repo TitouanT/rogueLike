@@ -176,7 +176,7 @@
 
 	\section{Structures et énumérations}
 	
-	Nous avons utilisé un certain nombre de structures et d'énumération pour modéliser le rogueLike.
+	Nous avons utilisé un certain nombre de structure et d'énumération pour modéliser le rogueLike.
 	
 		\subsection{Une case de la carte}
 	
@@ -204,13 +204,45 @@
 		
 	\section{Séparation du code en modules}
 	
-	bla
+	Afin d'avoir un code source clair et maintenable, nous l'avons séparé en plusieurs modules. Nous avons un module dédié pour:
+	\begin{itemize}
+		\item les affichages,
+		\item les interactions (interprète les commandes du joueur),
+		\item les lectures/écritures dans des fichiers,
+		\item la boîte à outils,
+		\item la génération des niveaux,
+		\item et la prise en charge des monstres.
+	\end{itemize}
+	
 	
 	\section{Détail des modules}
 	
 		\subsection{La génération des niveaux}
 		
-		bla
+		La génération d'un niveau ce fait en quelques étapes:
+		\begin{enumerate}
+			\item Le choix du nombre de pièce à placer en fonction de l'étage qu'il représente (de 0 à 5).
+			\item Le placement des pièces sur la map.
+			\item La création des couloirs pour lier les pièces.
+			\item Le placement des objets (nourriture, escaliers, pièges).
+		\end{enumerate}
+		
+			\subsubsection{placement des pièces}
+			
+			Pour placer les pièces, on les places les unes après les autres. Pour chaque pièces, nous commençons par lui donner une position (la position de son angle supérieur gauche). Ensuite nous lui choisissons une dimension (hauteur, largeur) afin qu'elle entre la plus petite et la plus grande pièce possible.
+			Pour finir, nous vérifions qu'elle n'est pas en collision avec une autre pièce.
+			Dans le cas ou elle l'est, on recommence (pas plus de 100 fois).
+			
+			\subsubsection{création des couloirs}
+			
+			Le but est de créer un réseau de pièces ou aucune pièce ou groupe de pièces ne soit isolé des autres.
+			Pour cela nous connectons les pièces les unes après les autres dans leur ordre de création.
+			L'algorithme qui créé les liens commence par initialiser la première pièces simplement en y ouvrant une porte.
+			Ensuite, pour chaque pièces il procède ainsi:
+			\begin{itemize}
+				\item Création d'une ouverture dans la pièce.
+				\item Création d'un couloir entre cette ouverture et la case de type couloir ou encadrement de porte la plus proche à l'aide d'un algorithme de recherche de chemin.
+			\end{itemize}
 		
 		\subsection{La sauvegarde}
 		
