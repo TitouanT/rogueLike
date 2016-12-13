@@ -150,11 +150,41 @@
 
 	\section{Structures et énumérations}
 	
+	Nous avons utilisé un certain nombre de structures et d'énumération pour modéliser le rogueLike.
+	
+		\subsection{Une case de la carte}
+	
+		La structure la plus importante est celle qui représente une case de la carte. Cette structure contient un champ qui définit sont type, un autre qui défini son état ainsi qu'un tableau listant les objet présent sur la case et deux entiers pour savoir si le joueur a découvert cette case et pour connaitre le nombre d'objets présent.
+	
+		Le type est une énumération des différents type de case possible: un vide, un mur, un encadrement de porte, une piece ou un couloir.
+	
+		L'état est une énumération utilisé pour les encadrements de portes afin de savoir si il y a une porte, et si elle est ouverte ou fermée. L'état est aussi utilisé pour les pieces afin de savoir si il y a de la lumière ou non dans la pièce.
+	
+		Un objet est décrit par une structure qui est composé d'un type et d'un entier pour savoir si l'objet a été découvert par le joueur. Le type d'un objet est lui décrit par une énumération et définit les escaliers ascendants et descendants, la nourriture, les kits de santé et les pièges.
+		
+		\subsection{Les être vivants}
+		
+		Le joueur controle un personnage que l'on représente à l'aide d'une structure. Elle permet d'enregistrer son nom, sa position (ligne, colonne et niveau), ses points de vie et d'attaque, son agilité, son expérience, son appétit, sa santé, le nombre de mouvement effectué, un booléen pour savoir si il a trouvé le QUELQUE CHOSE ainsi qu'in tableau d'objet qui représente son inventaire.
+		
+		Les monstres ont eux aussi une structure qui enregistre leur nom, leur types, leur position (ligne, colonne et niveau), leur points de vie et d'attaque, leur champ de vision, leur agilité et quelque champs supplémentaire qui est utilisé comme mémoire pour leur IA. Les différents types de monstres sont L1, L2, L3, master, doctorant et fantome.
+		
+		\subsection{Et le reste}
+		
+		La représentation en matrice des niveau n'étant pas dans tous les cas la plus efficace, nous avons créé une structure de niveau qui contient un tableau de pièces et le nombre de pieces que contient l'étage.
+		
+		Une pieces est elle-même représentée par une structure qui contient la position de son angle supérieur gauche (ligne et colonne) ainsi que ses dimensions (largeur et hauteur).
+		
+		Quelque fois, nous avons besoin de manipuler des position (ligne, colonne). Nous avons donc créé une structure de position qui contient une ligne et une colonne. 
+		
 	\section{Séparation du code en modules}
+	
+	bla
 	
 	\section{Détail des modules}
 	
 		\subsection{La génération des niveaux}
+		
+		bla
 		
 		\subsection{La sauvegarde}
 		
@@ -165,6 +195,8 @@
 		\subsection{L'affichage}
 		
 		\subsection{Les monstres}
+		
+		bla
 		
 		\subsection{La nourriture et la vie}
 		
