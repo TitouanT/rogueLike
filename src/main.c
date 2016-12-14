@@ -68,7 +68,7 @@ int main () {
 	WINDOW *win_logs  = createWindow(COLS_GAME, 0, COLS_LOGS, LINES_LOGS, "Logs");
 	
 	updateLogs (lineLog, win_logs, win_game);
-	initGameMap (map, NEW_GAME, 1, &player, monsters, &nbMonster);
+	while(1)initGameMap (map, NEW_GAME, 1, &player, monsters, &nbMonster);
 
 	// On affiche les objectifs
 	//displayObjectives(&lineLog, win_logs);

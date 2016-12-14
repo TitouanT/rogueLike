@@ -225,12 +225,19 @@ void putRandomDoor (t_cell map[][COLUMNS], t_pos pos) {
   * \param walkable le réseau actuel
   * \param room la pièce à connecter
   */
-void connect(t_cell map[LINES][COLUMNS], int walkable[LINES][COLUMNS], t_room room) {
+void connect(t_cell map[LINES][COLUMNS], int walkable[LINES][COLUMNS], t_room room, int nbPiece) {
 	int path[LINES][COLUMNS], i, j, l, c, val;
 	int up = 0, down = 1, right = 2, left = 3, curDir, dir[4] = {0};
+	char msg[100];
 	t_pos head, start = chooseRandomWall (room);
 	map[start.line][start.column].type = DOORWAY;
 	putRandomDoor (map, start);
+	
+	sprintf(msg, "Ouverture de la piece %d", nbPiece);
+	addLogTitou(msg);
+	displayFloorTitou(map);
+	getch();
+	clearLogTitou();
 
 	for (i = 0; i < LINES; i++) for (j = 0; j < COLUMNS; j++) path[i][j] = -1;
 	file_init();
@@ -319,7 +326,7 @@ void chooseLink (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 	getch();
 	clearLogTitou();
 	for (i = 1; i < nbRoom; i++) {
-		connect(map, walkable, rooms[i]);
+		connect(map, walkable, rooms[i], i+1);
 		sprintf(msg, "Connexion de la piece %d", i+1);
 		for (k = 0; k < LINES; k++)
 			for (j = 0; j < COLUMNS; j++)
