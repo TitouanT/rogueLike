@@ -155,8 +155,8 @@ ici mettre un petit mot <tout le monde>
 		
 		\vspace{12pt}
 		
-		Enfin, lorsque nous avions certains bogues que nous n'arrivions pas à résoudre, nous avons utilisé le logiciel de debogage \emph{GDB} (\emph{GNU DeBugger}). Nous n'avions pas réussi à le faire fonctionner dès le début, car nous utilisons la libraire d'affichage \emph{ncurses}, qui utilise déjà le terminal pour afficher notre jeu. En le combinant avec \emph{GDB}, le terminal n'était plus utilisable.\\
-		La solution à été d'utiliser deux téléscripteurs (\textsc{TTY}) differents : un pour le jeu, et un pour le débogueur.\\
+		Enfin, lorsque nous avions certains bogues que nous n'arrivions pas à résoudre, nous avons utilisé le logiciel de debogage \emph{GDB} (\emph{GNU DeBugger}). Nous n'avions pas réussi à le faire fonctionner dès le début, car nous utilisons la libraire d'affichage \emph{ncurses}\footnote{Voir la section \hyperref[ncurses]{interactions et déplacements, page \getpagerefnumber{ncurses}}.}, qui utilise déjà le terminal pour afficher notre jeu. En le combinant avec \emph{GDB}, le terminal n'était plus utilisable.\\
+		La solution à été d'utiliser deux téléscripteurs (\textsc{TTY}) différents : un pour le jeu, et un pour le débogueur.\\
 		Dans l'annexe, vous pouvez retrouver 3 exemples de cas où nous nous sommes servis du débogueur.
 
 %% Partie analyse et conception
@@ -190,9 +190,6 @@ ici mettre un petit mot
 	\item la zone de statistiques, qui indique toutes les propriétés du joueur : étage, vie, faim, nombre de déplacements, si il est empoisonné, si il a trouvé l'objet, ...
 	\end{itemize}
 	
-	\section{Règles détaillées du jeu}
-	
-	<valentin>
 	
 	\section{Comment jouer ?}
 		\begin{itemize}
@@ -323,13 +320,20 @@ void changeLvl(t_cell map[LINES][COLUMNS], t_character *player, int dir){
 			\item Nous nous déplaçons à un escalier qui permet de descendre.
 		\end{enumerate}
 		Un contrôle est fait pour savoir si la direction ne nous fait pas emmener à un étage négatif ou supérieur au nombre de niveau défini en variable dans le <<global.h>>.
+
 		\subsection{Les interactions et déplacements}
 		
 		<valentin>
+
+		\subsection{Les interactions et déplacements}\label{ncurses}
+
 		
+			Notre jeu devait se jouer de façon simple, le joueur devait pouvoir déplacer son personnage d'un simple appui sur une touche. L'utilisation de simples \texttt{scanf()} pour récupérer l'appui sur une touche aurait été difficile à gérer, car ces fonctions sont exécutées uniquement lorsque la personne appuie sur la touche \textit{entrée}. Pour palier ce problème, nous avons utilisé la libraire \emph{ncurses}, qui est une \textsc{TUI}, une interface utilisateur par terminal. Celle-ci nous permet, entre autres, de récupérer les touches (ou combinaisons de touches) que l'utilisateur effectue sans avoir à attendre qu'il appuie sur entrée.
+			
+			
 		\subsection{L'affichage}
 		
-		<valentin>
+		L'affichage s'est aussi fait à l'aide de la libraire \emph{ncurses}, car elle propose des fonctions de création de fenêtres virtuelles, et d'écriture directement sur celles-ci. Nous avons séparé notre jeu en trois zones, qui sont en réalité des fenêtres. Pour l'écran de chargement, de fin de partie (en cas de perte ou de victoire), des messages ASCII sont affichés, ces messages proviennent en réalité de fichiers textes, qui sont lus par le programme et affichés au centre de l'écran. L'écran de sélection quant à lui nous permet de visualiser facilement, avec des couleurs, les parties. 
 		
 		\subsection{Les monstres}
 		
@@ -340,7 +344,7 @@ void changeLvl(t_cell map[LINES][COLUMNS], t_character *player, int dir){
 		
 		Nous faisons attention à ce que les monstres n'aille pas sur le joueur et si le joueur est à porter alors ils l'attaquent. Et si le joueur fait un déplacement vers une case ou se trouve un monstre alors le joueur ne bouge pas et attaque. Ainsi, il n'y a jamais deux être vivant sur la même case.
 		
-		Les fantomes sont particuliés car:
+		Les fantômes sont particuliers car :
 		\begin{itemize}
 			\item ils ne visent jamais le joueur,
 			\item ils peuvent se déplacer partout sur la map,
