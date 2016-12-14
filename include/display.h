@@ -35,4 +35,9 @@ void displayEnd(t_character player, WINDOW *win);
 void printInventory(t_character player, WINDOW *win, int *lineLog);
 void displayMonster (WINDOW * win, t_monster monsters[NB_MONSTER_MAX], t_cell map[LINES][COLUMNS], int nbMonster, int currentLvl, int visibleByGhost[LINES][COLUMNS]);
 
+void addLogTitou (char * msg);
+void updateLogs (int line, WINDOW * win, WINDOW * winL);
+void displayFloorTitou(t_cell map[LINES][COLUMNS]);
+void clearLogTitou();
+
 #endif

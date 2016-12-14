@@ -15,6 +15,8 @@
 #include "mapConst.h" // OK
 #include "tools.h"    // OK
 
+#include "display.h"
+
 
 
 
@@ -304,13 +306,32 @@ void connect(t_cell map[LINES][COLUMNS], int walkable[LINES][COLUMNS], t_room ro
   * \param nbRoom nombre de pieces existantes
   */
 void chooseLink (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
-	int i, j, walkable[LINES][COLUMNS] = {{0}};
+	int i, j, k, walkable[LINES][COLUMNS] = {{0}};
+	char msg[100];
 
 	t_pos doorPos = chooseRandomWall (rooms[0]);
 	map[doorPos.line][doorPos.column].type = DOORWAY;
 	putRandomDoor (map, doorPos);
 	walkable[doorPos.line][doorPos.column] = 1;
-	for (i = 1; i < nbRoom; i++) connect(map, walkable, rooms[i]);
+	sprintf(msg, "Ouverture de la premiere piece");
+	addLogTitou(msg);
+	displayFloorTitou(map);
+	getch();
+	clearLogTitou();
+	for (i = 1; i < nbRoom; i++) {
+		connect(map, walkable, rooms[i]);
+		sprintf(msg, "Connexion de la piece %d", i+1);
+		for (k = 0; k < LINES; k++)
+			for (j = 0; j < COLUMNS; j++)
+				if (walkable[k][j] == 1 && map[k][j].type == EMPTY) map[k][j].type = CORRIDOR;
+		addLogTitou(msg);
+		displayFloorTitou(map);
+		getch();
+		clearLogTitou();
+		for (k = 0; k < LINES; k++)
+			for (j = 0; j < COLUMNS; j++)
+				if (map[k][j].type == CORRIDOR) map[k][j].type = EMPTY;
+	}
 	for (i = 0; i < LINES; i++)
 		for (j = 0; j < COLUMNS; j++)
 			if (walkable[i][j] == 1 && map[i][j].type == EMPTY) map[i][j].type = CORRIDOR;
@@ -409,13 +430,19 @@ void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
   */
 void randomFloor (t_cell map[LINES][COLUMNS], int lvl) {
 	err("***Debut Random Floor*****************************************************");
+	char msg[100];
 	int nbRoom = randab (ROOM_NB_MIN + lvl, ROOM_NB_MAX + 1 + lvl), i;
 
 	t_room rooms[ROOM_NB_MAX + NB_LVL];
 	initFloor (map);
 
 	for (i = 0; i < nbRoom; i++) {
+		sprintf(msg, "placement de la piece %d", i+1);
+		addLogTitou(msg);
 		rooms[i] = randomRoom(map, rooms, i, &nbRoom);
+		displayFloorTitou(map);
+		getch();
+		clearLogTitou();
 	}
 	chooseLink (map, rooms, nbRoom);
 

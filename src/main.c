@@ -21,6 +21,8 @@
 #include "tools.h"        // OK
 #include "monstre.h"      // OK
 
+#include "loadLvl.h"
+
 int main () {
 
 	if (fileExist("./accentNeeded")) setlocale(LC_ALL, "");
@@ -33,7 +35,7 @@ int main () {
 	int lineLog = 0;
 	int widthScreen, heightScreen;
 	int continueGame = TRUE;
-	int nbMonster;
+	int nbMonster = 0;
 
 
 	err ("  main: initialisations");
@@ -53,25 +55,28 @@ int main () {
 
 	deleteWindow(win_start);
 
-	err ("  main: Affichage du screen de choix");
-	WINDOW *win_choice = newwin(heightScreen, widthScreen, 0, 0);
-	selectionScreen(win_choice, map, &player, monsters, &nbMonster);
-
-	deleteWindow(win_choice);
+	// err ("  main: Affichage du screen de choix");
+	// WINDOW *win_choice = newwin(heightScreen, widthScreen, 0, 0);
+	// selectionScreen(win_choice, map, &player, monsters, &nbMonster);
+	// 
+	// deleteWindow(win_choice);
 
 	err ("  main: Affichage du screen avec map, logs et stats");
 	/* Initialisation des fenetres */
 	WINDOW *win_game  = createWindow(0, 0, COLS_GAME, LINES_GAME, "RogueLike");
 	WINDOW *win_stats = createWindow(0, LINES_GAME, COLS_STATS, LINES_STATS, "Statistiques");
 	WINDOW *win_logs  = createWindow(COLS_GAME, 0, COLS_LOGS, LINES_LOGS, "Logs");
+	
+	updateLogs (lineLog, win_logs, win_game);
+	initGameMap (map, NEW_GAME, 1, &player, monsters, &nbMonster);
 
 	// On affiche les objectifs
-	displayObjectives(&lineLog, win_logs);
+	//displayObjectives(&lineLog, win_logs);
 	// On affiche la map et le joueur
 	displayFloor(map, player, win_game, visibleByGhost);
-	displayPlayer(player, map, win_game, win_logs, &lineLog);
-	displayMonster (win_game, monsters, map, nbMonster, player.lvl, visibleByGhost);
-	displayStats(player, win_stats);
+	//displayPlayer(player, map, win_game, win_logs, &lineLog);
+	//displayMonster (win_game, monsters, map, nbMonster, player.lvl, visibleByGhost);
+	//displayStats(player, win_stats);
 
 
 

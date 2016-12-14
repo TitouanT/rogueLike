@@ -64,6 +64,16 @@ int konami (int key);
 #define KEY_RETURN 263
 #define KEY_RETURN_MAC 127
 
+int lineForLogs;
+WINDOW * winForLogs;
+WINDOW * winForGame;
+
+void updateLogs (int line, WINDOW * winL, WINDOW * winG) {
+	lineForLogs = line;
+	winForLogs = winL;
+	winForGame = winG;
+}
+
 
 /**
 	* \brief Initialisation de toutes les couleurs utilisées par le jeu
@@ -423,6 +433,12 @@ void clearLog(int *line, WINDOW *win){
 	*line = 0;
 }
 
+void clearLogTitou() {
+	clearLog(&lineForLogs, winForLogs);
+}
+
+
+
 /**
 	* \brief Ajoute une ligne à la fenetre de log
 	*	\fn void addLog(char * message, int * line, WINDOW *win)
@@ -446,11 +462,13 @@ void addLog(char * message, int * line, WINDOW *win){
 	wmove(win, (*line)+1, 1);
   wprintw(win, "%s", message);
 	wrefresh(win);
+	
+	updateLogs (*line, win, winForGame);
 
-	// Si on a plus de place pour clear la zone de logs
-	if(*line >= LINES_LOGS - 3) clearLog(line, win);
-	else (*line)++;
+}
 
+void addLogTitou (char * msg) {
+	addLog(msg, &lineForLogs, winForLogs);
 }
 
 /**
@@ -609,6 +627,50 @@ void displayFloor(t_cell map[LINES][COLUMNS], t_character player, WINDOW *win, i
 	wrefresh(win);
 
 }
+
+
+
+
+void displayFloorTitou(t_cell map[LINES][COLUMNS]) {
+
+	int i, j;
+
+	for (i = 0; i < LINES; i++) {
+		wmove(winForGame, i+1,1);
+		for (j = 0; j < COLUMNS; j++) {
+			
+				switch (map[i][j].type) {
+
+					case EMPTY: 	 printCell(GENERAL_COLOR,' ', winForGame); break;
+
+					case CORRIDOR:
+						printCell(CORRIDOR_COLOR,'c', winForGame);
+						break;
+
+					case DOORWAY:
+						switch (map[i][j].state) {
+							case dNONE:  printCell(CORRIDOR_COLOR,'c', winForGame); break;
+							case dOPEN:  printCell(OPENED_DOOR,'c', winForGame); break;
+							case dCLOSE: printCell(GENERAL_COLOR,'c', winForGame); break;
+							default: printCell(GENERAL_COLOR,'?', winForGame); break;
+						} break;
+
+					case ROOM:
+						printCell(ROOM_COLOR,' ', winForGame);
+						break;
+
+
+					case WALL: 		 printCell(WALL_COLOR,'c', winForGame); break;
+				}
+		}
+
+	}
+	wrefresh(winForGame);
+
+}
+
+
+
 
 /**
 	* \brief Affiche toute la map chargée
