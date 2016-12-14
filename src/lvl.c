@@ -194,7 +194,7 @@ t_pos chooseRandomWall (t_room r) {
   * \param pos position ou on peut placer une porte
   */
 void putRandomDoor (t_cell map[][COLUMNS], t_pos pos) {
-	int doIt = rand()%3;
+	int doIt = 1;//rand()%3;
 	if (doIt == 0) map[pos.line][pos.column].state = dOPEN;
 	else if(doIt == 1) map[pos.line][pos.column].state = dCLOSE;
 	else map[pos.line][pos.column].state = dNONE;
@@ -247,23 +247,23 @@ void connect(t_cell map[LINES][COLUMNS], int walkable[LINES][COLUMNS], t_room ro
 		l = head.line;
 		c = head.column;
 		val = path[l][c];
-		if ( l+1 < LINES && path[l + 1][c] == -1 && (map[l + 1][c].type == EMPTY || map[l + 1][c].type == DOORWAY)) {
+		if ( l+1 < LINES && path[l + 1][c] == -1 && (map[l + 1][c].type == EMPTY || map[l + 1][c].type == DOORWAY || map[l + 1][c].type == CORRIDOR)) {
 			path[l + 1][c] = val + 1;
 			head.line = l + 1;
 			file_ajouter (head);
 		}
-		if ( l-1 >= 0 && path[l - 1][c] == -1 && (map[l - 1][c].type == EMPTY || map[l - 1][c].type == DOORWAY)) {
+		if ( l-1 >= 0 && path[l - 1][c] == -1 && (map[l - 1][c].type == EMPTY || map[l - 1][c].type == DOORWAY || map[l - 1][c].type == CORRIDOR)) {
 			path[l - 1][c] = val + 1;
 			head.line = l - 1;
 			file_ajouter (head);
 		}
-		if ( c+1 < COLUMNS && path[l][c + 1] == -1 && (map[l][c + 1].type == EMPTY || map[l][c + 1].type == DOORWAY)) {
+		if ( c+1 < COLUMNS && path[l][c + 1] == -1 && (map[l][c + 1].type == EMPTY || map[l][c + 1].type == DOORWAY || map[l][c+1].type == CORRIDOR)) {
 			path[l][c + 1] = val + 1;
 			head.column = c + 1;
 			head.line = l;
 			file_ajouter (head);
 		}
-		if ( c-1 >= 0 && path[l][c - 1] == -1 && (map[l][c - 1].type == EMPTY || map[l][c - 1].type == DOORWAY)) {
+		if ( c-1 >= 0 && path[l][c - 1] == -1 && (map[l][c - 1].type == EMPTY || map[l][c - 1].type == DOORWAY || map[l][c-1].type == CORRIDOR)) {
 			path[l][c - 1] = val + 1;
 			head.column = c - 1;
 			head.line = l;
@@ -335,9 +335,6 @@ void chooseLink (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 		displayFloorTitou(map);
 		getch();
 		clearLogTitou();
-		for (k = 0; k < LINES; k++)
-			for (j = 0; j < COLUMNS; j++)
-				if (map[k][j].type == CORRIDOR) map[k][j].type = EMPTY;
 	}
 	for (i = 0; i < LINES; i++)
 		for (j = 0; j < COLUMNS; j++)
