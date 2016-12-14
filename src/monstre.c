@@ -215,7 +215,11 @@ void playerAttackMonster (t_character player, t_monster monsters[NB_MONSTER_MAX]
 
 
 void monsterAttackPlayer (t_monster monster, t_character * player) {
-	if (didItHappen(monster.agility)) player -> hp -= monster.pw; // une attaque est faite !
+	if (didItHappen(monster.agility)){
+		player -> hp -= monster.pw;
+		flash();
+		// une attaque est faite !
+	}
 	// sinon le monstre rate son attaque;
 }
 

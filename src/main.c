@@ -74,7 +74,6 @@ int main () {
 	displayStats(player, win_stats);
 
 
-
 	err ("\nmain***ENTREE DANS LA BOUCLE DU JEU***\n");
 
 	/* Ici se déroule tout le jeu */

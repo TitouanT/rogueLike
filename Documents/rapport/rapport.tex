@@ -153,8 +153,8 @@ ici mettre un petit mot <tout le monde>
 		
 		\vspace{12pt}
 		
-		Enfin, lorsque nous avions certains bogues que nous n'arrivions pas à résoudre, nous avons utilisé le logiciel de debogage \emph{GDB} (\emph{GNU DeBugger}). Nous n'avions pas réussi à le faire fonctionner dès le début, car nous utilisons la libraire d'affichage \emph{ncurses}, qui utilise déjà le terminal pour afficher notre jeu. En le combinant avec \emph{GDB}, le terminal n'était plus utilisable.\\
-		La solution à été d'utiliser deux téléscripteurs (\textsc{TTY}) differents : un pour le jeu, et un pour le débogueur.\\
+		Enfin, lorsque nous avions certains bogues que nous n'arrivions pas à résoudre, nous avons utilisé le logiciel de debogage \emph{GDB} (\emph{GNU DeBugger}). Nous n'avions pas réussi à le faire fonctionner dès le début, car nous utilisons la libraire d'affichage \emph{ncurses}\footnote{Voir la section \hyperref[ncurses]{interactions et déplacements, page \getpagerefnumber{ncurses}}.}, qui utilise déjà le terminal pour afficher notre jeu. En le combinant avec \emph{GDB}, le terminal n'était plus utilisable.\\
+		La solution à été d'utiliser deux téléscripteurs (\textsc{TTY}) différents : un pour le jeu, et un pour le débogueur.\\
 		Dans l'annexe, vous pouvez retrouver 3 exemples de cas où nous nous sommes servis du débogueur.
 
 %% Partie analyse et conception
@@ -188,9 +188,6 @@ ici mettre un petit mot
 	\item la zone de statistiques, qui indique toutes les propriétés du joueur : étage, vie, faim, nombre de déplacements, si il est empoisonné, si il a trouvé l'objet, ...
 	\end{itemize}
 	
-	\section{Règles détaillées du jeu}
-	
-	<valentin>
 	
 	\section{Comment jouer ?}
 		\begin{itemize}
@@ -309,10 +306,11 @@ int main(){
 		
 		<emeric>
 		
-		\subsection{Les interactions et déplacements}
+		\subsection{Les interactions et déplacements}\label{ncurses}
 		
-		<valentin>
-		
+			Notre jeu devait se jouer de façon simple, le joueur devait pouvoir déplacer son personnage d'un simple appui sur une touche. L'utilisation de simples \texttt{scanf()} pour récupérer l'appui sur une touche aurait été difficile à gérer, car ces fonctions sont exécutées uniquement lorsque la personne appuie sur la touche \textit{entrée}. Pour palier ce problème, nous avons utilisé la libraire \emph{ncurses}, qui est une \textsc{TUI}, une interface utilisateur par terminal. Celle-ci nous permet, entre autres, de récupérer les touches (ou combinaisons de touches) que l'utilisateur effectue sans avoir à attendre qu'il appuie sur entrée.
+			
+			
 		\subsection{L'affichage}
 		
 		<valentin>
