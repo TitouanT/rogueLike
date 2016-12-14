@@ -74,13 +74,30 @@ void passOut(t_cell map[LINES][COLUMNS]){
 
 }
 
+/**
+	* \brief Effet aléatoire dans piège sur le joueur
+	*	\fn void fallTrap(t_cell map[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, int *lineLog, t_dir direction, t_monster monsters[NB_MONSTER_MAX], int nbMonster)
+	* \param map Carte
+	* \param perso joueur
+	* \param win_logs Fenêtre où afficher les objectifs
+	* \param lineLog Numéro de ligne de log
+	* \param direction Direction de mouvement du joueur
+	* \param monsters L'ensemble des monstres
+	* \param nbMonster Nombre total de monstres
+	*/
 void fallTrap(t_cell map[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, int *lineLog, t_dir direction, t_monster monsters[NB_MONSTER_MAX], int nbMonster){
-	int trapType=randab(0, 3);
+	int trapType;
+	if((*perso).lvl!=0){
+		trapType=randab(0, 3);
+	}
+	else{
+		trapType=randab(1, 3);
+	}
 	int lostLvl, lostHp, glisser;
 	int i;
 
 	switch(trapType){
-		case 0 : lostLvl=randab(0,perso->lvl+1)*-1; changeLvl(map, *&perso, lostLvl); addLog("Vous êtes tombé dans un trou", lineLog, win_logs); break;
+		case 0 : lostLvl=randab(1,perso->lvl+1)*-1; changeLvl(map, *&perso, lostLvl); addLog("Vous êtes tombé dans un trou", lineLog, win_logs); break;
 		case 1 : lostHp=randab(0,5); (perso->hp)= (perso->hp)-lostHp; addLog("Attention, un L1 vous a jeté une carte, vous vous êtes écorché", lineLog, win_logs); break;
 		case 2 : glisser=randab(2,8); for(i=0; i<glisser;i++) move_perso(direction, map, perso, win_logs, lineLog, monsters, nbMonster); addLog("Regardez où vous mettez vos pieds, la femme de ménage à lustrer le sol", lineLog, win_logs);
 	}
@@ -267,14 +284,14 @@ int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso, 
 
 	// On effectue certaines actions si le joueur a réussi à se deplacer
 	if(success == TRUE){
-		
+
 		if (isThereAMonster (monsters, nbMonster, perso -> line, perso -> column, perso -> lvl, &indexMonster) == TRUE) {
 			playerAttackMonster (*perso, monsters, indexMonster);
 			perso -> line = line;
 			perso -> column = column;
 		}
-		
-		
+
+
 		perso->nbMove++;
 		moveMonster(mat, monsters, nbMonster, perso);
 

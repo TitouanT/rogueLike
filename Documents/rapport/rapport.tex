@@ -1,4 +1,4 @@
-\documentclass[12pt]{report}
+\documentclass[11pt]{report}
 \usepackage[utf8x]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[francais]{babel}
@@ -132,7 +132,9 @@ ici mettre un petit mot <tout le monde>
 	
 	\section{Utilisation des projets Github}
 	
-		<emeric>
+		L'utilisation des projets de Github, découvert en conduite de projet, nous a permi de mettre tous nos objectifs sur le projet aussi bien que le code et le rapport. Nous avons pu nous répartir des tâches fait par chacun et ce qui nous reste à faire.
+		Pour les objectifs du code, le lien du projet Github est le suivant : \href{https://github.com/TitouanT/rogueLike/projects/1}{ https://github.com/TitouanT/rogueLike/projects/1}. \\
+		Et pour les objectifs du rapport :  \href{https://github.com/TitouanT/rogueLike/projects/2} {https://github.com/TitouanT/rogueLike/projects/2}.
 
 	\section{Notre boîte à outils} 
 
@@ -169,7 +171,7 @@ ici mettre un petit mot
 		\vspace{12pt}
 
 	Notre \emph{rogueLike} prend place dans le bâtiment IC$^2$. Le joueur démarre le jeu au premier étage. Il doit se rendre tout en haut, aller chercher l'objet, puis revenir en bas.\\
-	Chaque étage de ce bâtiment est généré aléatoirement, il doit comporter des pièces et des couloirs. Entre ceux-ci, peut se trouver des portes, ou juste un trou. Les portes sont aléatoirement ouvertes ou fermées, et le joueur peut essayer des les ouvrir manuellement (il a une probabilité de ne pas réussir). Le nombre de pièces par étage est défini en fonction de l'étage : les étages supérieurs sont plus compliqués car ils possèdent plus de pièces. Pour changer d'étages, le joueur doit emprunter des escaliers (un escalier pour monter, et un pour descendre par étage, ceux-ci ne peuvent pas se trouver dans la même pièce).\\
+	Chaque étage de ce bâtiment est généré aléatoirement, il doit comporter des pièces et des couloirs. Entre ceux-ci, peut se trouver des portes, ou juste un trou. Les portes sont aléatoirement ouvertes ou fermées, et le joueur peut essayer de les ouvrir manuellement (il a une probabilité de ne pas réussir). Le nombre de pièces par étage est défini en fonction de l'étage : les étages supérieurs sont plus compliqués car ils possèdent plus de pièces. Pour changer d'étages, le joueur doit emprunter des escaliers (un escalier pour monter, et un pour descendre par étage, ceux-ci ne peuvent pas se trouver dans la même pièce).\\
 	Lorsque le joueur apparait, il ne voit que la pièces où il se situe. Dans les couloirs, lorsqu'il progresse, les zones s'éclairent petit à petit, en revanche, dans dès qu'il entre dans une pièce, celle-ci s'éclaire entièrement.\\
 	Le joueur possède un certain nombre de point de vie (défini à 10) au maximum, lorsque celle-ci est à 0, il meurt. Au fur et à mesure de ses déplacements, il perd de la nourriture (une barre allant de 0 à 100). Lorsqu'il a trop faim (nourriture inférieure à 10), il ne se déplace plus correctement, il perd certaines zones de sa mémoire de la carte (elle ne sont plus éclairées), et il perd de la vie. Le joueur peut trouver de la nourriture aléatoirement par terre (un total de 2 objets de nourriture par pièce, par étage), tout comme il peut trouver des soins de santé pour lui faire régénérer sa vie. L'autre façon de re-gagner de la vie est de manger, ainsi certains point de nourritures seront utilisées pour la vie.\\
 	Lorsque le joueur mange de la nourriture, il a une faible probabilité de chance que celle-ci était empoisonnée. Le joueur perd de la vie à chaque déplacement lorsqu'il est empoisonné. Pour ne plus l'être, il doit soit attendre quelques déplacements de ne plus l'être, soit consommer un kit de santé.\\
@@ -209,7 +211,9 @@ ici mettre un petit mot
 			\item{Gestion de l'inventaire : \\}
 				Pour voir votre inventaire, vous devez appuyer sur la touche <<i>>. Pour prendre un objet (serringues de soins, nourriture), vous devez appuyez sur la touche <<g>> mais pour poser votre inventaire, vous devez appuyez sur la touche <<d>> et indiquer la case se trouve l'objet.
 			\item{Sauvegarder sa partie :\\}
-				Vous pouvez sauvegarder la partie à tout moment avec la touche <<s>>, cette manoeuvre n'arrêtera pas votre expérience de jeu.		
+				Vous pouvez sauvegarder la partie à tout moment avec la touche <<s>>, cette manoeuvre n'arrêtera pas votre expérience de jeu.
+			\item{Combattre un monstre :\\}
+				Pour combattre un monstre, utilisez les flèches de direction et indiquez la direction du monstre.		
 		\end{itemize}
 		
 %% Partie codage
@@ -301,14 +305,24 @@ int main(){
 				\item Création d'un couloir entre cette ouverture et la case de type couloir ou encadrement de porte la plus proche à l'aide d'un algorithme de recherche de chemin.
 			\end{itemize}
 		
-		\subsection{La sauvegarde}
+		\subsection{Les lectures et les écritures dans des fichiers}
 		
-		<emeric>
-		
-		\subsection{Les changements d'étages}
-		
-		<emeric>
-		
+		Lors d'un changement d'étapes, nous utilisons la fonction suivante : \begin{lstlisting}[caption=changeLvl, language=C,style=Cstyle]
+void changeLvl(t_cell map[LINES][COLUMNS], t_character *player, int dir){
+}
+		\end{lstlisting}
+		Cette fonction permet d'enregistrer la carte de l'étage et de passer à un nombre d'étage selon le paramètre \texttt{dir} : \\
+		Si ce paramètre est négatif : 
+		\begin{enumerate}
+			\item  Nous descendons de \texttt{dir} étage(s) (nous chargons le \texttt{dir} étage(s)).
+			\item Nous nous déplaçons à un escalier qui permet de monter.
+		\end{enumerate}
+		S'il est positif : 
+		\begin{enumerate}
+			\item  Nous descendons de \texttt{dir} étage(s) (nous chargons le \texttt{dir} étage(s)).
+			\item Nous nous déplaçons à un escalier qui permet de descendre.
+		\end{enumerate}
+		Un contrôle est fait pour savoir si la direction ne nous fait pas emmener à un étage négatif ou supérieur au nombre de niveau défini en variable dans le <<global.h>>.
 		\subsection{Les interactions et déplacements}
 		
 		<valentin>
@@ -333,14 +347,9 @@ int main(){
 			\item ils ont un halo lumineux autours d'eux, permettant au joueur d'apercevoir des zones qu'il n'a pas encore découvertes.
 		\end{itemize}
 		
-		
 		\subsection{La nourriture et la vie}
 		
 		<valentin>
-		
-		\subsection{Les pièges}
-		
-		<emeric>
 
 %% Partie conclusion
 \chapter{Résultat et conclusion}
