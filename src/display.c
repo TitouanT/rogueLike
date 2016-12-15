@@ -2,8 +2,8 @@
 	* \file
 	* \brief Fonctions gérant l'affichage (utilisation de ncurses)
 	* \author MOTTIER Emeric
-  * \author PELLOIN Valentin
-  * \author TEYSSIER Titouan
+	* \author PELLOIN Valentin
+	* \author TEYSSIER Titouan
 	* \date 22 novembre 2016
 	* \version 1.0
 	*/
