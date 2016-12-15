@@ -86,20 +86,20 @@ void passOut(t_cell map[LINES][COLUMNS]){
 	* \param nbMonster Nombre total de monstres
 	*/
 void fallTrap(t_cell map[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, int *lineLog, t_dir direction, t_monster monsters[NB_MONSTER_MAX], int nbMonster){
-	int trapType;
-	if((*perso).lvl!=0){
+
+	int trapType, lostLvl, lostHp, glisser;
+
+	if( perso->lvl !=0){
 		trapType=randab(0, 3);
 	}
 	else{
 		trapType=randab(1, 3);
 	}
-	int lostLvl, lostHp, glisser;
-	int i;
 
 	switch(trapType){
-		case 0 : lostLvl=randab(1,perso->lvl+1)*-1; changeLvl(map, *&perso, lostLvl); addLog("Vous êtes tombé dans un trou", lineLog, win_logs); break;
+		case 0 : lostHp=randab(0,5); lostLvl=randab(1,(perso->lvl)+1)*-1; changeLvl(map, *&perso, lostLvl); (perso->hp)= (perso->hp)-lostHp; addLog("Vous êtes tombé dans un trou", lineLog, win_logs); break;
 		case 1 : lostHp=randab(0,5); (perso->hp)= (perso->hp)-lostHp; addLog("Attention, un L1 vous a jeté une carte, vous vous êtes écorché", lineLog, win_logs); break;
-		case 2 : glisser=randab(2,8); for(i=0; i<glisser;i++) move_perso(direction, map, perso, win_logs, lineLog, monsters, nbMonster); addLog("Regardez où vous mettez vos pieds, la femme de ménage à lustrer le sol", lineLog, win_logs);
+		case 2 : glisser=randab(2,8); for(int i=0; i<glisser;i++) move_perso(direction, map, perso, win_logs, lineLog, monsters, nbMonster); addLog("Regardez où vous mettez vos pieds, la femme de ménage à lustrer le sol", lineLog, win_logs);
 	}
 }
 
