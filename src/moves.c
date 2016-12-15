@@ -86,24 +86,29 @@ void passOut(t_cell map[LINES][COLUMNS]){
 	* \param nbMonster Nombre total de monstres
 	*/
 void fallTrap(t_cell map[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, int *lineLog, t_dir direction, t_monster monsters[NB_MONSTER_MAX], int nbMonster){
-	int trapType;
-	if((*perso).lvl!=0){
+
+	int trapType, lostLvl, lostHp, glisser;
+
+	if( perso->lvl !=0){
 		trapType=randab(0, 3);
 	}
 	else{
 		trapType=randab(1, 3);
 	}
-	int lostLvl, lostHp, glisser;
-	int i;
 
 	switch(trapType){
-		case 0 : lostLvl=randab(1,perso->lvl+1)*-1; changeLvl(map, *&perso, lostLvl); addLog("Vous êtes tombé dans un trou", lineLog, win_logs); break;
+		case 0 : lostHp=randab(0,5); lostLvl=randab(1,(perso->lvl)+1)*-1; changeLvl(map, *&perso, lostLvl); (perso->hp)= (perso->hp)-lostHp; addLog("Vous êtes tombé dans un trou", lineLog, win_logs); break;
 		case 1 : lostHp=randab(0,5); (perso->hp)= (perso->hp)-lostHp; addLog("Attention, un L1 vous a jeté une carte, vous vous êtes écorché", lineLog, win_logs); break;
-		case 2 : glisser=randab(2,8); for(i=0; i<glisser;i++) move_perso(direction, map, perso, win_logs, lineLog, monsters, nbMonster); addLog("Regardez où vous mettez vos pieds, la femme de ménage à lustrer le sol", lineLog, win_logs);
+		case 2 : glisser=randab(2,8); for(int i=0; i<glisser;i++) move_perso(direction, map, perso, win_logs, lineLog, monsters, nbMonster); addLog("Regardez où vous mettez vos pieds, la femme de ménage à lustrer le sol", lineLog, win_logs);
 	}
 }
 
-/* Renvoi les coordonnées de la pièce où le joueur se trouve */
+/**
+	* \brief Renvoi les coordonnées de la pièce où le joueur se trouve
+	*	\fn t_pos startRoom(t_cell map[LINES][COLUMNS], t_character player)
+	* \param map Carte
+	* \param player joueur
+	*/
 t_pos startRoom(t_cell map[LINES][COLUMNS], t_character player){
 
 	int line   = player.line;
@@ -127,12 +132,21 @@ t_pos startRoom(t_cell map[LINES][COLUMNS], t_character player){
 	return position;
 }
 
-/* Retourne vrai si la cellule est une composante d'une pièce */
+/**
+	* \brief Retourne vrai si la cellule est une composante d'une pièce
+	*	\fn int bIsPartOfRoom(t_cell cell)
+	* \param cell Un point sur la carte
+	*/
 int bIsPartOfRoom(t_cell cell){
 	return (cell.type == ROOM || cell.type == WALL || cell.type == DOORWAY);
 }
 
-/* Marque la pièce où se trouve le joueur comme découverte */
+/**
+	* \brief Marque la pièce où se trouve le joueur comme découverte
+	*	\fn void markDiscoverRoom(t_cell map[LINES][COLUMNS], t_character player)
+	* \param map Carte
+	* \param player joueur
+	*/
 void markDiscoverRoom(t_cell map[LINES][COLUMNS], t_character player){
 
 	t_pos start = startRoom(map, player);
@@ -152,7 +166,12 @@ void markDiscoverRoom(t_cell map[LINES][COLUMNS], t_character player){
 	}
 }
 
-/* Marque les cellules autour du joueur comme découverte */
+/**
+	* \brief Marque les cellules autour du joueur comme découverte
+	*	\fn void markDiscover(t_cell map[LINES][COLUMNS], t_character player)
+	* \param map Carte
+	* \param player joueur
+	*/
 void markDiscover(t_cell map[LINES][COLUMNS], t_character player) {
 	err ("***debut mark Discover");
 	int line = player.line - 1;
@@ -174,14 +193,19 @@ void markDiscover(t_cell map[LINES][COLUMNS], t_character player) {
 	err ("***fin mark Discover");
 }
 
-/* Déplace le joueur au spawn */
+/**
+	* \brief Déplace le joueur à un escalier montant ou descendant mis en paramètre
+	*	\fn int move2spawn(t_cell mat[LINES][COLUMNS], t_character *perso, int stair)
+	* \param mat Carte
+	* \param perso joueur
+	* \param stair Escalier
+	*/
 int move2spawn(t_cell mat[LINES][COLUMNS], t_character *perso, int stair){
 
   int i, j;
 
   for(i = 0 ; i < LINES ; i++){
     for(j = 0 ; j < COLUMNS ; j++){
-
       if(mat[i][j].nbObject != 0 && mat[i][j].obj[0].type == stair){
         perso->line = i;
         perso->column = j;
@@ -189,13 +213,17 @@ int move2spawn(t_cell mat[LINES][COLUMNS], t_character *perso, int stair){
 				perso->nbMove++;
         return TRUE;
       }
-
     }
   }
 
   return FALSE;
 }
 
+/**
+	* \brief Vérifie si l'endroit choisi est accessible
+	*	\fn int bIsWalkable(t_cell cell)
+	* \param cell Un point sur la carte
+	*/
 int bIsWalkable(t_cell cell){
 
   if(cell.type == ROOM || cell.type == CORRIDOR) {
@@ -211,6 +239,17 @@ int bIsWalkable(t_cell cell){
 
 }
 
+/**
+	* \brief Déplace le joueur et les conséquences de ce mouvement (nourriture, piège ...)
+	*	\fn int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, int *lineLog, t_monster monsters[NB_MONSTER_MAX], int nbMonster)
+	* \param direction Direction de mouvement du joueur
+	* \param mat Carte
+	* \param perso joueur
+	* \param win_logs Fenêtre où afficher les objectifs
+	* \param lineLog Numéro de ligne de log
+	* \param monsters L'ensemble des monstres
+	* \param nbMonster Nombre total de monstres
+	*/
 int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, int *lineLog, t_monster monsters[NB_MONSTER_MAX], int nbMonster) {
 	err("***debut move perso***");
 	int success = FALSE;
@@ -279,9 +318,6 @@ int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso, 
 			perso->column += 1;
 			perso->line   += 1;
 			success = TRUE;
-    	}
-	}
-
 	// On effectue certaines actions si le joueur a réussi à se deplacer
 	if(success == TRUE){
 

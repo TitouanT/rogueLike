@@ -8,7 +8,7 @@
   * \version 1.0
   */
 
-#include <stdlib.h>   // OK 
+#include <stdlib.h>   // OK
 
 #include "cell.h"     // OK
 #include "filePos.h"  // OK
@@ -338,6 +338,20 @@ void randomFreePlace (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom, in
 }
 
 /**
+  * \brief vérifie si on est à côté d'une porte
+  * \fn int nextToDoor (t_cell map[LINES][COLUMNS], int line, int column)
+  * \param map Carte représenant l'étage
+  * \param line Ligne choisi
+  * \param column Colonne choisi
+  */
+int nextToDoor (t_cell map[LINES][COLUMNS], int line, int column){
+		if(map[line+1][column].state==dNONE || map[line+1][column].state==dCLOSE || map[line+1][column].state==dOPEN) return TRUE;
+		if(map[line-1][column].state==dNONE || map[line+1][column].state==dCLOSE || map[line+1][column].state==dOPEN) return TRUE;
+		if(map[line][column+1].state==dNONE || map[line+1][column].state==dCLOSE || map[line+1][column].state==dOPEN) return TRUE;
+		if(map[line][column-1].state==dNONE || map[line+1][column].state==dCLOSE || map[line+1][column].state==dOPEN) return TRUE;
+		return FALSE;
+}
+/**
   * \brief place les différents objets
   * \fn void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom)
   * \param map carte représenant l'étage
@@ -391,7 +405,9 @@ void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 	// Génération des pièges aléatoirement sur la carte
 	for (i = 0; i < (int)(AV_NB_TRAP_ROOM * nbRoom); i++) {
 		err("placement d'un piege !");
+	do{
 		randomFreePlace(map, rooms, nbRoom, -1, &lineTrap, &colTrap);
+	}while(nextToDoor(map,lineTrap, colTrap));
 		map[lineTrap][colTrap].obj[map[lineTrap][colTrap].nbObject].type = TRAP;
 		map[lineTrap][colTrap].obj[map[lineTrap][colTrap].nbObject].isDiscovered = DEBUG;
 		map[lineTrap][colTrap].nbObject++;
