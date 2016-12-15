@@ -265,7 +265,6 @@ void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_cha
 
 		addLog("", &lineLog, win_logs);
 
-		addLog("?             : Affiche cette liste d'aide", &lineLog, win_logs);
 		addLog("help          : Affiche cette liste d'aide", &lineLog, win_logs);
 		addLog("lumos         : Affiche la map au complet", &lineLog, win_logs);
 		addLog("food          : Met 100% de la nourriture", &lineLog, win_logs);
@@ -287,6 +286,23 @@ void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_cha
 	}
 }
 
+void help(WINDOW *win_logs, WINDOW *win_game){
+	int lineLog = 0;
+	clearLog(&lineLog, win_logs);
+
+	addLog("        -- AIDE POUR LES NOUVEAUX -- ", &lineLog, win_logs);
+
+	addLog("", &lineLog, win_logs);
+
+	addLog("?         : Affiche cette liste d'aide", &lineLog, win_logs);
+	addLog("flèches   : Permet de se déplacer", &lineLog, win_logs);
+	addLog("o         : Ouvrir une porte", &lineLog, win_logs);
+	addLog("f         : Fermet une porte", &lineLog, win_logs);
+	addLog("i         : Voir l'inventaire", &lineLog, win_logs);
+	addLog("g         : Prendre un objet", &lineLog, win_logs);
+	addLog("d         : Poser un objet de l'inventaire", &lineLog, win_logs);
+	addLog("entrée    : Interagir", &lineLog, win_logs);
+}
 /**
 	* \brief Teste si la porte est valide
 	*	\fn int bIsValidDoor(t_cell map[LINES][COLUMNS], t_pos position, t_monster monsters[NB_MONSTER_MAX], int nbMonster, int playerLvl)
@@ -518,6 +534,8 @@ int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, 
 		case 'Q' : return !askConfirmationToQuit(win_logs, lineLog);
 
 		case '_' : cheat(win_logs, win_game, map, player); break;
+
+		case '?' : help(win_logs, win_game); break;
 
 		case 'i' : printInventory(*player, win_logs, lineLog); break;
 		case 'g' : grabItem(player, map, win_logs, lineLog); break;
