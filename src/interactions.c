@@ -301,7 +301,7 @@ void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_cha
 int bIsValidDoor(t_cell map[LINES][COLUMNS], t_pos position, t_monster monsters[NB_MONSTER_MAX], int nbMonster, int playerLvl){
 
 	int i;
-
+	// On vérifie d'abord qu'un monstre ne se trouve pas à la position de la porte
 	for(i = 0 ; i < nbMonster ; i++){
 		if(monsters[i].lvl == playerLvl && monsters[i].line == position.line && monsters[i].col == position.column && monsters[i].hp > 0){
 			return FALSE;

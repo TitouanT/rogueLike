@@ -35,15 +35,15 @@ int main () {
 	int widthScreen, heightScreen;
 	int continueGame = TRUE;
 	int nbMonster;
+	int visibleByGhost[LINES][COLUMNS];
+	t_cell map[LINES][COLUMNS];
+	t_monster monsters[NB_MONSTER_MAX];
+	t_character player;
 
 
 	err ("  main: initialisations");
 
 	initRandom();
-	t_cell map[LINES][COLUMNS];
-	t_monster monsters[NB_MONSTER_MAX];
-	int visibleByGhost[LINES][COLUMNS];
-	t_character player;
 
 	init_screen();
 	getmaxyx(stdscr,heightScreen,widthScreen);
