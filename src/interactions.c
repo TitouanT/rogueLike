@@ -127,6 +127,7 @@ void dropItem(t_character *player, t_cell map[LINES][COLUMNS], WINDOW *win_logs,
 			if(map[player->line][player->column].nbObject == 0){
 				map[player->line][player->column].obj[0].type = player->inventory[i];
 				map[player->line][player->column].nbObject = 1;
+				map[player->line][player->column].obj[0].isDiscovered = TRUE;
 				player->inventory[i] = objNONE;
 				addLog("L'objet a bien été posé au sol.", lineLog, win_logs);
 			}
@@ -137,10 +138,6 @@ void dropItem(t_character *player, t_cell map[LINES][COLUMNS], WINDOW *win_logs,
 		else {
 			addLog("Votre inventaire est vide à cet endroit !", lineLog, win_logs);
 		}
-
-
-
-
 
 	}
 	else {
@@ -292,26 +289,47 @@ void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_cha
 
 /**
 	* \brief Teste si la porte est valide
-	*	\fn int bIsValidDoor(t_cell map[LINES][COLUMNS], t_pos position)
+	*	\fn int bIsValidDoor(t_cell map[LINES][COLUMNS], t_pos position, t_monster monsters[NB_MONSTER_MAX], int nbMonster, int playerLvl)
 	* \param map Carte où se trouve le joueur
 	* \param position Position de la porte à verifier
+	* \param monsters Monstres présents dans le jeu
+	* \param nbMonster Nombre de monstres dans le jeu
+	* \param playerLvl Niveau du joueur (son étage)
 	* \return TRUE si la porte est valide
 	* \return FALSE sinon
 	*/
-int bIsValidDoor(t_cell map[LINES][COLUMNS], t_pos position){
-  return (position.line >= 0 && position.column >= 0 && position.line < LINES && position.column < COLUMNS && map[position.line][position.column].type == DOORWAY);
+int bIsValidDoor(t_cell map[LINES][COLUMNS], t_pos position, t_monster monsters[NB_MONSTER_MAX], int nbMonster, int playerLvl){
+
+	int i;
+
+	for(i = 0 ; i < nbMonster ; i++){
+		if(monsters[i].lvl == playerLvl && monsters[i].line == position.line && monsters[i].col == position.column && monsters[i].hp > 0){
+			return FALSE;
+		}
+	}
+
+  return (
+		position.line >= 0 &&
+		position.column >= 0 &&
+		position.line < LINES &&
+		position.column < COLUMNS &&
+		map[position.line][position.column].type == DOORWAY &&
+		map[position.line][position.column].nbObject <= 0
+	);
 }
 
 /**
 	* \brief Traite l'ouverture et la fermeture d'une porte
-	*	\fn void traiterPorte(t_cell map[LINES][COLUMNS], t_character *player, int key, WINDOW * win, int *lineLog)
+	*	\fn void traiterPorte(t_cell map[LINES][COLUMNS], t_character *player, int key, WINDOW * win, int *lineLog, t_monster monsters[NB_MONSTER_MAX], int nbMonster)
 	* \param map Carte où se trouve le joueur
 	* \param player Joueur sur la carte
 	* \param key Touche appuyée par l'utilisateur
 	* \param win Fenêtre de logs
 	* \param lineLog Ligne où afficher les logs
+	* \param monsters Monstres présents dans le jeu
+	* \param nbMonster Nombre de monstres dans le jeu
 	*/
-void traiterPorte(t_cell map[LINES][COLUMNS], t_character *player, int key, WINDOW * win, int *lineLog){
+void traiterPorte(t_cell map[LINES][COLUMNS], t_character *player, int key, WINDOW * win, int *lineLog, t_monster monsters[NB_MONSTER_MAX], int nbMonster){
 
   int direction;
   t_pos doorPos = {player->line, player->column};
@@ -340,9 +358,9 @@ void traiterPorte(t_cell map[LINES][COLUMNS], t_character *player, int key, WIND
 
   if(key == 'o'){
 
-    if(bIsValidDoor(map, doorPos) && map[doorPos.line][doorPos.column].state == dCLOSE){
-			// Ajoute une probabilité de ne pas réussir à ouvrir la porte
-      if(randab(0,3) == 0) {
+    if(bIsValidDoor(map, doorPos, monsters, nbMonster, player->lvl) && map[doorPos.line][doorPos.column].state == dCLOSE){
+			// Ajoute une probabilité de 30% de ne pas réussir à ouvrir la porte
+      if(didItHappen(30)) {
         addLog("Vous venez d'enfoncer cette porte.", lineLog, win);
         addLog("Recommencez pour l'ouvrir entièrement !", lineLog, win);
       }
@@ -355,7 +373,7 @@ void traiterPorte(t_cell map[LINES][COLUMNS], t_character *player, int key, WIND
   }
   else if(key == 'c'){
 
-    if(bIsValidDoor(map, doorPos) && map[doorPos.line][doorPos.column].state == dOPEN){
+    if(bIsValidDoor(map, doorPos, monsters, nbMonster, player->lvl) && map[doorPos.line][doorPos.column].state == dOPEN){
       map[doorPos.line][doorPos.column].state = dCLOSE;
     }
     else addLog("Fermeture impossible.", lineLog, win);
@@ -493,8 +511,8 @@ int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, 
 
 
 		case '\n': return (traiterEntree(map, player, win_logs, lineLog));
-		case 'o' : traiterPorte (map, player, key, win_logs, lineLog);   break;
-		case 'c' : traiterPorte (map, player, key, win_logs, lineLog);   break;
+		case 'o' : traiterPorte (map, player, key, win_logs, lineLog, monsters, nbMonster);   break;
+		case 'c' : traiterPorte (map, player, key, win_logs, lineLog, monsters, nbMonster);   break;
 		case 's' : err("****** Sauvegarde en cours ******"); saveGame(map, player, monsters, nbMonster); addLog("Partie sauvegardée", lineLog, win_logs); err("****** Partie sauvegardée ******"); break;//
 		case 'q' : return FALSE;
 		case 'Q' : return !askConfirmationToQuit(win_logs, lineLog);

@@ -54,6 +54,7 @@ int main () {
 
 	deleteWindow(win_start);
 
+
 	do{
 		// Mise à zéro de toutes les variables, utile lorsque le joueur relance une partie
 		player = (t_character){"root", 0, 0, 0, 10, 10, 60, 10, 0, MAX_FOOD, FALSE, FALSE, {objNONE}};
