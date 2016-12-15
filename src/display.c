@@ -467,9 +467,22 @@ void addLog(char * message, int * line, WINDOW *win){
 	*/
 void displayObjectives(int *lineLog, WINDOW *win_logs){
 
+	(*lineLog)++;
+
+	printLineCenter("-- OBJECTIFS -- ", COLS_LOGS, *lineLog, win_logs);
+
+	*lineLog = 3;
+
 	addLog("Vous venez d'apparaître au premier étage !", lineLog, win_logs);
-	addLog(" > Allez sauver Nathalie Camelin", lineLog, win_logs);
-	addLog(" > Evitez de vous faire attraper par des L1", lineLog, win_logs);
+	addLog("- Allez récupérer le papier contenant le mot", lineLog, win_logs);
+	addLog("    de passe root du serveur info.", lineLog, win_logs);
+	addLog("- Celui-ci se trouve tout en haut du batiment.", lineLog, win_logs);
+	addLog("- Une fois récupéré, vous devez re-déscendre.", lineLog, win_logs);
+	addLog("- Evitez de vous faire attraper par des", lineLog, win_logs);
+	addLog("    étudiants.", lineLog, win_logs);
+	addLog("- Appuyez sur `?` pour obtenir de l'aide", lineLog, win_logs);
+
+	*lineLog += 3;
 
 }
 

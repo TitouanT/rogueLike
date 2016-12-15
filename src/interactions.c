@@ -260,10 +260,11 @@ void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_cha
 	}
 	else {
 		clearLog(&lineLog, win_logs);
+		lineLog++;
 
-		addLog("        -- AIDE POUR LES TRICHEURS -- ", &lineLog, win_logs);
+		printLineCenter("-- AIDE POUR LES TRICHEURS -- ", COLS_LOGS, lineLog, win_logs);
 
-		addLog("", &lineLog, win_logs);
+		lineLog += 2;
 
 		addLog("help          : Affiche cette liste d'aide", &lineLog, win_logs);
 		addLog("lumos         : Affiche la map au complet", &lineLog, win_logs);
@@ -286,22 +287,26 @@ void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_cha
 	}
 }
 
-void help(WINDOW *win_logs, WINDOW *win_game){
-	int lineLog = 0;
-	clearLog(&lineLog, win_logs);
+void help(WINDOW *win_logs, int *lineLog){
 
-	addLog("        -- AIDE POUR LES NOUVEAUX -- ", &lineLog, win_logs);
+	(*lineLog)++;
 
-	addLog("", &lineLog, win_logs);
+	printLineCenter("-- AIDE POUR LES NOUVEAUX -- ", COLS_LOGS, *lineLog, win_logs);
 
-	addLog("?         : Affiche cette liste d'aide", &lineLog, win_logs);
-	addLog("flèches   : Permet de se déplacer", &lineLog, win_logs);
-	addLog("o         : Ouvrir une porte", &lineLog, win_logs);
-	addLog("f         : Fermet une porte", &lineLog, win_logs);
-	addLog("i         : Voir l'inventaire", &lineLog, win_logs);
-	addLog("g         : Prendre un objet", &lineLog, win_logs);
-	addLog("d         : Poser un objet de l'inventaire", &lineLog, win_logs);
-	addLog("entrée    : Interagir", &lineLog, win_logs);
+	*lineLog += 2;
+
+	addLog("?         : Affiche cette liste d'aide", lineLog, win_logs);
+	addLog("flèches   : Permet de se déplacer", lineLog, win_logs);
+	addLog("o         : Ouvrir une porte", lineLog, win_logs);
+	addLog("f         : Fermer une porte", lineLog, win_logs);
+	addLog("i         : Voir l'inventaire", lineLog, win_logs);
+	addLog("g         : Prendre un objet", lineLog, win_logs);
+	addLog("d         : Poser un objet de l'inventaire", lineLog, win_logs);
+	addLog("s         : Sauvegarder la partie", lineLog, win_logs);
+	addLog("q         : Quitter la partie (sans sauvegarde)", lineLog, win_logs);
+	addLog("entrée    : Interagir", lineLog, win_logs);
+
+	*lineLog += 3;
 }
 /**
 	* \brief Teste si la porte est valide
@@ -535,7 +540,7 @@ int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, 
 
 		case '_' : cheat(win_logs, win_game, map, player); break;
 
-		case '?' : help(win_logs, win_game); break;
+		case '?' : help(win_logs, lineLog); break;
 
 		case 'i' : printInventory(*player, win_logs, lineLog); break;
 		case 'g' : grabItem(player, map, win_logs, lineLog); break;
