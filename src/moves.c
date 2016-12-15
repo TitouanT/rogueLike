@@ -185,8 +185,7 @@ void markDiscover(t_cell map[LINES][COLUMNS], t_character player) {
 		for (j = 0; j < 3; j++) {
 			if (line+i >= 0 && line+i < LINES && col+j >= 0 && col+j < COLUMNS) {
 				map[line+i][col+j].isDiscovered = TRUE;
-				if (map[i][j].nbObject > 0 && map[i][j].obj[0].type != TRAP)
-					map[i][j].obj[0].isDiscovered=TRUE;
+				if (map[i][j].nbObject > 0 && map[i][j].obj[0].type != TRAP) map[i][j].obj[0].isDiscovered=TRUE;
 			}
 		}
 	}
@@ -240,7 +239,7 @@ int bIsWalkable(t_cell cell){
 }
 
 /**
-	* \brief Déplace le joueur et les conséquences de ce mouvement (nourriture, piège ...)
+	* \brief Déplace le joueur et les conséquences de ce mouvement (nourriture, piège)
 	*	\fn int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, int *lineLog, t_monster monsters[NB_MONSTER_MAX], int nbMonster)
 	* \param direction Direction de mouvement du joueur
 	* \param mat Carte
@@ -266,14 +265,14 @@ int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso, 
 			perso->line -= 1;
 			success = TRUE;
     	}
-  	}
+  }
 
-  	if(direction == DOWN){
-    	if(line+1 < LINES && bIsWalkable(mat[line+1][column])){
-      		perso->line += 1;
+  if(direction == DOWN){
+    if(line+1 < LINES && bIsWalkable(mat[line+1][column])){
+      perso->line += 1;
 			success = TRUE;
-    	}
-  	}
+    }
+  }
 
 	if(direction == LEFT){
 		if(column > 0 && bIsWalkable(mat[line][column-1])){
@@ -299,17 +298,17 @@ int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso, 
 
 	if(direction == UP_RIGHT){
     	if(line > 0 && column + 1 < COLUMNS  && bIsWalkable(mat[line - 1][column + 1])){
-			perso->column += 1;
-			perso->line   -= 1;
-			success = TRUE;
+				perso->column += 1;
+				perso->line   -= 1;
+				success = TRUE;
     	}
 	}
 
 	if(direction == DOWN_LEFT){
 		if(line+1 < LINES && column > 0 && bIsWalkable(mat[line + 1][column - 1])){
-			perso->column -= 1;
-			perso->line   += 1;
-			success = TRUE;
+				perso->column -= 1;
+				perso->line   += 1;
+				success = TRUE;
 		}
 	}
 
@@ -318,6 +317,8 @@ int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso, 
 			perso->column += 1;
 			perso->line   += 1;
 			success = TRUE;
+		}
+	}
 	// On effectue certaines actions si le joueur a réussi à se deplacer
 	if(success == TRUE){
 
@@ -366,6 +367,5 @@ int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso, 
 	}
 
 	err("***fin move perso***");
-  	return success;
-
+  return success;
 }
