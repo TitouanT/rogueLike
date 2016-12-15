@@ -177,11 +177,13 @@ void printASCIIText(char * file, int * line, int xShift, WINDOW *win){
 
 /**
 	* \brief Afficher le contenu d'un fichier au centre de l'écran
-	*	\fn void printASCIICenter(char *file, WINDOW *win)
+	*	\fn void printASCIICenter(char *file, char * message, char messageTwo, WINDOW * win)
 	* \param file Fichier ASCII à afficher
+	* \param message Message à afficher en dessous
+	* \param messageTwo Deuxième message à afficher
 	* \param win Fenetre où afficher le message
 	*/
-void printASCIICenter(char *file, char * message, WINDOW * win){
+void printASCIICenter(char *file, char * message, char * messageTwo, WINDOW * win){
 
 	int lines, columns;
 	int yShift, xShift;
@@ -196,6 +198,7 @@ void printASCIICenter(char *file, char * message, WINDOW * win){
 	printASCIIText(file, &yShift, xShift, win);
 
 	printLineCenter(message, columns, yShift+2, win);
+	printLineCenter(messageTwo, columns, yShift+3, win);
 
 }
 
@@ -209,7 +212,7 @@ void startScreen(WINDOW *win){
 	int lines, columns;
 	getmaxyx(win, lines, columns);
 
-	printASCIICenter("include/logo.txt", "Appuyez sur une touche pour jouer.", win);
+	printASCIICenter("include/logo.txt", "Appuyez sur une touche pour jouer.", "", win);
 
 	mvwprintw(win, lines - 1, 0, "Roguelike créé par MOTTIER Emeric - PELLOIN Valentin - TEYSSIER Titouan.");
 	wrefresh(win);
@@ -784,10 +787,10 @@ void displayEnd(t_character player, WINDOW *win){
 
 
 	if(player.hp <= 0){
-		printASCIICenter("include/game_over.txt", "Appuyez sur q pour quitter.", win);
+		printASCIICenter("include/game_over.txt", "Appuyez sur q pour quitter.", "Appuyez sur r pour recommencer une partie.", win);
 	}
 	else if(player.hasFoundObj == TRUE){
-		printASCIICenter("include/well_done.txt", "Appuyez sur q pour quitter.", win);
+		printASCIICenter("include/well_done.txt", "Appuyez sur q pour quitter.", "Appuyez sur r pour recommencer une partie.", win);
 	}
 
 	wrefresh(win);
