@@ -480,7 +480,7 @@ void displayObjectives(int *lineLog, WINDOW *win_logs){
 	addLog("- Une fois récupéré, vous devez re-déscendre.", lineLog, win_logs);
 	addLog("- Evitez de vous faire attraper par des", lineLog, win_logs);
 	addLog("    étudiants.", lineLog, win_logs);
-	addLog("- Appuyez sur `?` pour obtenir de l'aide", lineLog, win_logs);
+	addLog("- Appuyez sur `?` pour obtenir de l'aide.", lineLog, win_logs);
 
 	*lineLog += 3;
 
