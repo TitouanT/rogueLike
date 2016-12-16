@@ -16,18 +16,18 @@
  *
  * Pour installer notre rogueLike, ouvrez un terminal, et entrez les commandes suivantes :
  *
- * ```shell
+ * \code{shell}
  * git clone https://github.com/TitouanT/rogueLike.git
  * cd rogueLike
  * make install
- * ```
+ * \endcode
  *
  *
  * \section lancement_sec Lancement du jeu
  *
- * ```shell
+ * \code{shell}
  * ./rogueLike
- * ```
+ * \endcode
  *
  *
  * \section jouer_sec Comment jouer ?
