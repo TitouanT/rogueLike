@@ -522,19 +522,19 @@ int askConfirmationToQuit(WINDOW * win, int *lineLog) {
 	* \return FALSE si l'utilisateur à demandé de quitter la partie
 	* \return TRUE sinon
 	*/
-int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, WINDOW * win_logs, WINDOW * win_game, int *lineLog, t_monster monsters[NB_MONSTER_MAX], int nbMonster, int *isPlayerInvicible){
+int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, WINDOW * win_logs, WINDOW * win_game, int *lineLog, t_monster monsters[NB_MONSTER_MAX], int nbMonster, int *isPlayerInvicible,  int visibleByGhost[LINES][COLUMNS]){
 
 	err("*** debut handleInteraction ***");
 	switch (key) {
-		case 'k': case KEY_UP:    move_perso(UP,    map, player, win_logs, lineLog, monsters, nbMonster);  break;
-		case 'j': case KEY_DOWN:  move_perso(DOWN,  map, player, win_logs, lineLog, monsters, nbMonster);  break;
-		case 'h': case KEY_LEFT:  move_perso(LEFT,  map, player, win_logs, lineLog, monsters, nbMonster);  break;
-		case 'l': case KEY_RIGHT: move_perso(RIGHT, map, player, win_logs, lineLog, monsters, nbMonster);  break;
+		case 'k': case KEY_UP:    move_perso(UP,    map, player, win_logs, lineLog, monsters, nbMonster, win_game, visibleByGhost);  break;
+		case 'j': case KEY_DOWN:  move_perso(DOWN,  map, player, win_logs, lineLog, monsters, nbMonster, win_game, visibleByGhost);  break;
+		case 'h': case KEY_LEFT:  move_perso(LEFT,  map, player, win_logs, lineLog, monsters, nbMonster, win_game, visibleByGhost);  break;
+		case 'l': case KEY_RIGHT: move_perso(RIGHT, map, player, win_logs, lineLog, monsters, nbMonster, win_game, visibleByGhost);  break;
 
-		case 'y': move_perso(UP_LEFT, map, player, win_logs, lineLog, monsters, nbMonster);    break;
-		case 'u': move_perso(UP_RIGHT, map, player, win_logs, lineLog, monsters, nbMonster);   break;
-		case 'b': move_perso(DOWN_LEFT, map, player, win_logs, lineLog, monsters, nbMonster);  break;
-		case 'n': move_perso(DOWN_RIGHT, map, player, win_logs, lineLog, monsters, nbMonster); break;
+		case 'y': move_perso(UP_LEFT, map, player, win_logs, lineLog, monsters, nbMonster, win_game, visibleByGhost);    break;
+		case 'u': move_perso(UP_RIGHT, map, player, win_logs, lineLog, monsters, nbMonster, win_game, visibleByGhost);   break;
+		case 'b': move_perso(DOWN_LEFT, map, player, win_logs, lineLog, monsters, nbMonster, win_game, visibleByGhost);  break;
+		case 'n': move_perso(DOWN_RIGHT, map, player, win_logs, lineLog, monsters, nbMonster, win_game, visibleByGhost); break;
 
 
 		case '\n': return (traiterEntree(map, player, win_logs, lineLog));
