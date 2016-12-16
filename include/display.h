@@ -33,6 +33,7 @@ void setFloorCheat(t_cell map[LINES][COLUMNS]);
 void displayEnd(t_character player, WINDOW *win);
 //void abortGame(); //utilisée seulement dans display.c
 void printInventory(t_character player, WINDOW *win, int *lineLog);
+void printLineCenter(char *msg, int widthScreen, int line, WINDOW *win);
 void displayMonster (WINDOW * win, t_monster monsters[NB_MONSTER_MAX], t_cell map[LINES][COLUMNS], int nbMonster, int currentLvl, int visibleByGhost[LINES][COLUMNS]);
 
 #endif

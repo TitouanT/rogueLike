@@ -179,13 +179,14 @@ void markDiscover(t_cell map[LINES][COLUMNS], t_character player) {
 
 	int i, j;
 	if(map[player.line][player.column].nbObject > 0 && map[player.line][player.column].obj[0].type == TRAP){
-		map[player.line][player.column].obj[0].isDiscovered=TRUE;
+		map[player.line][player.column].obj[0].isDiscovered = TRUE;
 	}
 	for (i = 0; i < 3; i++) {
 		for (j = 0; j < 3; j++) {
 			if (line+i >= 0 && line+i < LINES && col+j >= 0 && col+j < COLUMNS) {
 				map[line+i][col+j].isDiscovered = TRUE;
-				if (map[i][j].nbObject > 0 && map[i][j].obj[0].type != TRAP) map[i][j].obj[0].isDiscovered=TRUE;
+				if (map[i][j].nbObject > 0 && map[i][j].obj[0].type != TRAP)
+					map[i][j].obj[0].isDiscovered=TRUE;
 			}
 		}
 	}

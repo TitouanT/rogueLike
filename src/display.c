@@ -46,7 +46,7 @@ int konami (int key);
 #define OPENED_DOOR     7
 
 /** Paire de couleur du joueur dans un couloir */
-#define PLAYER_C_COLOR  8
+#define OBJECT_IN_CORRIDOR  8
 
 /** Paire de couleur de la barre verte */
 #define BAR_GREEN       9
@@ -59,6 +59,9 @@ int konami (int key);
 
 /** Paire de couleur des kits de santé */
 #define MED_KIT_COLOR  12
+
+/** Paire de couleur des kits de santé dans les couloirs*/
+#define MED_KIT_COLOR_C 13
 
 /** Touche retour en arrière (celle de ncurses ne fonctionne pas) */
 #define KEY_RETURN 263
@@ -80,13 +83,13 @@ void init_colors(){
 	init_pair(PLAYER_COLOR  , COLOR_GREEN, COLOR_WHITE);
 	init_pair(OBJECTS_COLOR , COLOR_BLACK, COLOR_WHITE);
 	init_pair(OPENED_DOOR   , COLOR_WHITE, COLOR_GREEN);
-	init_pair(PLAYER_C_COLOR, COLOR_GREEN, COLOR_BLACK);
+	init_pair(OBJECT_IN_CORRIDOR, COLOR_GREEN, COLOR_BLACK);
 
 	init_pair(BAR_GREEN     , COLOR_GREEN, COLOR_GREEN);
 	init_pair(BAR_RED       , COLOR_RED  ,   COLOR_RED);
 	init_pair(COLOR_TITLE   , COLOR_GREEN, COLOR_BLACK);
 	init_pair(MED_KIT_COLOR , COLOR_RED,   COLOR_WHITE);
-
+	init_pair(MED_KIT_COLOR_C, COLOR_RED, COLOR_BLACK);
 
 }
 
@@ -259,8 +262,8 @@ void drawBox(int startX, int startY, int sizeX, int sizeY, WINDOW *win, char col
 	clearArea(win, startX, startY, sizeX, sizeY);
 
 	switch (color) {
-		case 'r' : wattron(win, COLOR_PAIR(PLAYER_C_COLOR));  break;
-		case 'w' : wattroff(win, COLOR_PAIR(PLAYER_C_COLOR)); break;
+		case 'r' : wattron(win, COLOR_PAIR(OBJECT_IN_CORRIDOR));  break;
+		case 'w' : wattroff(win, COLOR_PAIR(OBJECT_IN_CORRIDOR)); break;
 	}
 
 	mvwaddch(win, y, x, ACS_ULCORNER);
@@ -397,7 +400,7 @@ void displayMonster (WINDOW * win, t_monster monsters[NB_MONSTER_MAX], t_cell ma
 			if(map[monsters[i].line][monsters[i].col].type == ROOM){
 				wattron(win, COLOR_PAIR(PLAYER_COLOR));
 			}
-			else wattron(win, COLOR_PAIR(PLAYER_C_COLOR));
+			else wattron(win, COLOR_PAIR(OBJECT_IN_CORRIDOR));
 
 			wmove(win, (monsters[i].line)+1, (monsters[i].col)+1);
 			switch (monsters[i].type) {
@@ -464,9 +467,22 @@ void addLog(char * message, int * line, WINDOW *win){
 	*/
 void displayObjectives(int *lineLog, WINDOW *win_logs){
 
+	(*lineLog)++;
+
+	printLineCenter("-- OBJECTIFS -- ", COLS_LOGS, *lineLog, win_logs);
+
+	*lineLog = 3;
+
 	addLog("Vous venez d'apparaître au premier étage !", lineLog, win_logs);
-	addLog(" > Allez sauver Nathalie Camelin", lineLog, win_logs);
-	addLog(" > Evitez de vous faire attraper par des L1", lineLog, win_logs);
+	addLog("- Allez récupérer le papier contenant le mot", lineLog, win_logs);
+	addLog("    de passe root du serveur info.", lineLog, win_logs);
+	addLog("- Celui-ci se trouve tout en haut du batiment.", lineLog, win_logs);
+	addLog("- Une fois récupéré, vous devez re-déscendre.", lineLog, win_logs);
+	addLog("- Evitez de vous faire attraper par des", lineLog, win_logs);
+	addLog("    étudiants.", lineLog, win_logs);
+	addLog("- Appuyez sur `?` pour obtenir de l'aide.", lineLog, win_logs);
+
+	*lineLog += 3;
 
 }
 
@@ -555,29 +571,43 @@ void displayFloor(t_cell map[LINES][COLUMNS], t_character player, WINDOW *win, i
 				switch (map[i][j].type) {
 
 					case EMPTY: 	 printCell(GENERAL_COLOR,' ', win); break;
-
 					case CORRIDOR:
 						if (map[i][j].nbObject <= 0 || map[i][j].obj[0].isDiscovered == FALSE)
 							printCell(CORRIDOR_COLOR,'c', win);
 						else {
 							switch (map[i][j].obj[0].type) {
-								case STAIRS_UP: printCell(OBJECTS_COLOR,'<', win); break;
-								case STAIRS_DOWN: printCell(OBJECTS_COLOR, '>', win); break;
-								case FOOD: printCell(OBJECTS_COLOR, '%', win); break;
-								case TRAP: printCell(OBJECTS_COLOR, '^', win); break;
-								case objNONE: printCell(CORRIDOR_COLOR,' ', win); break;
+								case STAIRS_UP:   printCell(OBJECT_IN_CORRIDOR, '<', win); break;
+								case STAIRS_DOWN: printCell(OBJECT_IN_CORRIDOR, '>', win); break;
+								case FOOD:        printCell(OBJECT_IN_CORRIDOR, '%', win); break;
+								case MED_KIT:     printCell(OBJECT_IN_CORRIDOR, '%', win); break;
+								case TRAP:        printCell(OBJECT_IN_CORRIDOR, '^', win); break;
+								case objNONE:     printCell(CORRIDOR_COLOR,' ', win); break;
 								default: break;
 							}
 						}
 						break;
 
 					case DOORWAY:
-						switch (map[i][j].state) {
-							case dNONE:  printCell(CORRIDOR_COLOR,'c', win); break;
-							case dOPEN:  printCell(OPENED_DOOR,'c', win); break;
-							case dCLOSE: printCell(GENERAL_COLOR,'c', win); break;
-							default: printCell(GENERAL_COLOR,'?', win); break;
-						} break;
+						if (map[i][j].nbObject <= 0 || map[i][j].obj[0].isDiscovered == FALSE){
+							switch (map[i][j].state) {
+								case dNONE:  printCell(CORRIDOR_COLOR,'c', win); break;
+								case dOPEN:  printCell(OPENED_DOOR,'c', win); break;
+								case dCLOSE: printCell(GENERAL_COLOR,'c', win); break;
+								default: printCell(GENERAL_COLOR,'?', win); break;
+							}
+						}
+						else {
+							switch (map[i][j].obj[0].type) {
+								case STAIRS_UP:   printCell(OBJECT_IN_CORRIDOR, '<', win); break;
+								case STAIRS_DOWN: printCell(OBJECT_IN_CORRIDOR, '>', win); break;
+								case FOOD:        printCell(OBJECT_IN_CORRIDOR, '%', win); break;
+								case MED_KIT:     printCell(MED_KIT_COLOR_C, '%', win); break;
+								case TRAP:        printCell(OBJECT_IN_CORRIDOR, '^', win); break;
+								case objNONE:     printCell(CORRIDOR_COLOR,' ', win); break;
+								default: break;
+							}
+						}
+						break;
 
 					case ROOM:
 						if (map[i][j].nbObject == 0 || !map[i][j].obj[0].isDiscovered) printCell(ROOM_COLOR,' ', win);
@@ -645,7 +675,7 @@ void displayPlayer(t_character player, t_cell mat[LINES][COLUMNS], WINDOW *win, 
 	if(mat[player.line][player.column].type == ROOM){
 		wattron(win, COLOR_PAIR(PLAYER_COLOR));
 	}
-	else wattron(win, COLOR_PAIR(PLAYER_C_COLOR));
+	else wattron(win, COLOR_PAIR(OBJECT_IN_CORRIDOR));
 
 	wmove(win, (player.line)+1, (player.column)+1);
 	wprintw(win, "@");

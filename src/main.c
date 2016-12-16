@@ -35,15 +35,15 @@ int main () {
 	int widthScreen, heightScreen;
 	int continueGame = TRUE;
 	int nbMonster;
+	int visibleByGhost[LINES][COLUMNS];
+	t_cell map[LINES][COLUMNS];
+	t_monster monsters[NB_MONSTER_MAX];
+	t_character player;
 
 
 	err ("  main: initialisations");
 
 	initRandom();
-	t_cell map[LINES][COLUMNS];
-	t_monster monsters[NB_MONSTER_MAX];
-	int visibleByGhost[LINES][COLUMNS];
-	t_character player;
 
 	init_screen();
 	getmaxyx(stdscr,heightScreen,widthScreen);
@@ -53,6 +53,7 @@ int main () {
 	startScreen(win_start);
 
 	deleteWindow(win_start);
+
 
 	do{
 		// Mise à zéro de toutes les variables, utile lorsque le joueur relance une partie
