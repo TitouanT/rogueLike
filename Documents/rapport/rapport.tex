@@ -9,6 +9,7 @@
 \usepackage[dvipsnames]{xcolor}
 \usepackage[colorinlistoftodos]{todonotes}
 
+
 \usepackage[top=2cm, bottom=2cm,left=2cm, right=2cm]{geometry}
 
 \usepackage{hyperref}
@@ -196,22 +197,24 @@ ici mettre un petit mot
 			\item{Lancement du jeu : \\}
 				Pour commencer à jouer, vous devez télécharger le jeu à partir de l'adresse suivante : \href{https://github.com/TitouanT/rogueLike/} {rogueLike}; avec la commande suivante : \texttt{git clone git@github.com:TitouanT/rogueLike.git}
 				Vous faîtes : \texttt{cd rogueLike}. \\
-				Puis vous compilez grâce au makefile : <<make install>>. \\
-				Le jeu commence dès que vous faîtes : <<./rogueLike>>		
+				Puis vous compilez grâce au makefile : \texttt{make install}. \\
+				Le jeu commence dès que vous faîtes : \texttt{./rogueLike}.	
 			\item{Les déplacement : \\}
 				Nous pouvons gérer nos déplacements sur la carte grâce aux flèches de direction. 
 			\item{Interactions avec des objets : \\}	
-				Les interactions avec un objet (serringues de soins, nourriture, escalier) se font avec la touche <<entrée>>.
+				Les interactions avec un objet (serringues de soins, nourriture, escalier) se font avec la touche \texttt{entrée}.
 			\item{Ouvrir et fermer une porte :\\}	
-				Si vous souhaitez ouvrir une porte, déplacez-vous devant la porte, appuyer sur la touche <<o>> et marqué la direction de la porte avec les flèches de direction.
-				Mais pour fermer, c'est le même principe que pour ouvrir une porte sauf que la touche est <<c>> au lieu de <<o>>.
+				Si vous souhaitez ouvrir une porte, déplacez-vous devant la porte, appuyer sur la touche \texttt{o} et marqué la direction de la porte avec les flèches de direction.
+				Mais pour fermer, c'est le même principe que pour ouvrir une porte sauf que la touche est \texttt{c} au lieu de \texttt{o}.
 			\item{Gestion de l'inventaire : \\}
-				Pour voir votre inventaire, vous devez appuyer sur la touche <<i>>. Pour prendre un objet (serringues de soins, nourriture), vous devez appuyez sur la touche <<g>> mais pour poser votre inventaire, vous devez appuyez sur la touche <<d>> et indiquer la case se trouve l'objet.
+				Pour voir votre inventaire, vous devez appuyer sur la touche \texttt{i}. Pour prendre un objet (serringues de soins, nourriture), vous devez appuyez sur la touche \texttt{g} mais pour poser votre inventaire, vous devez appuyez sur la touche <<d>> et indiquer la case se trouve l'objet.
 			\item{Sauvegarder sa partie :\\}
-				Vous pouvez sauvegarder la partie à tout moment avec la touche <<s>>, cette manoeuvre n'arrêtera pas votre expérience de jeu.
+				Vous pouvez sauvegarder la partie à tout moment avec la touche \texttt{s}, cette manoeuvre n'arrêtera pas votre expérience de jeu.
 			\item{Combattre un monstre :\\}
-				Pour combattre un monstre, utilisez les flèches de direction et indiquez la direction du monstre.		
+				Pour combattre un monstre, utilisez les flèches de direction et déplacez vous sur le monstre jusqu'à ce qu'il meurt (disparaisse).		
 		\end{itemize}
+		Ces commandes sont écrire dans le jeu en appuyant sur la touche \texttt{?}.
+		Certains commandes sont encore à découvrir comme se déplacer en diagonale pour échapper à des monstres ou des codes de triches peuvent être utiliser grâce à la touche \texttt{\_}, pour les voir faîtes \texttt{\_} et taper \texttt{help} pour avoir la liste.
 		
 %% Partie codage
 \chapter{Codage, méthode et outil}
@@ -242,7 +245,7 @@ ici mettre un petit mot
 		
 		La représentation en matrice des niveau n'étant pas dans tous les cas la plus efficace, nous avons créé une structure de niveau qui contient un tableau de pièces et le nombre de pieces que contient l'étage.
 		
-		Une pieces est elle-même représentée par une structure qui contient la position de son angle supérieur gauche (ligne et colonne) ainsi que ses dimensions (largeur et hauteur).
+		Une pièce est elle-même représentée par une structure qui contient la position de son angle supérieur gauche (ligne et colonne) ainsi que ses dimensions (largeur et hauteur).
 		
 		Quelque fois, nous avons besoin de manipuler des position (ligne, colonne). Nous avons donc créé une structure de position qui contient une ligne et une colonne. 
 		
@@ -304,26 +307,18 @@ int main(){
 		
 		\subsection{Les lectures et les écritures dans des fichiers}
 		
-		Lors d'un changement d'étapes, nous utilisons la fonction suivante : \begin{lstlisting}[caption=changeLvl, language=C,style=Cstyle]
-void changeLvl(t_cell map[LINES][COLUMNS], t_character *player, int dir){
-}
-		\end{lstlisting}
-		Cette fonction permet d'enregistrer la carte de l'étage et de passer à un nombre d'étage selon le paramètre \texttt{dir} : \\
-		Si ce paramètre est négatif : 
-		\begin{enumerate}
-			\item  Nous descendons de \texttt{dir} étage(s) (nous chargons le \texttt{dir} étage(s)).
-			\item Nous nous déplaçons à un escalier qui permet de monter.
-		\end{enumerate}
-		S'il est positif : 
-		\begin{enumerate}
-			\item  Nous descendons de \texttt{dir} étage(s) (nous chargons le \texttt{dir} étage(s)).
-			\item Nous nous déplaçons à un escalier qui permet de descendre.
-		\end{enumerate}
-		Un contrôle est fait pour savoir si la direction ne nous fait pas emmener à un étage négatif ou supérieur au nombre de niveau défini en variable dans le <<global.h>>.
+		Nous gérons des sauvegardes sur plusieurs :
+		\begin{itemize}
+			\item Les fichiers comportant les paramètres l'ensemble des niveaux, soit un fichier texte pour un niveau ; nommé lvl.txt avec lvl variant selon le niveau.
+			\item Un fichier texte comportant les donnes sur les monstres présents dans la partie ; nommé : monster.txt.
+			\item un fichier comportant les données de chaque pièce ; nommé : lvlData.txt.
+			\item un fichier comportant les données du personnage ; nommé : position.txt.
+		\end{itemize} 
+		\subsubsection{Les écritures :}
+		Les niveaux sont sauvegardés lorsque du lancement d'une nouvelle partie, un changement de niveau, lorsque le joueur demande de sauvegarder. Les monstres sont sauvegardés lors de la création d'une nouvelle partie et la sauvegarde demander par le joueur. Les données de chaque pièce sont sauvegardés que lors d'une nouvelle partie. Quand aux données du personnage, elles sont sauvegardés que lorsque le joueur veut sauvegarder, l'apparition de cette sauvegarde montre qu'une partie est sauvegardée : si ce fichier n'existe pas lors du relanceront du jeu, le joueur n'aura pas accès à ses anciennes données.
 
-		\subsection{Les interactions et déplacements}
-		
-		<valentin>
+		\subsubsection{Les lectures :}
+		Les niveaux sont lus si le joueur veut charger une partie sauvegardée, un changement de niveau. Les monstres sont lus lors du chargement d'une partie existante comme les données sur le joueur et les données des pièces.
 
 		\subsection{Les interactions et déplacements}\label{ncurses}
 
@@ -363,6 +358,8 @@ void changeLvl(t_cell map[LINES][COLUMNS], t_character *player, int dir){
 	\section{Améliorations possibles}
 	
 	<tout le monde>
+	
+	Les améliorations possibles pour le projet sont de mettre des sons dans le jeu et de créer un didacticiel. Un fond sonore dans le jeu et des sons lorsqu'un monstre attaque, est proche du joueur, plein de possibilité s'offre à nous dès que nous trouverons un moyen de lire une bande son avec la possibilité de ne pas mettre de son. Un didacticiel serait aussi intéressant pour apprendre au joueur à jouer.
 	
 	\section{Apport personnel du projet}
 	
