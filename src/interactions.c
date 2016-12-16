@@ -296,7 +296,7 @@ void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_cha
 	* \brief Affiche un descriptif des commandes
 	* \fn void help(WINDOW *win_logs, int *lineLog)
 	* \param win_logs Fenêtre de logs
-	* \param lineLog Ligne d'écriture des logs 
+	* \param lineLog Ligne d'écriture des logs
 	*/
 void help(WINDOW *win_logs, int *lineLog){
 
