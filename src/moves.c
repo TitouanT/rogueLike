@@ -16,6 +16,8 @@
 #include "mapConst.h"  // OK
 #include "tools.h"     // OK
 #include "display.h"   // OK
+#include <time.h>      // OK
+#include <unistd.h>
 
 
 /**
@@ -75,6 +77,15 @@ void passOut(t_cell map[LINES][COLUMNS]){
 }
 
 /**
+	* \brief Retourne vrai si la cellule est une composante d'une pièce
+	*	\fn int bIsPartOfRoom(t_cell cell)
+	* \param cell Un point sur la carte
+	*/
+int bIsPartOfRoom(t_cell cell){
+	return (cell.type == ROOM || cell.type == WALL || cell.type == DOORWAY);
+}
+
+/**
 	* \brief Effet aléatoire dans piège sur le joueur
 	*	\fn void fallTrap(t_cell map[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, int *lineLog, t_dir direction, t_monster monsters[NB_MONSTER_MAX], int nbMonster)
 	* \param map Carte
@@ -85,8 +96,9 @@ void passOut(t_cell map[LINES][COLUMNS]){
 	* \param monsters L'ensemble des monstres
 	* \param nbMonster Nombre total de monstres
 	*/
-void fallTrap(t_cell map[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, int *lineLog, t_dir direction, t_monster monsters[NB_MONSTER_MAX], int nbMonster){
+void fallTrap(t_cell map[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, int *lineLog, t_dir direction, t_monster monsters[NB_MONSTER_MAX], int nbMonster, WINDOW *win_game, int visibleByGhost[LINES][COLUMNS]){
 
+	t_character player;
 	int trapType, lostLvl, lostHp, glisser;
 	int i;
 
@@ -100,7 +112,7 @@ void fallTrap(t_cell map[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, 
 	switch(trapType){
 		case 0 :
 				lostHp  = randab(0, 5);
-				lostLvl = randab(1, (perso->lvl)+1) * (-1);
+				lostLvl = randab((perso->lvl), (perso->lvl)+2) * (-1);
 				changeLvl(map, *&perso, lostLvl);
 				(perso->hp) = (perso->hp) - lostHp;
 				addLog("Vous êtes tombé dans un trou...", lineLog, win_logs);
@@ -112,8 +124,12 @@ void fallTrap(t_cell map[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, 
 			break;
 		case 2 :
 				glisser = randab(2, 8);
-				for(i = 0 ; i < glisser ; i++)
-					move_perso(direction, map, perso, win_logs, lineLog, monsters, nbMonster);
+				do{
+				player=*perso;	
+				displayFloor(map, player, win_game, visibleByGhost);
+				displayPlayer(player, map, win_game, win_logs, lineLog);
+				addLog("Regardez où vous mettez vos pieds, la femme de    ménage a lustré le sol.", lineLog, win_logs);
+				}while(move_perso(direction, map, perso, win_logs, lineLog, monsters, nbMonster, win_game, visibleByGhost));
 				addLog("Regardez où vous mettez vos pieds, la femme de    ménage a lustré le sol.", lineLog, win_logs);
 			break;
 		default : break;
@@ -147,15 +163,6 @@ t_pos startRoom(t_cell map[LINES][COLUMNS], t_character player){
 	position.column = column - distXneg;
 
 	return position;
-}
-
-/**
-	* \brief Retourne vrai si la cellule est une composante d'une pièce
-	*	\fn int bIsPartOfRoom(t_cell cell)
-	* \param cell Un point sur la carte
-	*/
-int bIsPartOfRoom(t_cell cell){
-	return (cell.type == ROOM || cell.type == WALL || cell.type == DOORWAY);
 }
 
 /**
@@ -267,7 +274,7 @@ int bIsWalkable(t_cell cell){
 	* \param monsters L'ensemble des monstres
 	* \param nbMonster Nombre total de monstres
 	*/
-int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, int *lineLog, t_monster monsters[NB_MONSTER_MAX], int nbMonster) {
+int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, int *lineLog, t_monster monsters[NB_MONSTER_MAX], int nbMonster, WINDOW *win_game, int visibleByGhost[LINES][COLUMNS]) {
 	err("***debut move perso***");
 	int success = FALSE;
 	int line   = perso->line;
@@ -379,7 +386,7 @@ int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso, 
 		}
 
 		if(mat[perso->line][perso->column].nbObject > 0 && mat[perso->line][perso->column].obj[0].type==TRAP){
-			fallTrap(mat,perso, win_logs, lineLog, direction, monsters, nbMonster);
+			fallTrap(mat,perso, win_logs, lineLog, direction, monsters, nbMonster, win_game, visibleByGhost);
 			err("***tombé dans un piege !!***");
 		}
 	}
