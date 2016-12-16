@@ -64,7 +64,7 @@ t_msg error_msg[NB_ERROR_MESSAGES] = {
 
 /**
 	* \brief Message d'erreur si une touche appuyée n'existe pas
-	*	\fn void wrongKey(WINDOW * win, int *lineLog)
+	* \fn void wrongKey(WINDOW * win, int *lineLog)
 	* \param win Fenêtre de logs où afficher le message
 	* \param lineLog Ligne d'écriture du message
 	*/
@@ -197,7 +197,7 @@ void grabItem(t_character *player, t_cell map[LINES][COLUMNS], WINDOW *win_logs,
 
 /**
 	* \brief Demande à l'utilisateur de saisir un code de triche
-	*	\fn void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_character *player, int *isPlayerInvicible)
+	* \fn void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_character *player, int *isPlayerInvicible)
 	* \param win_logs Fenêtre de logs
 	* \param win_game Fenêtre de jeu
 	* \param map Carte
@@ -292,6 +292,12 @@ void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_cha
 	}
 }
 
+/**
+	* \brief Affiche un descriptif des commandes
+	* \fn void help(WINDOW *win_logs, int *lineLog)
+	* \param win_logs Fenêtre de logs
+	* \param lineLog Ligne d'écriture des logs 
+	*/
 void help(WINDOW *win_logs, int *lineLog){
 
 	(*lineLog)++;
@@ -313,6 +319,7 @@ void help(WINDOW *win_logs, int *lineLog){
 
 	*lineLog += 3;
 }
+
 /**
 	* \brief Teste si la porte est valide
 	*	\fn int bIsValidDoor(t_cell map[LINES][COLUMNS], t_pos position, t_monster monsters[NB_MONSTER_MAX], int nbMonster, int playerLvl)

@@ -161,7 +161,6 @@ t_room randomRoom (t_cell map[][COLUMNS], t_room * rooms, int nbRoom, int *nbTot
 	return room;
 }
 
-
 /**
   * \brief choix d'un mur d'une pieces au hasard
   * \fn t_pos chooseRandomWall (t_room r)
@@ -197,7 +196,6 @@ void putRandomDoor (t_cell map[][COLUMNS], t_pos pos) {
 	else if(doIt == 1) map[pos.line][pos.column].state = dCLOSE;
 	else map[pos.line][pos.column].state = dNONE;
 }
-
 
 /* 	connect use an algorithm call flood and fill to search a path from a door to the corridor network,
 		the principle is:
@@ -295,7 +293,6 @@ void connect(t_cell map[LINES][COLUMNS], int walkable[LINES][COLUMNS], t_room ro
 
 }
 
-
 /**
   * \brief choisi quelles pieces lier
   * \fn void chooseLink (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom)
@@ -351,6 +348,7 @@ int nextToDoor (t_cell map[LINES][COLUMNS], int line, int column){
 		if(map[line][column-1].state==dNONE || map[line+1][column].state==dCLOSE || map[line+1][column].state==dOPEN) return TRUE;
 		return FALSE;
 }
+
 /**
   * \brief place les différents objets
   * \fn void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom)
@@ -415,7 +413,6 @@ void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 
 	err("*** fin de placement Objet ***");
 }
-
 
 /**
   * \brief créé un étage au hasard !

@@ -243,7 +243,7 @@ int numberLinesFile(char * file){
 
 /**
 	* \brief Compte le maximum de colonnes d'un fichier
-	*	\fn int maxColsFile(char * file)
+	* \fn int maxColsFile(char * file)
 	* \param file Fichier à ouvrir pour compter les colonnes
 	* \return Le nombre max de colonnes du fichier, 0 si l'ouverture n'a pas marché.
 	*/

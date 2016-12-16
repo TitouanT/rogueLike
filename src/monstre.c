@@ -194,10 +194,16 @@ void createMonster (t_monster monsters[NB_MONSTER_MAX], int * nbMonsterAtEnd) {
 }
 
 /**
-  * \brief fonction qui test si un
+  * \brief fonction qui test si un monstre est present
   * \fn int isThereAMonster (t_monster monsters[NB_MONSTER_MAX], int nbMonster, int line, int col, int lvl, int * indexMonster)
   * \param monsters tableau qui contiendra chaque monstre
-  * \param nbMonsterAtEnd pointeur pour enregistrer le nombre de monstre
+  * \param nbMonster pointeur pour enregistrer le nombre de monstre
+  * \param line ligne que l'on test
+  * \param col colonne que l'on test
+  * \param lvl étage que l'on test
+  * \param indexMonster variable qui contiendra la position du monstre dans le tableau si il est trouvé
+  * \return TRUE si un monstre est présent
+  * \return FALSE sinon
   */
 int isThereAMonster (t_monster monsters[NB_MONSTER_MAX], int nbMonster, int line, int col, int lvl, int * indexMonster) {
 	int i;
@@ -210,6 +216,13 @@ int isThereAMonster (t_monster monsters[NB_MONSTER_MAX], int nbMonster, int line
 	return FALSE;
 }
 
+/**
+  * \brief test si un monstre peu se marcher sur une case de la map
+  * \fn int isItWalkableForAMonster (t_cell cell)
+  * \param cell la case à tester
+  * \return TRUE si la case est praticable pour un monstre
+  * \return FALSE sinon
+  */
 int isItWalkableForAMonster (t_cell cell) {
 	switch (cell.type) {
 		case ROOM: case CORRIDOR: return TRUE; break;
@@ -221,19 +234,39 @@ int isItWalkableForAMonster (t_cell cell) {
 	}
 }
 
+/**
+  * \brief test si un monstre peu se déplacer sur une case de la map
+  * \fn int canMove (t_monster monsters[NB_MONSTER_MAX], int nbMonster, int line, int col, int lvl)
+  * \param monsters tableau qui contiendra chaque monstre
+  * \param nbMonster taille du tableau monsters
+  * \param line ligne que l'on test
+  * \param col colonne que l'on test
+  * \param lvl étage que l'on test
+  * \return TRUE si un monstre est présent
+  * \return FALSE sinon
+  */
 int canMove (t_monster monsters[NB_MONSTER_MAX], int nbMonster, int line, int col, int lvl) {
-	int i;
-	for (i = 0; i < nbMonster; i++) {
-		if (monsters[i].hp > 0 && monsters[i].lvl == lvl && monsters[i].line == line && monsters[i].col == col) return FALSE;
-	}
-	return TRUE;
+	int tmp;
+	return !isThereAMonster(monsters, nbMonster, line, col, lvl, &tmp);
 }
 
+/**
+  * \brief attaque d'un monstre par le joueur
+  * \fn void playerAttackMonster (t_character player, t_monster monsters[NB_MONSTER_MAX], int indexMonster)
+  * \param monsters tableau qui contiendra chaque monstre
+  * \param player personnage controllé par le joueur
+  * \param indexMonster index du monstre que le joueur veut attaquer
+  */
 void playerAttackMonster (t_character player, t_monster monsters[NB_MONSTER_MAX], int indexMonster) {
 	if (didItHappen(player.agility)) monsters[indexMonster].hp -= player.pw;
 }
 
-
+/**
+  * \brief attaque du joueur par un monstre
+  * \fn void monsterAttackPlayer (t_monster monster, t_character * player)
+  * \param monster monstre qui attque
+  * \param player personnage controllé par le joueur
+  */
 void monsterAttackPlayer (t_monster monster, t_character * player) {
 	if (didItHappen(monster.agility)){
 		player -> hp -= monster.pw;
@@ -243,6 +276,14 @@ void monsterAttackPlayer (t_monster monster, t_character * player) {
 	// sinon le monstre rate son attaque;
 }
 
+/**
+  * \brief déplacement des fantomes
+  * \fn void moveGhost(t_cell map[][COLUMNS], t_monster monsters[NB_MONSTER_MAX], int iGhost, t_character *player)
+  * \param map carte de l'étage
+  * \param monsters tableau qui contient tous es monstres
+  * \param iGhost index du fantome dans monsters
+  * \param player personnage controllé par le joueur
+  */
 void moveGhost(t_cell map[][COLUMNS], t_monster monsters[NB_MONSTER_MAX], int iGhost, t_character *player) {
 
 	int line, col, hDir = 0, vDir = 0;
@@ -265,6 +306,13 @@ void moveGhost(t_cell map[][COLUMNS], t_monster monsters[NB_MONSTER_MAX], int iG
 	monsters[iGhost].col  += hDir;
 }
 
+/**
+  * \brief fonction qui indique ce qui rend visible un cercle de case autour du monstre
+  * \fn void setVisibleByGhost (t_monster monsters[NB_MONSTER_MAX], int visibleByGhost[LINES][COLUMNS], t_character player)
+  * \param monsters tableau qui contient tous es monstres
+  * \param visibleByGhost matrice qui contient un 1 si la case est visible, 0 sinon.
+  * \param player personnage controllé par le joueur
+  */
 void setVisibleByGhost (t_monster monsters[NB_MONSTER_MAX], int visibleByGhost[LINES][COLUMNS], t_character player) {
 	int radius = 10, centerLine, centerCol, nbL, nbC, line, col, iGhost, i, j;
 	for (i = 0; i < LINES; i++) {
@@ -288,6 +336,14 @@ void setVisibleByGhost (t_monster monsters[NB_MONSTER_MAX], int visibleByGhost[L
 	}
 }
 
+/**
+  * \brief déplacement de tous les monstres
+  * \fn void moveGhost(t_cell map[][COLUMNS], t_monster monsters[NB_MONSTER_MAX], int iGhost, t_character *player)
+  * \param map carte de l'étage
+  * \param monsters tableau qui contient tous es monstres
+  * \param nbMonster nombre de monstres dans monsters
+  * \param player personnage controllé par le joueur
+  */
 void moveMonster (t_cell map[][COLUMNS], t_monster monsters[NB_MONSTER_MAX], int nbMonster, t_character *player) {
 	if (monsters[0].lvl == player -> lvl && monsters[0].hp > 0)
 		moveGhost(map, monsters, 0, player);
