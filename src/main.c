@@ -1,3 +1,51 @@
+/*! \mainpage rogueLike documentation
+ *
+ * Dans le cadre de notre projet en L2 SPI à l'université du Maine, nous avons réalisé un rogueLike. Le code se trouve à l'adresse suivante : <a href="https://github.com/TitouanT/rogueLike">https://github.com/TitouanT/rogueLike</a>
+ * <img src="../include/screen_doxygen.png" style="width:100%;">
+ * \section requirements_sec Programmes requis
+ *
+ * Pour utiliser notre jeu, vous aurez besoin de :
+ *
+ * - Compilateur `gcc`
+ * - Constructeur `make`
+ * - Librairie `ncurses`
+ * - Gestionnaire `git`
+ *
+ *
+ * \section installation_sec Installation
+ *
+ * Pour installer notre rogueLike, ouvrez un terminal, et entrez les commandes suivantes :
+ *
+ * ```shell
+ * git clone https://github.com/TitouanT/rogueLike.git
+ * cd rogueLike
+ * make install
+ * ```
+ *
+ *
+ * \section lancement_sec Lancement du jeu
+ *
+ * ```shell
+ * ./rogueLike
+ * ```
+ *
+ *
+ * \section jouer_sec Comment jouer ?
+ *
+ * - Pour se déplacer, utilisez les flèches de direction.
+ * - Pour ouvrir une porte rouge, appuyez sur la touche `o` et signalez la direction de la porte avec les flèches de direction.
+ * - Pour fermer une porte verte, appuyez sur la touche `f` et signalez la direction de la porte avec les flèches de direction.
+ * - Pour passer à l'étage suivant ou à l'étage précédent, placez vous sur un escalier et appuyez sur la touche "entrée".
+ * - Pour voir votre inventaire, appuyez sur la touche `i`.
+ * - Pour récupérer un objet, placez-vous dessus, puis appuyez sur la touche `g`. Vous devez avoir un emplacement de libre dans votre inventaire.
+ * - Pour lâcher un objet, appuyez sur la touche `d`, et indiquez le numéro de l'emplacement de l'objet que vous voulez lâcher.
+ * - Pour sauvegarder le jeu, appuyez sur `s`.
+ * - Pour quitter le jeu, appuyez sur `q`.
+ * - Vous pouvez obtenir de l'aide en jeu en appuyant sur la touche `?`.
+ *
+ *
+ */
+
 /**
  * \file
  * \brief Programme principal du jeu.
@@ -7,6 +55,7 @@
  * \version 1.2
  * \date 12 novembre 2016
  */
+
 #include <locale.h>       // OK
 #include <ncurses.h>      // OK
 #include <stdlib.h>       // OK
