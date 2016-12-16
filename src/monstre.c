@@ -1,3 +1,13 @@
+/**
+  * \file
+  * \brief fonctions de génération d'étage
+  * \author MOTTIER Emeric
+  * \author PELLOIN Valentin
+  * \author TEYSSIER Titouan
+  * \date 28 novembre 2016
+  * \version 1.0
+  */
+
 #include <stdlib.h>   // OK
 
 #include "monstre.h"  // OK
@@ -6,11 +16,15 @@
 #include "cell.h"     // OK
 #include "mapConst.h" // OK
 #include "filePos.h"  // OK
-//#include "display.h"
 
 
 
-
+/**
+  * \brief crée les monstres pour la partie
+  * \fn void createMonster (t_monster monsters[NB_MONSTER_MAX], int * nbMonsterAtEnd)
+  * \param monsters tableau qui contiendra chaque monstre
+  * \param nbMonsterAtEnd pointeur pour enregistrer le nombre de monstre
+  */
 void createMonster (t_monster monsters[NB_MONSTER_MAX], int * nbMonsterAtEnd) {
 	err ("*** Debut create Monster ***");
 	char msg[100];
@@ -179,6 +193,12 @@ void createMonster (t_monster monsters[NB_MONSTER_MAX], int * nbMonsterAtEnd) {
 	err ("*** Fin create Monster ***");
 }
 
+/**
+  * \brief fonction qui test si un 
+  * \fn int isThereAMonster (t_monster monsters[NB_MONSTER_MAX], int nbMonster, int line, int col, int lvl, int * indexMonster)
+  * \param monsters tableau qui contiendra chaque monstre
+  * \param nbMonsterAtEnd pointeur pour enregistrer le nombre de monstre
+  */
 int isThereAMonster (t_monster monsters[NB_MONSTER_MAX], int nbMonster, int line, int col, int lvl, int * indexMonster) {
 	int i;
 	for (i = 0; i < nbMonster; i++) {

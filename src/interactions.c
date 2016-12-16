@@ -197,13 +197,14 @@ void grabItem(t_character *player, t_cell map[LINES][COLUMNS], WINDOW *win_logs,
 
 /**
 	* \brief Demande à l'utilisateur de saisir un code de triche
-	*	\fn void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_character *player)
+	*	\fn void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_character *player, int *isPlayerInvicible)
 	* \param win_logs Fenêtre de logs
 	* \param win_game Fenêtre de jeu
 	* \param map Carte
 	* \param player Joueur
+	* \param isPlayerInvicible Booléen qui réprésente l'invincibilité du joueur
 	*/
-void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_character *player){
+void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_character *player, int *isPlayerInvicible){
 
 	char cheatSTR[COLS_LOGS];
 
@@ -236,6 +237,9 @@ void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_cha
 	else if(strcmp(cheatSTR, "heal") == 0){
 		player->hp = MAX_HP;
 		player->isSick = FALSE;
+	}
+	else if(strcmp(cheatSTR, "invincible") == 0){
+		*isPlayerInvicible = TRUE;
 	}
 	else if(strcmp(cheatSTR, "damage") == 0){
 		player->hp -= 1;
@@ -273,6 +277,7 @@ void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_cha
 		addLog("food--        : Enlève 1pt de nourriture", &lineLog, win_logs);
 		addLog("I WANT TO EAT : Met 0% de la nourriture", &lineLog, win_logs);
 		addLog("heal          : Met 100% de la vie", &lineLog, win_logs);
+		addLog("invincible    : Rend le joueur invincible", &lineLog, win_logs);
 		addLog("damage        : Enlève 1pt de vie", &lineLog, win_logs);
 		addLog("suicide fail  : Met la vie à 1", &lineLog, win_logs);
 		addLog("kill          : Tue le joueur", &lineLog, win_logs);
@@ -281,7 +286,7 @@ void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_cha
 		addLog("down          : Descend le joueur d'un étage", &lineLog, win_logs);
 		addLog("exit          : Sortir de ce menu", &lineLog, win_logs);
 
-		cheat(win_logs, win_game, map, player);
+		cheat(win_logs, win_game, map, player, isPlayerInvicible);
 
 		clearLog(&lineLog, win_logs);
 	}
@@ -504,7 +509,7 @@ int askConfirmationToQuit(WINDOW * win, int *lineLog) {
 
 /**
 	* \brief Fonction principale d'intéraction avec l'utilisateur
-	* \fn int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, WINDOW * win_logs, WINDOW * win_game, int *lineLog, t_monster monsters[NB_MONSTER_MAX], int nbMonster)
+	* \fn int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, WINDOW * win_logs, WINDOW * win_game, int *lineLog, t_monster monsters[NB_MONSTER_MAX], int nbMonster, int *isPlayerInvicible)
 	* \param key Touche que l'utilisateur a appuyé
 	* \param map Carte où se trouve le joueur
 	* \param player Joueur
@@ -513,10 +518,11 @@ int askConfirmationToQuit(WINDOW * win, int *lineLog) {
 	* \param lineLog Ligne d'écriture du message
 	* \param monsters la lise des monstres
 	* \param nbMonster le nombre de monstre
+	* \param isPlayerInvicible Booléen qui représente si le joueur est invincible
 	* \return FALSE si l'utilisateur à demandé de quitter la partie
 	* \return TRUE sinon
 	*/
-int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, WINDOW * win_logs, WINDOW * win_game, int *lineLog, t_monster monsters[NB_MONSTER_MAX], int nbMonster){
+int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, WINDOW * win_logs, WINDOW * win_game, int *lineLog, t_monster monsters[NB_MONSTER_MAX], int nbMonster, int *isPlayerInvicible){
 
 	err("*** debut handleInteraction ***");
 	switch (key) {
@@ -538,7 +544,7 @@ int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, 
 		case 'q' : return FALSE;
 		case 'Q' : return !askConfirmationToQuit(win_logs, lineLog);
 
-		case '_' : cheat(win_logs, win_game, map, player); break;
+		case '_' : cheat(win_logs, win_game, map, player, isPlayerInvicible); break;
 
 		case '?' : help(win_logs, lineLog); break;
 
