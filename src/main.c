@@ -36,6 +36,8 @@ int main () {
 	int continueGame = TRUE;
 	int nbMonster;
 	int visibleByGhost[LINES][COLUMNS];
+	int isPlayerInvicible;
+	int wasNewGame;
 	t_cell map[LINES][COLUMNS];
 	t_monster monsters[NB_MONSTER_MAX];
 	t_character player;
@@ -59,6 +61,7 @@ int main () {
 		// Mise à zéro de toutes les variables, utile lorsque le joueur relance une partie
 		player = (t_character){"root", 0, 0, 0, 10, 10, 60, 10, 0, MAX_FOOD, FALSE, FALSE, {objNONE}};
 		lineLog = 0;
+		isPlayerInvicible = FALSE;
 		for(i = 0 ; i < LINES ; i++){
 			for(j = 0 ; j < COLUMNS ; j++){
 				visibleByGhost[i][j] = 0;
@@ -67,7 +70,7 @@ int main () {
 
 		err ("  main: Affichage du screen de choix");
 		WINDOW *win_choice = newwin(heightScreen, widthScreen, 0, 0);
-		selectionScreen(win_choice, map, &player, monsters, &nbMonster);
+		wasNewGame = selectionScreen(win_choice, map, &player, monsters, &nbMonster);
 
 		deleteWindow(win_choice);
 
@@ -78,12 +81,12 @@ int main () {
 		WINDOW *win_logs  = createWindow(COLS_GAME, 0, COLS_LOGS, LINES_LOGS, "Logs");
 
 		// On affiche les objectifs
-		displayObjectives(&lineLog, win_logs);
+		if(wasNewGame) displayObjectives(&lineLog, win_logs);
 		// On affiche la map et le joueur
 		displayFloor(map, player, win_game, visibleByGhost);
 		displayPlayer(player, map, win_game, win_logs, &lineLog);
 		displayMonster (win_game, monsters, map, nbMonster, player.lvl, visibleByGhost);
-		displayStats(player, win_stats);
+		displayStats(player, win_stats, isPlayerInvicible);
 
 
 		err ("\nmain***ENTREE DANS LA BOUCLE DU JEU***\n");
@@ -94,6 +97,10 @@ int main () {
 
 			err ("\n  main*** debut d'un tour de jeu ***");
 			key = getch();
+			if(isPlayerInvicible){
+				player.hp   = 10000;
+				player.food = 10000;
+			}
 
 			if (key == 'N') {
 				err("    main: cheat N pour une nouvelle map");
@@ -106,7 +113,7 @@ int main () {
 
 			clearLog(&lineLog, win_logs);
 			err("  main: passe la main a handle interaction");
-			continueGame = handleInteraction(key, map, &player, win_logs, win_game, &lineLog, monsters, nbMonster);
+			continueGame = handleInteraction(key, map, &player, win_logs, win_game, &lineLog, monsters, nbMonster, &isPlayerInvicible);
 			err("  main: recuperation apres handle interaction");
 			markDiscoverRoom(map, player);
 
@@ -117,7 +124,7 @@ int main () {
 			displayFloor(map, player, win_game, visibleByGhost);
 			displayPlayer(player, map, win_game, win_logs, &lineLog);
 			displayMonster (win_game, monsters, map, nbMonster, player.lvl, visibleByGhost);
-			displayStats(player, win_stats);
+			displayStats(player, win_stats, isPlayerInvicible);
 			err("  main: fin affichage etage, player, stats");
 
 			err ("main*** fin d'un tour de jeu ***\n");

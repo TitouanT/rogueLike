@@ -63,6 +63,10 @@ int konami (int key);
 /** Paire de couleur des kits de santé dans les couloirs*/
 #define MED_KIT_COLOR_C 13
 
+/** Paire de couleur de la barre jaune */
+#define BAR_YELLOW      14
+
+
 /** Touche retour en arrière (celle de ncurses ne fonctionne pas) */
 #define KEY_RETURN 263
 #define KEY_RETURN_MAC 127
@@ -87,6 +91,7 @@ void init_colors(){
 
 	init_pair(BAR_GREEN     , COLOR_GREEN, COLOR_GREEN);
 	init_pair(BAR_RED       , COLOR_RED  ,   COLOR_RED);
+	init_pair(BAR_YELLOW    , COLOR_YELLOW , COLOR_YELLOW);
 	init_pair(COLOR_TITLE   , COLOR_GREEN, COLOR_BLACK);
 	init_pair(MED_KIT_COLOR , COLOR_RED,   COLOR_WHITE);
 	init_pair(MED_KIT_COLOR_C, COLOR_RED, COLOR_BLACK);
@@ -328,14 +333,16 @@ void printSaveInfos(WINDOW *win, int saveNB, int selectedGame){
 
 /**
 	* \brief Gère l'affichage de l'écran de sélection de la sauvegarde
-	*	\fn void selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *player, t_monster monsters[NB_MONSTER_MAX], int * nbMonster)
+	*	\fn int selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *player, t_monster monsters[NB_MONSTER_MAX], int * nbMonster)
 	* \param win Fenêtre où afficher les informations
 	* \param map Carte du joueur
 	* \param player Infos du joueur
 	* \param monsters L'ensemble des monstres du jeu
 	* \param nbMonster Nombre de monstres dans le jeu
+	* \return TRUE si une nouvelle partie a été créée
+	* \return FALSE sinon
 	*/
-void selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *player, t_monster monsters[NB_MONSTER_MAX], int * nbMonster){
+int selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *player, t_monster monsters[NB_MONSTER_MAX], int * nbMonster){
 	err ("*** Debut Selection screen ***");
 	int lines, columns;
 	getmaxyx(win,lines,columns);
@@ -385,9 +392,11 @@ caCEstDuPropre:
 
 	if(bFileSaveEmpty (selectedGame) == FALSE ){
 		initGameMap (map, CONTINUE_GAME, selectedGame, player, monsters, nbMonster);
+		return FALSE;
 	}
 	else {
 		initGameMap (map, NEW_GAME, selectedGame, player, monsters, nbMonster);
+		return TRUE;
 	}
 
 	err ("*** Fin Selection screen ***");
@@ -702,18 +711,20 @@ void displayPlayer(t_character player, t_cell mat[LINES][COLUMNS], WINDOW *win, 
 
 /**
 	* \brief Affiche une barre
-	*	\fn void printBar(int value, int max, WINDOW * win)
+	*	\fn void printBar(int value, int max, WINDOW * win, int color)
 	* \param value Taille de la barre remplie
 	* \param max Taille de la taille totale
 	* \param win Fenêtre où afficher la barre
+	* \param color Couleur de la barre
 	*/
-void printBar(int value, int max, WINDOW * win){
+void printBar(int value, int max, WINDOW * win, int color){
 
 	int i;
 
-	wattron(win, COLOR_PAIR(BAR_GREEN));
+	if(color) wattron(win, COLOR_PAIR(BAR_YELLOW));
+	else      wattron(win, COLOR_PAIR(BAR_GREEN));
 
-	for(i = 0 ; i < value ; i++){
+	for(i = 0 ; i < value && i < max ; i++){
 		wprintw(win, " ");
 	}
 
@@ -762,11 +773,12 @@ void printInventory(t_character player, WINDOW *win, int *lineLog){
 
 /**
 	* \brief Affiche les statistiques du joueur
-	*	\fn void displayStats(t_character player, WINDOW *win)
+	*	\fn void displayStats(t_character player, WINDOW *win, int isPlayerInvicible)
 	* \param player Joueur à afficher ses statistiques
 	* \param win Fenêtre où afficher les statistiques
+	* \param isPlayerInvicible Booléen représentant l'invincibilité du joueur
 	*/
-void displayStats(t_character player, WINDOW *win){
+void displayStats(t_character player, WINDOW *win, int isPlayerInvicible){
 
 	clearArea(win, 1, 1, COLS_STATS - 1, LINES_STATS - 1);
 
@@ -775,13 +787,13 @@ void displayStats(t_character player, WINDOW *win){
 
 	mvwprintw(win, 1, 1, "Etage     : %i / %i", player.lvl, NB_LVL -1);
 	mvwprintw(win, 2, 1, "Vie       : ");
-	printBar(player.hp, MAX_HP, win);
+	printBar(player.hp, MAX_HP, win, isPlayerInvicible);
 
 	mvwprintw(win, 3, 1, "Puissance : %i", player.pw);
 	mvwprintw(win, 4, 1, "XP        : %i", player.xp);
 
 	mvwprintw(win, 1, 30, "Nourriture   : ");
-	printBar(player.food/10, MAX_FOOD/10, win);
+	printBar(player.food/10, MAX_FOOD/10, win, isPlayerInvicible);
 	mvwprintw(win, 2, 30, "Déplacements : %i", player.nbMove);
 	mvwprintw(win, 3, 30, "Joueur       : %s", player.name);
 
