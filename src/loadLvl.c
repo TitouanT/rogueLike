@@ -63,7 +63,6 @@ void initNameOfFile (int choixDeSauvegarde) {
 	* \param map Carte où se trouve le joueur
 	* \param nbLvl niveau où le joueur se situe
 	*/
-
 void readLvl ( t_cell map[][COLUMNS], int nbLvl) {
 	/* Lit un fichier dans un dossier donné */
 
@@ -93,7 +92,6 @@ void readLvl ( t_cell map[][COLUMNS], int nbLvl) {
 	* \param map Carte où se trouve le joueur
 	* \param nbLvl niveau où le joueur se situe
 	*/
-
 void writeLvl ( t_cell map[][COLUMNS], int nbLvl) {
 	/* enregistre la partie soit dans le dossier temporaire ou dans les dossiers de sauvegardes */
 
@@ -184,13 +182,11 @@ int readLvlData (t_lvl tabLvl[NB_LVL]) {
 	return TRUE; // success
 }
 
-
 /**
 	* \brief enregistre les stats du joueur dans un fichier "position.txt"
 	*	\fn void writePosition (t_character player)
 	* \param player joueur
 	*/
-
 void writePosition ( t_character player) {
 	/* enregistre les paramètres du joueur dans les dossiers de sauvegardes */
 	err("*** Début write Position ***");
@@ -215,7 +211,6 @@ void writePosition ( t_character player) {
 	*	\fn void readPosition (t_character *player)
 	* \param player joueur
 	*/
-
 void readPosition ( t_character *player){
 	err ("debut lecture position");
 	FILE * positionFile = NULL;
@@ -300,8 +295,6 @@ void writeMonster (t_monster monsters[NB_MONSTER_MAX], int nbMonster) {
 	fclose(lvlMonster);
 }
 
-
-
 /**
 	* \brief Initialise la partie du joueur
 	*	\fn void initGameMap (t_cell map[][COLUMNS], int choix, int choixFichierSauvegarde, t_character *player, t_monster monsters[NB_MONSTER_MAX], int * nbMonster)
@@ -312,7 +305,6 @@ void writeMonster (t_monster monsters[NB_MONSTER_MAX], int nbMonster) {
   * \param monsters L'ensemble des monstres du jeu
   * \param nbMonster Nombre de monstres dans le jeu
 	*/
-
 void initGameMap(t_cell map[LINES][COLUMNS], int choix, int choixFichierSauvegarde, t_character *player, t_monster monsters[NB_MONSTER_MAX], int * nbMonster){
 	/* Initialise les niveaux soit une nouvelle partie soit une sauvegarde */
 	err("*** Debut init Game Map ****");
@@ -358,7 +350,6 @@ void initGameMap(t_cell map[LINES][COLUMNS], int choix, int choixFichierSauvegar
 	* \param player Joueur
 	* \param dir Nombre d'étage que l'on descencd ou que l'on monte
 	*/
-
 void changeLvl(t_cell map[LINES][COLUMNS], t_character *player, int dir){
 	/* Fonction permettant de changer de niveaux */
 
@@ -386,7 +377,6 @@ void changeLvl(t_cell map[LINES][COLUMNS], t_character *player, int dir){
   * \param monsters L'ensemble des monstres du jeu
   * \param nbMonster Nombre de monstres dans le jeu
 	*/
-
 void saveGame(t_cell map[LINES][COLUMNS], t_character *player, t_monster monsters[NB_MONSTER_MAX], int nbMonster){
 	/* Fonction permettant de sauvegarder la partie à l'instant t */
 	err("*** Début Save Game ***");
@@ -406,7 +396,6 @@ void saveGame(t_cell map[LINES][COLUMNS], t_character *player, t_monster monster
 	*	\fn void bFileSaveEmpty (int choixFichierSauvegarde)
 	* \param choixFichierSauvegarde Numéro du dossier de sauvegarde
 	*/
-
 int bFileSaveEmpty(int choixFichierSauvegarde){
 	/* Fonction vérifiant si un dossier est vide */
 	err("\n***Debut is File Save Empty***");

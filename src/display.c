@@ -393,6 +393,17 @@ caCEstDuPropre:
 	err ("*** Fin Selection screen ***");
 }
 
+/**
+	* \brief affiche les monstres sur la map.
+	* \fn void displayMonster (WINDOW * win, t_monster monsters[NB_MONSTER_MAX], t_cell map[LINES][COLUMNS], int nbMonster, int currentLvl, int visibleByGhost[LINES][COLUMNS])
+	* \param win fenêtre où afficher les monstres
+	* \param monsters L'ensemble des monstres du jeu
+	* \param map Carte du joueur
+	* \param nbMonster Nombre de monstres dans le jeu
+	* \param currentLvl niveau du joueur
+	* \param visibleByGhost matrice pour savoir ce que les fantomes rendent visible. 
+	
+	*/
 void displayMonster (WINDOW * win, t_monster monsters[NB_MONSTER_MAX], t_cell map[LINES][COLUMNS], int nbMonster, int currentLvl, int visibleByGhost[LINES][COLUMNS]) {
 	int i;
 	for (i = 0; i < nbMonster; i++) {
