@@ -213,7 +213,7 @@ ici mettre un petit mot
 			\item{Combattre un monstre :\\}
 				Pour combattre un monstre, utilisez les flèches de direction et déplacez vous sur le monstre jusqu'à ce qu'il meurt (disparaisse).		
 		\end{itemize}
-		Ces commandes sont écrire dans le jeu en appuyant sur la touche \texttt{?}.
+		Ces commandes sont accessibles dans le jeu en appuyant sur la touche \texttt{?}.
 		Certains commandes sont encore à découvrir comme se déplacer en diagonale pour échapper à des monstres ou des codes de triches peuvent être utiliser grâce à la touche \texttt{\_}, pour les voir faîtes \texttt{\_} et taper \texttt{help} pour avoir la liste.
 		
 %% Partie codage
@@ -307,15 +307,15 @@ int main(){
 		
 		\subsection{Les lectures et les écritures dans des fichiers}
 		
-		Nous gérons des sauvegardes sur plusieurs :
+		Nous gérons des sauvegardes sur plusieurs fchiers:
 		\begin{itemize}
-			\item Les fichiers comportant les paramètres l'ensemble des niveaux, soit un fichier texte pour un niveau ; nommé lvl.txt avec lvl variant selon le niveau.
+			\item Des fichiers comportant les paramètres l'ensemble des niveaux, soit un fichier texte pour un niveau ; nommé lvl.txt avec lvl variant selon le niveau.
 			\item Un fichier texte comportant les donnes sur les monstres présents dans la partie ; nommé : monster.txt.
 			\item un fichier comportant les données de chaque pièce ; nommé : lvlData.txt.
 			\item un fichier comportant les données du personnage ; nommé : position.txt.
 		\end{itemize} 
 		\subsubsection{Les écritures :}
-		Les niveaux sont sauvegardés lorsque du lancement d'une nouvelle partie, un changement de niveau, lorsque le joueur demande de sauvegarder. Les monstres sont sauvegardés lors de la création d'une nouvelle partie et la sauvegarde demander par le joueur. Les données de chaque pièce sont sauvegardés que lors d'une nouvelle partie. Quand aux données du personnage, elles sont sauvegardés que lorsque le joueur veut sauvegarder, l'apparition de cette sauvegarde montre qu'une partie est sauvegardée : si ce fichier n'existe pas lors du relanceront du jeu, le joueur n'aura pas accès à ses anciennes données.
+		Les niveaux sont sauvegardés lorsque du lancement d'une nouvelle partie, un changement de niveau, lorsque le joueur demande de sauvegarder. Les monstres sont sauvegardés lors de la création d'une nouvelle partie et la sauvegarde demandéé par le joueur. Les données de chaque pièce sont sauvegardées que lors d'une nouvelle partie. Quant aux données du personnage, elles sont sauvegardées que lorsque le joueur veut sauvegarder, l'apparition de cette sauvegarde montre qu'une partie est sauvegardée : si ce fichier n'existe pas lors du relancement du jeu, le joueur n'aura pas accès à ses anciennes données.
 
 		\subsubsection{Les lectures :}
 		Les niveaux sont lus si le joueur veut charger une partie sauvegardée, un changement de niveau. Les monstres sont lus lors du chargement d'une partie existante comme les données sur le joueur et les données des pièces.
