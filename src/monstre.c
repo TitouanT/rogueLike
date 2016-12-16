@@ -338,7 +338,7 @@ void setVisibleByGhost (t_monster monsters[NB_MONSTER_MAX], int visibleByGhost[L
 
 /**
   * \brief déplacement de tous les monstres
-  * \fn void moveGhost(t_cell map[][COLUMNS], t_monster monsters[NB_MONSTER_MAX], int iGhost, t_character *player)
+  * \fn void moveMonster (t_cell map[][COLUMNS], t_monster monsters[NB_MONSTER_MAX], int nbMonster, t_character *player)
   * \param map carte de l'étage
   * \param monsters tableau qui contient tous es monstres
   * \param nbMonster nombre de monstres dans monsters
