@@ -18,8 +18,14 @@
 #include "display.h"   // OK
 #include <time.h>      // OK
 #include <unistd.h>
+#include <time.h>
 
-
+void my_delay(int i)    /*Pause l'application pour i ms*/
+{
+    clock_t start,end;
+    start=clock();
+    while(((end=clock())-start)<=((i*CLOCKS_PER_SEC)/1000));
+}
 /**
 	* \brief Teste si le joueur peut se déplacer (si il a suffisament de nourriture)
 	* Le joueur a 25% de chance de pouvoir se déplacer même en ayant plus de nourriture
@@ -125,12 +131,13 @@ void fallTrap(t_cell map[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, 
 		case 2 :
 				glisser = randab(2, 8);
 				do{
-				player=*perso;	
+				player=*perso;
+				clearLog(lineLog, win_logs);
 				displayFloor(map, player, win_game, visibleByGhost);
 				displayPlayer(player, map, win_game, win_logs, lineLog);
+				my_delay(500);
 				addLog("Regardez où vous mettez vos pieds, la femme de    ménage a lustré le sol.", lineLog, win_logs);
 				}while(move_perso(direction, map, perso, win_logs, lineLog, monsters, nbMonster, win_game, visibleByGhost));
-				addLog("Regardez où vous mettez vos pieds, la femme de    ménage a lustré le sol.", lineLog, win_logs);
 			break;
 		default : break;
 	}
