@@ -194,7 +194,7 @@ void createMonster (t_monster monsters[NB_MONSTER_MAX], int * nbMonsterAtEnd) {
 }
 
 /**
-  * \brief fonction qui test si un 
+  * \brief fonction qui test si un
   * \fn int isThereAMonster (t_monster monsters[NB_MONSTER_MAX], int nbMonster, int line, int col, int lvl, int * indexMonster)
   * \param monsters tableau qui contiendra chaque monstre
   * \param nbMonsterAtEnd pointeur pour enregistrer le nombre de monstre
