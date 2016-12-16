@@ -135,7 +135,7 @@ void fallTrap(t_cell map[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, 
 				clearLog(lineLog, win_logs);
 				displayFloor(map, player, win_game, visibleByGhost);
 				displayPlayer(player, map, win_game, win_logs, lineLog);
-				my_delay(500);
+				my_delay(50);
 				addLog("Regardez où vous mettez vos pieds, la femme de    ménage a lustré le sol.", lineLog, win_logs);
 				}while(move_perso(direction, map, perso, win_logs, lineLog, monsters, nbMonster, win_game, visibleByGhost));
 			break;

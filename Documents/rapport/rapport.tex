@@ -6,6 +6,8 @@
 \usepackage{graphicx}
 \usepackage{listings}
 \usepackage{booktabs}
+\usepackage{subfig}
+
 \usepackage[dvipsnames]{xcolor}
 \usepackage[colorinlistoftodos]{todonotes}
 
@@ -142,7 +144,7 @@ ici mettre un petit mot <tout le monde>
 		Notre projet a été réalisé en plusieurs modules différents, et l'un d'entre eux est notre boite à outil. Dedans se trouve de nombreuses fonctions qui nous sont utiles, mais qui ne sont pas pour autant liées à notre projet en particulier : des fonctions de comparaison d'intervalles, d'aléatoires, de caractères, de log d'erreurs, de fichiers, ...\\
 		Nous avons aussi les fonctions essentielles pour l'accès à des listes et des files.
 
-	\section{Doxygen, CUnit, GDB}
+	\section{Doxygen, CUnit, GDB}\label{gdb}
 	
 		Durant la réalisation de notre projet, nous avons utilisé divers outils d'aide à la programmation et au débogage. 
 		
@@ -229,21 +231,21 @@ ici mettre un petit mot
 	
 		La structure la plus importante est celle qui représente une case de la carte. Cette structure contient un champ qui définit sont type, un autre qui défini son état ainsi qu'un tableau listant les objet présent sur la case et deux entiers pour savoir si le joueur a découvert cette case et pour connaitre le nombre d'objets présent.
 	
-		Le type est une énumération des différents type de case possible: un vide, un mur, un encadrement de porte, une piece ou un couloir.
+		Le type est une énumération des différents type de case possible: un vide, un mur, un encadrement de porte, une pièce ou un couloir.
 	
-		L'état est une énumération utilisé pour les encadrements de portes afin de savoir si il y a une porte, et si elle est ouverte ou fermée. L'état est aussi utilisé pour les pieces afin de savoir si il y a de la lumière ou non dans la pièce.
+		L'état est une énumération utilisé pour les encadrements de portes afin de savoir si il y a une porte, et si elle est ouverte ou fermée. L'état est aussi utilisé pour les pièces afin de savoir si il y a de la lumière ou non dans la pièce.
 	
 		Un objet est décrit par une structure qui est composé d'un type et d'un entier pour savoir si l'objet a été découvert par le joueur. Le type d'un objet est lui décrit par une énumération et définit les escaliers ascendants et descendants, la nourriture, les kits de santé et les pièges.
 		
 		\subsection{Les être vivants}
 		
-		Le joueur controle un personnage que l'on représente à l'aide d'une structure. Elle permet d'enregistrer son nom, sa position (ligne, colonne et niveau), ses points de vie et d'attaque, son agilité, son expérience, son appétit, sa santé, le nombre de mouvement effectué, un booléen pour savoir si il a trouvé le QUELQUE CHOSE ainsi qu'un tableau d'objet qui représente son inventaire.
+		Le joueur contrôle un personnage que l'on représente à l'aide d'une structure. Elle permet d'enregistrer son nom, sa position (ligne, colonne et niveau), ses points de vie et d'attaque, son agilité, son expérience, son appétit, sa santé, le nombre de mouvement effectué, un booléen pour savoir si il a trouvé le QUELQUE CHOSE ainsi qu'un tableau d'objet qui représente son inventaire.
 		
-		Les monstres ont eux aussi une structure qui enregistre leur nom, leur types, leur position (ligne, colonne et niveau), leur points de vie et d'attaque, leur champ de vision, leur agilité et quelque champs supplémentaire qui est utilisé comme mémoire pour leur IA. Les différents types de monstres sont L1, L2, L3, master, doctorant et fantome.
+		Les monstres ont eux aussi une structure qui enregistre leur nom, leur types, leur position (ligne, colonne et niveau), leur points de vie et d'attaque, leur champ de vision, leur agilité et quelque champs supplémentaire qui est utilisé comme mémoire pour leur IA. Les différents types de monstres sont L1, L2, L3, master, doctorant et fantôme.
 		
 		\subsection{Et le reste}
 		
-		La représentation en matrice des niveau n'étant pas dans tous les cas la plus efficace, nous avons créé une structure de niveau qui contient un tableau de pièces et le nombre de pieces que contient l'étage.
+		La représentation en matrice des niveau n'étant pas dans tous les cas la plus efficace, nous avons créé une structure de niveau qui contient un tableau de pièces et le nombre de pièces que contient l'étage.
 		
 		Une pièce est elle-même représentée par une structure qui contient la position de son angle supérieur gauche (ligne et colonne) ainsi que ses dimensions (largeur et hauteur).
 		
@@ -363,7 +365,39 @@ int main(){
 	
 	<tout le monde>
 
-\chapter{Annexe}
+\chapter*{Annexe}
+
+	\section{Cas d'utilisation du débogueur \emph{GDB}}
+	
+		Parfois, nous n'arrivons pas à trouver la cause de certains beugs, qui étaient finalement très simple. Pour cela, nous avons utilisé l'outil \emph{GDB}, comme mentionné dans \hyperref[gdb]{la partie sur les outils, page \getpagerefnumber{gdb}}. Afin de l'utiliser avec \emph{ncurses}, voici la marche à suivre :
+		
+		\begin{enumerate}
+		\item Ouvrir deux terminaux, un qui servira d'interface pour \emph{GDB}, un autre, suffisamment grand pour notre jeu.
+		\item Sur le terminal du jeu, tapez la commande \texttt{tty} afin de connaître le nom du TTY de celui-ci. Tapez ensuite la commande \texttt{sleep 10000000} afin de dire au terminal d'attendre longtemps avant de faire une autre action.
+		\item Sur le terminal du débogueur, tapez le commande \texttt{gdb rogueLike} afin de lance \emph{GDB} sur notre programme.
+		\item Une fois dans \emph{GDB}, tapez \texttt{tty <nom du TTY>} avec \texttt{<nom du TTY>} celui trouvé à l'étape 2. Il est généralement de la forme \texttt{/dev/ttys000}.
+		\item Vous pouvez maintenant utiliser \emph{GDB}.
+		\end{enumerate}
 
 
+	\subsection{Des monstres qui passent à travers les portes ...}
+		Il arrivait parfois que des monstres passent à travers des portes fermées. Nous avons lancé \emph{GDB}, et nous nous sommes rendu compte que la fonction qui testait si un monstre pouvait marcher sur une case était inversée dans le cas des portes :
+
+			\begin{figure}[ht]
+			    \centering
+			    \subfloat[Porte fermée, monstre à l'intérieur]{{\includegraphics[width=2cm]{images/monsters_through_doors/explication_1.png}}}
+			    \qquad
+			    \subfloat[Il a réussi à aller sur la porte]{{\includegraphics[width=2cm]{images/monsters_through_doors/explication_2.png} }}%
+			    \caption{Explication du beug}%
+			\end{figure}
+
+	\newpage
+
+			\begin{figure}[ht]
+			    \centering
+			    \subfloat[Lancement de \emph{GDB}]{{\includegraphics[width=10cm]{images/monsters_through_doors/dbt_gdb.png}}}
+			    \qquad
+			    \subfloat[Erreur trouvée]{{\includegraphics[width=10cm]{images/monsters_through_doors/erreur.png} }}%
+			    \caption{Résolution du beug}%
+			\end{figure}
 \end{document}
