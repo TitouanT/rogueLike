@@ -6,7 +6,7 @@
  * \author TEYSSIER Titouan
  * \version 1.3
  * \date 30 novembre 2016
- */
+*/
 
 #include <stdio.h>     // OK
 
@@ -27,9 +27,9 @@ char NOM_MONSTER[40];
 
 /**
 	* \brief initialise les chemins d'accès au dossier de sauvegarde
-	*	\fn void initNameOfFile (int choixDeSauvegarde)
+	* \fn void initNameOfFile (int choixDeSauvegarde)
 	* \param choixDeSauvegarde
-	*/
+*/
 void initNameOfFile (int choixDeSauvegarde) {
 	int i;
 	err("\n***debut init name of file***");
@@ -59,10 +59,10 @@ void initNameOfFile (int choixDeSauvegarde) {
 
 /**
 	* \brief lit le fichier du niveau mis en paramètre dans le dossier de sauvegarde
-	*	\fn void readLvl (t_cell map[][COLUMNS], int nbLvl)
+	* \fn void readLvl (t_cell map[][COLUMNS], int nbLvl)
 	* \param map Carte où se trouve le joueur
 	* \param nbLvl niveau où le joueur se situe
-	*/
+*/
 void readLvl ( t_cell map[][COLUMNS], int nbLvl) {
 	/* Lit un fichier dans un dossier donné */
 
@@ -88,10 +88,10 @@ void readLvl ( t_cell map[][COLUMNS], int nbLvl) {
 
 /**
 	* \brief enregistre le fichier du niveau mis en paramètre dans le dossier de sauvegarde
-	*	\fn void writeLvl (t_cell map[][COLUMNS], int nbLvl)
+	* \fn void writeLvl (t_cell map[][COLUMNS], int nbLvl)
 	* \param map Carte où se trouve le joueur
 	* \param nbLvl niveau où le joueur se situe
-	*/
+*/
 void writeLvl ( t_cell map[][COLUMNS], int nbLvl) {
 	/* enregistre la partie soit dans le dossier temporaire ou dans les dossiers de sauvegardes */
 
@@ -119,7 +119,7 @@ void writeLvl ( t_cell map[][COLUMNS], int nbLvl) {
   * \brief écrit dans un fichier les données sur les étages
   * \fn void writeLvlData (t_lvl tabLvl[NB_LVL])
   * \param tabLvl tableau qui contient chaque niveau
-  */
+*/
 void writeLvlData (t_lvl tabLvl[NB_LVL]) {
 	err ("*** debut write lvl data ***");
 	char msg[100];
@@ -154,7 +154,7 @@ void writeLvlData (t_lvl tabLvl[NB_LVL]) {
   * \param tabLvl tableau qui contiendra chaque niveau
   * \return TRUE si la lecture c'est bien passée.
   * \return FALSE sinon.
-  */
+*/
 int readLvlData (t_lvl tabLvl[NB_LVL]) {
 	err ("*** debut read lvl data ***");
 	FILE * file = fopen (NOM_LVLDATA, "r");
@@ -184,9 +184,9 @@ int readLvlData (t_lvl tabLvl[NB_LVL]) {
 
 /**
 	* \brief enregistre les stats du joueur dans un fichier "position.txt"
-	*	\fn void writePosition (t_character player)
+	* \fn void writePosition (t_character player)
 	* \param player joueur
-	*/
+*/
 void writePosition ( t_character player) {
 	/* enregistre les paramètres du joueur dans les dossiers de sauvegardes */
 	err("*** Début write Position ***");
@@ -208,9 +208,9 @@ void writePosition ( t_character player) {
 
 /**
 	* \brief lit les stats du joueur dans un fichier "position.txt"
-	*	\fn void readPosition (t_character *player)
+	* \fn void readPosition (t_character *player)
 	* \param player joueur
-	*/
+*/
 void readPosition ( t_character *player){
 	err ("debut lecture position");
 	FILE * positionFile = NULL;
@@ -297,14 +297,14 @@ void writeMonster (t_monster monsters[NB_MONSTER_MAX], int nbMonster) {
 
 /**
 	* \brief Initialise la partie du joueur
-	*	\fn void initGameMap (t_cell map[][COLUMNS], int choix, int choixFichierSauvegarde, t_character *player, t_monster monsters[NB_MONSTER_MAX], int * nbMonster)
+	* \fn void initGameMap (t_cell map[][COLUMNS], int choix, int choixFichierSauvegarde, t_character *player, t_monster monsters[NB_MONSTER_MAX], int * nbMonster)
 	* \param map Carte où se trouve le joueur
 	* \param choix Choix 0 ou 1 (0 nouvelle partie, 1 reprendre partie)
 	* \param choixFichierSauvegarde Choix de la sauvegarde
 	* \param player Joueur
-  * \param monsters L'ensemble des monstres du jeu
-  * \param nbMonster Nombre de monstres dans le jeu
-	*/
+	* \param monsters L'ensemble des monstres du jeu
+	* \param nbMonster Nombre de monstres dans le jeu
+*/
 void initGameMap(t_cell map[LINES][COLUMNS], int choix, int choixFichierSauvegarde, t_character *player, t_monster monsters[NB_MONSTER_MAX], int * nbMonster){
 	/* Initialise les niveaux soit une nouvelle partie soit une sauvegarde */
 	err("*** Debut init Game Map ****");
@@ -345,11 +345,11 @@ void initGameMap(t_cell map[LINES][COLUMNS], int choix, int choixFichierSauvegar
 
 /**
 	* \brief Permet de changer de niveaux
-	*	\fn void readLvl (t_cell map[][COLUMNS], t_character *player, int dir)
+	* \fn void readLvl (t_cell map[][COLUMNS], t_character *player, int dir)
 	* \param map Carte où se trouve le joueur
 	* \param player Joueur
 	* \param dir Nombre d'étage que l'on descencd ou que l'on monte
-	*/
+*/
 void changeLvl(t_cell map[LINES][COLUMNS], t_character *player, int dir){
 	/* Fonction permettant de changer de niveaux */
 
@@ -374,9 +374,9 @@ void changeLvl(t_cell map[LINES][COLUMNS], t_character *player, int dir){
 	*	\fn void saveGame (t_cell map[][COLUMNS], t_character *player, t_monster monsters[NB_MONSTER_MAX], int nbMonster)
 	* \param map Carte où se trouve le joueur
 	* \param player Joueur
-  * \param monsters L'ensemble des monstres du jeu
-  * \param nbMonster Nombre de monstres dans le jeu
-	*/
+  	* \param monsters L'ensemble des monstres du jeu
+  	* \param nbMonster Nombre de monstres dans le jeu
+*/
 void saveGame(t_cell map[LINES][COLUMNS], t_character *player, t_monster monsters[NB_MONSTER_MAX], int nbMonster){
 	/* Fonction permettant de sauvegarder la partie à l'instant t */
 	err("*** Début Save Game ***");
@@ -387,15 +387,15 @@ void saveGame(t_cell map[LINES][COLUMNS], t_character *player, t_monster monster
 
 	writeLvl (map, player->lvl);
 	writePosition (*player);
-  writeMonster (monsters, nbMonster);
+  	writeMonster (monsters, nbMonster);
 	err("*** Fin Save Game ***");
 }
 
 /**
 	* \brief Permet de vérifier si une partie existe dans un dossier de sauvegarde
-	*	\fn void bFileSaveEmpty (int choixFichierSauvegarde)
+	* \fn void bFileSaveEmpty (int choixFichierSauvegarde)
 	* \param choixFichierSauvegarde Numéro du dossier de sauvegarde
-	*/
+*/
 int bFileSaveEmpty(int choixFichierSauvegarde){
 	/* Fonction vérifiant si un dossier est vide */
 	err("\n***Debut is File Save Empty***");
@@ -416,9 +416,9 @@ int bFileSaveEmpty(int choixFichierSauvegarde){
 
 /**
 	* \brief Permet de supprimer une partie existante
-	*	\fn void deleteGame (int choixFichierSauvegarde)
+	* \fn void deleteGame (int choixFichierSauvegarde)
 	* \param choixFichierSauvegarde Numéro du dossier de sauvegarde
-	*/
+*/
 void deleteGame(int choixFichierSauvegarde){
   /* Fonction permettant de supprimer une partie */
 	char fileName[50];
