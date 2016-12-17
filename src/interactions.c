@@ -213,10 +213,11 @@ void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_cha
 	echo();
 
 	mvwprintw(win_logs, LINES_LOGS-3, 1, "Indiquez votre code de triche :");
-	move(LINES_LOGS-2, COLS_GAME+2);
+	wmove(win_logs, LINES_LOGS-2, 1);
+	//move(LINES_LOGS-2, COLS_GAME+2);
 
 	wrefresh(win_logs);
-	getstr(cheatSTR);
+	wgetstr(win_logs, cheatSTR);
 	noecho();
 
 	if(strcmp(cheatSTR, "lumos") == 0){
