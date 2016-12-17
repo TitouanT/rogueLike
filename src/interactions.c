@@ -210,17 +210,18 @@ void grabItem(t_character *player, t_cell map[LINES][COLUMNS], WINDOW *win_logs,
 void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_character *player, int *isPlayerInvicible){
 
 	char cheatSTR[MAX_CHEAT];
-
 	int lineLog = 0;
-
-	echo();
-
-	mvwprintw(win_logs, LINES_LOGS-3, 1, "Indiquez votre code de triche :");
-	wmove(win_logs, LINES_LOGS-2, 2);
-	//move(LINES_LOGS-2, COLS_GAME+2);
 
 	// Faudrait changer ça, mais là n'est pas la priorité
 	init_pair(100, COLOR_WHITE, COLOR_BLACK);
+	init_pair(101, COLOR_RED, COLOR_BLACK);
+
+	echo();
+
+	wattron(win_logs, COLOR_PAIR(101));
+	mvwprintw(win_logs, LINES_LOGS-3, 1, "Indiquez votre code de triche :");
+	wmove(win_logs, LINES_LOGS-2, 2);
+
 	wattron(win_logs, COLOR_PAIR(100));
 	wrefresh(win_logs);
 	wgetnstr(win_logs, cheatSTR, MAX_CHEAT);
