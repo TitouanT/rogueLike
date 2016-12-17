@@ -410,8 +410,8 @@ caCEstDuPropre:
 	* \param map Carte du joueur
 	* \param nbMonster Nombre de monstres dans le jeu
 	* \param currentLvl niveau du joueur
-	* \param visibleByGhost matrice pour savoir ce que les fantomes rendent visible. 
-	
+	* \param visibleByGhost matrice pour savoir ce que les fantomes rendent visible.
+
 	*/
 void displayMonster (WINDOW * win, t_monster monsters[NB_MONSTER_MAX], t_cell map[LINES][COLUMNS], int nbMonster, int currentLvl, int visibleByGhost[LINES][COLUMNS]) {
 	int i;
@@ -712,7 +712,16 @@ void displayPlayer(t_character player, t_cell mat[LINES][COLUMNS], WINDOW *win, 
 					addLog("Recuperez l'objet avec :                          > Entrée", line, logs);
 				}
 				break;
-			case STAIRS_DOWN: addLog("Vous pouvez déscendre les éscaliers avec :      > Entrée", line, logs); break;
+			case STAIRS_DOWN:
+				if(player.lvl > 0){
+					addLog("Vous pouvez déscendre les éscaliers avec :      > Entrée", line, logs); break;
+				}
+				else {
+					if(player.hasFoundObj)
+						addLog("Vous pouvez sortir du batiment ! :)", line, logs);
+					else
+						addLog("Vous ne pouvez pas encore sortir du batiment.", line, logs);
+				}
 			default: break;
 		}
 
