@@ -21,6 +21,9 @@
 /** Nombre de messages d'erreurs différents */
 #define NB_ERROR_MESSAGES 26
 
+/** Taille maximum d'une commande de cheat */
+#define MAX_CHEAT 45
+
 /**
 	*	\brief Définition d'une structure de messages d'erreur.
 	*	\struct t_msg
@@ -206,18 +209,23 @@ void grabItem(t_character *player, t_cell map[LINES][COLUMNS], WINDOW *win_logs,
 	*/
 void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_character *player, int *isPlayerInvicible){
 
-	char cheatSTR[COLS_LOGS];
+	char cheatSTR[MAX_CHEAT];
 
 	int lineLog = 0;
 
 	echo();
 
 	mvwprintw(win_logs, LINES_LOGS-3, 1, "Indiquez votre code de triche :");
-	wmove(win_logs, LINES_LOGS-2, 1);
+	wmove(win_logs, LINES_LOGS-2, 2);
 	//move(LINES_LOGS-2, COLS_GAME+2);
 
+	// Faudrait changer ça, mais là n'est pas la priorité
+	init_pair(100, COLOR_WHITE, COLOR_BLACK);
+	wattron(win_logs, COLOR_PAIR(100));
 	wrefresh(win_logs);
-	wgetstr(win_logs, cheatSTR);
+	wgetnstr(win_logs, cheatSTR, MAX_CHEAT);
+
+	wattroff(win_logs, COLOR_PAIR(100));
 	noecho();
 
 	if(strcmp(cheatSTR, "lumos") == 0){
