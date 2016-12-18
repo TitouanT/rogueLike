@@ -319,7 +319,7 @@ void chooseLink (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
   * \param map carte représenant l'étage
   * \param rooms tableau contenant les pieces existantes
   * \param nbRoom nombre de pieces existantes
-  * \param iRoom index de la pieces que l'on veut, -1 si indifférent
+  * \param iRoom index de la pièce que l'on veut, -1 si indifférent
   * \param line contiendra la ligne choisi
   * \param col contiendra la colonne choisi
   */

@@ -12,7 +12,7 @@
 \usepackage[colorinlistoftodos]{todonotes}
 
 
-\usepackage[top=2cm, bottom=2cm,left=2cm, right=2cm]{geometry}
+\usepackage[top=3cm, bottom=3cm,left=2cm, right=2cm]{geometry}
 
 \usepackage{hyperref}
 \hypersetup{
@@ -117,6 +117,17 @@
 	\vspace{12pt}
 	
 	Pour le projet, nous devions au minimum effectuer un jeu qui génère des niveaux (ici, des étages dans notre bâtiment) aléatoires, avec une taille variant en fonction de l'étage où se trouve le joueur. Il était aussi demandé, en fonction de l'avancement du projet, d'ajouter des fonctionnalités supplémentaires : des armes, des monstres, des pièges, ou autres.
+	
+	\vspace{12pt}
+	
+	\begin{itemize}
+	\item Le code source de notre projet, ainsi que les divers documents se trouvent à l'adresse :\\
+		\hspace*{1cm} \href{https://github.com/TitouanT/rogueLike}{https://github.com/TitouanT/rogueLike}
+	 \item La documentation de notre projet se trouve à l'adresse :\\
+	 	\hspace*{1cm} \href{https://roguelike.vlntn.pw}{https://roguelike.vlntn.pw}
+	 \item Notre répartition des tâches se trouve à l'adresse :\\
+	 	\hspace*{1cm} \href{https://github.com/TitouanT/rogueLike/projects/1}{https://github.com/TitouanT/rogueLike/projects/1}
+	\end{itemize}
 
 %% Partie organisation
 \chapter{Organisation}
@@ -124,7 +135,23 @@
 ici mettre un petit mot <tout le monde>
 
 	\section{Répartition des tâches}
-		Mettre ici notre répartition des tâches. <tout le monde>
+
+	Voici la répartition de tâches. Chaque personne a bien évidement aidé les autres en cas de problèmes.
+
+\begin{table}[ht]
+\centering
+\caption{Notre répartition des tâches au sein du groupe}
+\label{reparition}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\multicolumn{1}{c}{\textbf{Emeric}} & \multicolumn{1}{c}{\textbf{Valentin}} & \multicolumn{1}{c}{\textbf{Titouan}} \\ \midrule
+- Gestion de la sauvegarde & - Affichage & \begin{tabular}[c]{@{}l@{}}- Génération des niveaux (salles et \\ couloirs)\end{tabular} \\
+\begin{tabular}[c]{@{}l@{}}- Gestion du changement \\ d'étages avec les escaliers\end{tabular} & - Déplacement du joueur & - Ajout des portes entre les salles \\
+\begin{tabular}[c]{@{}l@{}}- Ajout et comportement des \\ pièges\end{tabular} & \begin{tabular}[c]{@{}l@{}}- Interactions (portes, nourriture, \\ kits de santé, ...)\end{tabular} & \begin{tabular}[c]{@{}l@{}}- Gestion des monstres (ajout, \\ déplacements, dégâts sur le \\ joueur, ...)\end{tabular} \\
+ & \begin{tabular}[c]{@{}l@{}}- Gestion de la régénération de\\ la vie\end{tabular} &  \\
+ & - Gestion de l'inventaire &  \\ \bottomrule
+\end{tabular}
+\end{table}
 		\subsection{Pourquoi cette répartition}
 		
 		<tout le monde>
@@ -165,13 +192,11 @@ ici mettre un petit mot <tout le monde>
 %% Partie analyse et conception
 \chapter{Analyse et Conception}
 
-ici mettre un petit mot
+	Avant de commencer à programmer notre jeu, nous nous sommes concertés autour d'un même fichier pour mettre en commun nos idées à propos du jeu. Notre jeu étant très libre dans son fonctionnement, c'était une étape cruciale.\\
+	Nous n'avons pas néanmoins réalisé un cahier des charges <<conventionnel>>, car nous trouvions que c'est quelque chose de figé, et qu'au fur et à mesure de l'avancement du projet, celui-ci n'évoluait pas en fonction de ce nous voulions. Nous avons donc réalisé un document listant tous les points importants de notre projet, et quelques détails importants. Toutes les autres choses ont été définies entre nous, lors de la réalisation du projet.
 
 	\section{Notre cahier des charges}
 
-	Avant de commencer à programmer notre jeu, nous nous sommes concertés autour d'un même fichier pour mettre en commun nos idées à propos du jeu. Notre jeu étant très libre dans son fonctionnement, c'était une étape cruciale.
-	
-		\vspace{12pt}
 
 	Notre \emph{rogueLike} prend place dans le bâtiment IC$^2$. Le joueur démarre le jeu au premier étage. Il doit se rendre tout en haut, aller chercher l'objet, puis revenir en bas.\\
 	Chaque étage de ce bâtiment est généré aléatoirement, il doit comporter des pièces et des couloirs. Entre ceux-ci, peut se trouver des portes, ou juste un trou. Les portes sont aléatoirement ouvertes ou fermées, et le joueur peut essayer de les ouvrir manuellement (il a une probabilité de ne pas réussir). Le nombre de pièces par étage est défini en fonction de l'étage : les étages supérieurs sont plus compliqués car ils possèdent plus de pièces. Pour changer d'étages, le joueur doit emprunter des escaliers (un escalier pour monter, et un pour descendre par étage, ceux-ci ne peuvent pas se trouver dans la même pièce).\\
@@ -264,21 +289,9 @@ ici mettre un petit mot
 	\end{itemize}
 	
 	
-	\section{Détail des modules}
+	\section{Détail des principales fonctionnalités du jeu}
 
-	On met du code comme ça : 
-	
-\begin{lstlisting}[caption=programme.c, language=C,style=Cstyle]
-#include <stdio.h>
-#include "maFonction.h"
-	
-int main(){
-		
-	int b;	
-	b = test(10);
-	return 0;
-}
-		\end{lstlisting}	
+	Voici un descriptif des principales fonctionnalités du programme, et de leur mise en place dans notre projet.
 	
 		\subsection{La génération des niveaux}
 		
@@ -330,12 +343,17 @@ int main(){
 			
 		\subsection{L'affichage}
 		
-		L'affichage s'est aussi faite à l'aide de la libraire \emph{ncurses}, car elle propose des fonctions de création de fenêtres virtuelles, et d'écriture directement sur celles-ci. Nous avons séparé notre jeu en trois zones, qui sont en réalité des fenêtres. Pour l'écran de chargement et de fin de partie (en cas de perte ou de victoire), des messages ASCII sont affichés, ces messages proviennent en réalité de fichiers textes, qui sont lus par le programme et affichés au centre de l'écran. L'écran de sélection quant à lui nous permet de visualiser facilement, avec des couleurs, les parties. 
+		L'affichage s'est aussi faite à l'aide de la libraire \emph{ncurses}, car elle propose des fonctions de création de fenêtres virtuelles, et d'écriture directement sur celles-ci. Nous avons séparé notre jeu en trois zones, qui sont en réalité des fenêtres. Pour l'écran de chargement et de fin de partie (en cas de perte ou de victoire), des messages ASCII sont affichés, ces messages proviennent en réalité de fichiers textes, qui sont lus par le programme et affichés au centre de l'écran. L'écran de sélection quant à lui nous permet de visualiser facilement, avec des couleurs, les parties.
+		
+		\vspace{12pt}
+		
+		Lorsque le joueur découvre de nouveaux endroits dans les couloirs, l'état de visibilité des cases l'entourant change. Pour le pièces, puisque celles-ci doivent s'allumer entièrement, on vérifie si le joueur se trouve dans une pièce. Dans ce cas, on cherche la taille de la pièce où se trouve le joueur, puis on affiche chaque case de celle-ci.\\
+		Au moment d'afficher la carte, on n'oublie pas d'afficher les cases uniquement si elles sont visibles.
 		
 		\subsection{Les monstres}
 		
 		Le nombre de monstre dans une partie est choisi aléatoirement entre deux bornes définies en constantes.\\
-		Les monstres sont équitablement réparties entre les étages proportionnellement au nombres de pièces qu'ils contiennent. Chaque étages a une proportion différentes de chaque monstres, plus l'étage est haut, plus les types de monstres présents sont difficiles à battre.\\
+		Les monstres sont équitablement répartis entre les étages proportionnellement au nombres de pièces qu'ils contiennent. Chaque étages a une proportion différentes de chaque monstres, plus l'étage est haut, plus les types de monstres présents sont difficiles à battre.\\
 		Pour animer les monstres, nous marquons toutes les cases de la matrice accessible par le joueur avec la distance de celle-ci par rapport au joueur. Ensuite chaque monstre fait un mouvement en direction du joueur si le joueur est dans son champ de vision. Sinon, ils ne bougent pas.\\
 		Nous faisons attention à ce que les monstres n'aillent pas sur le joueur et si le joueur est à porté alors ils l'attaquent. Si le joueur fait un déplacement vers une case ou se trouve un monstre alors le joueur ne bouge pas et attaque. Ainsi, il n'y a jamais deux êtres vivants sur la même case.
 		
@@ -348,7 +366,12 @@ int main(){
 		
 		\subsection{La nourriture et la vie}
 		
-		<valentin>
+		A la génération des niveaux, nous sélectionnons des endroits libres (mais aléatoires) sur la carte, dans des pièces, pour y placer des objets de nourriture, et des objets de santé. Le nombre de ces objets trouvable dans le niveau est défini en fonction du nombre de pièces de celui-ci. \\ Lorsque le joueur se trouve sur un de ses objets, et qu'il effectue l'action pour s'en servir, sa nourriture ou sa vie est mise à jour. Ensuite, à chaque tour, on vérifie si le joueur possède plus de 90\% de nourriture. Dans se cas, il possède une chance sur trois d'augmenter sa vie (et de diminuer sa nourriture). Si il ne possédait pas 90\% de nourriture, alors il possède 1\% de chance d'augmenter sa vie.\\
+		Lorsque le joueur ne possède plus de vie, il possède 75\% de ne pas réussir à se déplacer. Pour l'évanouissement, une position est choisie aléatoirement, puis deux longueurs, entre deux bornes. Le rectangle formé par ces données est ensuite passé en non-visible.
+		
+		\subsection{L'inventaire du joueur}
+
+		L'inventaire du joueur est en réalité un tableau du même type que les objets de notre carte. Ainsi, lorsqu'on souhaite ajouter un objet à l'inventaire du joueur, il suffit de prendre l'objet, et le mettre dans l'inventaire, à une case disponible. Lorsque le joueur souhaite poser un objet, il lui est simplement demandé un indice (correspondant à l'indice du tableau de son inventaire), et l'objet présent à cet endroit, si il existe, est posé au pied du joueur. Dans chaque cas, il faut faire attention que le joueur se trouve sur une case contenant aucun objet.
 
 %% Partie conclusion
 \chapter{Résultat et conclusion}
@@ -359,11 +382,19 @@ int main(){
 	
 	<tout le monde>
 	
-	Les améliorations possibles pour le projet sont de mettre des sons dans le jeu et de créer un didacticiel. Un fond sonore dans le jeu et des sons lorsqu'un monstre attaque, est proche du joueur, plein de possibilité s'offre à nous dès que nous trouverons un moyen de lire une bande son avec la possibilité de ne pas mettre de son. Un didacticiel serait aussi intéressant pour apprendre au joueur à jouer.
+	Il aurait été possible d'améliorer notre projet en ajoutant des sons dans le jeu. On aurait aussi pu créer un didacticiel. \\
+	Le but aurait été d'ajouter un fond sonore dans le jeu et des sons lorsqu'un monstre attaque, ou est proche du joueur. Pleins de possibilités pourraient s'offrir à nous lorsque que nous trouverons un moyen de lire une bande son (avec un réglage pour de ne pas mettre de son pour ceux qui le souhaitent). \\
+	Un didacticiel serait aussi intéressant pour apprendre au joueur à jouer.\\
+	Un système de classe aurait pu être intéressant, au début, nous aurions pu choisir d'être un humain, un elfe, un nain, ou autre, avec des caractéristiques différentes (vie, vitesse, attaque, résistance, faim moyenne du joueur, ...).\\
+	Enfin, un développement du système d'expérience aurait rendu notre jeu plus jouable : lorsqu'un joueur tue un monstre, son expérience augmente, et plus son expérience est est élevée plus il tue facilement d'autres monstres.
 	
 	\section{Apport personnel du projet}
 	
-	<tout le monde>
+	Voici l'apport personnel du projet, pour chaque membre du groupe :
+	
+	\begin{description}
+	\item[Valentin :] Dans mon cas, le projet m'a permis de découvrir une librairie qui est \emph{ncurses}. Cette librairie est pratique car elle est plus simple à manipuler que la \emph{SDL} par exemple. De plus, le \emph{Rogue} est un jeu qui se joue généralement dans un terminal, \emph{ncruses} s'adapte parfaitement à notre projet. Le projet m'a aussi permis de me rendre compte à quel point la gestion peut être difficile, et conflictuelle. Il faut savoir gérer le temps, la répartition des taches. Il faut aussi savoir adapter le projet en fonction de son avancement, pour ne pas stagner. Enfin, notre projet étant assez libre dans son fonctionnement, beaucoup de fonctionnalités autour de celui-ci sont des détails, que chaque personne peut voir dans une manière différente que les autres. 
+	\end{description}
 
 \chapter*{Annexe}
 
@@ -400,4 +431,17 @@ int main(){
 			    \subfloat[Erreur trouvée]{{\includegraphics[width=10cm]{images/monsters_through_doors/erreur.png} }}%
 			    \caption{Résolution du beug}%
 			\end{figure}
+		
+	\subsection*{Nourriture qui baisse trop vite ...}
+		Lors de l'ajout de la nourriture, nous nous sommes vite rendu compte qu'elle diminuait à chaque tour, malgré la probabilité de 70\% qu'elle ne diminue pas. Nous avons lancé \emph{GDB}, nous avons tout d'abord vérifié que la nourriture était bien prise en compte dans les caractéristiques du joueur. Ensuite, en regardant de plus près la fonction qui gère la faim, nous avons pu tester manuellement les conditions pour la diminution de la nourriture. Nous nous sommes rendu compte que le \emph{OU} de la condition était incorrect, et aurait du être un \emph{ET}.
+		
+			\begin{figure}[ht]
+			    \centering
+			    \subfloat[La nourriture est prise en compte]{{\includegraphics[width=8cm]{images/bouffe_qui_baisse_pas/la_bouffe_est_bien_geree.png}}}
+			    \qquad
+			    \subfloat[Les conditions \emph{OU} sont incorrectes]{{\includegraphics[width=5cm]{images/bouffe_qui_baisse_pas/ou_ou_et_that_is_the_question.png} }}%
+			    \caption{Résolution de la nourriture qui baisse vite}%
+			\end{figure}
+		
+		
 \end{document}
