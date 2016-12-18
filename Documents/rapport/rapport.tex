@@ -80,7 +80,7 @@
 	\HRule \\[1.5cm]
 	 
 	 
-	 \vspace{12pt}
+	 \vspace{20pt}
 	 
 	{\large \today}\\[1cm]
 	
@@ -119,6 +119,17 @@
 	\vspace{12pt}
 	
 	Pour le projet, nous devions au minimum effectuer un jeu qui génère des niveaux (ici, des étages dans notre bâtiment) aléatoires, avec une taille variant en fonction de l'étage où se trouve le joueur. Il était aussi demandé, en fonction de l'avancement du projet, d'ajouter des fonctionnalités supplémentaires : des armes, des monstres, des pièges, ou autres.
+	
+	\vspace{12pt}
+	
+	\begin{itemize}
+	\item Le code source de notre projet, ainsi que les divers documents se trouvent à l'adresse :\\
+		\hspace*{1cm} \href{https://github.com/TitouanT/rogueLike}{https://github.com/TitouanT/rogueLike}
+	 \item La documentation de notre projet se trouve à l'adresse :\\
+	 	\hspace*{1cm} \href{https://roguelike.vlntn.pw}{https://roguelike.vlntn.pw}
+	 \item Notre répartition des tâches se trouve à l'adresse :\\
+	 	\hspace*{1cm} \href{https://github.com/TitouanT/rogueLike/projects/1}{https://github.com/TitouanT/rogueLike/projects/1}
+	\end{itemize}
 
 %% Partie organisation
 \chapter{Organisation}
@@ -126,24 +137,27 @@
 Pour ce projet, nous avons dû nous organiser et trouver des outils afin de nous permettre de travailler à trois sur le code des uns des autres.
 
 	\section{Répartition des tâches}
-		\begin{table}[!ht]
-			\centering
-			\begin{tabular}{|l|l|}
-				\hline
-				\multirow{2}{*}{Titouan} & Génération des niveaux \\
-				& Monstres \\ \hline
-				\multirow{2}{*}{Emeric} & Sauvegarde et changement de niveaux \\
-				& Piège \\ \hline
-				\multirow{3}{*}{Valentin} & Affichage \\
-				& Interaction \\
-				& Nourriture et vie \\  \hline
-			\end{tabular}
-			\caption {Répartition des tâches}
-		\end{table} 
+
+	Voici la répartition de tâches. Chaque personne a bien évidement aidé les autres en cas de problèmes.
+
+\begin{table}[ht]
+\centering
+\caption{Notre répartition des tâches au sein du groupe}
+\label{reparition}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\multicolumn{1}{c}{\textbf{Emeric}} & \multicolumn{1}{c}{\textbf{Valentin}} & \multicolumn{1}{c}{\textbf{Titouan}} \\ \midrule
+- Gestion de la sauvegarde & - Affichage & \begin{tabular}[c]{@{}l@{}}- Génération des niveaux (salles et \\ couloirs)\end{tabular} \\
+\begin{tabular}[c]{@{}l@{}}- Gestion du changement \\ d'étages avec les escaliers\end{tabular} & - Déplacement du joueur & - Ajout des portes entre les salles \\
+\begin{tabular}[c]{@{}l@{}}- Ajout et comportement des \\ pièges\end{tabular} & \begin{tabular}[c]{@{}l@{}}- Interactions (portes, nourriture, \\ kits de santé, ...)\end{tabular} & \begin{tabular}[c]{@{}l@{}}- Gestion des monstres (ajout, \\ déplacements, dégâts sur le \\ joueur, ...)\end{tabular} \\
+ & \begin{tabular}[c]{@{}l@{}}- Gestion de la régénération de\\ la vie\end{tabular} &  \\
+ & - Gestion de l'inventaire &  \\ \bottomrule
+\end{tabular}
+\end{table}
 
 		\subsection{Pourquoi cette répartition}
 		
-		<tout le monde>
+		La répartition des tâches a été rapide, chacun a choisi ce qu'il voulait par exemple Titouan avait déjà fait de la génération de niveaux auparavant ce qui était un attout, Valentin voulait découvrir la bibliotèque ncurses et Emeric souhaitait gérer les sauvegardes.
 
 	\section{Utilisation d'un gestionnaire de versions}
 	
@@ -151,7 +165,7 @@ Pour ce projet, nous avons dû nous organiser et trouver des outils afin de nous
 	
 	\section{Utilisation des projets Github}
 	
-		L'utilisation des projets de Github, découvert en conduite de projet, nous a permi de mettre tous nos objectifs sur le projet aussi bien que le code et le rapport. Nous avons pu nous répartir des tâches fait par chacun et ce qui nous reste à faire.
+		L'utilisation des projets de Github, découvert en conduite de projet, nous a permi de mettre tous nos objectifs sur le projet aussi bien que le code et le rapport. Nous avons créé une issue pour chaque sujet, et nous avons aussi créé un milestone comme ça, nous pouvions être tenu au courant de l'avancée du projet et du travail des uns et des autres par rapport à la date butoire.
 		Pour les objectifs du code, le lien du projet Github est le suivant : \href{https://github.com/TitouanT/rogueLike/projects/1}{ https://github.com/TitouanT/rogueLike/projects/1}. \\
 		Et pour les objectifs du rapport :  \href{https://github.com/TitouanT/rogueLike/projects/2} {https://github.com/TitouanT/rogueLike/projects/2}.
 
@@ -181,13 +195,11 @@ Pour ce projet, nous avons dû nous organiser et trouver des outils afin de nous
 %% Partie analyse et conception
 \chapter{Analyse et Conception}
 
-ici mettre un petit mot
+	Avant de commencer à programmer notre jeu, nous nous sommes concertés autour d'un même fichier pour mettre en commun nos idées à propos du jeu. Notre jeu étant très libre dans son fonctionnement, c'était une étape cruciale.\\
+	Nous n'avons pas néanmoins réalisé un cahier des charges <<conventionnel>>, car nous trouvions que c'est quelque chose de figé, et qu'au fur et à mesure de l'avancement du projet, celui-ci n'évoluait pas en fonction de ce nous voulions. Nous avons donc réalisé un document listant tous les points importants de notre projet, et quelques détails importants. Toutes les autres choses ont été définies entre nous, lors de la réalisation du projet.
 
 	\section{Notre cahier des charges}
 
-	Avant de commencer à programmer notre jeu, nous nous sommes concertés autour d'un même fichier pour mettre en commun nos idées à propos du jeu. Notre jeu étant très libre dans son fonctionnement, c'était une étape cruciale.
-	
-		\vspace{12pt}
 
 	Notre \emph{rogueLike} prend place dans le bâtiment IC$^2$. Le joueur démarre le jeu au premier étage. Il doit se rendre tout en haut, aller chercher l'objet, puis revenir en bas.\\
 	Chaque étage de ce bâtiment est généré aléatoirement, il doit comporter des pièces et des couloirs. Entre ceux-ci, peut se trouver des portes, ou juste un trou. Les portes sont aléatoirement ouvertes ou fermées, et le joueur peut essayer de les ouvrir manuellement (il a une probabilité de ne pas réussir). Le nombre de pièces par étage est défini en fonction de l'étage : les étages supérieurs sont plus compliqués car ils possèdent plus de pièces. Pour changer d'étages, le joueur doit emprunter des escaliers (un escalier pour monter, et un pour descendre par étage, ceux-ci ne peuvent pas se trouver dans la même pièce).\\
@@ -280,21 +292,9 @@ ici mettre un petit mot
 	\end{itemize}
 	
 	
-	\section{Détail des modules}
+	\section{Détail des principales fonctionnalités du jeu}
 
-	On met du code comme ça : 
-	
-\begin{lstlisting}[caption=programme.c, language=C,style=Cstyle]
-#include <stdio.h>
-#include "maFonction.h"
-	
-int main(){
-		
-	int b;	
-	b = test(10);
-	return 0;
-}
-		\end{lstlisting}	
+	Voici un descriptif des principales fonctionnalités du programme, et de leur mise en place dans notre projet.
 	
 		\subsection{La génération des niveaux}
 		
@@ -306,13 +306,13 @@ int main(){
 			\item Le placement des objets (nourriture, escaliers, pièges).
 		\end{enumerate}
 		
-			\subsubsection{placement des pièces}
+			\subsubsection{Placement des pièces}
 			
 			Pour placer les pièces, on les places les unes après les autres. Pour chaque pièces, nous commençons par lui donner une position (la position de son angle supérieur gauche). Ensuite nous lui choisissons une dimension (hauteur, largeur) afin qu'elle entre la plus petite et la plus grande pièce possible.
 			Pour finir, nous vérifions qu'elle n'est pas en collision avec une autre pièce.
 			Dans le cas ou elle l'est, on recommence (pas plus de 100 fois).
 			
-			\subsubsection{création des couloirs}
+			\subsubsection{Création des couloirs}
 			
 			Le but est de créer un réseau de pièces ou aucune pièce ou groupe de pièces ne soit isolé des autres.
 			Pour cela nous connectons les pièces les unes après les autres dans leur ordre de création.
@@ -374,7 +374,7 @@ int main(){
 		
 		\subsection{L'inventaire du joueur}
 
-		L'inventaire du joueur est en réalité un tableau du même type que les objets de notre carte. Ainsi, lorsqu'on souhaite ajouter un objet à l'inventaire du joueur, il suffit de prendre l'objet, et le mettre dans l'inventaire, à une case disponible.
+		L'inventaire du joueur est en réalité un tableau du même type que les objets de notre carte. Ainsi, lorsqu'on souhaite ajouter un objet à l'inventaire du joueur, il suffit de prendre l'objet, et le mettre dans l'inventaire, à une case disponible. Lorsque le joueur souhaite poser un objet, il lui est simplement demandé un indice (correspondant à l'indice du tableau de son inventaire), et l'objet présent à cet endroit, si il existe, est posé au pied du joueur. Dans chaque cas, il faut faire attention que le joueur se trouve sur une case contenant aucun objet.
 
 %% Partie conclusion
 \chapter{Résultat et conclusion}
@@ -382,8 +382,6 @@ int main(){
 	Faire une comparaison avec les objectifs. <titouan>
 	
 	\section{Améliorations possibles}
-	
-	<tout le monde>
 	
 	Il aurait été possible d'améliorer notre projet en ajoutant des sons dans le jeu. On aurait aussi pu créer un didacticiel. \\
 	Le but aurait été d'ajouter un fond sonore dans le jeu et des sons lorsqu'un monstre attaque, ou est proche du joueur. Pleins de possibilités pourraient s'offrir à nous lorsque que nous trouverons un moyen de lire une bande son (avec un réglage pour de ne pas mettre de son pour ceux qui le souhaitent). \\
@@ -393,9 +391,12 @@ int main(){
 	
 	\section{Apport personnel du projet}
 	
-	<tout le monde>
-	Le projet nous a permis d'apprendre à travailler en équipe et à nous échanger nos connaissances.
-  
+	Voici l'apport personnel du projet, pour chaque membre du groupe :
+	
+	\begin{description}
+	\item[Valentin :] Dans mon cas, le projet m'a permis de découvrir une librairie qui est \emph{ncurses}. Cette librairie est pratique car elle est plus simple à manipuler que la \emph{SDL} par exemple. De plus, le \emph{Rogue} est un jeu qui se joue généralement dans un terminal, \emph{ncruses} s'adapte parfaitement à notre projet. Le projet m'a aussi permis de me rendre compte à quel point la gestion peut être difficile, et conflictuelle. Il faut savoir gérer le temps, la répartition des taches. Il faut aussi savoir adapter le projet en fonction de son avancement, pour ne pas stagner. Enfin, notre projet étant assez libre dans son fonctionnement, beaucoup de fonctionnalités autour de celui-ci sont des détails, que chaque personne peut voir dans une manière différente que les autres. 
+	\item[Emeric :] Pour moi, ce projet a été une façon de voir ce que le travail de groupe peut avoir comme influence sur un projet d'informatique. Nous étions parti pour faire la génération des niveaux, l'affichage, les déplacements et la sauvegarde sur deux semaines et au bout d'une semaine, nous avions presque fait tous ces objectifs. Voir un de ses collègue avancer, tu as envie d'avancer autant que lui et nous arrivons à un effet boule de neige.
+	\end{description}
 
 \chapter*{Annexe}
 
