@@ -400,7 +400,7 @@ ici mettre un petit mot
 
 \chapter*{Annexe}
 
-	\section{Cas d'utilisation du débogueur \emph{GDB}}
+	\section*{Cas d'utilisation du débogueur \emph{GDB}}
 	
 		Parfois, nous n'arrivons pas à trouver la cause de certains beugs, qui étaient finalement très simple. Pour cela, nous avons utilisé l'outil \emph{GDB}, comme mentionné dans \hyperref[gdb]{la partie sur les outils, page \getpagerefnumber{gdb}}. Afin de l'utiliser avec \emph{ncurses}, voici la marche à suivre :
 		
@@ -413,7 +413,7 @@ ici mettre un petit mot
 		\end{enumerate}
 
 
-	\subsection{Des monstres qui passent à travers les portes ...}
+	\subsection*{Des monstres qui passent à travers les portes ...}
 		Il arrivait parfois que des monstres passent à travers des portes fermées. Nous avons lancé \emph{GDB}, et nous nous sommes rendu compte que la fonction qui testait si un monstre pouvait marcher sur une case était inversée dans le cas des portes :
 
 			\begin{figure}[ht]
@@ -435,7 +435,7 @@ ici mettre un petit mot
 			\end{figure}
 		
 		\newpage
-	\subsection{Nourriture qui baisse trop vite ...}
+	\subsection*{Nourriture qui baisse trop vite ...}
 		Lors de l'ajout de la nourriture, nous nous sommes vite rendu compte qu'elle diminuait à chaque tour, malgré la probabilité de 70\% qu'elle ne diminue pas. Nous avons lancé \emph{GDB}, nous avons tout d'abord vérifié que la nourriture était bien prise en compte dans les caractéristiques du joueur. Ensuite, en regardant de plus près la fonction qui gère la faim, nous avons pu tester manuellement les conditions pour la diminution de la nourriture. Nous nous sommes rendu compte que le \emph{OU} de la condition était incorrect, et aurait du être un \emph{ET}.
 		
 			\begin{figure}[ht]
@@ -446,7 +446,7 @@ ici mettre un petit mot
 			    \caption{Résolution de la nourriture qui baisse vite}%
 			\end{figure}
 	
-	\subsection{Pièges qui apparaissent dans les couloirs ?}
+	\subsection*{Pièges qui apparaissent dans les couloirs ?}
 	
 		Le problème qui nous a pris le plus de temps à résoudre fut celui qui faisait apparaître des pièges dans les couloirs de façon très aléatoire. Nous n'arrivions jamais à reproduire deux fois de suite l'erreur, même sur une même partie au même endroit. Nous pensions au début que cela venait de la génération des pièges, mais celle-ci était correcte. Après l'utilisation du débogueur, nous nous sommes rendu compte que la condition qui testait si le joueur se trouvait sur un piège n'était pas complète. En effet, nous testions si l'objet se trouvant à la case du joueur était un piège, sans jamais vérifier qu'un objet s'y trouvait. Or la liste des objets n'est pas remise à zéro lorsqu'on charge un nouvel étage. Donc un piège d'un autre étage peut avoir de l'effet sur un autre n'en contenant pas.
 
