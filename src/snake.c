@@ -277,7 +277,7 @@ replay:
 				break;
 
 			case ' ':
-				growth += GROWTH;
+				growth += 1;
 				break;
 
 			case 'b':
