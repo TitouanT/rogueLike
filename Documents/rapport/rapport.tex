@@ -135,7 +135,23 @@
 ici mettre un petit mot <tout le monde>
 
 	\section{Répartition des tâches}
-		Mettre ici notre répartition des tâches. <tout le monde>
+
+	Voici la répartition de tâches. Chaque personne a bien évidement aidé les autres en cas de problèmes.
+
+\begin{table}[ht]
+\centering
+\caption{Notre répartition des tâches au sein du groupe}
+\label{reparition}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\multicolumn{1}{c}{\textbf{Emeric}} & \multicolumn{1}{c}{\textbf{Valentin}} & \multicolumn{1}{c}{\textbf{Titouan}} \\ \midrule
+- Gestion de la sauvegarde & - Affichage & \begin{tabular}[c]{@{}l@{}}- Génération des niveaux (salles et \\ couloirs)\end{tabular} \\
+\begin{tabular}[c]{@{}l@{}}- Gestion du changement \\ d'étages avec les escaliers\end{tabular} & - Déplacement du joueur & - Ajout des portes entre les salles \\
+\begin{tabular}[c]{@{}l@{}}- Ajout et comportement des \\ pièges\end{tabular} & \begin{tabular}[c]{@{}l@{}}- Interactions (portes, nourriture, \\ kits de santé, ...)\end{tabular} & \begin{tabular}[c]{@{}l@{}}- Gestion des monstres (ajout, \\ déplacements, dégâts sur le \\ joueur, ...)\end{tabular} \\
+ & \begin{tabular}[c]{@{}l@{}}- Gestion de la régénération de\\ la vie\end{tabular} &  \\
+ & - Gestion de l'inventaire &  \\ \bottomrule
+\end{tabular}
+\end{table}
 		\subsection{Pourquoi cette répartition}
 		
 		<tout le monde>
@@ -176,13 +192,11 @@ ici mettre un petit mot <tout le monde>
 %% Partie analyse et conception
 \chapter{Analyse et Conception}
 
-ici mettre un petit mot
+	Avant de commencer à programmer notre jeu, nous nous sommes concertés autour d'un même fichier pour mettre en commun nos idées à propos du jeu. Notre jeu étant très libre dans son fonctionnement, c'était une étape cruciale.\\
+	Nous n'avons pas néanmoins réalisé un cahier des charges <<conventionnel>>, car nous trouvions que c'est quelque chose de figé, et qu'au fur et à mesure de l'avancement du projet, celui-ci n'évoluait pas en fonction de ce nous voulions. Nous avons donc réalisé un document listant tous les points importants de notre projet, et quelques détails importants. Toutes les autres choses ont été définies entre nous, lors de la réalisation du projet.
 
 	\section{Notre cahier des charges}
 
-	Avant de commencer à programmer notre jeu, nous nous sommes concertés autour d'un même fichier pour mettre en commun nos idées à propos du jeu. Notre jeu étant très libre dans son fonctionnement, c'était une étape cruciale.
-	
-		\vspace{12pt}
 
 	Notre \emph{rogueLike} prend place dans le bâtiment IC$^2$. Le joueur démarre le jeu au premier étage. Il doit se rendre tout en haut, aller chercher l'objet, puis revenir en bas.\\
 	Chaque étage de ce bâtiment est généré aléatoirement, il doit comporter des pièces et des couloirs. Entre ceux-ci, peut se trouver des portes, ou juste un trou. Les portes sont aléatoirement ouvertes ou fermées, et le joueur peut essayer de les ouvrir manuellement (il a une probabilité de ne pas réussir). Le nombre de pièces par étage est défini en fonction de l'étage : les étages supérieurs sont plus compliqués car ils possèdent plus de pièces. Pour changer d'étages, le joueur doit emprunter des escaliers (un escalier pour monter, et un pour descendre par étage, ceux-ci ne peuvent pas se trouver dans la même pièce).\\
