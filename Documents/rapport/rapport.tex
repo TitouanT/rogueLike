@@ -434,6 +434,7 @@ ici mettre un petit mot
 			    \caption{Résolution du beug}%
 			\end{figure}
 		
+		\newpage
 	\subsection{Nourriture qui baisse trop vite ...}
 		Lors de l'ajout de la nourriture, nous nous sommes vite rendu compte qu'elle diminuait à chaque tour, malgré la probabilité de 70\% qu'elle ne diminue pas. Nous avons lancé \emph{GDB}, nous avons tout d'abord vérifié que la nourriture était bien prise en compte dans les caractéristiques du joueur. Ensuite, en regardant de plus près la fonction qui gère la faim, nous avons pu tester manuellement les conditions pour la diminution de la nourriture. Nous nous sommes rendu compte que le \emph{OU} de la condition était incorrect, et aurait du être un \emph{ET}.
 		
@@ -448,5 +449,22 @@ ici mettre un petit mot
 	\subsection{Pièges qui apparaissent dans les couloirs ?}
 	
 		Le problème qui nous a pris le plus de temps à résoudre fut celui qui faisait apparaître des pièges dans les couloirs de façon très aléatoire. Nous n'arrivions jamais à reproduire deux fois de suite l'erreur, même sur une même partie au même endroit. Nous pensions au début que cela venait de la génération des pièges, mais celle-ci était correcte. Après l'utilisation du débogueur, nous nous sommes rendu compte que la condition qui testait si le joueur se trouvait sur un piège n'était pas complète. En effet, nous testions si l'objet se trouvant à la case du joueur était un piège, sans jamais vérifier qu'un objet s'y trouvait. Or la liste des objets n'est pas remise à zéro lorsqu'on charge un nouvel étage. Donc un piège d'un autre étage peut avoir de l'effet sur un autre n'en contenant pas.
+
+
+
+
+			\begin{figure}[ht]
+				\centering
+				\includegraphics[width=8cm]{images/pieges_dans_les_couloirs/wtf.png}
+				\caption{On tombe dans un piège en étant dans un couloir}
+			\end{figure}
+
+			\begin{figure}[ht]
+			    \centering
+			    \subfloat[Pas de piège où nous sommes]{{\includegraphics[width=3cm]{images/pieges_dans_les_couloirs/y_a_pas_de_piege.png}}}
+			    \qquad
+			    \subfloat[Condition incomplète]{{\includegraphics[width=10cm]{images/pieges_dans_les_couloirs/on_teste_pas_le_nb_obj.png} }}%
+			    \caption{Résolution de la nourriture qui baisse vite}%
+			\end{figure}		
 		
 \end{document}
