@@ -8,8 +8,10 @@
 \usepackage{booktabs}
 \usepackage{subfig}
 
+\usepackage{array}
 \usepackage[dvipsnames]{xcolor}
 \usepackage[colorinlistoftodos]{todonotes}
+\usepackage{multirow}
 
 
 \usepackage[top=3cm, bottom=3cm,left=2cm, right=2cm]{geometry}
@@ -121,10 +123,24 @@
 %% Partie organisation
 \chapter{Organisation}
 
-ici mettre un petit mot <tout le monde>
+Pour ce projet, nous avons dû nous organiser et trouver des outils afin de nous permettre de travailler à trois sur le code des uns des autres.
 
 	\section{Répartition des tâches}
-		Mettre ici notre répartition des tâches. <tout le monde>
+		\begin{table}[!ht]
+			\centering
+			\begin{tabular}{|l|l|}
+				\hline
+				\multirow{2}{*}{Titouan} & Génération des niveaux \\
+				& Monstres \\ \hline
+				\multirow{2}{*}{Emeric} & Sauvegarde et changement de niveaux \\
+				& Piège \\ \hline
+				\multirow{3}{*}{Valentin} & Affichage \\
+				& Interaction \\
+				& Nourriture et vie \\  \hline
+			\end{tabular}
+			\caption {Répartition des tâches}
+		\end{table} 
+
 		\subsection{Pourquoi cette répartition}
 		
 		<tout le monde>
@@ -378,6 +394,8 @@ int main(){
 	\section{Apport personnel du projet}
 	
 	<tout le monde>
+	Le projet nous a permis d'apprendre à travailler en équipe et à nous échanger nos connaissances.
+  
 
 \chapter*{Annexe}
 
