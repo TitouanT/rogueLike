@@ -157,15 +157,15 @@ Pour ce projet, nous avons dû nous organiser et trouver des outils afin de nous
 
 		\subsection{Pourquoi cette répartition}
 		
-		La répartition des tâches a été rapide, chacun a choisi ce qu'il voulait par exemple Titouan avait déjà fait de la génération de niveaux auparavant ce qui était un attout, Valentin voulait découvrir la bibliotèque ncurses et Emeric souhaitait gérer les sauvegardes.
+		La répartition des tâches a été rapide, chacun a choisi ce qu'il voulait par exemple Titouan avait déjà fait de la génération de niveaux auparavant ce qui était un atout, Valentin voulait découvrir la bibliothèque ncurses et Emeric souhaitait gérer les sauvegardes.
 
 	\section{Utilisation d'un gestionnaire de versions}
 	
-		Pour gérer les versions du projet nous avons utilisé Git et Github. Git pour toute la partie locale à chacune de nos machine. Quand nous codons, nous pouvons ainsi faire des versions du projet régulièrement et revenir en arrière si besoin. Github pour la mise en commun des modifications apportées, ce qui nous permet de travailler ensemble sans nécessairement coder en même temps ou au même endroit. Afin que chacun puisse librement ajouter ses modifications au projet, un seul dépôt Github a été créé et chaque membre de l'équipe a reçus le droit en écriture sur le dépot.
+		Pour gérer les versions du projet nous avons utilisé Git et Github. Git pour toute la partie locale à chacune de nos machine. Quand nous codons, nous pouvons ainsi faire des versions du projet régulièrement et revenir en arrière si besoin. Github pour la mise en commun des modifications apportées, ce qui nous permet de travailler ensemble sans nécessairement coder en même temps ou au même endroit. Afin que chacun puisse librement ajouter ses modifications au projet, un seul dépôt Github a été créé et chaque membre de l'équipe a reçus le droit en écriture sur le dépôt.
 	
 	\section{Utilisation des projets Github}
 	
-		L'utilisation des projets de Github, découvert en conduite de projet, nous a permi de mettre tous nos objectifs sur le projet aussi bien que le code et le rapport. Nous avons créé une issue pour chaque sujet, et nous avons aussi créé un milestone comme ça, nous pouvions être tenu au courant de l'avancée du projet et du travail des uns et des autres par rapport à la date butoire.
+		L'utilisation des projets de Github, découvert en conduite de projet, nous a permi de mettre tous nos objectifs sur le projet aussi bien que le code et le rapport. Nous avons créé une \emph{issue} pour chaque sujet, et nous avons aussi créé un milestone comme ça, nous pouvions être tenu au courant de l'avancée du projet et du travail des uns et des autres par rapport à la date butoire.
 		Pour les objectifs du code, le lien du projet Github est le suivant : \href{https://github.com/TitouanT/rogueLike/projects/1}{ https://github.com/TitouanT/rogueLike/projects/1}. \\
 		Et pour les objectifs du rapport :  \href{https://github.com/TitouanT/rogueLike/projects/2} {https://github.com/TitouanT/rogueLike/projects/2}.
 
@@ -184,11 +184,11 @@ Pour ce projet, nous avons dû nous organiser et trouver des outils afin de nous
 		
 		\vspace{12pt}
 		
-		Ensuite, nous avons utilisé \emph{CUnit}, un framework de tests unitaires pour le C. Toutes nos fonctions de notre boîte à outil ont été testés, avec des assertions que nous jugeons pertinentes (sur des valeurs qui pourraient poser problème dans certaines fonctions, comme des valeurs nulles, négatives, sur des fichiers inexistants, ...).
+		Ensuite, nous avons utilisé \emph{CUnit}, un \emph{framework} de tests unitaires pour le C. Toutes nos fonctions de notre boîte à outil ont été testés, avec des assertions que nous jugeons pertinentes (sur des valeurs qui pourraient poser problème dans certaines fonctions, comme des valeurs nulles, négatives, sur des fichiers inexistants, ...).
 		
 		\vspace{12pt}
 		
-		Enfin, lorsque nous avions certains bogues que nous n'arrivions pas à résoudre, nous avons utilisé le logiciel de debogage \emph{GDB} (\emph{GNU DeBugger}). Nous n'avions pas réussi à le faire fonctionner dès le début, car nous utilisons la libraire d'affichage \emph{ncurses}\footnote{Voir la section \hyperref[ncurses]{interactions et déplacements, page \getpagerefnumber{ncurses}}.}, qui utilise déjà le terminal pour afficher notre jeu. En le combinant avec \emph{GDB}, le terminal n'était plus utilisable.\\
+		Enfin, lorsque nous avions certains bogues que nous n'arrivions pas à résoudre, nous avons utilisé le logiciel de débogage \emph{GDB} (\emph{GNU DeBugger}). Nous n'avions pas réussi à le faire fonctionner dès le début, car nous utilisons la libraire d'affichage \emph{ncurses}\footnote{Voir la section \hyperref[ncurses]{interactions et déplacements, page \getpagerefnumber{ncurses}}.}, qui utilise déjà le terminal pour afficher notre jeu. En le combinant avec \emph{GDB}, le terminal n'était plus utilisable.\\
 		La solution à été d'utiliser deux téléscripteurs (\textsc{TTY}) différents : un pour le jeu, et un pour le débogueur.\\
 		Dans l'annexe, vous pouvez retrouver 3 exemples de cas où nous nous sommes servis du débogueur.
 
@@ -217,7 +217,7 @@ Pour ce projet, nous avons dû nous organiser et trouver des outils afin de nous
 	Au lancement du jeu, un texte explicatif avec l'objectif de celui-ci doit être affiché. Le jeu est décomposé en trois parties :
 	\begin{itemize}
 	\item la zone de jeu
-	\item la zone de logs, où se trouve des informations sur ce que le joueur peut effectuer
+	\item la zone de \emph{logs}, où se trouve des informations sur ce que le joueur peut effectuer
 	\item la zone de statistiques, qui indique toutes les propriétés du joueur : étage, vie, faim, nombre de déplacements, si il est empoisonné, si il a trouvé l'objet, ...
 	\end{itemize}
 	
@@ -232,14 +232,14 @@ Pour ce projet, nous avons dû nous organiser et trouver des outils afin de nous
 			\item{Les déplacement : \\}
 				Nous pouvons gérer nos déplacements sur la carte grâce aux flèches de direction. 
 			\item{Interactions avec des objets : \\}	
-				Les interactions avec un objet (serringues de soins, nourriture, escalier) se font avec la touche \texttt{entrée}.
+				Les interactions avec un objet (seringues de soins, nourriture, escalier) se font avec la touche \texttt{entrée}.
 			\item{Ouvrir et fermer une porte :\\}	
 				Si vous souhaitez ouvrir une porte, déplacez-vous devant la porte, appuyer sur la touche \texttt{o} et marqué la direction de la porte avec les flèches de direction.
 				Mais pour fermer, c'est le même principe que pour ouvrir une porte sauf que la touche est \texttt{c} au lieu de \texttt{o}.
 			\item{Gestion de l'inventaire : \\}
-				Pour voir votre inventaire, vous devez appuyer sur la touche \texttt{i}. Pour prendre un objet (serringues de soins, nourriture), vous devez appuyez sur la touche \texttt{g} mais pour poser votre inventaire, vous devez appuyez sur la touche <<d>> et indiquer la case se trouve l'objet.
+				Pour voir votre inventaire, vous devez appuyer sur la touche \texttt{i}. Pour prendre un objet (seringues de soins, nourriture), vous devez appuyez sur la touche \texttt{g} mais pour poser votre inventaire, vous devez appuyez sur la touche <<d>> et indiquer la case se trouve l'objet.
 			\item{Sauvegarder sa partie :\\}
-				Vous pouvez sauvegarder la partie à tout moment avec la touche \texttt{s}, cette manoeuvre n'arrêtera pas votre expérience de jeu.
+				Vous pouvez sauvegarder la partie à tout moment avec la touche \texttt{s}, cette manœuvre n'arrêtera pas votre expérience de jeu.
 			\item{Combattre un monstre :\\}
 				Pour combattre un monstre, utilisez les flèches de direction et déplacez vous sur le monstre jusqu'à ce qu'il meurt (disparaisse).		
 		\end{itemize}
@@ -325,7 +325,7 @@ ici mettre un petit mot
 		
 		\subsection{Les lectures et les écritures dans des fichiers}
 		
-		Nous gérons des sauvegardes sur plusieurs fchiers:
+		Nous gérons des sauvegardes sur plusieurs fichiers:
 		\begin{itemize}
 			\item Des fichiers comportant les paramètres l'ensemble des niveaux, soit un fichier texte pour un niveau ; nommé lvl.txt avec lvl variant selon le niveau.
 			\item Un fichier texte comportant les donnes sur les monstres présents dans la partie ; nommé : monster.txt.
@@ -402,11 +402,11 @@ ici mettre un petit mot
 
 	\section*{Cas d'utilisation du débogueur \emph{GDB}}
 	
-		Parfois, nous n'arrivons pas à trouver la cause de certains beugs, qui étaient finalement très simple. Pour cela, nous avons utilisé l'outil \emph{GDB}, comme mentionné dans \hyperref[gdb]{la partie sur les outils, page \getpagerefnumber{gdb}}. Afin de l'utiliser avec \emph{ncurses}, voici la marche à suivre :
+		Parfois, nous n'arrivons pas à trouver la cause de certains bugs, qui étaient finalement très simple. Pour cela, nous avons utilisé l'outil \emph{GDB}, comme mentionné dans \hyperref[gdb]{la partie sur les outils, page \getpagerefnumber{gdb}}. Afin de l'utiliser avec \emph{ncurses}, voici la marche à suivre :
 		
 		\begin{enumerate}
 		\item Ouvrir deux terminaux, un qui servira d'interface pour \emph{GDB}, un autre, suffisamment grand pour notre jeu.
-		\item Sur le terminal du jeu, tapez la commande \texttt{tty} afin de connaître le nom du TTY de celui-ci. Tapez ensuite la commande \texttt{sleep 10000000} afin de dire au terminal d'attendre longtemps avant de faire une autre action.
+		\item Sur le terminal du jeu, tapez la commande \texttt{tty} afin de connaître le nom du \emph{TTY} de celui-ci. Tapez ensuite la commande \texttt{sleep 10000000} afin de dire au terminal d'attendre longtemps avant de faire une autre action.
 		\item Sur le terminal du débogueur, tapez le commande \texttt{gdb rogueLike} afin de lance \emph{GDB} sur notre programme.
 		\item Une fois dans \emph{GDB}, tapez \texttt{tty <nom du TTY>} avec \texttt{<nom du TTY>} celui trouvé à l'étape 2. Il est généralement de la forme \texttt{/dev/ttys000}.
 		\item Vous pouvez maintenant utiliser \emph{GDB}.
