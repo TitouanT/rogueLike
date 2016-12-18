@@ -117,6 +117,17 @@
 	\vspace{12pt}
 	
 	Pour le projet, nous devions au minimum effectuer un jeu qui génère des niveaux (ici, des étages dans notre bâtiment) aléatoires, avec une taille variant en fonction de l'étage où se trouve le joueur. Il était aussi demandé, en fonction de l'avancement du projet, d'ajouter des fonctionnalités supplémentaires : des armes, des monstres, des pièges, ou autres.
+	
+	\vspace{12pt}
+	
+	\begin{itemize}
+	\item Le code source de notre projet, ainsi que les divers documents se trouvent à l'adresse :\\
+		\hspace*{1cm} \href{https://github.com/TitouanT/rogueLike/}{https://github.com/TitouanT/rogueLike/}
+	 \item La documentation de notre projet se trouve à l'adresse :\\
+	 	\hspace*{1cm} \href{https://roguelike.vlntn.pw}{https://roguelike.vlntn.pw}
+	 \item Notre répartition des tâches se trouve à l'adresse :\\
+	 	\hspace*{1cm} \href{https://github.com/TitouanT/rogueLike/projects/1}{https://github.com/TitouanT/rogueLike/projects/1}
+	\end{itemize}
 
 %% Partie organisation
 \chapter{Organisation}
@@ -264,21 +275,9 @@ ici mettre un petit mot
 	\end{itemize}
 	
 	
-	\section{Détail des modules}
+	\section{Détail des principales fonctionnalités du jeu}
 
-	On met du code comme ça : 
-	
-\begin{lstlisting}[caption=programme.c, language=C,style=Cstyle]
-#include <stdio.h>
-#include "maFonction.h"
-	
-int main(){
-		
-	int b;	
-	b = test(10);
-	return 0;
-}
-		\end{lstlisting}	
+	Voici un descriptif des principales fonctionnalités du programme, et de leur mise en place dans notre projet.
 	
 		\subsection{La génération des niveaux}
 		
@@ -358,7 +357,7 @@ int main(){
 		
 		\subsection{L'inventaire du joueur}
 
-		L'inventaire du joueur est en réalité un tableau du même type que les objets de notre carte. Ainsi, lorsqu'on souhaite ajouter un objet à l'inventaire du joueur, il suffit de prendre l'objet, et le mettre dans l'inventaire, à une case disponible.
+		L'inventaire du joueur est en réalité un tableau du même type que les objets de notre carte. Ainsi, lorsqu'on souhaite ajouter un objet à l'inventaire du joueur, il suffit de prendre l'objet, et le mettre dans l'inventaire, à une case disponible. Lorsque le joueur souhaite poser un objet, il lui est simplement demandé un indice (correspondant à l'indice du tableau de son inventaire), et l'objet présent à cet endroit, si il existe, est posé au pied du joueur. Dans chaque cas, il faut faire attention que le joueur se trouve sur une case contenant aucun objet.
 
 %% Partie conclusion
 \chapter{Résultat et conclusion}
@@ -377,7 +376,11 @@ int main(){
 	
 	\section{Apport personnel du projet}
 	
-	<tout le monde>
+	Voici l'apport personnel du projet, pour chaque membre du groupe :
+	
+	\begin{description}
+	\item[Valentin :] Dans mon cas, le projet m'a permis de découvrir une librairie qui est \emph{ncurses}. Cette librairie est pratique car elle est plus simple à manipuler que la \emph{SDL} par exemple. De plus, le \emph{Rogue} est un jeu qui se joue généralement dans un terminal, \emph{ncruses} s'adapte parfaitement à notre projet. Le projet m'a aussi permis de me rendre compte à quel point la gestion peut être difficile, et conflictuelle. Il faut savoir gérer le temps, la répartition des taches. Il faut aussi savoir adapter le projet en fonction de son avancement, pour ne pas stagner. Enfin, notre projet étant assez libre dans son fonctionnement, beaucoup de fonctionnalités autour de celui-ci sont des détails, que chaque personne peut voir dans une manière différente que les autres. 
+	\end{description}
 
 \chapter*{Annexe}
 
