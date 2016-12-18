@@ -93,7 +93,7 @@ int bIsPartOfRoom(t_cell cell){
 
 /**
 	* \brief Effet aléatoire dans piège sur le joueur
-	*	\fn void fallTrap(t_cell map[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, int *lineLog, t_dir direction, t_monster monsters[NB_MONSTER_MAX], int nbMonster)
+	*	\fn void fallTrap(t_cell map[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, int *lineLog, t_dir direction, t_monster monsters[NB_MONSTER_MAX], int nbMonster, WINDOW *win_game, int visibleByGhost[LINES][COLUMNS])
 	* \param map Carte
 	* \param perso joueur
 	* \param win_logs Fenêtre où afficher les objectifs
@@ -101,6 +101,8 @@ int bIsPartOfRoom(t_cell cell){
 	* \param direction Direction de mouvement du joueur
 	* \param monsters L'ensemble des monstres
 	* \param nbMonster Nombre total de monstres
+  * \param win_game Fenêtre  où afficher le jeu
+  * \param visibleByGhost Matrice pour savoir ce que les fantomes rendent visible
 	*/
 void fallTrap(t_cell map[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, int *lineLog, t_dir direction, t_monster monsters[NB_MONSTER_MAX], int nbMonster, WINDOW *win_game, int visibleByGhost[LINES][COLUMNS]){
 
@@ -272,7 +274,7 @@ int bIsWalkable(t_cell cell){
 
 /**
 	* \brief Déplace le joueur et les conséquences de ce mouvement (nourriture, piège)
-	*	\fn int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, int *lineLog, t_monster monsters[NB_MONSTER_MAX], int nbMonster)
+	*	\fn int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, int *lineLog, t_monster monsters[NB_MONSTER_MAX], int nbMonster, WINDOW *win_game, int visibleByGhost[LINES][COLUMNS])
 	* \param direction Direction de mouvement du joueur
 	* \param mat Carte
 	* \param perso joueur
@@ -280,6 +282,8 @@ int bIsWalkable(t_cell cell){
 	* \param lineLog Numéro de ligne de log
 	* \param monsters L'ensemble des monstres
 	* \param nbMonster Nombre total de monstres
+  * \param win_game Fenêtre  où afficher le jeu
+  * \param visibleByGhost Matrice pour savoir ce que les fantomes rendent visible
 	*/
 int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, int *lineLog, t_monster monsters[NB_MONSTER_MAX], int nbMonster, WINDOW *win_game, int visibleByGhost[LINES][COLUMNS]) {
 	err("***debut move perso***");

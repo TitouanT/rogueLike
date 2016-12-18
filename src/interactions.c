@@ -526,7 +526,7 @@ int askConfirmationToQuit(WINDOW * win, int *lineLog) {
 
 /**
 	* \brief Fonction principale d'intéraction avec l'utilisateur
-	* \fn int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, WINDOW * win_logs, WINDOW * win_game, int *lineLog, t_monster monsters[NB_MONSTER_MAX], int nbMonster, int *isPlayerInvicible)
+	* \fn int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, WINDOW * win_logs, WINDOW * win_game, int *lineLog, t_monster monsters[NB_MONSTER_MAX], int nbMonster, int *isPlayerInvicible, int visibleByGhost[LINES][COLUMNS])
 	* \param key Touche que l'utilisateur a appuyé
 	* \param map Carte où se trouve le joueur
 	* \param player Joueur
@@ -536,6 +536,7 @@ int askConfirmationToQuit(WINDOW * win, int *lineLog) {
 	* \param monsters la lise des monstres
 	* \param nbMonster le nombre de monstre
 	* \param isPlayerInvicible Booléen qui représente si le joueur est invincible
+	* \param visibleByGhost Matrice pour savoir ce que les fantomes rendent visible
 	* \return FALSE si l'utilisateur à demandé de quitter la partie
 	* \return TRUE sinon
 	*/

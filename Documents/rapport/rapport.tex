@@ -8,8 +8,10 @@
 \usepackage{booktabs}
 \usepackage{subfig}
 
+\usepackage{array}
 \usepackage[dvipsnames]{xcolor}
 \usepackage[colorinlistoftodos]{todonotes}
+\usepackage{multirow}
 
 
 \usepackage[top=3cm, bottom=3cm,left=2cm, right=2cm]{geometry}
@@ -78,7 +80,7 @@
 	\HRule \\[1.5cm]
 	 
 	 
-	 \vspace{12pt}
+	 \vspace{20pt}
 	 
 	{\large \today}\\[1cm]
 	
@@ -132,7 +134,7 @@
 %% Partie organisation
 \chapter{Organisation}
 
-ici mettre un petit mot <tout le monde>
+Pour ce projet, nous avons dû nous organiser et trouver des outils afin de nous permettre de travailler à trois sur le code des uns des autres.
 
 	\section{Répartition des tâches}
 
@@ -152,9 +154,10 @@ ici mettre un petit mot <tout le monde>
  & - Gestion de l'inventaire &  \\ \bottomrule
 \end{tabular}
 \end{table}
+
 		\subsection{Pourquoi cette répartition}
 		
-		<tout le monde>
+		La répartition des tâches a été rapide, chacun a choisi ce qu'il voulait par exemple Titouan avait déjà fait de la génération de niveaux auparavant ce qui était un attout, Valentin voulait découvrir la bibliotèque ncurses et Emeric souhaitait gérer les sauvegardes.
 
 	\section{Utilisation d'un gestionnaire de versions}
 	
@@ -162,7 +165,7 @@ ici mettre un petit mot <tout le monde>
 	
 	\section{Utilisation des projets Github}
 	
-		L'utilisation des projets de Github, découvert en conduite de projet, nous a permi de mettre tous nos objectifs sur le projet aussi bien que le code et le rapport. Nous avons pu nous répartir des tâches fait par chacun et ce qui nous reste à faire.
+		L'utilisation des projets de Github, découvert en conduite de projet, nous a permi de mettre tous nos objectifs sur le projet aussi bien que le code et le rapport. Nous avons créé une issue pour chaque sujet, et nous avons aussi créé un milestone comme ça, nous pouvions être tenu au courant de l'avancée du projet et du travail des uns et des autres par rapport à la date butoire.
 		Pour les objectifs du code, le lien du projet Github est le suivant : \href{https://github.com/TitouanT/rogueLike/projects/1}{ https://github.com/TitouanT/rogueLike/projects/1}. \\
 		Et pour les objectifs du rapport :  \href{https://github.com/TitouanT/rogueLike/projects/2} {https://github.com/TitouanT/rogueLike/projects/2}.
 
@@ -240,7 +243,7 @@ ici mettre un petit mot <tout le monde>
 			\item{Combattre un monstre :\\}
 				Pour combattre un monstre, utilisez les flèches de direction et déplacez vous sur le monstre jusqu'à ce qu'il meurt (disparaisse).		
 		\end{itemize}
-		Ces commandes sont écrire dans le jeu en appuyant sur la touche \texttt{?}.
+		Ces commandes sont accessibles dans le jeu en appuyant sur la touche \texttt{?}.
 		Certains commandes sont encore à découvrir comme se déplacer en diagonale pour échapper à des monstres ou des codes de triches peuvent être utiliser grâce à la touche \texttt{\_}, pour les voir faîtes \texttt{\_} et taper \texttt{help} pour avoir la liste.
 		
 %% Partie codage
@@ -303,13 +306,13 @@ ici mettre un petit mot
 			\item Le placement des objets (nourriture, escaliers, pièges).
 		\end{enumerate}
 		
-			\subsubsection{placement des pièces}
+			\subsubsection{Placement des pièces}
 			
 			Pour placer les pièces, on les places les unes après les autres. Pour chaque pièces, nous commençons par lui donner une position (la position de son angle supérieur gauche). Ensuite nous lui choisissons une dimension (hauteur, largeur) afin qu'elle entre la plus petite et la plus grande pièce possible.
 			Pour finir, nous vérifions qu'elle n'est pas en collision avec une autre pièce.
 			Dans le cas ou elle l'est, on recommence (pas plus de 100 fois).
 			
-			\subsubsection{création des couloirs}
+			\subsubsection{Création des couloirs}
 			
 			Le but est de créer un réseau de pièces ou aucune pièce ou groupe de pièces ne soit isolé des autres.
 			Pour cela nous connectons les pièces les unes après les autres dans leur ordre de création.
@@ -322,15 +325,15 @@ ici mettre un petit mot
 		
 		\subsection{Les lectures et les écritures dans des fichiers}
 		
-		Nous gérons des sauvegardes sur plusieurs :
+		Nous gérons des sauvegardes sur plusieurs fchiers:
 		\begin{itemize}
-			\item Les fichiers comportant les paramètres l'ensemble des niveaux, soit un fichier texte pour un niveau ; nommé lvl.txt avec lvl variant selon le niveau.
+			\item Des fichiers comportant les paramètres l'ensemble des niveaux, soit un fichier texte pour un niveau ; nommé lvl.txt avec lvl variant selon le niveau.
 			\item Un fichier texte comportant les donnes sur les monstres présents dans la partie ; nommé : monster.txt.
 			\item un fichier comportant les données de chaque pièce ; nommé : lvlData.txt.
 			\item un fichier comportant les données du personnage ; nommé : position.txt.
 		\end{itemize} 
 		\subsubsection{Les écritures :}
-		Les niveaux sont sauvegardés lorsque du lancement d'une nouvelle partie, un changement de niveau, lorsque le joueur demande de sauvegarder. Les monstres sont sauvegardés lors de la création d'une nouvelle partie et la sauvegarde demander par le joueur. Les données de chaque pièce sont sauvegardés que lors d'une nouvelle partie. Quand aux données du personnage, elles sont sauvegardés que lorsque le joueur veut sauvegarder, l'apparition de cette sauvegarde montre qu'une partie est sauvegardée : si ce fichier n'existe pas lors du relanceront du jeu, le joueur n'aura pas accès à ses anciennes données.
+		Les niveaux sont sauvegardés lorsque du lancement d'une nouvelle partie, un changement de niveau, lorsque le joueur demande de sauvegarder. Les monstres sont sauvegardés lors de la création d'une nouvelle partie et la sauvegarde demandéé par le joueur. Les données de chaque pièce sont sauvegardées que lors d'une nouvelle partie. Quant aux données du personnage, elles sont sauvegardées que lorsque le joueur veut sauvegarder, l'apparition de cette sauvegarde montre qu'une partie est sauvegardée : si ce fichier n'existe pas lors du relancement du jeu, le joueur n'aura pas accès à ses anciennes données.
 
 		\subsubsection{Les lectures :}
 		Les niveaux sont lus si le joueur veut charger une partie sauvegardée, un changement de niveau. Les monstres sont lus lors du chargement d'une partie existante comme les données sur le joueur et les données des pièces.
@@ -380,8 +383,6 @@ ici mettre un petit mot
 	
 	\section{Améliorations possibles}
 	
-	<tout le monde>
-	
 	Il aurait été possible d'améliorer notre projet en ajoutant des sons dans le jeu. On aurait aussi pu créer un didacticiel. \\
 	Le but aurait été d'ajouter un fond sonore dans le jeu et des sons lorsqu'un monstre attaque, ou est proche du joueur. Pleins de possibilités pourraient s'offrir à nous lorsque que nous trouverons un moyen de lire une bande son (avec un réglage pour de ne pas mettre de son pour ceux qui le souhaitent). \\
 	Un didacticiel serait aussi intéressant pour apprendre au joueur à jouer.\\
@@ -394,6 +395,7 @@ ici mettre un petit mot
 	
 	\begin{description}
 	\item[Valentin :] Dans mon cas, le projet m'a permis de découvrir une librairie qui est \emph{ncurses}. Cette librairie est pratique car elle est plus simple à manipuler que la \emph{SDL} par exemple. De plus, le \emph{Rogue} est un jeu qui se joue généralement dans un terminal, \emph{ncruses} s'adapte parfaitement à notre projet. Le projet m'a aussi permis de me rendre compte à quel point la gestion peut être difficile, et conflictuelle. Il faut savoir gérer le temps, la répartition des taches. Il faut aussi savoir adapter le projet en fonction de son avancement, pour ne pas stagner. Enfin, notre projet étant assez libre dans son fonctionnement, beaucoup de fonctionnalités autour de celui-ci sont des détails, que chaque personne peut voir dans une manière différente que les autres. 
+	\item[Emeric :] Pour moi, ce projet a été une façon de voir ce que le travail de groupe peut avoir comme influence sur un projet d'informatique. Nous étions parti pour faire la génération des niveaux, l'affichage, les déplacements et la sauvegarde sur deux semaines et au bout d'une semaine, nous avions presque fait tous ces objectifs. Voir un de ses collègue avancer, tu as envie d'avancer autant que lui et nous arrivons à un effet boule de neige.
 	\end{description}
 
 \chapter*{Annexe}
