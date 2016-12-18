@@ -196,11 +196,11 @@ Pour ce projet, nous avons dû nous organiser et trouver des outils afin de nous
 		
 		\vspace{12pt}		
 		
-		La première chose que nous avons mis en place est la documentation à l'aide de \emph{Doxygen}. C'est un programme qui génère une documentation automatiquement, en fonction des fichiers d'en-têtes et sources. La documentation peut être générée en  plusieurs formats, nous avons choisi au format HTML car il est plus facile de s'en servir. Celle-ci est sur internet, à l'adresse suivante : \url{https://roguelike.vlntn.pw/}. Elle se met à jour automatiquement en fonction de notre code (via un webhook mis en place sur Github).
+		La première chose que nous avons mise en place est la documentation à l'aide de \emph{Doxygen}. C'est un programme qui génère une documentation automatiquement, en fonction des fichiers d'en-têtes et sources. La documentation peut être générée en  plusieurs formats, nous avons choisi au format HTML car il est plus facile de s'en servir. Celle-ci est sur internet, à l'adresse suivante : \url{https://roguelike.vlntn.pw/}. Elle se met à jour automatiquement en fonction de notre code (via un webhook mis en place sur Github).
 		
 		\vspace{12pt}
 		
-		Ensuite, nous avons utilisé \emph{CUnit}, un \emph{framework} de tests unitaires pour le C. Toutes nos fonctions de notre boîte à outil ont été testés, avec des assertions que nous jugeons pertinentes (sur des valeurs qui pourraient poser problème dans certaines fonctions, comme des valeurs nulles, négatives, sur des fichiers inexistants, ...). Pour compiler ces tests, tapez la commande \texttt{make test}, puis lancez le programme généré avec \texttt{./test.out}.
+		Ensuite, nous avons utilisé \emph{CUnit}, un \emph{framework} de tests unitaires pour le C. Toutes nos fonctions de notre boîte à outil ont été testées, avec des assertions que nous jugeons pertinentes (sur des valeurs qui pourraient poser problème dans certaines fonctions, comme des valeurs nulles, négatives, sur des fichiers inexistants, ...). Pour compiler ces tests, tapez la commande \texttt{make test}, puis lancez le programme généré avec \texttt{./test.out}.
 		
 		\vspace{12pt}
 		
@@ -211,7 +211,7 @@ Pour ce projet, nous avons dû nous organiser et trouver des outils afin de nous
 %% Partie analyse et conception
 \chapter{Analyse et Conception}
 
-	Avant de commencer à programmer notre jeu, nous nous sommes concertés autour d'un même fichier pour mettre en commun nos idées à propos du jeu. Notre jeu étant très libre dans son fonctionnement, c'était une étape cruciale.\\
+	Avant de commencer à programmer notre jeu, nous nous sommes concertés autour d'un même fichier, pour mettre en commun nos idées à propos du jeu. Notre jeu étant très libre dans son fonctionnement, c'était une étape cruciale.\\
 	Nous n'avons pas néanmoins réalisé un cahier des charges <<conventionnel>>, car nous trouvions que c'est quelque chose de figé, et qu'au fur et à mesure de l'avancement du projet, celui-ci n'évoluerait pas en fonction de ce nous aurions voulu. Nous avons donc réalisé un document listant tous les points importants de notre projet, et quelques détails importants. Toutes les autres choses ont été définies entre nous, lors de la réalisation du projet.
 
 	\section{Notre cahier des charges}
@@ -220,7 +220,7 @@ Pour ce projet, nous avons dû nous organiser et trouver des outils afin de nous
 	Notre \emph{rogueLike} prend place dans le bâtiment IC$_2$. Le joueur démarre le jeu au premier étage. Il doit se rendre tout en haut, aller chercher l'objet, puis revenir en bas.\\
 	Chaque étage de ce bâtiment est généré aléatoirement, il doit comporter des pièces et des couloirs. Entre ceux-ci, peut se trouver des portes, ou juste un trou. Les portes sont aléatoirement ouvertes ou fermées, et le joueur peut essayer de les ouvrir manuellement (il a une probabilité de ne pas réussir). Le nombre de pièces par étage est défini en fonction de l'étage : les étages supérieurs sont plus compliqués car ils possèdent plus de pièces. Pour changer d'étages, le joueur doit emprunter des escaliers (un escalier pour monter, et un pour descendre par étage, ceux-ci ne peuvent pas se trouver dans la même pièce).\\
 	Lorsque le joueur apparait, il ne voit que la pièces où il se situe. Dans les couloirs, lorsqu'il progresse, les zones s'éclairent petit à petit, en revanche, dans dès qu'il entre dans une pièce, celle-ci s'éclaire entièrement.\\
-	Le joueur possède un certain nombre de point de vie au maximum (défini à 10), lorsque celle-ci est à 0, il meurt. Au fur et à mesure de ses déplacements, il perd de la nourriture (une barre allant de 0 à 100). Lorsqu'il a trop faim (nourriture inférieure à 10), il ne se déplace plus correctement, il perd certaines zones de sa mémoire de la carte (elle ne sont plus éclairées), et il perd de la vie. Le joueur peut trouver de la nourriture aléatoirement par terre (un total de 2 objets de nourriture par pièce, par étage), tout comme il peut trouver des soins de santé pour lui faire régénérer sa vie. L'autre façon de re-gagner de la vie est de manger, ainsi certains points de nourritures seront utilisées pour régénérer sa vie.\\
+	Le joueur possède un certain nombre de point de vie au maximum (défini à 10), lorsque celle-ci est à 0, il meurt. Au fur et à mesure de ses déplacements, il perd de la nourriture (une barre allant de 0 à 100). Lorsqu'il a trop faim (nourriture inférieure à 10), il ne se déplace plus correctement, il perd certaines zones de sa mémoire de la carte (elles ne sont plus éclairées), et il perd de la vie. Le joueur peut trouver de la nourriture aléatoirement par terre (un total de 2 objets de nourriture par pièce, par étage), tout comme il peut trouver des soins de santé pour lui faire régénérer sa vie. L'autre façon de re-gagner de la vie est de manger, ainsi certains points de nourritures seront utilisés pour régénérer sa vie.\\
 	Lorsque le joueur mange de la nourriture, il a une faible probabilité de chance que celle-ci était empoisonnée. Le joueur perd de la vie à chaque déplacement lorsqu'il est empoisonné. Pour ne plus l'être, il doit soit attendre quelques déplacements de ne plus l'être, soit consommer un kit de santé.\\
 	Durant son chemin dans le bâtiment, le joueur peut se faire avoir par des pièges. Ceux-ci peuvent, au choix, enlever de la vie, nous faire glisser à travers la pièce, ou nous faire tomber d'un ou plusieurs étages (une chance sur 3 pour chaque).\\
 	Les objets tels que la nourriture, les soins de santé, ou les pièges peuvent être récupérés par le joueur dans son inventaire, pour les déposer ou les utiliser plus tard. L'inventaire du joueur possède 5 \emph{slots}, et il ne peut y déposer qu'un seul objet par \emph{slot}.\\
@@ -326,7 +326,7 @@ Dans cette partie nous présentons les structures utilisée dans le code, l'orga
 		
 			\subsubsection{Placement des pièces}
 			
-			Pour placer les pièces, on les places les unes après les autres. Pour chaque pièces, nous commençons par lui donner une position (la position de son angle supérieur gauche). Ensuite nous lui choisissons une dimension (hauteur, largeur) afin qu'elle entre la plus petite et la plus grande pièce possible.
+			Pour placer les pièces, nous les plaçons les unes après les autres. Pour chaque pièces, nous commençons par lui donner une position (la position de son angle supérieur gauche). Ensuite nous lui choisissons une dimension (hauteur, largeur) afin qu'elle entre la plus petite et la plus grande pièce possible.
 			Pour finir, nous vérifions qu'elle n'est pas en collision avec une autre pièce.
 			Dans le cas où elle l'est, on recommence (pas plus de 100 fois).
 			
@@ -374,7 +374,7 @@ Dans cette partie nous présentons les structures utilisée dans le code, l'orga
 		\subsection{Les monstres}
 		
 		Le nombre de monstre dans une partie est choisi aléatoirement entre deux bornes définies en constantes.\\
-		Les monstres sont équitablement répartis entre les étages proportionnellement au nombres de pièces qu'ils contiennent. Chaque étages a une proportion différentes de chaque monstres, plus l'étage est haut, plus les types de monstres présents sont difficiles à battre.\\
+		Les monstres sont équitablement répartis entre les étages proportionnellement au nombres de pièces qu'ils contiennent. Chaque étage a une proportion différentes de chaque monstres, plus l'étage est haut, plus les types de monstres présents sont difficiles à battre.\\
 		Pour animer les monstres, nous marquons toutes les cases de la matrice accessible par le joueur avec la distance de celle-ci par rapport au joueur. Ensuite chaque monstre fait un mouvement en direction du joueur si le joueur est dans son champ de vision. Sinon, ils ne bougent pas.\\
 		Nous faisons attention à ce que les monstres n'aillent pas sur le joueur et si le joueur est à porté alors ils l'attaquent. Si le joueur fait un déplacement vers une case où se trouve un monstre alors le joueur ne bouge pas et attaque. Ainsi, il n'y a jamais deux êtres vivants sur la même case.
 		
@@ -414,7 +414,7 @@ Dans cette partie nous présentons les structures utilisée dans le code, l'orga
 	\begin{description}
 	\item[Valentin :] Dans mon cas, le projet m'a permis de découvrir une librairie qui est \emph{ncurses}. Cette librairie est pratique car elle est plus simple à manipuler que la \emph{SDL} par exemple. De plus, le \emph{Rogue} est un jeu qui se joue généralement dans un terminal, \emph{ncruses} s'adapte parfaitement à notre projet. Le projet m'a aussi permis de me rendre compte à quel point la gestion peut être difficile, et conflictuelle. Il faut savoir gérer le temps, et la répartition des taches. Il faut aussi savoir adapter le projet en fonction de son avancement, pour ne pas stagner. Enfin, notre projet étant assez libre dans son fonctionnement, beaucoup de fonctionnalités autour de celui-ci sont des détails, que chaque personne peut voir dans une manière différente que les autres. 
 	\item[Emeric :] Pour moi, ce projet a été une façon de voir ce que le travail de groupe peut avoir comme influence sur un projet d'informatique. Nous étions parti pour faire la génération des niveaux, l'affichage, les déplacements et la sauvegarde sur deux semaines et au bout d'une semaine, nous avions presque fait tous ces objectifs. Voir un de ses collègue avancer, ça donne envie d'avancer autant que lui et nous arrivons à un effet boule de neige.
-	\item[Titouan :] Ce projet as été très intéressant pour deux choses. Premièrement, travailler en équipe de trois est, je pense, une configuration des plus conflictuelles. Il nous à donc fallu souvent faire des compromis pour que chacun puisse s'approprier le jeu. L'écriture du rogueLike a donc été une première expérience de travail en équipe. Secondement, la taille du rogueLike étant de loin la plus importante de tous mes précédents programmes, c'est pour ce projet que j'ai réalisé à quel point la programmation modulaire est efficace, claire et maintenable.
+	\item[Titouan :] Ce projet a été très intéressant pour deux choses. Premièrement, travailler en équipe de trois est, je pense, une configuration des plus conflictuelles. Il nous a donc fallu souvent faire des compromis pour que chacun puisse s'approprier le jeu. L'écriture du rogueLike a donc été une première expérience de travail en équipe. Secondement, la taille du rogueLike étant de loin la plus importante de tous mes précédents programmes, c'est pour ce projet que j'ai réalisé à quel point la programmation modulaire est efficace, claire et maintenable.
 	\end{description}
 
 \chapter*{Annexe}
