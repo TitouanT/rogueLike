@@ -573,7 +573,7 @@ int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, 
 		default: wrongKey(win_logs, lineLog);
 	}
 
-  markDiscover(map, *player);
+  //markDiscover(map, *player);
 
   err("*** fin handleInteraction ***");
   return TRUE;

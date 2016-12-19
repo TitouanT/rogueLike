@@ -363,6 +363,7 @@ int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso, 
 			perso -> line = line;
 			perso -> column = column;
 		}
+		else markDiscover(mat, *perso);
 
 
 		perso->nbMove++;
