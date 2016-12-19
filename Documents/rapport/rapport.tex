@@ -195,20 +195,12 @@ Pour ce projet, nous avons dû nous organiser et trouver des outils afin de nous
 		Durant la réalisation de notre projet, nous avons utilisé divers outils d'aide à la programmation et au débogage. 
 		
 		\vspace{12pt}		
-		
-<<<<<<< HEAD
-		La première chose que nous avons mise en place est la documentation à l'aide de \emph{Doxygen}. C'est un programme qui génère une documentation automatiquement, en fonction des fichiers d'en-têtes et de sources. La documentation peut être générée en plusieurs formats, nous avons choisi le format HTML car il est plus facile de s'en servir. Celle-ci est sur internet, à l'adresse suivante : \url{https://roguelike.vlntn.pw/}. Elle se met à jour automatiquement en fonction de notre code (via un webhook mis en place sur Github).
+
+		La première chose que nous avons mise en place est la documentation à l'aide de \emph{Doxygen}. C'est un programme qui génère une documentation automatiquement, en fonction des fichiers d'en-têtes et de sources. La documentation peut être générée en plusieurs formats, nous avons choisi le format HTML car il est plus facile de s'en servir. Celle-ci est sur internet, à l'adesse suivante : \url{https://roguelike.vlntn.pw/}. Elle se met à jour automatiquement en fonction de notre code (via un webhook mis en place sur Github).
 		
 		\vspace{12pt}
-		nos
+
 		Ensuite, nous avons utilisé \emph{CUnit}, un \emph{framework} de tests unitaires pour le C. Toutes les fonctions de notre boîte à outils ont été testées, avec des assertions que nous jugeons pertinentes (sur des valeurs qui pourraient poser problème dans certaines fonctions, comme des valeurs nulles, négatives, sur des fichiers inexistants, ...). Pour compiler ces tests, tapez la commande \texttt{make test}, puis lancez le programme généré avec \texttt{./test.out}.
-=======
-		La première chose que nous avons mise en place est la documentation à l'aide de \emph{Doxygen}. C'est un programme qui génère une documentation automatiquement, en fonction des fichiers d'en-têtes et sources. La documentation peut être générée en  plusieurs formats, nous avons choisi au format HTML car il est plus facile de s'en servir. Celle-ci est sur internet, à l'adresse suivante : \url{https://roguelike.vlntn.pw/}. Elle se met à jour automatiquement en fonction de notre code (via un webhook mis en place sur Github).
-		
-		\vspace{12pt}
-		
-		Ensuite, nous avons utilisé \emph{CUnit}, un \emph{framework} de tests unitaires pour le C. Toutes nos fonctions de notre boîte à outil ont été testées, avec des assertions que nous jugeons pertinentes (sur des valeurs qui pourraient poser problème dans certaines fonctions, comme des valeurs nulles, négatives, sur des fichiers inexistants, ...). Pour compiler ces tests, tapez la commande \texttt{make test}, puis lancez le programme généré avec \texttt{./test.out}.
->>>>>>> 64b9e0cc153d773fa3be747a4d1858f401984ca4
 		
 		\vspace{12pt}
 		
@@ -219,29 +211,18 @@ Pour ce projet, nous avons dû nous organiser et trouver des outils afin de nous
 %% Partie analyse et conception
 \chapter{Analyse et Conception}
 
-<<<<<<< HEAD
 	Avant de commencer à programmer notre jeu, nous nous sommes concertés autour d'un même fichier pour mettre en commun nos idées à propos du jeu. Notre jeu étant très libre dans son fonctionnement, c'était une étape cruciale.\\
 	Nous n'avons pas néanmoins réalisé un cahier des charges <<conventionnel>>, car nous trouvons que c'est quelque chose de figé, et qu'au fur et à mesure de l'avancement du projet, celui-ci n'évoluerait pas en fonction de ce que nous aurions voulu. Nous avons donc réalisé un document listant tous les points importants de notre projet, et quelques détails importants. Toutes les autres choses ont été définies entre nous, lors de la réalisation du projet.
-=======
-	Avant de commencer à programmer notre jeu, nous nous sommes concertés autour d'un même fichier, pour mettre en commun nos idées à propos du jeu. Notre jeu étant très libre dans son fonctionnement, c'était une étape cruciale.\\
-	Nous n'avons pas néanmoins réalisé un cahier des charges <<conventionnel>>, car nous trouvions que c'est quelque chose de figé, et qu'au fur et à mesure de l'avancement du projet, celui-ci n'évoluerait pas en fonction de ce nous aurions voulu. Nous avons donc réalisé un document listant tous les points importants de notre projet, et quelques détails importants. Toutes les autres choses ont été définies entre nous, lors de la réalisation du projet.
->>>>>>> 64b9e0cc153d773fa3be747a4d1858f401984ca4
 
 	\section{Notre cahier des charges}
 
 
 	Notre \emph{rogueLike} prend place dans le bâtiment IC$_2$. Le joueur démarre le jeu au premier étage. Il doit se rendre tout en haut, aller chercher l'objet, puis revenir en bas.\\
-<<<<<<< HEAD
 	Chaque étage de ce bâtiment est généré aléatoirement, il doit comporter des pièces et des couloirs. Entre ceux-ci, peut se trouver des portes, ou juste un trou. Les portes sont aléatoirement ouvertes ou fermées, et le joueur peut essayer de les ouvrir manuellement (il a une probabilité de ne pas réussir). Le nombre de pièces par étage est défini en fonction de l'étage : les étages supérieurs sont plus compliqués car ils possèdent plus de pièces. Pour changer d'étage, le joueur doit emprunter des escaliers (un escalier pour monter, et un pour descendre par étage, ceux-ci ne peuvent pas se trouver dans la même pièce).\\
 	Lorsque le joueur apparait, il ne voit que la pièce où il se situe. Dans les couloirs, lorsqu'il progresse, les zones s'éclairent petit à petit, en revanche, dès qu'il entre dans une pièce, celle-ci s'éclaire entièrement.\\
 	Le joueur possède un certain nombre de points de vie (défini au maximum 10), lorsque celui-ci est à 0, il meurt. Au fur et à mesure de ses déplacements, il perd de la nourriture (une barre allant de 0 à 100). Lorsqu'il a trop faim (nourriture inférieure à 10), il ne se déplace plus correctement, certaines zones de la carte disparaissent de sa mémoire (elles ne sont plus éclairées), et il perd de la vie. Le joueur peut trouver de la nourriture aléatoirement par terre (un total de 2 objets de nourriture par pièce, par étage), tout comme il peut trouver des soins de santé pour régénérer sa vie. L'autre façon de regagner de la vie est de manger, ainsi certains points de nourriture seront utilisés pour régénérer sa vie.\\
 	Lorsque le joueur mange de la nourriture, il a une faible probabilité que celle-ci soit empoisonnée. Le joueur perd de la vie à chaque déplacement lorsqu'il est empoisonné. Pour ne plus l'être, il doit soit attendre quelques déplacements, soit consommer un kit de santé.\\
-=======
-	Chaque étage de ce bâtiment est généré aléatoirement, il doit comporter des pièces et des couloirs. Entre ceux-ci, peut se trouver des portes, ou juste un trou. Les portes sont aléatoirement ouvertes ou fermées, et le joueur peut essayer de les ouvrir manuellement (il a une probabilité de ne pas réussir). Le nombre de pièces par étage est défini en fonction de l'étage : les étages supérieurs sont plus compliqués car ils possèdent plus de pièces. Pour changer d'étages, le joueur doit emprunter des escaliers (un escalier pour monter, et un pour descendre par étage, ceux-ci ne peuvent pas se trouver dans la même pièce).\\
-	Lorsque le joueur apparait, il ne voit que la pièces où il se situe. Dans les couloirs, lorsqu'il progresse, les zones s'éclairent petit à petit, en revanche, dans dès qu'il entre dans une pièce, celle-ci s'éclaire entièrement.\\
-	Le joueur possède un certain nombre de point de vie au maximum (défini à 10), lorsque celle-ci est à 0, il meurt. Au fur et à mesure de ses déplacements, il perd de la nourriture (une barre allant de 0 à 100). Lorsqu'il a trop faim (nourriture inférieure à 10), il ne se déplace plus correctement, il perd certaines zones de sa mémoire de la carte (elles ne sont plus éclairées), et il perd de la vie. Le joueur peut trouver de la nourriture aléatoirement par terre (un total de 2 objets de nourriture par pièce, par étage), tout comme il peut trouver des soins de santé pour lui faire régénérer sa vie. L'autre façon de re-gagner de la vie est de manger, ainsi certains points de nourritures seront utilisés pour régénérer sa vie.\\
-	Lorsque le joueur mange de la nourriture, il a une faible probabilité de chance que celle-ci était empoisonnée. Le joueur perd de la vie à chaque déplacement lorsqu'il est empoisonné. Pour ne plus l'être, il doit soit attendre quelques déplacements de ne plus l'être, soit consommer un kit de santé.\\
->>>>>>> 64b9e0cc153d773fa3be747a4d1858f401984ca4
+
 	Durant son chemin dans le bâtiment, le joueur peut se faire avoir par des pièges. Ceux-ci peuvent, au choix, enlever de la vie, nous faire glisser à travers la pièce, ou nous faire tomber d'un ou plusieurs étages (une chance sur 3 pour chaque).\\
 	Les objets tels que la nourriture, les soins de santé, ou les pièges peuvent être récupérés par le joueur dans son inventaire, pour les déposer ou les utiliser plus tard. L'inventaire du joueur possède 5 \emph{slots}, et il ne peut y déposer qu'un seul objet par \emph{slot}.\\
 	Des monstres se trouvent dans le jeu, ceux-ci nous attaquent, en se rapprochant de nous. Nous pouvons aussi les attaquer. Ils possèdent, tout comme nous, une agilité, qui est plus importante pour un monstre évolué. Cette agilité permet de faire plus de dégâts au combat, et de moins en subir. Ces monstres doivent avoir une mini-intelligence artificielle pour qu'ils puissent se déplacer de façon similaire à ce qu'un véritable joueur pourrait faire.
