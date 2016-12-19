@@ -211,7 +211,7 @@ Pour ce projet, nous avons dû nous organiser et trouver des outils afin de nous
 %% Partie analyse et conception
 \chapter{Analyse et Conception}
 
-	Avant de commencer à programmer notre jeu, nous nous sommes concertés autour d'un même fichier pour mettre en commun nos idées à propos du jeu. Notre jeu étant très libre dans son fonctionnement, c'était une étape cruciale.\\
+	Avant de commencer à programmer notre jeu nous nous sommes concertés, autour d'un même fichier, pour mettre en commun nos idées à propos du jeu. Notre jeu étant très libre dans son fonctionnement, c'était une étape cruciale.\\
 	Nous n'avons pas néanmoins réalisé un cahier des charges <<conventionnel>>, car nous trouvons que c'est quelque chose de figé, et qu'au fur et à mesure de l'avancement du projet, celui-ci n'évoluerait pas en fonction de ce que nous aurions voulu. Nous avons donc réalisé un document listant tous les points importants de notre projet, et quelques détails importants. Toutes les autres choses ont été définies entre nous, lors de la réalisation du projet.
 
 	\section{Notre cahier des charges}
@@ -220,7 +220,7 @@ Pour ce projet, nous avons dû nous organiser et trouver des outils afin de nous
 	Notre \emph{rogueLike} prend place dans le bâtiment IC$_2$. Le joueur démarre le jeu au premier étage. Il doit se rendre tout en haut, aller chercher l'objet, puis revenir en bas.\\
 	Chaque étage de ce bâtiment est généré aléatoirement, il doit comporter des pièces et des couloirs. Entre ceux-ci, peut se trouver des portes, ou juste un trou. Les portes sont aléatoirement ouvertes ou fermées, et le joueur peut essayer de les ouvrir manuellement (il a une probabilité de ne pas réussir). Le nombre de pièces par étage est défini en fonction de l'étage : les étages supérieurs sont plus compliqués car ils possèdent plus de pièces. Pour changer d'étage, le joueur doit emprunter des escaliers (un escalier pour monter, et un pour descendre par étage, ceux-ci ne peuvent pas se trouver dans la même pièce).\\
 	Lorsque le joueur apparait, il ne voit que la pièce où il se situe. Dans les couloirs, lorsqu'il progresse, les zones s'éclairent petit à petit, en revanche, dès qu'il entre dans une pièce, celle-ci s'éclaire entièrement.\\
-	Le joueur possède un certain nombre de points de vie (défini au maximum 10), lorsque celui-ci est à 0, il meurt. Au fur et à mesure de ses déplacements, il perd de la nourriture (une barre allant de 0 à 100). Lorsqu'il a trop faim (nourriture inférieure à 10), il ne se déplace plus correctement, certaines zones de la carte disparaissent de sa mémoire (elles ne sont plus éclairées), et il perd de la vie. Le joueur peut trouver de la nourriture aléatoirement par terre (un total de 2 objets de nourriture par pièce, par étage), tout comme il peut trouver des soins de santé pour régénérer sa vie. L'autre façon de regagner de la vie est de manger, ainsi certains points de nourriture seront utilisés pour régénérer sa vie.\\
+	Le joueur possède un certain nombre de points de vie (défini au maximum 10), lorsque celui-ci est à 0, il meurt. Au fur et à mesure de ses déplacements, il perd de la nourriture (une barre allant de 0 à 100). Lorsqu'il a trop faim (nourriture inférieure à 10) il ne se déplace plus correctement, certaines zones de la carte disparaissent de sa mémoire (elles ne sont plus éclairées) et il perd de la vie. Le joueur peut trouver de la nourriture aléatoirement par terre (un total de 2 objets de nourriture par pièce, par étage), tout comme il peut trouver des soins de santé pour régénérer sa vie. L'autre façon de regagner de la vie est de manger, ainsi certains points de nourriture seront utilisés pour régénérer sa vie.\\
 	Lorsque le joueur mange de la nourriture, il a une faible probabilité que celle-ci soit empoisonnée. Le joueur perd de la vie à chaque déplacement lorsqu'il est empoisonné. Pour ne plus l'être, il doit soit attendre quelques déplacements, soit consommer un kit de santé.\\
 
 	Durant son chemin dans le bâtiment, le joueur peut se faire avoir par des pièges. Ceux-ci peuvent, au choix, enlever de la vie, nous faire glisser à travers la pièce, ou nous faire tomber d'un ou plusieurs étages (une chance sur 3 pour chaque).\\
@@ -327,7 +327,7 @@ Dans cette partie nous présentons les structures utilisées dans le code, l'org
 		
 			\subsubsection{Placement des pièces}
 			
-			Pour placer les pièces, nous les plaçons les unes après les autres. Pour chaque pièce, nous commençons par lui donner une position (la position de son angle supérieur gauche). Ensuite nous lui choisissons une dimension (hauteur, largeur) afin qu'elle entre la plus petite et la plus grande pièce possible.
+			Pour placer les pièces, nous les plaçons les unes après les autres. Pour chaque pièce, nous commençons par lui donner une position (la position de son angle supérieur gauche). Ensuite nous lui choisissons une dimension (hauteur, largeur) afin qu'elle soit entre la plus petite et la plus grande pièce possible.
 			Pour finir, nous vérifions qu'elle n'est pas en collision avec une autre pièce.
 			Dans le cas où elle l'est, on recommence (pas plus de 100 fois).
 			
