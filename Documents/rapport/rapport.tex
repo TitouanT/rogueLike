@@ -204,7 +204,7 @@ Pour ce projet, nous avons dû nous organiser et trouver des outils afin de nous
 		
 		\vspace{12pt}
 		
-		Enfin, lorsque nous avons certains bogues que nous n'arrivons pas à résoudre, nous utilisons le logiciel de débogage \emph{GDB} (\emph{GNU DeBugger}). Nous n'avons pas réussi à le faire fonctionner dès le début, car nous utilisons la libraire d'affichage \emph{ncurses}\footnote{Voir la section \hyperref[ncurses]{interactions et déplacements, page \getpagerefnumber{ncurses}}.}, qui utilise déjà le terminal pour afficher notre jeu. En la combinant avec \emph{GDB}, le terminal n'était plus utilisable.\\
+		Enfin, lorsque nous avons certains bogues que nous n'arrivons pas à résoudre, nous utilisons le logiciel de débogage \emph{GDB} (\emph{GNU DeBugger}). Nous n'avons pas réussi à le faire fonctionner dès le début, car nous utilisons la librairie d'affichage \emph{ncurses}\footnote{Voir la section \hyperref[ncurses]{interactions et déplacements, page \getpagerefnumber{ncurses}}.}, qui utilise déjà le terminal pour afficher notre jeu. En la combinant avec \emph{GDB}, le terminal n'était plus utilisable.\\
 		La solution a été d'utiliser deux téléscripteurs (\emph{TTY}) différents : un pour le jeu, et un pour le débogueur.\\
 		Dans l'annexe, vous pouvez retrouver 3 exemples de cas où nous nous sommes servis du débogueur, ainsi qu'une explication pour utiliser \emph{GDB} avec \emph{ncurses}.
 
@@ -295,7 +295,7 @@ Dans cette partie nous présentons les structures utilisées dans le code, l'org
 		
 		Une pièce est elle-même représentée par une structure qui contient la position de son angle supérieur gauche (ligne et colonne) ainsi que ses dimensions (largeur et hauteur).
 		
-		Quelques fois, nous avons besoin de manipuler des positions (ligne, colonne). Nous avons donc créé une structure de positions qui contient une ligne et une colonne. 
+		Quelquefois, nous avons besoin de manipuler des positions (ligne, colonne). Nous avons donc créé une structure de positions qui contient une ligne et une colonne. 
 		
 	\section{Séparation du code en modules}
 	
@@ -327,7 +327,7 @@ Dans cette partie nous présentons les structures utilisées dans le code, l'org
 		
 			\subsubsection{Placement des pièces}
 			
-			Pour placer les pièces, nous les plaçons les unes après les autres. Pour chaque pièces, nous commençons par lui donner une position (la position de son angle supérieur gauche). Ensuite nous lui choisissons une dimension (hauteur, largeur) afin qu'elle entre la plus petite et la plus grande pièce possible.
+			Pour placer les pièces, nous les plaçons les unes après les autres. Pour chaque pièce, nous commençons par lui donner une position (la position de son angle supérieur gauche). Ensuite nous lui choisissons une dimension (hauteur, largeur) afin qu'elle entre la plus petite et la plus grande pièce possible.
 			Pour finir, nous vérifions qu'elle n'est pas en collision avec une autre pièce.
 			Dans le cas où elle l'est, on recommence (pas plus de 100 fois).
 			
@@ -335,8 +335,8 @@ Dans cette partie nous présentons les structures utilisées dans le code, l'org
 			
 			Le but est de créer un réseau de pièces où aucune pièce ou groupe de pièces ne soit isolé des autres.
 			Pour cela nous connectons les pièces les unes après les autres dans leur ordre de création.
-			L'algorithme qui créé les liens commence par initialiser la première pièces simplement en y ouvrant une porte.
-			Ensuite, pour chaque pièces il procède ainsi:
+			L'algorithme qui créé les liens commence par initialiser la première pièce simplement en y ouvrant une porte.
+			Ensuite, pour chaque pièce il procède ainsi:
 			\begin{itemize}
 				\item Création d'une ouverture dans la pièce.
 				\item Création d'un couloir entre cette ouverture et la case de type couloir ou encadrement de porte la plus proche à l'aide d'un algorithme de recherche de chemin.
@@ -352,20 +352,20 @@ Dans cette partie nous présentons les structures utilisées dans le code, l'org
 			\item un fichier comportant les données du personnage ; nommé : \texttt{position.txt}.
 		\end{itemize} 
 		\subsubsection{Les écritures :}
-		Les niveaux sont sauvegardés lors du lancement d'une nouvelle partie, un changement de niveau, ou lorsque le joueur demande de sauvegarder. Les monstres sont sauvegardés lors de la création d'une nouvelle partie et la sauvegarde demandée par le joueur. Les données de chaque pièces sont sauvegardées que lors d'une nouvelle partie. Quant aux données du personnage, elles sont sauvegardées que lorsque le joueur veut sauvegarder, l'apparition de cette sauvegarde montre qu'une partie est sauvegardée : si ce fichier n'existe pas lors du relancement du jeu, le joueur n'aura pas accès à ses anciennes données.
+		Les niveaux sont sauvegardés lors du lancement d'une nouvelle partie, un changement de niveau, ou lorsque le joueur demande de sauvegarder. Les monstres sont sauvegardés lors de la création d'une nouvelle partie et la sauvegarde demandée par le joueur. Les données de chaque pièce ne sont sauvegardées que lors d'une nouvelle partie. Quant aux données du personnage, elles ne sont sauvegardées que lorsque le joueur veut sauvegarder, l'apparition de cette sauvegarde montre qu'une partie est sauvegardée : si ce fichier n'existe pas lors du relancement du jeu, le joueur n'aura pas accès à ses anciennes données.
 
 		\subsubsection{Les lectures :}
-		Les niveaux sont lus si le joueur veut charger une partie sauvegardée, un changement de niveau. Les monstres sont lus lors du chargement d'une partie existante comme les données sur le joueur et les données des pièces.
+		Les niveaux sont lus si le joueur veut charger une partie sauvegardée ou changer de niveau. Les monstres sont lus lors du chargement d'une partie existante comme les données sur le joueur et les données des pièces.
 
 		\subsection{Les interactions et déplacements}\label{ncurses}
 
 		
-			Notre jeu devait se jouer de façon simple, le joueur devait pouvoir déplacer son personnage d'un simple appui sur une touche. L'utilisation de simples \texttt{scanf()} pour récupérer l'appui sur une touche aurait été difficile à gérer, car ces fonctions sont exécutées uniquement lorsque la personne appuie sur la touche \textit{entrée}. Pour palier ce problème, nous avons utilisé la libraire \emph{ncurses}, qui est une \textsc{TUI}, une interface utilisateur par terminal. Celle-ci nous permet, entre autres, de récupérer les touches (ou combinaisons de touches) que l'utilisateur effectue sans avoir à attendre qu'il appuie sur entrée.
+			Notre jeu devait se jouer de façon simple, le joueur devait pouvoir déplacer son personnage d'un simple appui sur une touche. L'utilisation de simples \texttt{scanf()} pour récupérer l'appui sur une touche aurait été difficile à gérer, car ces fonctions sont exécutées uniquement lorsque la personne appuie sur la touche \textit{entrée}. Pour palier ce problème, nous avons utilisé la librairie \emph{ncurses}, qui est une \textsc{TUI}, une interface utilisateur par terminal. Celle-ci nous permet, entre autres, de récupérer les touches (ou combinaisons de touches) que l'utilisateur effectue sans avoir à attendre qu'il appuie sur entrée.
 			
 			
 		\subsection{L'affichage}
 		
-		L'affichage s'est aussi faite à l'aide de la libraire \emph{ncurses}, car elle propose des fonctions de création de fenêtres virtuelles, et d'écriture directement sur celles-ci. Nous avons séparé notre jeu en trois zones, qui sont en réalité des fenêtres. Pour l'écran de chargement et de fin de partie (en cas de perte ou de victoire), des messages ASCII sont affichés, ces messages proviennent en réalité de fichiers textes, qui sont lus par le programme et affichés au centre de l'écran. L'écran de sélection quant à lui nous permet de visualiser facilement, avec des couleurs, les parties.
+		L'affichage s'est aussi fait à l'aide de la librairie \emph{ncurses}, car elle propose des fonctions de création de fenêtres virtuelles, et d'écriture directement sur celles-ci. Nous avons séparé notre jeu en trois zones, qui sont en réalité des fenêtres. Pour l'écran de chargement et de fin de partie (en cas de perte ou de victoire), des messages ASCII sont affichés, ces messages proviennent en réalité de fichiers textes, qui sont lus par le programme et affichés au centre de l'écran. L'écran de sélection quant à lui nous permet de visualiser facilement, avec des couleurs, les parties.
 		
 		\vspace{12pt}
 		
@@ -374,8 +374,8 @@ Dans cette partie nous présentons les structures utilisées dans le code, l'org
 		
 		\subsection{Les monstres}
 		
-		Le nombre de monstre dans une partie est choisi aléatoirement entre deux bornes définies en constantes.\\
-		Les monstres sont équitablement répartis entre les étages proportionnellement au nombres de pièces qu'ils contiennent. Chaque étage a une proportion différentes de chaque monstres, plus l'étage est haut, plus les types de monstres présents sont difficiles à battre.\\
+		Le nombre de monstres dans une partie est choisi aléatoirement entre deux bornes définies en constantes.\\
+		Les monstres sont équitablement répartis entre les étages proportionnellement au nombre de pièces qu'ils contiennent. Chaque étage a une proportion différente de chaque monstre, plus l'étage est haut, plus les types de monstres présents sont difficiles à battre.\\
 		Pour animer les monstres, nous marquons toutes les cases de la matrice accessible par le joueur avec la distance de celle-ci par rapport au joueur. Ensuite chaque monstre fait un mouvement en direction du joueur si le joueur est dans son champ de vision. Sinon, ils ne bougent pas.\\
 		Nous faisons attention à ce que les monstres n'aillent pas sur le joueur et si le joueur est à porté alors ils l'attaquent. Si le joueur fait un déplacement vers une case où se trouve un monstre alors le joueur ne bouge pas et attaque. Ainsi, il n'y a jamais deux êtres vivants sur la même case.
 		
@@ -388,33 +388,33 @@ Dans cette partie nous présentons les structures utilisées dans le code, l'org
 		
 		\subsection{La nourriture et la vie}
 		
-		A la génération des niveaux, nous sélectionnons des endroits libres (mais aléatoires) sur la carte, dans des pièces, pour y placer des objets de nourriture, et des objets de santé. Le nombre de ces objets trouvable dans le niveau est défini en fonction du nombre de pièces de celui-ci. \\ Lorsque le joueur se trouve sur un de ses objets, et qu'il effectue l'action pour s'en servir, sa nourriture ou sa vie est mise à jour. Ensuite, à chaque tour, on vérifie si le joueur possède plus de 90\% de nourriture. Dans se cas, il possède une chance sur trois d'augmenter sa vie (et de diminuer sa nourriture). Si il ne possédait pas 90\% de nourriture, alors il possède 1\% de chance d'augmenter sa vie.\\
+		A la génération des niveaux, nous sélectionnons des endroits libres (mais aléatoires) sur la carte, dans des pièces, pour y placer des objets de nourriture, et des objets de santé. Le nombre de ces objets trouvable dans le niveau est défini en fonction du nombre de pièces de celui-ci. \\ Lorsque le joueur se trouve sur un de ces objets, et qu'il effectue l'action pour s'en servir, sa nourriture ou sa vie est mise à jour. Ensuite, à chaque tour, on vérifie si le joueur possède plus de 90\% de nourriture. Dans se cas, il possède une chance sur trois d'augmenter sa vie (et de diminuer sa nourriture). S'il ne possédait pas 90\% de nourriture, alors il possède 1\% de chance d'augmenter sa vie.\\
 		Lorsque le joueur ne possède plus de vie, il possède 75\% de ne pas réussir à se déplacer. Pour l'évanouissement, une position est choisie aléatoirement, puis deux longueurs, entre deux bornes. Le rectangle formé par ces données est ensuite passé en non-visible.
 		
 		\subsection{L'inventaire du joueur}
 
-		L'inventaire du joueur est en réalité un tableau du même type que les objets de notre carte. Ainsi, lorsqu'on souhaite ajouter un objet à l'inventaire du joueur, il suffit de prendre l'objet, et le mettre dans l'inventaire, à une case disponible. Lorsque le joueur souhaite poser un objet, il lui est simplement demandé un indice (correspondant à l'indice du tableau de son inventaire), et l'objet présent à cet endroit, si il existe, est posé au pied du joueur. Dans chaque cas, il faut faire attention que le joueur se trouve sur une case ne contenant aucun objet.
+		L'inventaire du joueur est en réalité un tableau du même type que les objets de notre carte. Ainsi, lorsqu'on souhaite ajouter un objet à l'inventaire du joueur, il suffit de prendre l'objet, et le mettre dans l'inventaire, à une case disponible. Lorsque le joueur souhaite poser un objet, il lui est simplement demandé un indice (correspondant à l'indice du tableau de son inventaire), et l'objet présent à cet endroit, s'il existe, est posé au pied du joueur. Dans chaque cas, il faut faire attention que le joueur se trouve sur une case ne contenant aucun objet.
 
 %% Partie conclusion
 \chapter{Résultat et conclusion}
 
-	Les objectifs de l'énoncé ont été atteints car nous avons un \emph{rogueLike} fonctionnel avec une génération de niveau automatique et une difficulté du jeu augmentant en fonction du niveau. La base du jeu est présente, le joueur doit aller chercher un trésor et resortir le plus rapidement possible. Et enfin, la gestion de notre projet a été conforme à celle indiquée dans l'énoncé car nous avons utilisé \emph{Github} pour travailler en groupe et que nous avons généré de la documentation avec \emph{Doxygen}.
+	Les objectifs de l'énoncé ont été atteints car nous avons un \emph{rogueLike} fonctionnel avec une génération de niveau automatique et une difficulté du jeu augmentant en fonction du niveau. La base du jeu est présente, le joueur doit aller chercher un trésor et ressortir le plus rapidement possible. Et enfin, la gestion de notre projet a été conforme à celle indiquée dans l'énoncé car nous avons utilisé \emph{Github} pour travailler en groupe et que nous avons généré de la documentation avec \emph{Doxygen}.
 	
 	\section{Améliorations possibles}
 	
 	Il aurait été possible d'améliorer notre projet en ajoutant des sons dans le jeu. On aurait aussi pu créer un didacticiel. \\
-	Le but aurait été d'ajouter un fond sonore dans le jeu et des sons lorsqu'un monstre attaque, ou est proche du joueur. Pleins de possibilités pourraient s'offrir à nous lorsque que nous trouverons un moyen de lire une bande son (avec un réglage pour ne pas mettre de son pour ceux qui le souhaitent). \\
+	Le but aurait été d'ajouter un fond sonore dans le jeu et des sons lorsqu'un monstre attaque, ou est proche du joueur. Plein de possibilités pourraient s'offrir à nous lorsque que nous trouverons un moyen de lire une bande son (avec un réglage pour ne pas mettre de son pour ceux qui le souhaitent). \\
 	Un didacticiel serait aussi intéressant pour apprendre au joueur à jouer.\\
 	Un système de classe aurait pu être intéressant, au début, nous aurions pu choisir d'être un humain, un elfe, un nain, ou autre, avec des caractéristiques différentes (vie, vitesse, attaque, résistance, faim moyenne du joueur, ...).\\
 	Enfin, un développement du système d'expérience aurait rendu notre jeu plus jouable : lorsqu'un joueur tue un monstre, son expérience augmente, et plus son expérience est élevée plus il tue facilement d'autres monstres.
 	
 	\section{Apport personnel du projet}
 	
-	Voici l'apport personnel du projet, pour chaque membre du groupe :
+	Voici l'apport personnel du projet pour chaque membre du groupe :
 	
 	\begin{description}
-	\item[Valentin :] Dans mon cas, le projet m'a permis de découvrir une librairie qui est \emph{ncurses}. Cette librairie est pratique car elle est plus simple à manipuler que la \emph{SDL} par exemple. De plus, le \emph{Rogue} est un jeu qui se joue généralement dans un terminal, \emph{ncruses} s'adapte parfaitement à notre projet. Le projet m'a aussi permis de me rendre compte à quel point la gestion peut être difficile, et conflictuelle. Il faut savoir gérer le temps, et la répartition des taches. Il faut aussi savoir adapter le projet en fonction de son avancement, pour ne pas stagner. Enfin, notre projet étant assez libre dans son fonctionnement, beaucoup de fonctionnalités autour de celui-ci sont des détails, que chaque personne peut voir dans une manière différente que les autres. 
-	\item[Emeric :] Pour moi, ce projet a été une façon de voir ce que le travail de groupe peut avoir comme influence sur un projet d'informatique. Nous étions parti pour faire la génération des niveaux, l'affichage, les déplacements et la sauvegarde sur deux semaines et au bout d'une semaine, nous avions presque fait tous ces objectifs. Voir un de ses collègue avancer, ça donne envie d'avancer autant que lui et nous arrivons à un effet boule de neige.
+	\item[Valentin :] Dans mon cas, le projet m'a permis de découvrir une librairie qui est \emph{ncurses}. Cette librairie est pratique car elle est plus simple à manipuler que la \emph{SDL} par exemple. De plus, le \emph{Rogue} est un jeu qui se joue généralement dans un terminal, \emph{ncruses} s'adapte parfaitement à notre projet. Le projet m'a aussi permis de me rendre compte à quel point la gestion peut être difficile, et conflictuelle. Il faut savoir gérer le temps, et la répartition des tâches. Il faut aussi savoir adapter le projet en fonction de son avancement, pour ne pas stagner. Enfin, notre projet étant assez libre dans son fonctionnement, beaucoup de fonctionnalités autour de celui-ci sont des détails, que chaque personne peut voir d'une manière différente des autres. 
+	\item[Emeric :] Pour moi, ce projet a été une façon de voir ce que le travail de groupe peut avoir comme influence sur un projet d'informatique. Nous étions partis pour faire la génération des niveaux, l'affichage, les déplacements et la sauvegarde sur deux semaines et au bout d'une semaine, nous avions presque fait tous ces objectifs. Voir un de ses collègue avancer, ça donne envie d'avancer autant que lui et nous arrivons à un effet boule de neige.
 	\item[Titouan :] Ce projet a été très intéressant pour deux choses. Premièrement, travailler en équipe de trois est, je pense, une configuration des plus conflictuelles. Il nous a donc fallu souvent faire des compromis pour que chacun puisse s'approprier le jeu. L'écriture du rogueLike a donc été une première expérience de travail en équipe. Secondement, la taille du rogueLike étant de loin la plus importante de tous mes précédents programmes, c'est pour ce projet que j'ai réalisé à quel point la programmation modulaire est efficace, claire et maintenable.
 	\end{description}
 
@@ -422,7 +422,7 @@ Dans cette partie nous présentons les structures utilisées dans le code, l'org
 
 	\section*{Cas d'utilisation du débogueur \emph{GDB}}
 	
-		Parfois, nous n'arrivons pas à trouver la cause de certains bugs, qui étaient finalement très simples. Pour cela, nous avons utilisé l'outil \emph{GDB}, comme mentionné dans \hyperref[gdb]{la partie sur les outils, page \getpagerefnumber{gdb}}. Afin de l'utiliser avec \emph{ncurses}, voici la marche à suivre :
+		Parfois, nous n'arrivons pas à trouver la cause de certains bugs qui sont finalement très simples. Pour cela, nous utilisons l'outil \emph{GDB}, comme mentionné dans \hyperref[gdb]{la partie sur les outils, page \getpagerefnumber{gdb}}. Afin de l'utiliser avec \emph{ncurses}, voici la marche à suivre :
 		
 		\begin{enumerate}
 		\item Ouvrir deux terminaux, un qui servira d'interface pour \emph{GDB}, un autre, suffisamment grand pour notre jeu.
