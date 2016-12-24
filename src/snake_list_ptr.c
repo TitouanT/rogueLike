@@ -1,10 +1,7 @@
 /* Titouan Teyssier - 11/27/16 */
 
 #include <stdlib.h>         // OK
-
 #include "snake_list_ptr.h" // OK
-
-
 
 int areEqual (t_pos d1, t_pos d2) {
 	return (d1.line == d2.line && d1.col == d2.col); 

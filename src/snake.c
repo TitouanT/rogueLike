@@ -9,13 +9,13 @@
 /* Parameters of the Game */
 /**************************/
 
-#define WAIT_TIME 50                // the time to wait for a user input
-#define GROWTH 5                    // length's gain when one food is eat
-#define MAX_FOOD 10                 // Maximum food quantity in the game at the same time
+#define WAIT_TIME 50       // the time to wait for a user input
+#define GROWTH 5           // length's gain when one food is eat
+#define MAX_FOOD 10        // Maximum food quantity at the same time
 
 // they both take a value in initGame()
-int CAN_CROWL_ON_HIM;               // obvious
-int CAN_GO_THROUGH_BORDER;          // "
+int CAN_CROWL_ON_HIM;      // obvious
+int CAN_GO_THROUGH_BORDER; // "
 
 WINDOW *gWGame, *gWStats;
 typedef enum {UP, DOWN, LEFT, RIGHT} t_dir;
@@ -85,8 +85,8 @@ void displaySnake (int isAlive, int currDir) {
 	listPtr_move2end();
 	listPtr_readData(&pos);
 
-	mvwprintw(gWGame, pos.line, pos.col, "*");//"☣");
-	//if (isAlive) mvwprintw(gWGame, pos.line, pos.col, "☣");
+	mvwprintw(gWGame, pos.line, pos.col, "*");
+	
 	listPtr_move2head();
 	listPtr_readData (&pos);
 	if (isAlive) {
@@ -131,7 +131,7 @@ void displayFood(t_pos * foods, int foodQtt) {
 	int i;
 	for (i = 0; i < foodQtt; i++) {
 		wattron(gWGame, COLOR_PAIR(1));
-		if (fileExist("./accentNeeded")) mvwprintw(gWGame, foods[i].line, foods[i].col, "♥");//"◉");
+		if (fileExist("./accentNeeded")) mvwprintw(gWGame, foods[i].line, foods[i].col, "♥");
 		else mvwprintw(gWGame, foods[i].line, foods[i].col, "#");
 		wattroff(gWGame, COLOR_PAIR(1));
 	}
@@ -167,9 +167,6 @@ void randPosOnWall (t_pos * pos, t_dir * currDir) {
 	err("<randPosOnWall>", +1);
 	int wall = rand()%4;
 	int bounce = rand()%2;
-	if (bounce) {
-
-	}
 	if (bounce == 0) {
 		switch (wall) {
 			case 0:
@@ -241,21 +238,20 @@ int snake(void) {
 	/***************/
 	/* Declaration */
 	/***************/
-	int i, j,
-	    key,
-	    foodEat,
-	    length,
-	    growth,
-	    foodQtt,
-	    continueGame;
+	int key,
+		foodEat,
+		length,
+		growth,
+		foodQtt,
+		continueGame;
 
 	t_dir currDir,
-	      prevDir;
+		  prevDir;
 
 	t_pos head,
-	      prev,
+		  prev,
 		  end,
-	      foods[MAX_FOOD];
+		  foods[MAX_FOOD];
 
 
 	/******************/
@@ -361,7 +357,8 @@ replay:
 		// is it a legal movment ?
 		if ((head.line >= lines - 3 - 1 || head.line <= 0 || head.col >= cols - 1 || head.col <= 0) && CAN_GO_THROUGH_BORDER == FALSE) {
 			continueGame = FALSE;
-		} else {
+		}
+		else {
 			if (head.line >= lines - 3 - 1 || head.line <= 0 || head.col >= cols - 1 || head.col <= 0) {
 
 				if (CAN_GO_THROUGH_BORDER && CAN_CROWL_ON_HIM) randPosOnWall(&head, &currDir);
@@ -428,7 +425,7 @@ replay:
 	if (key != 'q') {
 		do {
 			key = getch();
-			if (key == 'r'/*eplay*/) {
+			if (key == 'r'/*replay*/) {
 				endGame();
 				goto replay;
 			}
