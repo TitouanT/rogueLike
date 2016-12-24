@@ -72,7 +72,9 @@ t_msg error_msg[NB_ERROR_MESSAGES] = {
 	* \param lineLog Ligne d'écriture du message
 	*/
 void wrongKey(WINDOW * win, int *lineLog) {
+	err ("<wrongKey>", +1);
 	addLog(error_msg[randab(0, NB_ERROR_MESSAGES)].msg, lineLog, win);
+	err ("</wrongKey>", -1);
 }
 
 /**
@@ -83,6 +85,7 @@ void wrongKey(WINDOW * win, int *lineLog) {
 	*/
 void eatFood(t_character *player, t_cell map[LINES][COLUMNS]){
 
+	err ("<eatFood>", +1);
 	int minFood = 20; /// minFood : Apport minimal de la nourriture à la faim du joueur
 	int maxFood = 30; /// maxFood : Apport maximal de la nourriture à la faim du joueur
 
@@ -96,6 +99,7 @@ void eatFood(t_character *player, t_cell map[LINES][COLUMNS]){
 	if(didItHappen(CHANCE_SICK)){
 		player->isSick = TRUE;
 	}
+	err ("</eatFood>", -1);
 
 }
 
@@ -109,6 +113,7 @@ void eatFood(t_character *player, t_cell map[LINES][COLUMNS]){
 	* \param lineLog Ligne d'écriture des logs
 	*/
 void dropItem(t_character *player, t_cell map[LINES][COLUMNS], WINDOW *win_logs, int *lineLog){
+	err ("<dropItem>", +1);
 
 	int key;
 	int i;
@@ -146,6 +151,7 @@ void dropItem(t_character *player, t_cell map[LINES][COLUMNS], WINDOW *win_logs,
 	else {
 		addLog("Ce slot n'existe pas !", lineLog, win_logs);
 	}
+	err ("</dropItem>", -1);
 }
 
 /**
@@ -157,15 +163,15 @@ void dropItem(t_character *player, t_cell map[LINES][COLUMNS], WINDOW *win_logs,
 	* \param lineLog Ligne d'écriture des logs
 	*/
 void grabItem(t_character *player, t_cell map[LINES][COLUMNS], WINDOW *win_logs, int *lineLog){
+	err ("<grabItem>", +1);
 
 	int i;
-	err("*** on entre dans la fonction de grab d'un item ***");
 
     //err((char *)map[player->line][player->column].obj[map[player->line][player->column].nbObject].type);
 
 	if(map[player->line][player->column].nbObject > 0){
 
-		err(" > Le joueur se trouve sur une case avec au minimum un objet");
+		err("Le joueur se trouve sur une case avec au minimum un objet", 0);
 
 		for(i = 0 ; i < SIZE_INVENTORY && player->inventory[i] != objNONE; i++);
 
@@ -195,7 +201,8 @@ void grabItem(t_character *player, t_cell map[LINES][COLUMNS], WINDOW *win_logs,
 		addLog("Il n'y a aucun item à récupérer !", lineLog, win_logs);
 	}
 
-
+	err ("</grabItem>", -1);
+	
 }
 
 /**
@@ -208,6 +215,7 @@ void grabItem(t_character *player, t_cell map[LINES][COLUMNS], WINDOW *win_logs,
 	* \param isPlayerInvicible Booléen qui réprésente l'invincibilité du joueur
 	*/
 void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_character *player, int *isPlayerInvicible){
+	err ("<cheat>", +1);
 
 	char cheatSTR[MAX_CHEAT];
 	int lineLog = 0;
@@ -300,6 +308,7 @@ void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_cha
 
 		clearLog(&lineLog, win_logs);
 	}
+	err ("</cheat>", -1);
 }
 
 /**
@@ -309,7 +318,8 @@ void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_cha
 	* \param lineLog Ligne d'écriture des logs
 	*/
 void help(WINDOW *win_logs, int *lineLog){
-
+	err ("<help>", +1);
+	
 	(*lineLog)++;
 
 	printLineCenter("-- AIDE POUR LES NOUVEAUX -- ", COLS_LOGS, *lineLog, win_logs);
@@ -328,6 +338,7 @@ void help(WINDOW *win_logs, int *lineLog){
 	addLog("entrée    : Interagir", lineLog, win_logs);
 
 	*lineLog += 3;
+	err ("</help>", -1);
 }
 
 /**
@@ -342,6 +353,7 @@ void help(WINDOW *win_logs, int *lineLog){
 	* \return FALSE sinon
 	*/
 int bIsValidDoor(t_cell map[LINES][COLUMNS], t_pos position, t_monster monsters[NB_MONSTER_MAX], int nbMonster, int playerLvl){
+	err ("<bIsValidDoor>", +1);
 
 	int i;
 	// On vérifie d'abord qu'un monstre ne se trouve pas à la position de la porte
@@ -351,7 +363,8 @@ int bIsValidDoor(t_cell map[LINES][COLUMNS], t_pos position, t_monster monsters[
 		}
 	}
 
-  return (
+	err ("</bIsValidDoor>", -1);
+	return (
 		position.line >= 0 &&
 		position.column >= 0 &&
 		position.line < LINES &&
@@ -373,55 +386,57 @@ int bIsValidDoor(t_cell map[LINES][COLUMNS], t_pos position, t_monster monsters[
 	* \param nbMonster Nombre de monstres dans le jeu
 	*/
 void traiterPorte(t_cell map[LINES][COLUMNS], t_character *player, int key, WINDOW * win, int *lineLog, t_monster monsters[NB_MONSTER_MAX], int nbMonster){
+	err ("<traiterPorte>", +1);
 
-  int direction;
-  t_pos doorPos = {player->line, player->column};
+	int direction;
+	t_pos doorPos = {player->line, player->column};
 
-  addLog("Quelle porte voulez vous ouvrir ?", lineLog, win);
-  addLog("  (flèche haute, basse, gauche, droite)", lineLog, win);
+	addLog("Quelle porte voulez vous ouvrir ?", lineLog, win);
+	addLog("  (flèche haute, basse, gauche, droite)", lineLog, win);
 
-  direction = getch();
+	direction = getch();
 
-  switch (direction) {
+  	switch (direction) {
 
 		case 'k':
-    case KEY_UP    : (doorPos.line)--;   break;
-
+		case KEY_UP    : (doorPos.line)--;   break;
+		
 		case 'j':
-    case KEY_DOWN  : (doorPos.line)++;   break;
+		case KEY_DOWN  : (doorPos.line)++;   break;
 
 		case 'h':
-    case KEY_LEFT  : (doorPos.column)--; break;
+		case KEY_LEFT  : (doorPos.column)--; break;
 
 		case 'l':
-    case KEY_RIGHT : (doorPos.column)++; break;
-
+		case KEY_RIGHT : (doorPos.column)++; break;
+		
 		default: wrongKey(win, lineLog);
-  }
+	}
 
-  if(key == 'o'){
+	if(key == 'o'){
 
-    if(bIsValidDoor(map, doorPos, monsters, nbMonster, player->lvl) && map[doorPos.line][doorPos.column].state == dCLOSE){
-			// Ajoute une probabilité de 30% de ne pas réussir à ouvrir la porte
-      if(didItHappen(30)) {
-        addLog("Vous venez d'enfoncer cette porte.", lineLog, win);
-        addLog("Recommencez pour l'ouvrir entièrement !", lineLog, win);
-      }
-      else map[doorPos.line][doorPos.column].state = dOPEN;
+		if(bIsValidDoor(map, doorPos, monsters, nbMonster, player->lvl) && map[doorPos.line][doorPos.column].state == dCLOSE){
+		// Ajoute une probabilité de 30% de ne pas réussir à ouvrir la porte
+		if(didItHappen(30)) {
+			addLog("Vous venez d'enfoncer cette porte.", lineLog, win);
+			addLog("Recommencez pour l'ouvrir entièrement !", lineLog, win);
+		}
+		else map[doorPos.line][doorPos.column].state = dOPEN;
 
-      (player->nbMove)++;
-    }
-    else addLog("Ouverture impossible.", lineLog, win);
+		(player->nbMove)++;
+	}
+	else addLog("Ouverture impossible.", lineLog, win);
 
-  }
-  else if(key == 'c'){
+	}
+	else if(key == 'c'){
 
-    if(bIsValidDoor(map, doorPos, monsters, nbMonster, player->lvl) && map[doorPos.line][doorPos.column].state == dOPEN){
-      map[doorPos.line][doorPos.column].state = dCLOSE;
-    }
-    else addLog("Fermeture impossible.", lineLog, win);
-  }
+		if(bIsValidDoor(map, doorPos, monsters, nbMonster, player->lvl) && map[doorPos.line][doorPos.column].state == dOPEN){
+			map[doorPos.line][doorPos.column].state = dCLOSE;
+		}
+		else addLog("Fermeture impossible.", lineLog, win);
+	}
 
+	err ("</traiterPorte>", -1);
 
 }
 
@@ -436,54 +451,62 @@ void traiterPorte(t_cell map[LINES][COLUMNS], t_character *player, int key, WIND
 	* \return TRUE sinon
 	*/
 int traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW *win, int *lineLog){
+	err ("<traiterPorte>", +1);
 
 
-  if(map[player->line][player->column].nbObject > 0){
+	if(map[player->line][player->column].nbObject > 0){
 
-    switch (map[player->line][player->column].obj[0].type) {
+		switch (map[player->line][player->column].obj[0].type) {
 
-      case STAIRS_UP:
-        if(player->lvl < NB_LVL - 1){
-          changeLvl(map,player,1);
-        }
-        else {
-          player->hasFoundObj = TRUE;
-        }
-      break;
-
-      case STAIRS_DOWN:
-        if(player->lvl > 0){
-          changeLvl(map,player, -1);
+			case STAIRS_UP:
+				if(player->lvl < NB_LVL - 1){
+					changeLvl(map,player,1);
 				}
-        else {
+				else {
+					player->hasFoundObj = TRUE;
+				}
+				break;
+
+			case STAIRS_DOWN:
+				if(player->lvl > 0){
+					changeLvl(map,player, -1);
+				}
+				else {
 					if(player->hasFoundObj == FALSE) {
 						addLog("Vous ne pouvez pas sortir du chateau sans avoir trouvé l'objet !", lineLog, win);
 					}
-					else return FALSE;
-        }
-        break;
+					else {
+						err ("</traiterPorte>", -1);
+						return FALSE;
+					}
+				}
+				break;
+				
 			case FOOD:
 				if(player->food >= MAX_FOOD){
 					addLog("Vous n'avez plus faim !", lineLog, win);
 				}
 				else {
 					eatFood(player, map);
-				} break;
+				}
+				break;
+				
 			case MED_KIT:
 				if(player->hp < MAX_HP || player->isSick){
 					player->hp = min(MAX_HP, player->hp + randab(5, 10));
 					player->isSick = FALSE;
 					map[player->line][player->column].obj[0].type = objNONE;
 					map[player->line][player->column].nbObject = 0;
-				} break;
-      default: break ;
-
-    }
-  }
-  else {
-    addLog("Commande invalide.", lineLog, win);
-  }
-
+				}
+				break;
+			
+			default: break;
+		}
+	}
+	else {
+		addLog("Commande invalide.", lineLog, win);
+	}
+	err ("</traiterPorte>", -1);
 	return TRUE;
 }
 
@@ -496,6 +519,7 @@ int traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW *win, 
 	* \return FALSE sinon
 	*/
 int askConfirmationToQuit(WINDOW * win, int *lineLog) {
+	err ("<askConfirmationToQuit>", +1);
 
 	int key;
 
@@ -504,23 +528,15 @@ int askConfirmationToQuit(WINDOW * win, int *lineLog) {
 	key = getch();
 
 	switch (key) {
-		case 'y': return TRUE;
+		case 'y': {
+			err ("</askConfirmationToQuit>", -1);
+			return TRUE;
+		}
 		case 'n': break;
 
 		default: wrongKey(win, lineLog);
 	}
-
- /*	addLog("Voulez-vous sauvegarder et quitter ? (y/n)", lineLog, win);
-
-	key = getch();
-
-	switch (key) {
-		case 'y': saveGame(map, player); addLog("Partie Sauvegardée", lineLog, win); return TRUE;
-		case 'n': return FALSE;
-		default: wrongKey(win, lineLog);
-	}
-	*/
-
+	err ("</askConfirmationToQuit>", -1);
 	return FALSE;
 }
 
@@ -541,26 +557,42 @@ int askConfirmationToQuit(WINDOW * win, int *lineLog) {
 	* \return TRUE sinon
 	*/
 int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, WINDOW * win_logs, WINDOW * win_game, int *lineLog, t_monster monsters[NB_MONSTER_MAX], int nbMonster, int *isPlayerInvicible,  int visibleByGhost[LINES][COLUMNS]){
-
-	err("*** debut handleInteraction ***");
+	err ("<handleInteraction>", +1);
 	switch (key) {
-		case 'k': case KEY_UP:    move_perso(UP,    map, player, win_logs, lineLog, monsters, nbMonster, win_game, visibleByGhost);  break;
-		case 'j': case KEY_DOWN:  move_perso(DOWN,  map, player, win_logs, lineLog, monsters, nbMonster, win_game, visibleByGhost);  break;
-		case 'h': case KEY_LEFT:  move_perso(LEFT,  map, player, win_logs, lineLog, monsters, nbMonster, win_game, visibleByGhost);  break;
-		case 'l': case KEY_RIGHT: move_perso(RIGHT, map, player, win_logs, lineLog, monsters, nbMonster, win_game, visibleByGhost);  break;
+		case 'k': case KEY_UP:
+			move_perso(UP,    map, player, win_logs, lineLog, monsters, nbMonster, win_game, visibleByGhost);
+			break;
+			
+		case 'j': case KEY_DOWN:
+			move_perso(DOWN,  map, player, win_logs, lineLog, monsters, nbMonster, win_game, visibleByGhost);
+			break;
+			
+		case 'h': case KEY_LEFT:
+			move_perso(LEFT,  map, player, win_logs, lineLog, monsters, nbMonster, win_game, visibleByGhost);
+			break;
+			
+		case 'l': case KEY_RIGHT:
+			move_perso(RIGHT, map, player, win_logs, lineLog, monsters, nbMonster, win_game, visibleByGhost);
+			break;
+			
 
-		case 'y': move_perso(UP_LEFT, map, player, win_logs, lineLog, monsters, nbMonster, win_game, visibleByGhost);    break;
-		case 'u': move_perso(UP_RIGHT, map, player, win_logs, lineLog, monsters, nbMonster, win_game, visibleByGhost);   break;
-		case 'b': move_perso(DOWN_LEFT, map, player, win_logs, lineLog, monsters, nbMonster, win_game, visibleByGhost);  break;
+		case 'y': move_perso(UP_LEFT,    map, player, win_logs, lineLog, monsters, nbMonster, win_game, visibleByGhost); break;
+		case 'u': move_perso(UP_RIGHT,   map, player, win_logs, lineLog, monsters, nbMonster, win_game, visibleByGhost); break;
+		case 'b': move_perso(DOWN_LEFT,  map, player, win_logs, lineLog, monsters, nbMonster, win_game, visibleByGhost); break;
 		case 'n': move_perso(DOWN_RIGHT, map, player, win_logs, lineLog, monsters, nbMonster, win_game, visibleByGhost); break;
 
 
-		case '\n': return (traiterEntree(map, player, win_logs, lineLog));
+		case '\n': err ("</handleInteraction>", -1); return (traiterEntree(map, player, win_logs, lineLog));
 		case 'o' : traiterPorte (map, player, key, win_logs, lineLog, monsters, nbMonster);   break;
 		case 'c' : traiterPorte (map, player, key, win_logs, lineLog, monsters, nbMonster);   break;
-		case 's' : err("****** Sauvegarde en cours ******"); saveGame(map, player, monsters, nbMonster); addLog("Partie sauvegardée", lineLog, win_logs); err("****** Partie sauvegardée ******"); break;//
-		case 'q' : return FALSE;
-		case 'Q' : return !askConfirmationToQuit(win_logs, lineLog);
+		case 's' :
+			addLog("Sauvegarde en cours", lineLog, win_logs);
+			saveGame(map, player, monsters, nbMonster);
+			addLog("Partie sauvegardée", lineLog, win_logs);
+			break;
+			
+		case 'q' : err ("</handleInteraction>", -1); return FALSE;
+		case 'Q' : err ("</handleInteraction>", -1); return !askConfirmationToQuit(win_logs, lineLog);
 
 		case '_' : cheat(win_logs, win_game, map, player, isPlayerInvicible); break;
 
@@ -572,10 +604,6 @@ int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, 
 
 		default: wrongKey(win_logs, lineLog);
 	}
-
-  //markDiscover(map, *player);
-
-  err("*** fin handleInteraction ***");
-  return TRUE;
-
+	err ("</handleInteraction>", -1);
+	return TRUE;
 }

@@ -26,7 +26,7 @@
   * \param nbMonsterAtEnd pointeur pour enregistrer le nombre de monstre
   */
 void createMonster (t_monster monsters[NB_MONSTER_MAX], int * nbMonsterAtEnd) {
-	err ("*** Debut create Monster ***");
+	err("<createMonster>", +1);
 	char msg[100];
 	int i, j, k, nbRoomGame = 0, nbMonsterLvl[NB_LVL], verif = 0;
 	int iRoom, iLvl;
@@ -47,18 +47,18 @@ void createMonster (t_monster monsters[NB_MONSTER_MAX], int * nbMonsterAtEnd) {
 	queryLvlData(lvlData);
 	for (i = 0; i < NB_LVL; i++) nbRoomGame += lvlData[i].nbRoom;
 	sprintf(msg, "il y a %d piece dans le bat et %d monstres:", nbRoomGame, nbMonster);
-	err(msg);
+	err(msg, 0);
 	for (i = 0; i < NB_LVL; i++) {
 		nbMonsterLvl[i] = (float) lvlData[i].nbRoom * (float) nbMonster / (float) nbRoomGame;
 		verif += nbMonsterLvl[i];
 		sprintf(msg, "\t lvl 1: %d pieces donc %d monstres", lvlData[i].nbRoom, nbMonsterLvl[i]);
-		err(msg);
+		err(msg, 0);
 	}
 
 	while (verif < nbMonster) {
 		verif++;
 		nbMonsterLvl[NB_LVL - 1]++;
-		err("+1 pour l'etage 5");
+		err("+1 pour l'etage 5", 0);
 	}
 
 	// determination du type;
@@ -130,7 +130,7 @@ void createMonster (t_monster monsters[NB_MONSTER_MAX], int * nbMonsterAtEnd) {
 					set = TRUE;
 				}
 			}
-			if (!set) err("      /!\\ MONSTER WARNING  /!\\");
+			if (!set) err("      /!\\ MONSTER WARNING  /!\\", 0);
 		}
 	}
 
@@ -190,7 +190,7 @@ void createMonster (t_monster monsters[NB_MONSTER_MAX], int * nbMonsterAtEnd) {
 
 		monsters[i].col = randab(1, lvlData[ iLvl ].rooms[iRoom].width - 1) + lvlData[ iLvl ].rooms[iRoom].column;
 	}
-	err ("*** Fin create Monster ***");
+	err("</createMonster>", -1);
 }
 
 /**
@@ -206,13 +206,16 @@ void createMonster (t_monster monsters[NB_MONSTER_MAX], int * nbMonsterAtEnd) {
   * \return FALSE sinon
   */
 int isThereAMonster (t_monster monsters[NB_MONSTER_MAX], int nbMonster, int line, int col, int lvl, int * indexMonster) {
+	err("<isThereAMonster>", +1);
 	int i;
 	for (i = 0; i < nbMonster; i++) {
 		if (monsters[i].hp > 0 && monsters[i].lvl == lvl && monsters[i].line == line && monsters[i].col == col) {
 			*indexMonster = i;
+			err("</isThereAMonster>", -1);
 			return TRUE;
 		}
 	}
+	err("</isThereAMonster>", -1);
 	return FALSE;
 }
 
@@ -224,14 +227,18 @@ int isThereAMonster (t_monster monsters[NB_MONSTER_MAX], int nbMonster, int line
   * \return FALSE sinon
   */
 int isItWalkableForAMonster (t_cell cell) {
+	//err("<isItWalkableForAMonster>", +1);
+	int rep;
 	switch (cell.type) {
-		case ROOM: case CORRIDOR: return TRUE; break;
+		case ROOM: case CORRIDOR: rep = TRUE; break;
 		case DOORWAY:
-			if (cell.state == dCLOSE) return FALSE;
-			else return TRUE;
+			if (cell.state == dCLOSE) rep = FALSE;
+			else rep = TRUE;
 			break;
-		default: return FALSE;
+		default: rep = FALSE;
 	}
+	//err("</isItWalkableForAMonster>", -1);
+	return rep;
 }
 
 /**
@@ -246,8 +253,11 @@ int isItWalkableForAMonster (t_cell cell) {
   * \return FALSE sinon
   */
 int canMove (t_monster monsters[NB_MONSTER_MAX], int nbMonster, int line, int col, int lvl) {
-	int tmp;
-	return !isThereAMonster(monsters, nbMonster, line, col, lvl, &tmp);
+	err("<canMove>", +1);
+	int tmp, rep;
+	rep = isThereAMonster(monsters, nbMonster, line, col, lvl, &tmp);
+	err("</canMove>", -1);
+	return !rep;
 }
 
 /**
@@ -258,7 +268,9 @@ int canMove (t_monster monsters[NB_MONSTER_MAX], int nbMonster, int line, int co
   * \param indexMonster index du monstre que le joueur veut attaquer
   */
 void playerAttackMonster (t_character player, t_monster monsters[NB_MONSTER_MAX], int indexMonster) {
+	err("<playerAttackMonster>", +1);
 	if (didItHappen(player.agility)) monsters[indexMonster].hp -= player.pw;
+	err("</playerAttackMonster>", -1);
 }
 
 /**
@@ -268,11 +280,13 @@ void playerAttackMonster (t_character player, t_monster monsters[NB_MONSTER_MAX]
   * \param player personnage controllé par le joueur
   */
 void monsterAttackPlayer (t_monster monster, t_character * player) {
+	err("<monsterAttackPlayer>", +1);
 	if (didItHappen(monster.agility)){
 		player -> hp -= monster.pw;
 		flash();
 		// une attaque est faite !
 	}
+	err("</monsterAttackPlayer>", -1);
 	// sinon le monstre rate son attaque;
 }
 
@@ -286,6 +300,7 @@ void monsterAttackPlayer (t_monster monster, t_character * player) {
   */
 void moveGhost(t_cell map[][COLUMNS], t_monster monsters[NB_MONSTER_MAX], int iGhost, t_character *player) {
 
+	err("<moveGhost>", +1);
 	int line, col, hDir = 0, vDir = 0;
 	if (monsters[iGhost].data2 == -1 || monsters[iGhost].data3 == -1) {
 		monsters[iGhost].data2 = randab(0, LINES);
@@ -304,6 +319,7 @@ void moveGhost(t_cell map[][COLUMNS], t_monster monsters[NB_MONSTER_MAX], int iG
 
 	monsters[iGhost].line += vDir;
 	monsters[iGhost].col  += hDir;
+	err("</moveGhost>", -1);
 }
 
 /**
@@ -314,6 +330,7 @@ void moveGhost(t_cell map[][COLUMNS], t_monster monsters[NB_MONSTER_MAX], int iG
   * \param player personnage controllé par le joueur
   */
 void setVisibleByGhost (t_monster monsters[NB_MONSTER_MAX], int visibleByGhost[LINES][COLUMNS], t_character player) {
+	err("<setVisibleByGhost>", +1);
 	int radius = 10, centerLine, centerCol, nbL, nbC, line, col, iGhost, i, j;
 	for (i = 0; i < LINES; i++) {
 		for (j = 0; j < COLUMNS; j++) visibleByGhost[i][j] = 0;
@@ -334,6 +351,7 @@ void setVisibleByGhost (t_monster monsters[NB_MONSTER_MAX], int visibleByGhost[L
 			}
 		}
 	}
+	err("</setVisibleByGhost>", -1);
 }
 
 /**
@@ -345,6 +363,7 @@ void setVisibleByGhost (t_monster monsters[NB_MONSTER_MAX], int visibleByGhost[L
   * \param player personnage controllé par le joueur
   */
 void moveMonster (t_cell map[][COLUMNS], t_monster monsters[NB_MONSTER_MAX], int nbMonster, t_character *player) {
+	err("<moveMonster>", +1);
 	if (monsters[0].lvl == player -> lvl && monsters[0].hp > 0)
 		moveGhost(map, monsters, 0, player);
 
@@ -426,6 +445,6 @@ void moveMonster (t_cell map[][COLUMNS], t_monster monsters[NB_MONSTER_MAX], int
 			}
 		}
 	}
-
+	err("</moveMonster>", -1);
 
 }

@@ -31,30 +31,30 @@ char NOM_MONSTER[40];
 	* \param choixDeSauvegarde
 */
 void initNameOfFile (int choixDeSauvegarde) {
+	err ("<initNameOfFile>", +1);
 	int i;
-	err("\n***debut init name of file***");
 	/*take the right place to save the game*/
 	sprintf(DOSSIER_SAUVEGARDE, "./partie/sauvegarde%i/", choixDeSauvegarde);
-	err(DOSSIER_SAUVEGARDE);
+	err(DOSSIER_SAUVEGARDE, 0);
 	/*give the name for level's file*/
 	for (i = 0; i < NB_LVL; i++) {
 		sprintf(NOM_NIVEAU[i], "%s%i.txt", DOSSIER_SAUVEGARDE, i);
-		err(NOM_NIVEAU[i]);
+		err(NOM_NIVEAU[i], 0);
 	}
 
-	/*give the name for the position's file*/
+	/*give the n	err ("</initNameOfFile>", -1);
+ame for the position's file*/
 	sprintf(NOM_POSITION, "%sposition.txt", DOSSIER_SAUVEGARDE);
-	err(NOM_POSITION);
+	err(NOM_POSITION, 0);
 
 	/*give the name for the lvl data*/
 	sprintf(NOM_LVLDATA, "%slvlData.txt", DOSSIER_SAUVEGARDE);
-	err(NOM_LVLDATA);
+	err(NOM_LVLDATA, 0);
 
   /*give the name for the monster*/
 	sprintf(NOM_MONSTER, "%smonster.txt", DOSSIER_SAUVEGARDE);
-	err(NOM_MONSTER);
-
-	err("***fin init name of file***\n");
+	err(NOM_MONSTER, 0);
+	err ("</initNameOfFile>", -1);
 }
 
 /**
@@ -65,6 +65,8 @@ void initNameOfFile (int choixDeSauvegarde) {
 */
 void readLvl ( t_cell map[][COLUMNS], int nbLvl) {
 	/* Lit un fichier dans un dossier donné */
+	err ("<readLvl>", +1);
+	
 
 	int i, j, k, type, state, isDiscovered, nbObject, object, isDiscoveredObject;
 	FILE * lvlFile;
@@ -84,6 +86,7 @@ void readLvl ( t_cell map[][COLUMNS], int nbLvl) {
 		}
 	}
 	fclose(lvlFile);
+	err ("</readLvl>", -1);
 }
 
 /**
@@ -94,6 +97,7 @@ void readLvl ( t_cell map[][COLUMNS], int nbLvl) {
 */
 void writeLvl ( t_cell map[][COLUMNS], int nbLvl) {
 	/* enregistre la partie soit dans le dossier temporaire ou dans les dossiers de sauvegardes */
+	err ("<writeLvl>", +1);
 
 	int i, j, k;
 	FILE * lvlFile;
@@ -112,6 +116,7 @@ void writeLvl ( t_cell map[][COLUMNS], int nbLvl) {
 	}
 	fprintf(lvlFile, "\n");
 	fclose(lvlFile);
+	err ("</writeLvl>", -1);
 
 }
 
@@ -121,21 +126,21 @@ void writeLvl ( t_cell map[][COLUMNS], int nbLvl) {
   * \param tabLvl tableau qui contient chaque niveau
 */
 void writeLvlData (t_lvl tabLvl[NB_LVL]) {
-	err ("*** debut write lvl data ***");
+	err ("<writeLvlData>", +1);
 	char msg[100];
 	FILE * file = fopen (NOM_LVLDATA, "w");
 	int i, j, line, column, height, width, nbRoom;
 	sprintf(msg, "ecriture des infos dans : %s", NOM_LVLDATA);
-	err(msg);
+	err(msg, 0);
 
 	for (i = 0; i < NB_LVL; i++) {
 		sprintf (msg, "\técriture du nombre de pieces : %d/%d", i, NB_LVL-1);
-		err(msg);
+		err(msg, 0);
 		nbRoom = tabLvl[i].nbRoom;
 		fprintf (file, "\n%d\n", nbRoom);
 		for (j = 0; j < nbRoom; j++) {
 			sprintf (msg, "\t\técriture de la piece %d/%d", j, tabLvl[i].nbRoom - 1);
-			err(msg);
+			err(msg, 0);
 			line = tabLvl[i].rooms[j].line;
 			column = tabLvl[i].rooms[j].column;
 			height = tabLvl[i].rooms[j].height;
@@ -145,7 +150,7 @@ void writeLvlData (t_lvl tabLvl[NB_LVL]) {
 		}
 	}
 	fclose(file);
-	err ("*** fin write lvl data ***");
+	err ("</writeLvlData>", -1);
 }
 
 /**
@@ -156,10 +161,11 @@ void writeLvlData (t_lvl tabLvl[NB_LVL]) {
   * \return FALSE sinon.
 */
 int readLvlData (t_lvl tabLvl[NB_LVL]) {
-	err ("*** debut read lvl data ***");
+	err ("<readLvlData>", +1);
 	FILE * file = fopen (NOM_LVLDATA, "r");
 	if (file == NULL) {
-		err ("*** fin read lvl data (failure) ***");
+		err ("failure", 0);
+		err ("</readLvlData>", -1);
 		return FALSE; // failure
 	}
 	int i, j, nbRoom, line, column, height, width;
@@ -178,7 +184,8 @@ int readLvlData (t_lvl tabLvl[NB_LVL]) {
 
 	}
 	fclose(file);
-	err ("*** fin read lvl data (success) ***");
+	err ("success", 0);
+	err ("</readLvlData>", -1);
 	return TRUE; // success
 }
 
@@ -189,13 +196,12 @@ int readLvlData (t_lvl tabLvl[NB_LVL]) {
 */
 void writePosition ( t_character player) {
 	/* enregistre les paramètres du joueur dans les dossiers de sauvegardes */
-	err("*** Début write Position ***");
+	err ("<writePosition>", +1);
 	char msg[100];
 	sprintf(msg, "ecriture de la position dans : %s", NOM_POSITION);
 	FILE * positionFile;
 	positionFile = fopen (NOM_POSITION, "w");
-	if (positionFile == NULL) err("WTF ??");
-	err(msg);
+	err(msg, 0);
 	fprintf (positionFile, "%i %i %i %i %i %i %i %i ", (player).line, (player).column, (player).lvl, (player).hp, (player).pw, (player).xp, (player).nbMove, (player).food);
 	fprintf(positionFile, "%i %i ", (player).isSick, (player).hasFoundObj);
 	for(int i=0; i<SIZE_INVENTORY; i++){
@@ -203,7 +209,8 @@ void writePosition ( t_character player) {
 	}
 	fprintf(positionFile, "\n");
 	fclose(positionFile);
-	err("*** Fin write Position ***");
+	err ("</writePosition>", -1);
+
 }
 
 /**
@@ -212,24 +219,23 @@ void writePosition ( t_character player) {
 	* \param player joueur
 */
 void readPosition ( t_character *player){
-	err ("debut lecture position");
+	err ("<readPosition>", +1);
 	FILE * positionFile = NULL;
-	err("juste avant d' ouvrir le fichier position");
-	int inventory;
+	int inventory, i;
 
 	positionFile = fopen (NOM_POSITION, "r");
 
-	if (positionFile == NULL) err( "erreur de lecture !");
+	if (positionFile == NULL) err( "erreur de lecture !", 0);
 
 	fscanf(positionFile, "%i %i %i %i %i %i %i %i ", &(*player).line, &(*player).column, &(*player).lvl, &(*player).hp, &(*player).pw, &(*player).xp, &(*player).nbMove, &(*player).food);
 	fscanf(positionFile, "%i %i ", &(*player).isSick, &(*player).hasFoundObj);
-	for(int i=0; i<SIZE_INVENTORY; i++){
+	for (i = 0; i < SIZE_INVENTORY; i++){
 		fscanf(positionFile, "%i ", &inventory );
-			(*player).inventory[i]=inventory;
+		player->inventory[i]=inventory;
 	}
 
 	fclose(positionFile);
-	err("fin lecture position\n");
+	err ("</readPosition>", -1);
 }
 
 /**
@@ -239,7 +245,8 @@ void readPosition ( t_character *player){
   * \param nbMonster Nombre de monstres dans le jeu
 */
 void readMonster (t_monster monsters[NB_MONSTER_MAX], int *nbMonster) {
- /* Fonction permettant de lire toutes les données sur les montres */
+	/* Fonction permettant de lire toutes les données sur les montres */
+	err ("<readMonster>", +1);
 	FILE * lvlMonster;
 	int type,line,col,lvl,hp,pw,speed,sight,agility,data1,data2,data3;
 
@@ -268,6 +275,7 @@ void readMonster (t_monster monsters[NB_MONSTER_MAX], int *nbMonster) {
 			monsters[i].data3 = data3;
 	}
 	fclose(lvlMonster);
+	err ("</readMonster>", -1);
 }
 
 /**
@@ -277,7 +285,8 @@ void readMonster (t_monster monsters[NB_MONSTER_MAX], int *nbMonster) {
   * \param nbMonster Nombre de monstres dans le jeu
 */
 void writeMonster (t_monster monsters[NB_MONSTER_MAX], int nbMonster) {
- /* Fonction permettant de sauvegarder toutes les données sur les montres */
+	/* Fonction permettant de sauvegarder toutes les données sur les montres */
+	err ("<writeMonster>", +1);
 	FILE * lvlMonster;
 	lvlMonster = fopen (NOM_MONSTER, "w");
 
@@ -293,6 +302,7 @@ void writeMonster (t_monster monsters[NB_MONSTER_MAX], int nbMonster) {
 	}
 	fprintf(lvlMonster, "\n");
 	fclose(lvlMonster);
+	err ("</writeMonster>", -1);
 }
 
 /**
@@ -307,14 +317,14 @@ void writeMonster (t_monster monsters[NB_MONSTER_MAX], int nbMonster) {
 */
 void initGameMap(t_cell map[LINES][COLUMNS], int choix, int choixFichierSauvegarde, t_character *player, t_monster monsters[NB_MONSTER_MAX], int * nbMonster){
 	/* Initialise les niveaux soit une nouvelle partie soit une sauvegarde */
-	err("*** Debut init Game Map ****");
+	err ("<initGameMap>", +1);
 	int i;
 	t_lvl lvlData[NB_LVL];
 	initNameOfFile (choixFichierSauvegarde);
 
 
 	if (choix == NEW_GAME) {
-		err("Debut traitement new_game");
+		err("Debut traitement new_game", 0);
 		//remove(NOM_POSITION);
 		initStatRoom ();
 		for(i = 0; i < NB_LVL; i++) {
@@ -328,19 +338,18 @@ void initGameMap(t_cell map[LINES][COLUMNS], int choix, int choixFichierSauvegar
 
 		createMonster (monsters, nbMonster);
 		writeMonster (monsters, *nbMonster);
-		err("Fin traitement new_game");
+		err("Fin traitement new_game", 0);
 	}
 	else{
-		err("Debut traitement CONTINUE_GAME");
+		err("Debut traitement CONTINUE_GAME", 0);
 		readPosition(player);
-		err( "lecture de l'étage");
 		readLvl(map, player->lvl);
 		readLvlData (lvlData);
 		setLvlData (lvlData);
     	readMonster (monsters, nbMonster);
-		err("Fin traitement CONTINUE_GAME");
+		err("Fin traitement CONTINUE_GAME", 0);
 	}
-	err("*** Fin init Game Map ****");
+	err ("</initGameMap>", -1);
 }
 
 /**
@@ -352,6 +361,7 @@ void initGameMap(t_cell map[LINES][COLUMNS], int choix, int choixFichierSauvegar
 */
 void changeLvl(t_cell map[LINES][COLUMNS], t_character *player, int dir){
 	/* Fonction permettant de changer de niveaux */
+	err ("<changeLvl>", +1);
 
 
 	if (isBetween (player->lvl + dir, 0, NB_LVL-1) ) {
@@ -367,6 +377,7 @@ void changeLvl(t_cell map[LINES][COLUMNS], t_character *player, int dir){
 			}
 		}
 	}
+	err ("</changeLvl>", -1);
 }
 
 /**
@@ -379,7 +390,8 @@ void changeLvl(t_cell map[LINES][COLUMNS], t_character *player, int dir){
 */
 void saveGame(t_cell map[LINES][COLUMNS], t_character *player, t_monster monsters[NB_MONSTER_MAX], int nbMonster){
 	/* Fonction permettant de sauvegarder la partie à l'instant t */
-	err("*** Début Save Game ***");
+	err ("<saveGame>", +1);
+
 
 	t_lvl lvlData[NB_LVL];
 
@@ -388,7 +400,7 @@ void saveGame(t_cell map[LINES][COLUMNS], t_character *player, t_monster monster
 	writeLvl (map, player->lvl);
 	writePosition (*player);
   	writeMonster (monsters, nbMonster);
-	err("*** Fin Save Game ***");
+	err ("<saveGame>", +1);
 }
 
 /**
@@ -398,11 +410,12 @@ void saveGame(t_cell map[LINES][COLUMNS], t_character *player, t_monster monster
 */
 int bFileSaveEmpty(int choixFichierSauvegarde){
 	/* Fonction vérifiant si un dossier est vide */
-	err("\n***Debut is File Save Empty***");
+	err ("<bFileSaveEmpty>", +1);
+
 	int i;
 	char fileName[50];
 	sprintf(fileName, "./partie/sauvegarde%i/position.txt", choixFichierSauvegarde);
-	err(fileName);
+	err(fileName, 0);
 
 	if(fopen(fileName, "r") == NULL){
 		i=TRUE;
@@ -410,7 +423,7 @@ int bFileSaveEmpty(int choixFichierSauvegarde){
 	}else{
 		i=FALSE;
 	}
-	err("***Fin is File Save Empty***\n");
+	err ("</bFileSaveEmpty>", -1);
 	return i;
 }
 
@@ -420,7 +433,8 @@ int bFileSaveEmpty(int choixFichierSauvegarde){
 	* \param choixFichierSauvegarde Numéro du dossier de sauvegarde
 */
 void deleteGame(int choixFichierSauvegarde){
-  /* Fonction permettant de supprimer une partie */
+	/* Fonction permettant de supprimer une partie */
+	err ("<deleteGame>", +1);
 	char fileName[50];
 	int i;
 	initNameOfFile (choixFichierSauvegarde);
@@ -429,5 +443,5 @@ void deleteGame(int choixFichierSauvegarde){
 		remove(NOM_NIVEAU[i]);
 	}
 	remove(NOM_LVLDATA);
-
+	err ("</deleteGame>", -1);
 }

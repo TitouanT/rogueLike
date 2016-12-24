@@ -77,6 +77,7 @@ int konami (int key);
 	*	\fn void init_colors()
 	*/
 void init_colors(){
+	err ("<init_colors>", +1);
 
 	start_color();
 
@@ -96,6 +97,7 @@ void init_colors(){
 	init_pair(MED_KIT_COLOR , COLOR_RED,   COLOR_WHITE);
 	init_pair(MED_KIT_COLOR_C, COLOR_RED, COLOR_BLACK);
 
+	err ("</init_colors>", -1);
 }
 
 /**
@@ -103,9 +105,11 @@ void init_colors(){
 	*	\fn void abortGame()
 	*/
 void abortGame(){
-	err("**** ON QUITTE LE JEU, LA FONCTION abortGame() A ETE APPELEE ****");
+	err ("<abortGame>", +1);
+	err("on quitte le jeu, la fonction abortgame() a ete appelee", 0);
 	endwin(); //Fermeture de la fenetre
-	err("**** good bye ****");
+	err("good bye", 0);
+	err ("</abortGame>", -1);
 	exit(EXIT_SUCCESS);
 }
 
@@ -115,6 +119,7 @@ void abortGame(){
 	*	\fn void init_screen()
 	*/
 void init_screen(){
+	err ("<init_screen>", +1);
 
 	int lines, columns;
 
@@ -139,6 +144,7 @@ void init_screen(){
 	}
 
 	refresh();
+	err ("</init_screen>", -1);
 }
 
 /**
@@ -150,9 +156,11 @@ void init_screen(){
 * \param win Fenêtre où afficher le message
 */
 void printLineCenter(char *msg, int widthScreen, int line, WINDOW *win){
+	err ("<printLineCenter>", +1);
 
 	mvwprintw(win, line, (widthScreen - strlen(msg)) / 2, "%s", msg);
 
+	err ("</printLineCenter>", -1);
 }
 
 /**
@@ -165,6 +173,7 @@ void printLineCenter(char *msg, int widthScreen, int line, WINDOW *win){
 	* \param win Fenetre où afficher le message
 	*/
 void printASCIIText(char * file, int * line, int xShift, WINDOW *win){
+	err ("<printASCIIText>", +1);
 	FILE *texte;
 	char letter;
 
@@ -181,6 +190,7 @@ void printASCIIText(char * file, int * line, int xShift, WINDOW *win){
 		}
 		fclose(texte);
 	}
+	err ("</printASCIIText>", -1);
 }
 
 /**
@@ -192,6 +202,7 @@ void printASCIIText(char * file, int * line, int xShift, WINDOW *win){
 	* \param win Fenetre où afficher le message
 	*/
 void printASCIICenter(char *file, char * message, char * messageTwo, WINDOW * win){
+	err ("<printASCIICenter>", +1);
 
 	int lines, columns;
 	int yShift, xShift;
@@ -207,6 +218,7 @@ void printASCIICenter(char *file, char * message, char * messageTwo, WINDOW * wi
 
 	printLineCenter(message, columns, yShift+2, win);
 	printLineCenter(messageTwo, columns, yShift+3, win);
+	err ("</printASCIICenter>", -1);
 
 }
 
@@ -217,6 +229,7 @@ void printASCIICenter(char *file, char * message, char * messageTwo, WINDOW * wi
 	*/
 void startScreen(WINDOW *win){
 
+	err ("<startScreen>", +1);
 	int lines, columns;
 	getmaxyx(win, lines, columns);
 
@@ -225,6 +238,7 @@ void startScreen(WINDOW *win){
 	mvwprintw(win, lines - 1, 0, "Roguelike créé par MOTTIER Emeric - PELLOIN Valentin - TEYSSIER Titouan.");
 	wrefresh(win);
 	getch();
+	err ("</startScreen>", -1);
 }
 
 /**
@@ -237,6 +251,7 @@ void startScreen(WINDOW *win){
 * \param height Hauteur de la zone à effacer
 */
 void clearArea(WINDOW *win, int startX, int startY, int width, int height){
+	err ("<clearArea>", +1);
 
 	int i, j;
 
@@ -247,6 +262,7 @@ void clearArea(WINDOW *win, int startX, int startY, int width, int height){
 	}
 	wrefresh(win);
 
+	err ("</clearArea>", -1);
 }
 
 /**
@@ -261,6 +277,7 @@ void clearArea(WINDOW *win, int startX, int startY, int width, int height){
 	*/
 void drawBox(int startX, int startY, int sizeX, int sizeY, WINDOW *win, char color){
 
+	err ("<drawBox>", +1);
 	int x = startX, y = startY;
 	int i;
 
@@ -293,6 +310,7 @@ void drawBox(int startX, int startY, int sizeX, int sizeY, WINDOW *win, char col
 	mvwaddch(win, y, x, ACS_LRCORNER);
 
 
+	err ("</drawBox>", -1);
 }
 
 /**
@@ -303,6 +321,7 @@ void drawBox(int startX, int startY, int sizeX, int sizeY, WINDOW *win, char col
 	* \param selectedGame Numéro du jeu sélectionné
 	*/
 void printSaveInfos(WINDOW *win, int saveNB, int selectedGame){
+	err ("<printSaveInfos>", +1);
 
 	int lines, columns;
 	char color = 'w';
@@ -329,6 +348,7 @@ void printSaveInfos(WINDOW *win, int saveNB, int selectedGame){
 	wattroff(win, COLOR_PAIR(GENERAL_COLOR));
 
 
+	err ("</printSaveInfos>", -1);
 }
 
 /**
@@ -343,7 +363,8 @@ void printSaveInfos(WINDOW *win, int saveNB, int selectedGame){
 	* \return FALSE sinon
 	*/
 int selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *player, t_monster monsters[NB_MONSTER_MAX], int * nbMonster){
-	err ("*** Debut Selection screen ***");
+	err ("<selectionScreen>", +1);
+	
 	int lines, columns;
 	getmaxyx(win,lines,columns);
 
@@ -352,7 +373,7 @@ int selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *player
 	int key;
 	int quit = FALSE;
 caCEstDuPropre:
-	err(" Affichage de l'écran de sélection de partie ");
+	err("Affichage de l'écran de sélection de partie ", 0);
 
 	printLineCenter("Choisissez un emplacement de sauvegarde :", columns, 5, win);
 	printLineCenter("(utiliser les flèches)", columns, 6, win);
@@ -379,7 +400,7 @@ caCEstDuPropre:
 
 		switch (key) {
 			case '\n'           : quit = TRUE; break;
-			case 'q'            : err("On a demandé de quitter le jeu"); abortGame();
+			case 'q'            : abortGame();
 			case KEY_RETURN     :
 			case KEY_RETURN_MAC : deleteGame(selectedGame); break;
 
@@ -392,14 +413,16 @@ caCEstDuPropre:
 
 	if(bFileSaveEmpty (selectedGame) == FALSE ){
 		initGameMap (map, CONTINUE_GAME, selectedGame, player, monsters, nbMonster);
+		err ("</selectionScreen>", -1);
 		return FALSE;
 	}
 	else {
 		initGameMap (map, NEW_GAME, selectedGame, player, monsters, nbMonster);
+		err ("</selectionScreen>", -1);
 		return TRUE;
 	}
 
-	err ("*** Fin Selection screen ***");
+	
 }
 
 /**
@@ -414,6 +437,8 @@ caCEstDuPropre:
 
 	*/
 void displayMonster (WINDOW * win, t_monster monsters[NB_MONSTER_MAX], t_cell map[LINES][COLUMNS], int nbMonster, int currentLvl, int visibleByGhost[LINES][COLUMNS]) {
+	err ("<displayMonster/>", 0);
+	
 	int i;
 	for (i = 0; i < nbMonster; i++) {
 		if (monsters[i].hp > 0 && monsters[i].lvl == currentLvl && (map[monsters[i].line][monsters[i].col].isDiscovered || visibleByGhost[monsters[i].line][monsters[i].col] == 1)) {
@@ -434,6 +459,7 @@ void displayMonster (WINDOW * win, t_monster monsters[NB_MONSTER_MAX], t_cell ma
 			wrefresh(win);
 		}
 	}
+	//err ("</displayMonster>", -1);
 }
 
 /**
@@ -444,9 +470,11 @@ void displayMonster (WINDOW * win, t_monster monsters[NB_MONSTER_MAX], t_cell ma
 	*/
 void clearLog(int *line, WINDOW *win){
 
+	err ("<clearLog>", +1);
 	clearArea(win, 1, 1, COLS_LOGS - 1, LINES_LOGS - 1);
 
 	*line = 0;
+	err ("</clearLog>", -1);
 }
 
 /**
@@ -457,7 +485,9 @@ void clearLog(int *line, WINDOW *win){
 	* \param win Fenetre des logs
 	*/
 void addLog(char * message, int * line, WINDOW *win){
-
+	err ("<addLog>", +1);
+	err(message, 0);
+	
 	wattron(win, COLOR_PAIR(GENERAL_COLOR));
 
 	// On découpe le message en sous messages pour rentrer dans la zone de logs
@@ -476,6 +506,7 @@ void addLog(char * message, int * line, WINDOW *win){
 	// Si on a plus de place pour clear la zone de logs
 	if(*line >= LINES_LOGS - 3) clearLog(line, win);
 	else (*line)++;
+	err ("</addLog>", -1);
 
 }
 
@@ -486,7 +517,7 @@ void addLog(char * message, int * line, WINDOW *win){
 	* \param win_logs Fenêtre où afficher les objectifs
 	*/
 void displayObjectives(int *lineLog, WINDOW *win_logs){
-
+	err ("<displayObjectives>", +1);
 	(*lineLog)++;
 
 	printLineCenter("-- OBJECTIFS -- ", COLS_LOGS, *lineLog, win_logs);
@@ -503,6 +534,7 @@ void displayObjectives(int *lineLog, WINDOW *win_logs){
 	addLog("- Appuyez sur `?` pour obtenir de l'aide.", lineLog, win_logs);
 
 	*lineLog += 3;
+	err ("</displayObjectives>", -1);
 
 }
 
@@ -518,9 +550,10 @@ void displayObjectives(int *lineLog, WINDOW *win_logs){
 	*/
 WINDOW *createWindow(int startX, int startY, int width, int height, char * label){
 
+	err ("<createWindow>", +1);
 	WINDOW *localWindow;
 
-	err ("\n**Création d'une nouvelle fenêtre**\n");
+	err ("Création d'une nouvelle fenêtre", 0);
 
 	localWindow = newwin(height, width, startY, startX);
 
@@ -531,6 +564,7 @@ WINDOW *createWindow(int startX, int startY, int width, int height, char * label
 
 	wrefresh(localWindow);
 
+	err ("</createWindow>", -1);
 	return localWindow;
 
 }
@@ -541,10 +575,11 @@ WINDOW *createWindow(int startX, int startY, int width, int height, char * label
 	* \param window Nom de la fenêtre à supprimer
 	*/
 void deleteWindow(WINDOW *window){
+	err ("<deleteWindow>", +1);
 
 	int lines, cols;
 
-	err ("\n**Suppresion d'une fenêtre**\n");
+	err ("Suppresion d'une fenêtre", 0);
 
 
 	getmaxyx(window, lines, cols);
@@ -552,6 +587,7 @@ void deleteWindow(WINDOW *window){
 	clearArea(window, 0, 0, cols, lines);
 	delwin(window);
 
+	err ("</deleteWindow>", -1);
 
 }
 
@@ -564,12 +600,14 @@ void deleteWindow(WINDOW *window){
 	* \param win Fenêtre où afficher la cellule
 	*/
 void printCell(int pair, char cell, WINDOW *win){
+	//err ("<printCell>", +1);
 
 	wattron(win, COLOR_PAIR(pair));
 	switch (cell) {
 		case 'c': waddch(win, ACS_CKBOARD); break;
 		default: wprintw(win, "%c", cell); break;
 	}
+	//err ("</printCell>", -1);
 }
 
 /**
@@ -582,6 +620,7 @@ void printCell(int pair, char cell, WINDOW *win){
 	*/
 void displayFloor(t_cell map[LINES][COLUMNS], t_character player, WINDOW *win, int visibleByGhost[LINES][COLUMNS]) {
 
+	err ("<displayFloor/>", 0);
 	int i, j;
 
 	for (i = 0; i < LINES; i++) {
@@ -660,6 +699,7 @@ void displayFloor(t_cell map[LINES][COLUMNS], t_character player, WINDOW *win, i
 
 	}
 	wrefresh(win);
+	//err ("</displayFloor>", -1);
 
 }
 
@@ -670,6 +710,7 @@ void displayFloor(t_cell map[LINES][COLUMNS], t_character player, WINDOW *win, i
 	*/
 void setFloorCheat(t_cell map[LINES][COLUMNS]) {
 
+	err ("<setFloorCheat>", +1);
 	int i, j;
 
 	for (i = 0; i < LINES; i++) {
@@ -679,6 +720,7 @@ void setFloorCheat(t_cell map[LINES][COLUMNS]) {
 		}
 	}
 
+	err ("</setFloorCheat>", -1);
 }
 
 /**
@@ -692,6 +734,7 @@ void setFloorCheat(t_cell map[LINES][COLUMNS]) {
 	*/
 void displayPlayer(t_character player, t_cell mat[LINES][COLUMNS], WINDOW *win, WINDOW *logs, int *line){
 
+	err ("<displayPlayer>", +1);
 	if(mat[player.line][player.column].type == ROOM){
 		wattron(win, COLOR_PAIR(PLAYER_COLOR));
 	}
@@ -726,6 +769,7 @@ void displayPlayer(t_character player, t_cell mat[LINES][COLUMNS], WINDOW *win, 
 		}
 
 	}
+	err ("</displayPlayer>", -1);
 
 }
 
@@ -738,7 +782,8 @@ void displayPlayer(t_character player, t_cell mat[LINES][COLUMNS], WINDOW *win, 
 	* \param color Couleur de la barre
 	*/
 void printBar(int value, int max, WINDOW * win, int color){
-
+	err ("<printBar>", +1);
+	
 	int i;
 
 	if(color) wattron(win, COLOR_PAIR(BAR_YELLOW));
@@ -756,6 +801,7 @@ void printBar(int value, int max, WINDOW * win, int color){
 
 	wrefresh(win);
 	wattroff(win, COLOR_PAIR(BAR_RED));
+	err ("</printBar>", -1);
 
 }
 
@@ -767,6 +813,7 @@ void printBar(int value, int max, WINDOW * win, int color){
 	* \param lineLog Ligne de logs
 	*/
 void printInventory(t_character player, WINDOW *win, int *lineLog){
+	err ("<printBar>", +1);
 
 	int i;
 	char message[100];
@@ -788,6 +835,7 @@ void printInventory(t_character player, WINDOW *win, int *lineLog){
 
 	addLog("", lineLog, win);
 
+	err ("</printBar>", -1);
 
 }
 
@@ -799,6 +847,7 @@ void printInventory(t_character player, WINDOW *win, int *lineLog){
 	* \param isPlayerInvicible Booléen représentant l'invincibilité du joueur
 	*/
 void displayStats(t_character player, WINDOW *win, int isPlayerInvicible){
+	err ("<displayStats>", +1);
 
 	clearArea(win, 1, 1, COLS_STATS - 1, LINES_STATS - 1);
 
@@ -831,6 +880,7 @@ void displayStats(t_character player, WINDOW *win, int isPlayerInvicible){
 
 	wrefresh(win);
 
+	err ("</displayStats>", -1);
 }
 
 /**
@@ -840,6 +890,7 @@ void displayStats(t_character player, WINDOW *win, int isPlayerInvicible){
 	* \param win Fenêtre
 	*/
 void displayEnd(t_character player, WINDOW *win){
+	err ("<displayEnd>", +1);
 
 	int lines, columns;
 	int yShift, xShift;
@@ -856,4 +907,5 @@ void displayEnd(t_character player, WINDOW *win){
 	}
 
 	wrefresh(win);
+	err ("</displayEnd>", -1);
 }

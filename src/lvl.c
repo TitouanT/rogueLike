@@ -38,15 +38,14 @@ void initStatRoom () {
   * \param tabLvl tableau qui contient chaque niveau
   */
 void setLvlData (t_lvl tabLvl[NB_LVL]) {
-	err("*** debut set lvl data ***");
+	err ("<setLvlData>", +1);
 	int i, j;
 	for (i = 0; i < NB_LVL; i++) {
 		gLvl[i] = tabLvl[i];
 	}
-	err("\ncontenu tabLvl");
 	gLvlId = NB_LVL;
 
-	err("*** fin set lvl data ***");
+	err ("</setLvlData>", -1);
 }
 
 /**
@@ -57,18 +56,18 @@ void setLvlData (t_lvl tabLvl[NB_LVL]) {
   * \return FALSE sinon
   */
 int queryLvlData (t_lvl tabLvl[NB_LVL]) {
-	err("*** debut query lvl data ***");
+	err ("<queryLvlData>", +1);
 	int i;
 	if (gLvlId == NB_LVL) {
 		for (i = 0; i < NB_LVL; i++) {
 			tabLvl[i] = gLvl[i];
 		}
-		err("*** fin query lvl data ***");
+		err ("</queryLvlData>", -1);
 		return TRUE;
 	}
 	else {
-		err ("queryLvlData: impossible d'avoir toutes les informations sur les étage");
-		err("*** fin query lvl data ***");
+		err ("queryLvlData: impossible d'avoir toutes les informations sur les étage", 0);
+		err ("</queryLvlData>", -1);
 		return FALSE;
 	}
 }
@@ -79,7 +78,7 @@ int queryLvlData (t_lvl tabLvl[NB_LVL]) {
   * \param map matrice qui représente le niveau
   */
 void initFloor (t_cell map[LINES][COLUMNS]) {
-	err("*** debut init floor ***");
+	err ("<initFloor>", +1);
 	int i, j;
 	for (i = 0; i < LINES; i++) for (j = 0; j < COLUMNS; j++) {
 		map[i][j].type = EMPTY;
@@ -88,7 +87,7 @@ void initFloor (t_cell map[LINES][COLUMNS]) {
 		map[i][j].nbObject = 0;
 
 	}
-	err("*** fin init floor ***");
+	err ("</initFloor>", -1);
 }
 
 /**
@@ -100,9 +99,17 @@ void initFloor (t_cell map[LINES][COLUMNS]) {
   * \return FALSE sinon.
   */
 int areInContact (t_room r1, t_room r2) { // return TRUE if the room are in Contact
-	if (intervalOverlaping(r2.line, r2.line + r2.height, r1.line, r1.line + r1.height)
-	&& intervalOverlaping(r2.column, r2.column + r2.width, r1.column, r1.column + r1.width)) return TRUE;
-	else return FALSE;
+	//err ("<areInContact/>", 0);
+	int inter1 = intervalOverlaping(r2.line, r2.line + r2.height, r1.line, r1.line + r1.height);
+	int inter2 = intervalOverlaping(r2.column, r2.column + r2.width, r1.column, r1.column + r1.width);
+	int rep;
+	
+	if (inter1 && inter2) rep = TRUE;
+	else rep = FALSE;
+	
+	//err ("</areInContact>", -1);
+	
+	return rep;
 }
 
 /**
@@ -115,6 +122,7 @@ int areInContact (t_room r1, t_room r2) { // return TRUE if the room are in Cont
   * \return room une piece valide
   */
 t_room randomRoom (t_cell map[][COLUMNS], t_room * rooms, int nbRoom, int *nbTotal) {
+	err ("<randomRoom>", +1);
 	int maxHeight, maxWidth, i, j, posNotOk, maxTour = 100, acc;
 	t_room room;
 	acc = 0;
@@ -144,6 +152,7 @@ t_room randomRoom (t_cell map[][COLUMNS], t_room * rooms, int nbRoom, int *nbTot
 		room.column = 42;
 		room.height = 42;
 		room.width = 42;
+		err ("</randomRoom>", -1);
 		return room;
 	}
 
@@ -158,6 +167,7 @@ t_room randomRoom (t_cell map[][COLUMNS], t_room * rooms, int nbRoom, int *nbTot
 			map[room.line + i][room.column + j].state = LIGHT;
 		}
 	}
+	err ("</randomRoom>", -1);
 	return room;
 }
 
@@ -168,6 +178,7 @@ t_room randomRoom (t_cell map[][COLUMNS], t_room * rooms, int nbRoom, int *nbTot
   * \return la position d'une cellule qui est un mur de la piece
   */
 t_pos chooseRandomWall (t_room r) {
+	err ("<chooseRandomWall>", +1);
 	int isHorizontal = rand()%2;
 	int isLeftOrTop = rand()%2;
 	t_pos rep;
@@ -181,6 +192,7 @@ t_pos chooseRandomWall (t_room r) {
 		else rep.column = r.column + r.width - 1; // case vertical right
 		rep.line = r.line + randab(1, r.height - 1); // here neither
 	}
+	err ("</chooseRandomWall>", -1);
 	return rep;
 }
 
@@ -191,10 +203,12 @@ t_pos chooseRandomWall (t_room r) {
   * \param pos position ou on peut placer une porte
   */
 void putRandomDoor (t_cell map[][COLUMNS], t_pos pos) {
+	err ("<putRandomDoor>", +1);
 	int doIt = rand()%3;
 	if (doIt == 0) map[pos.line][pos.column].state = dOPEN;
 	else if(doIt == 1) map[pos.line][pos.column].state = dCLOSE;
 	else map[pos.line][pos.column].state = dNONE;
+	err ("</putRandomDoor>", -1);
 }
 
 /* 	connect use an algorithm call flood and fill to search a path from a door to the corridor network,
@@ -222,6 +236,7 @@ void putRandomDoor (t_cell map[][COLUMNS], t_pos pos) {
   * \param room la pièce à connecter
   */
 void connect(t_cell map[LINES][COLUMNS], int walkable[LINES][COLUMNS], t_room room) {
+	err ("<connect>", +1);
 	int path[LINES][COLUMNS], i, j, l, c, val;
 	int up = 0, down = 1, right = 2, left = 3, curDir, dir[4] = {0};
 	t_pos head, start = chooseRandomWall (room);
@@ -290,7 +305,7 @@ void connect(t_cell map[LINES][COLUMNS], int walkable[LINES][COLUMNS], t_room ro
 		head.line   = l;
 		head.column = c;
 	}
-
+	err ("</connect>", -1);
 }
 
 /**
@@ -301,6 +316,7 @@ void connect(t_cell map[LINES][COLUMNS], int walkable[LINES][COLUMNS], t_room ro
   * \param nbRoom nombre de pieces existantes
   */
 void chooseLink (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
+	err ("<chooseLink>", +1);
 	int i, j, walkable[LINES][COLUMNS] = {{0}};
 
 	t_pos doorPos = chooseRandomWall (rooms[0]);
@@ -311,6 +327,8 @@ void chooseLink (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 	for (i = 0; i < LINES; i++)
 		for (j = 0; j < COLUMNS; j++)
 			if (walkable[i][j] == 1 && map[i][j].type == EMPTY) map[i][j].type = CORRIDOR;
+	
+	err ("</chooseLink>", -1);
 }
 
 /**
@@ -324,6 +342,7 @@ void chooseLink (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
   * \param col contiendra la colonne choisi
   */
 void randomFreePlace (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom, int iRoom, int * line, int * col) {
+	err ("<randomFreePlace/>", 0);
 	if (!isBetween(iRoom, 0, nbRoom - 1)) iRoom = rand()%nbRoom;
 	int secu = 0;
 	do {
@@ -332,6 +351,7 @@ void randomFreePlace (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom, in
 		secu++;
 	} while (map[*line][*col].nbObject != 0 && secu < 100);
 	if (map[*line][*col].nbObject != 0) *line = *col = -1;
+	//err ("</randomFreePlace>", -1);
 }
 
 /**
@@ -342,11 +362,15 @@ void randomFreePlace (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom, in
   * \param column Colonne choisi
   */
 int nextToDoor (t_cell map[LINES][COLUMNS], int line, int column){
-		if(map[line+1][column].state==dNONE || map[line+1][column].state==dCLOSE || map[line+1][column].state==dOPEN) return TRUE;
-		if(map[line-1][column].state==dNONE || map[line+1][column].state==dCLOSE || map[line+1][column].state==dOPEN) return TRUE;
-		if(map[line][column+1].state==dNONE || map[line+1][column].state==dCLOSE || map[line+1][column].state==dOPEN) return TRUE;
-		if(map[line][column-1].state==dNONE || map[line+1][column].state==dCLOSE || map[line+1][column].state==dOPEN) return TRUE;
-		return FALSE;
+	err ("<nextToDoor>", +1);
+	int rep = FALSE;
+	if(map[line+1][column].state==dNONE || map[line+1][column].state==dCLOSE || map[line+1][column].state==dOPEN) rep = TRUE;
+	if(map[line-1][column].state==dNONE || map[line+1][column].state==dCLOSE || map[line+1][column].state==dOPEN) rep = TRUE;
+	if(map[line][column+1].state==dNONE || map[line+1][column].state==dCLOSE || map[line+1][column].state==dOPEN) rep = TRUE;
+	if(map[line][column-1].state==dNONE || map[line+1][column].state==dCLOSE || map[line+1][column].state==dOPEN) rep = TRUE;
+	err ("</nextToDoor>", -1);
+	
+	return rep;
 }
 
 /**
@@ -357,7 +381,7 @@ int nextToDoor (t_cell map[LINES][COLUMNS], int line, int column){
   * \param nbRoom nombre de pieces existantes
   */
 void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
-	err("*** debut de placement Objet ***");
+	err ("<placeObject>", +1);
 	int rEnterance = rand()%nbRoom, rExit, lineEn, colEn, lineEx, colEx;
 	int lineFood, colFood;
 	int lineTrap, colTrap;
@@ -369,11 +393,11 @@ void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 	randomFreePlace (map, rooms, nbRoom, rEnterance, &lineEn, &colEn);
 	randomFreePlace (map, rooms, nbRoom, rExit, &lineEx, &colEx);
 
-	err("placement escalier vers le bas ...");
+	err("placement escalier vers le bas ...", 0);
 	map[lineEn][colEn].obj[map[lineEn][colEn].nbObject].type = STAIRS_DOWN;
 	map[lineEn][colEn].obj[map[lineEn][colEn].nbObject].isDiscovered = DEBUG;
 
-	err("et vers le haut !!");
+	err("et vers le haut !!", 0);
 	map[lineEx][colEx].obj[map[lineEn][colEn].nbObject].type = STAIRS_UP;
 	map[lineEx][colEx].obj[map[lineEn][colEn].nbObject].isDiscovered = DEBUG;
 
@@ -382,7 +406,7 @@ void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 
 	// Génération de la nourriture aléatoirement sur la carte
 	for (i = 0; i < (int)(AV_NB_FOOD_ROOM * nbRoom); i++) {
-		err("placement de nourriture !");
+		err("placement de nourriture !", 0);
 		randomFreePlace(map, rooms, nbRoom, -1, &lineFood, &colFood);
 		map[lineFood][colFood].obj[map[lineFood][colFood].nbObject].type = FOOD;
 		map[lineFood][colFood].obj[map[lineFood][colFood].nbObject].isDiscovered = DEBUG;
@@ -392,7 +416,7 @@ void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 
 	// Génération des kits de santé aléatoirement sur la carte
 	for (i = 0; i < (int)(AV_NB_MED_KIT_ROOM * nbRoom); i++) {
-		err("placement des kits de santé !");
+		err("placement des kits de santé !", 0);
 		randomFreePlace(map, rooms, nbRoom, -1, &lineFood, &colFood);
 		map[lineFood][colFood].obj[map[lineFood][colFood].nbObject].type = MED_KIT;
 		map[lineFood][colFood].obj[map[lineFood][colFood].nbObject].isDiscovered = DEBUG;
@@ -402,16 +426,16 @@ void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
 
 	// Génération des pièges aléatoirement sur la carte
 	for (i = 0; i < (int)(AV_NB_TRAP_ROOM * nbRoom); i++) {
-		err("placement d'un piege !");
+		err("placement d'un piege !", 0);
 	do{
 		randomFreePlace(map, rooms, nbRoom, -1, &lineTrap, &colTrap);
-	}while(nextToDoor(map,lineTrap, colTrap));
+	} while(nextToDoor(map,lineTrap, colTrap));
 		map[lineTrap][colTrap].obj[map[lineTrap][colTrap].nbObject].type = TRAP;
 		map[lineTrap][colTrap].obj[map[lineTrap][colTrap].nbObject].isDiscovered = DEBUG;
 		map[lineTrap][colTrap].nbObject++;
 	}
 
-	err("*** fin de placement Objet ***");
+	err ("</placeObject>", -1);
 }
 
 /**
@@ -421,7 +445,7 @@ void placeObject (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom) {
   * \param lvl hauteur de l'étage
   */
 void randomFloor (t_cell map[LINES][COLUMNS], int lvl) {
-	err("***Debut Random Floor*****************************************************");
+	err ("<randomFloor>", +1);
 	int nbRoom = randab (ROOM_NB_MIN + lvl, ROOM_NB_MAX + 1 + lvl), i;
 
 	t_room rooms[ROOM_NB_MAX + NB_LVL];
@@ -441,5 +465,6 @@ void randomFloor (t_cell map[LINES][COLUMNS], int lvl) {
 		}
 		gLvlId++;
 	}
-	err("***Fin Random Floor*******************************************************");
+	err ("</randomFloor>", -1);
 }
+

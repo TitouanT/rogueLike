@@ -14,6 +14,7 @@
 #include "mapConst.h" // OK
 
 FILE * error;
+int lvlError;
 
 /**
   * \brief test si un fichier existe
@@ -189,6 +190,7 @@ void initErr(){
 	if(PRINT_ERROR){
 		remove("err"); // comme il est ouvert en mode ajout a chaque fois on le supprime en début d'execution
 		error = fopen("err", "a");
+		lvlError = 0;
 	}
 }
 
@@ -204,12 +206,17 @@ void unInitErr(){
 
 /**
 	* \brief Enregistre un message d'erreur dans le fichier "err"
-	* \fn void err (char msg[])
+	* \fn void err (char msg[], int dir)
 	* \param msg Message à enregistrer dans le fichier
+	* \param dir Mettre à 1 au premier appel dans une fonction, -1 au dernier, 0 dans les autres cas.
 	*/
-void err (char msg[]) {
+void err (char msg[], int dir) {
+	int i;
 	if(PRINT_ERROR){
-		fprintf(error, "%s\n", msg);
+		if (dir == -1) lvlError--;
+		for (i = 0; i < lvlError; i++) fprintf (error, "\t");
+		fprintf (error, "%s\n", msg);
+		if (dir == 1) lvlError++;
 	}
 }
 

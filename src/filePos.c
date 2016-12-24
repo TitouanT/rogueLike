@@ -11,6 +11,7 @@
 #include <stdlib.h> // OK
 
 #include "cell.h"   // OK
+#include "tools.h"  // OK
 
 /**
   * \struct t_element
@@ -32,6 +33,7 @@ t_element * queue;
   * \fn void file_init ()
   */
 void file_init () {
+	err ("<file_init/>", 0);
 	queue = tete = NULL;
 }
 
@@ -42,6 +44,8 @@ void file_init () {
   * \return FALSE sinon
   */
 int file_est_vide () {
+	//err ("<file_est_vide>", +1);
+	//err ("</file_est_vide>", -1);
 	return (tete == NULL);
 }
 
@@ -51,6 +55,7 @@ int file_est_vide () {
   * \param n adresse d'une position qui contiendra la position de l'élément retiré
   */
 void file_retirer (t_pos *n) {
+	//err ("<file_retirer>", +1);
 	t_element * tmp = NULL;
 	if (tete != NULL) {
 		tmp = tete;
@@ -59,6 +64,7 @@ void file_retirer (t_pos *n) {
 		free(tmp);
 		tmp = NULL;
 	}
+	//err ("</file_retirer>", -1);
 }
 
 /**
@@ -67,12 +73,14 @@ void file_retirer (t_pos *n) {
   * \param n position à ajouter dans la file
   */
 void file_ajouter (t_pos n) {
+	//err ("<file_ajouter>", +1);
 	t_element * nouv = malloc (sizeof(t_element));
 	nouv->suiv = NULL;
 	nouv->val = n;
 	if (tete == NULL) tete = nouv;
 	else queue->suiv = nouv;
 	queue = nouv;
+	//err ("</file_ajouter>", -1);
 }
 
 /**
@@ -81,6 +89,7 @@ void file_ajouter (t_pos n) {
   * \fn void file_supprimer ()
   */
 void file_supprimer () {
+	err ("<file_supprimer/>", 0);
 	t_element * tmp = NULL;
 	while (tete != NULL) {
 		tmp = tete;

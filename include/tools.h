@@ -29,7 +29,7 @@ int car2val (char car);
 char up2low (char car);
 char low2up (char car);
 
-void err(char msg[]);
+void err(char msg[], int dir);
 void initErr();
 void unInitErr();
 

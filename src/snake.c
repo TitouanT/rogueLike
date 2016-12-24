@@ -24,6 +24,7 @@ int lines, cols;
 
 // initialize the ncurses library, the random, and print the screen
 void initGame () {
+	err("<initGame>", +1);
 	timeout(WAIT_TIME);
 	getmaxyx(stdscr, lines, cols);
 	gWGame= subwin(stdscr, lines - 3, cols, 0, 0);
@@ -46,14 +47,14 @@ void initGame () {
 	CAN_GO_THROUGH_BORDER = (rand()%2 == 0) ? TRUE : FALSE;
 
 
+	err("</initGame>", -1);
 
 }
 
 // display the snake
 void displaySnake (int isAlive, int currDir) {
+	err("<displaySnake>", +1);
 	t_pos pos;
-
-
 	listPtr_move2head();
 	listPtr_next ();
 	while (!listPtr_isOut ()) {
@@ -97,12 +98,15 @@ void displaySnake (int isAlive, int currDir) {
 		}
 	}
 	else mvwprintw(gWGame, pos.line, pos.col, "!");
+	err("</displaySnake>", -1);
 }
 
 // display some information about the game
 void displayStatsSnake(int foodEat, int length, int foodQtt) {
-	mvwprintw(gWStats, 1, 1, "                                                              ");
-	wprintw(gWStats,      "                                                                                                           ");
+	err("<displaySnake>", +1);
+	mvwprintw(gWStats, 1, 1, "                                                    ");
+	wprintw(gWStats, "                                                             ");
+	wprintw(gWStats, "                                                             ");
 	wrefresh(gWStats);
 	mvwprintw(gWStats, 1, 1, "nourriture mangée: %d, longueur: %d, nourriture présente: %d, ", foodEat, length, foodQtt);
 
@@ -114,15 +118,16 @@ void displayStatsSnake(int foodEat, int length, int foodQtt) {
 	if (CAN_GO_THROUGH_BORDER) wprintw(gWStats, "il peut aller au travers des murs");
 	else wprintw(gWStats, "il ne peut pas aller au travers des murs");
 
-
 	wprintw(gWStats, " | 'q' pour quitter");
 
-
 	wrefresh(gWStats);
+	err("</displaySnake>", -1);
 }
 
 // display all the food
 void displayFood(t_pos * foods, int foodQtt) {
+	err("<displayFood>", +1);
+	
 	int i;
 	for (i = 0; i < foodQtt; i++) {
 		wattron(gWGame, COLOR_PAIR(1));
@@ -130,17 +135,21 @@ void displayFood(t_pos * foods, int foodQtt) {
 		else mvwprintw(gWGame, foods[i].line, foods[i].col, "#");
 		wattroff(gWGame, COLOR_PAIR(1));
 	}
+	err("</displayFood>", -1);
 
 }
 
 // add a random food at the i position
 void randomFood(t_pos * foods, int i) {
+	err("<randomFood>", +1);
 	foods[i].line = rand()%(lines - 3 - 2) + 1;
 	foods[i].col  = rand()%(cols - 2) + 1;
+	err("</randomFood>", -1);
 }
 
 // return TRUE if the snake eat and update some stuff if he did
 int eat(t_pos head, t_pos * foods, int foodQtt, int * foodEat, int * growth) {
+	err("<eat>", +1);
 	int i, eatSometh = FALSE;
 	for (i = 0; i < foodQtt; i++) {
 		if (head.line == foods[i].line && head.col == foods[i].col) {
@@ -150,10 +159,12 @@ int eat(t_pos head, t_pos * foods, int foodQtt, int * foodEat, int * growth) {
 			(*growth)+=GROWTH;
 		}
 	}
+	err("</eat>", -1);
 	return eatSometh;
 }
 
 void randPosOnWall (t_pos * pos, t_dir * currDir) {
+	err("<randPosOnWall>", +1);
 	int wall = rand()%4;
 	int bounce = rand()%2;
 	if (bounce) {
@@ -210,9 +221,11 @@ void randPosOnWall (t_pos * pos, t_dir * currDir) {
 				break;
 		}
 	}
+	err("</randPosOnWall>", -1);
 }
 
 void endGame() {
+	err("<endGame>", +1);
 	int i, j;
 	for (i = 0; i < lines; i++)
 		for (j = 0; j < cols; j++)
@@ -220,10 +233,11 @@ void endGame() {
 
 	delwin(gWGame);
 	delwin(gWStats);
+	err("</endGame>", -1);
 }
 
 int snake(void) {
-	err("*** Debut du snake ***");
+	err("<snake>", +1);
 	/***************/
 	/* Declaration */
 	/***************/
@@ -422,27 +436,30 @@ replay:
 	}
 
 	endGame();
-	err("*** Fin du Snake ***");
+	err("</snake>", -1);
 	return 0;
 }
 
 
 
 int konami (int key) {
+	err("<konami>", +1);
 	int code[10] = {KEY_UP, KEY_UP, KEY_DOWN, KEY_DOWN, KEY_LEFT, KEY_RIGHT, KEY_LEFT, KEY_RIGHT, 'b', 'a'};
 	justForKonami++;
 	if (key == code[justForKonami]) {
-		err("konami ! goodkey");
+		err("konami ! goodkey", 0);
 		if (key == 'a') {
 			snake();
 			refresh();
+			err("</konami>", -1);
 			return TRUE;
 		}
 	}
 	else {
 		if (key == KEY_UP)justForKonami = 0;
 		else justForKonami = -1;
-		err("konami ! wrongKey");
+		err("konami ! wrongKey", 0);
 	}
+	err("</konami>", -1);
 	return FALSE;
 }
