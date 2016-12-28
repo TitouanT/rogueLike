@@ -247,22 +247,22 @@ void markDiscover(t_cell map[LINES][COLUMNS], t_character player) {
 
 /**
 	* \brief Déplace le joueur à un escalier montant ou descendant mis en paramètre
-	*	\fn int move2spawn(t_cell mat[LINES][COLUMNS], t_character *perso, int stair)
-	* \param mat Carte
+	*	\fn int move2spawn(t_cell map[LINES][COLUMNS], t_character *perso, int stair)
+	* \param map Carte
 	* \param perso joueur
 	* \param stair Escalier
 	*/
-int move2spawn(t_cell mat[LINES][COLUMNS], t_character *perso, int stair){
+int move2spawn(t_cell map[LINES][COLUMNS], t_character *perso, int stair){
 	err("<move2spawn>", +1);
 
 	int i, j;
 
 	for(i = 0 ; i < LINES ; i++){
 		for(j = 0 ; j < COLUMNS ; j++){
-			if(mat[i][j].nbObject != 0 && mat[i][j].obj[0].type == stair){
+			if(map[i][j].nbObject != 0 && map[i][j].obj[0].type == stair){
 				perso->line = i;
 				perso->column = j;
-				markDiscoverRoom(mat, *perso);
+				markDiscoverRoom(map, *perso);
 				perso->nbMove++;
 				err("</move2spawn>", -1);
 				return TRUE;
@@ -296,9 +296,9 @@ int bIsWalkable(t_cell cell){
 
 /**
 	* \brief Déplace le joueur et les conséquences de ce mouvement (nourriture, piège)
-	*	\fn int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, int *lineLog, t_monster monsters[NB_MONSTER_MAX], int nbMonster, WINDOW *win_game, int visibleByGhost[LINES][COLUMNS])
+	*	\fn int move_perso(t_dir direction, t_cell map[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, int *lineLog, t_monster monsters[NB_MONSTER_MAX], int nbMonster, WINDOW *win_game, int visibleByGhost[LINES][COLUMNS])
 	* \param direction Direction de mouvement du joueur
-	* \param mat Carte
+	* \param map Carte
 	* \param perso joueur
 	* \param win_logs Fenêtre où afficher les objectifs
 	* \param lineLog Numéro de ligne de log
@@ -307,7 +307,7 @@ int bIsWalkable(t_cell cell){
 	* \param win_game Fenêtre  où afficher le jeu
 	* \param visibleByGhost Matrice pour savoir ce que les fantomes rendent visible
 	*/
-int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, int *lineLog, t_monster monsters[NB_MONSTER_MAX], int nbMonster, WINDOW *win_game, int visibleByGhost[LINES][COLUMNS]) {
+int move_perso(t_dir direction, t_cell map[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, int *lineLog, t_monster monsters[NB_MONSTER_MAX], int nbMonster, WINDOW *win_game, int visibleByGhost[LINES][COLUMNS]) {
 	err("<move_perso>", +1);
 	int success = FALSE;
 	int line   = perso->line;
@@ -319,35 +319,35 @@ int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso, 
 
 	// On veut regarder si il est possible d'aller en haut
 	if(direction == UP){
-		if(line > 0 && bIsWalkable(mat[line-1][column])){
+		if(line > 0 && bIsWalkable(map[line-1][column])){
 			perso->line -= 1;
 			success = TRUE;
 		}
 	}
 
 	if(direction == DOWN){
-		if(line+1 < LINES && bIsWalkable(mat[line+1][column])){
+		if(line+1 < LINES && bIsWalkable(map[line+1][column])){
 			perso->line += 1;
 			success = TRUE;
 		}
 	}
 
 	if(direction == LEFT){
-		if(column > 0 && bIsWalkable(mat[line][column-1])){
+		if(column > 0 && bIsWalkable(map[line][column-1])){
 			perso->column -= 1;
 			success = TRUE;
 		}
 	}
 
 	if(direction == RIGHT){
-		if(column+1 < COLUMNS && bIsWalkable(mat[line][column+1])){
+		if(column+1 < COLUMNS && bIsWalkable(map[line][column+1])){
 			perso->column += 1;
 			success = TRUE;
 		}
 	}
 
 	if(direction == UP_LEFT){
-		if(line > 0 && column > 0 && bIsWalkable(mat[line - 1][column - 1])){
+		if(line > 0 && column > 0 && bIsWalkable(map[line - 1][column - 1])){
 			perso->column -= 1;
 			perso->line   -= 1;
 			success = TRUE;
@@ -355,7 +355,7 @@ int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso, 
 	}
 
 	if(direction == UP_RIGHT){
-		if(line > 0 && column + 1 < COLUMNS  && bIsWalkable(mat[line - 1][column + 1])){
+		if(line > 0 && column + 1 < COLUMNS  && bIsWalkable(map[line - 1][column + 1])){
 			perso->column += 1;
 			perso->line   -= 1;
 			success = TRUE;
@@ -363,7 +363,7 @@ int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso, 
 	}
 
 	if(direction == DOWN_LEFT){
-		if(line+1 < LINES && column > 0 && bIsWalkable(mat[line + 1][column - 1])){
+		if(line+1 < LINES && column > 0 && bIsWalkable(map[line + 1][column - 1])){
 			perso->column -= 1;
 				perso->line   += 1;
 				success = TRUE;
@@ -371,7 +371,7 @@ int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso, 
 	}
 
 	if(direction == DOWN_RIGHT){
-		if(line+1 < LINES && column + 1 < COLUMNS  && bIsWalkable(mat[line + 1][column + 1])){
+		if(line+1 < LINES && column + 1 < COLUMNS  && bIsWalkable(map[line + 1][column + 1])){
 			perso->column += 1;
 			perso->line   += 1;
 			success = TRUE;
@@ -385,11 +385,11 @@ int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso, 
 			perso -> line = line;
 			perso -> column = column;
 		}
-		else markDiscover(mat, *perso);
+		else markDiscover(map, *perso);
 
 
 		perso->nbMove++;
-		moveMonster(mat, monsters, nbMonster, perso);
+		moveMonster(map, monsters, nbMonster, perso);
 
 		augmenterFaim(perso);
 
@@ -408,7 +408,7 @@ int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso, 
 			if(didItHappen(10)) (perso->hp)--;
 		}
 		if(perso->food <= 20){
-			if(didItHappen(25)) passOut(mat);
+			if(didItHappen(25)) passOut(map);
 		}
 
 		/// Perte de vie si le joueur est malade.
@@ -418,8 +418,8 @@ int move_perso(t_dir direction, t_cell mat[LINES][COLUMNS], t_character *perso, 
 			if(didItHappen(35)) perso->isSick = FALSE;
 		}
 
-		if(mat[perso->line][perso->column].nbObject > 0 && mat[perso->line][perso->column].obj[0].type==TRAP){
-			fallTrap(mat,perso, win_logs, lineLog, direction, monsters, nbMonster, win_game, visibleByGhost);
+		if(map[perso->line][perso->column].nbObject > 0 && map[perso->line][perso->column].obj[0].type==TRAP){
+			fallTrap(map,perso, win_logs, lineLog, direction, monsters, nbMonster, win_game, visibleByGhost);
 			err("tombé dans un piege !!", 0);
 		}
 	}

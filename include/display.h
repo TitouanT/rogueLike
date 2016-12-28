@@ -27,7 +27,7 @@ void displayFloor(t_cell map[LINES][COLUMNS], t_character player, WINDOW *win, i
 void addLog(char * message, int * line, WINDOW *win);
 // void clearArea(WINDOW *win, int startX, int startY, int width, int height); //utilisée seulement dans display.c
 void clearLog(int *line, WINDOW *win);
-void displayPlayer(t_character player, t_cell mat[LINES][COLUMNS], WINDOW *win, WINDOW *logs, int *line);
+void displayPlayer(t_character player, t_cell map[LINES][COLUMNS], WINDOW *win, WINDOW *logs, int *line);
 void displayStats(t_character player, WINDOW *win, int isPlayerInvicible);
 void setFloorCheat(t_cell map[LINES][COLUMNS]);
 void displayEnd(t_character player, WINDOW *win);

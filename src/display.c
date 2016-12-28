@@ -725,17 +725,17 @@ void setFloorCheat(t_cell map[LINES][COLUMNS]) {
 
 /**
 	* \brief Affiche le joueur sur le jeu
-	*	\fn void displayPlayer(t_character player, t_cell mat[LINES][COLUMNS], WINDOW *win, WINDOW *logs, int *line)
+	*	\fn void displayPlayer(t_character player, t_cell map[LINES][COLUMNS], WINDOW *win, WINDOW *logs, int *line)
 	* \param player Joueur
-	* \param mat Carte du jeu
+	* \param map Carte du jeu
 	* \param win Fenêtre du jeu
 	* \param logs Fenetre des logs
 	* \param line Ligne acutelle du log
 	*/
-void displayPlayer(t_character player, t_cell mat[LINES][COLUMNS], WINDOW *win, WINDOW *logs, int *line){
+void displayPlayer(t_character player, t_cell map[LINES][COLUMNS], WINDOW *win, WINDOW *logs, int *line){
 
 	err ("<displayPlayer>", +1);
-	if(mat[player.line][player.column].type == ROOM){
+	if(map[player.line][player.column].type == ROOM){
 		wattron(win, COLOR_PAIR(PLAYER_COLOR));
 	}
 	else wattron(win, COLOR_PAIR(OBJECT_IN_CORRIDOR));
@@ -744,9 +744,9 @@ void displayPlayer(t_character player, t_cell mat[LINES][COLUMNS], WINDOW *win, 
 	wprintw(win, "@");
 	wrefresh(win);
 
-	if(mat[player.line][player.column].nbObject != 0){
+	if(map[player.line][player.column].nbObject != 0){
 
-		switch (mat[player.line][player.column].obj[0].type) {
+		switch (map[player.line][player.column].obj[0].type) {
 			case STAIRS_UP:
 				if(player.lvl < NB_LVL -1){
 					addLog("Vous pouvez monter les escaliers avec :           > Entrée", line, logs);
