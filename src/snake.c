@@ -104,7 +104,7 @@ void displaySnake (int isAlive, int currDir) {
 // display some information about the game
 void displayStatsSnake(int foodEat, int length, int foodQtt) {
 	err("<displaySnake>", +1);
-	mvwprintw(gWStats, 1, 1, "                                                    ");
+	/*mvwprintw(gWStats, 1, 1, "                                                    ");
 	wprintw(gWStats, "                                                             ");
 	wprintw(gWStats, "                                                             ");
 	wrefresh(gWStats);
@@ -118,7 +118,9 @@ void displayStatsSnake(int foodEat, int length, int foodQtt) {
 	if (CAN_GO_THROUGH_BORDER) wprintw(gWStats, "il peut aller au travers des murs");
 	else wprintw(gWStats, "il ne peut pas aller au travers des murs");
 
-	wprintw(gWStats, " | 'q' pour quitter");
+	wprintw(gWStats, " | 'q' pour quitter");*/
+
+	mvwprintw(gWStats, 1, 1, "nourriture mangée: %d, longueur: %d, nourriture présente: %d, cannibale(c): %3s, fantome(f): %3s | 'q' pour quitter | 'r' pour rejouer", foodEat, length, foodQtt, CAN_CROWL_ON_HIM ? "OUI" : "NON", CAN_GO_THROUGH_BORDER ? "OUI" : "NON");
 
 	wrefresh(gWStats);
 	err("</displaySnake>", -1);
@@ -286,15 +288,19 @@ replay:
 				continueGame = FALSE;
 				break;
 
+			case 'r': // replay
+				continueGame = FALSE;
+				break;
+
 			case ' ':
 				growth += 1;
 				break;
 
-			case 'b':
+			case 'f':
 				CAN_GO_THROUGH_BORDER = !CAN_GO_THROUGH_BORDER;
 				break;
 
-			case 'h':
+			case 'c':
 				CAN_CROWL_ON_HIM = !CAN_CROWL_ON_HIM;
 				break;
 
@@ -424,11 +430,11 @@ replay:
 	timeout(-1);
 	if (key != 'q') {
 		do {
-			key = getch();
 			if (key == 'r'/*replay*/) {
 				endGame();
 				goto replay;
 			}
+			key = getch();
 		} while (key != 'q');
 	}
 
