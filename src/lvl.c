@@ -361,7 +361,7 @@ void randomFreePlace (t_cell map[LINES][COLUMNS], t_room * rooms, int nbRoom, in
   * \param line Ligne choisi
   * \param column Colonne choisi
   */
-int nextToDoor (t_cell map[LINES][COLUMNS], int line, int column){
+/*int nextToDoor (t_cell map[LINES][COLUMNS], int line, int column){
 	err ("<nextToDoor>", +1);
 	int rep = FALSE;
 	if(map[line+1][column].state==dNONE || map[line+1][column].state==dCLOSE || map[line+1][column].state==dOPEN) rep = TRUE;
@@ -370,6 +370,17 @@ int nextToDoor (t_cell map[LINES][COLUMNS], int line, int column){
 	if(map[line][column-1].state==dNONE || map[line+1][column].state==dCLOSE || map[line+1][column].state==dOPEN) rep = TRUE;
 	err ("</nextToDoor>", -1);
 	
+	return rep;
+}*/
+
+int nextToDoor (t_cell map[LINES][COLUMNS], int line, int column) {
+	err ("<nextToDoor>", +1);
+	int rep = FALSE;
+	if(map[line+1][column].type == DOORWAY) rep = TRUE;
+	if(map[line-1][column].type == DOORWAY) rep = TRUE;
+	if(map[line][column+1].type == DOORWAY) rep = TRUE;
+	if(map[line][column-1].type == DOORWAY) rep = TRUE;
+	err ("</nextToDoor>", -1);
 	return rep;
 }
 
