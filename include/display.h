@@ -29,7 +29,7 @@ void addLog(char * message, int * line, WINDOW *win);
 void clearLog(int *line, WINDOW *win);
 void displayPlayer(t_character player, t_cell map[LINES][COLUMNS], WINDOW *win, WINDOW *logs, int *line);
 void displayStats(t_character player, WINDOW *win, int isPlayerInvicible);
-void setFloorCheat(t_cell map[LINES][COLUMNS]);
+void setFloorCheat(t_cell map[LINES][COLUMNS], int etat);
 void displayEnd(t_character player, WINDOW *win);
 //void abortGame(); //utilisée seulement dans display.c
 void printInventory(t_character player, WINDOW *win, int *lineLog);

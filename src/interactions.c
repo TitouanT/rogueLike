@@ -238,7 +238,10 @@ void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_cha
 	noecho();
 
 	if(strcmp(cheatSTR, "lumos") == 0){
-		setFloorCheat(map);
+		setFloorCheat(map, TRUE);
+	}
+	else if(strcmp(cheatSTR, "nox") == 0){
+		setFloorCheat(map, FALSE);
 	}
 	else if(strcmp(cheatSTR, "food") == 0){
 		player->food = MAX_FOOD;
@@ -290,6 +293,7 @@ void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_cha
 
 		addLog("help          : Affiche cette liste d'aide", &lineLog, win_logs);
 		addLog("lumos         : Affiche la map au complet", &lineLog, win_logs);
+		addLog("nox           : Masque la map au complet", &lineLog, win_logs);
 		addLog("food          : Met 100% de la nourriture", &lineLog, win_logs);
 		addLog("food++        : Ajoute 1pt de nourriture", &lineLog, win_logs);
 		addLog("food--        : Enlève 1pt de nourriture", &lineLog, win_logs);

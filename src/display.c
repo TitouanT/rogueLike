@@ -364,7 +364,7 @@ void printSaveInfos(WINDOW *win, int saveNB, int selectedGame){
 	*/
 int selectionScreen(WINDOW *win, t_cell map[LINES][COLUMNS], t_character *player, t_monster monsters[NB_MONSTER_MAX], int * nbMonster){
 	err ("<selectionScreen>", +1);
-	
+
 	int lines, columns;
 	getmaxyx(win,lines,columns);
 
@@ -422,7 +422,7 @@ caCEstDuPropre:
 		return TRUE;
 	}
 
-	
+
 }
 
 /**
@@ -438,7 +438,7 @@ caCEstDuPropre:
 	*/
 void displayMonster (WINDOW * win, t_monster monsters[NB_MONSTER_MAX], t_cell map[LINES][COLUMNS], int nbMonster, int currentLvl, int visibleByGhost[LINES][COLUMNS]) {
 	err ("<displayMonster/>", 0);
-	
+
 	int i;
 	for (i = 0; i < nbMonster; i++) {
 		if (monsters[i].hp > 0 && monsters[i].lvl == currentLvl && (map[monsters[i].line][monsters[i].col].isDiscovered || visibleByGhost[monsters[i].line][monsters[i].col] == 1)) {
@@ -487,7 +487,7 @@ void clearLog(int *line, WINDOW *win){
 void addLog(char * message, int * line, WINDOW *win){
 	err ("<addLog>", +1);
 	err(message, 0);
-	
+
 	wattron(win, COLOR_PAIR(GENERAL_COLOR));
 
 	// On découpe le message en sous messages pour rentrer dans la zone de logs
@@ -704,19 +704,24 @@ void displayFloor(t_cell map[LINES][COLUMNS], t_character player, WINDOW *win, i
 }
 
 /**
-	* \brief Affiche toute la map chargée
-	*	\fn void setFloorCheat(t_cell map[LINES][COLUMNS])
+	* \brief Affiche ou masque toute la map chargée
+	*	\fn void setFloorCheat(t_cell map[LINES][COLUMNS], int etat)
 	* \param map Carte à marquer comme explorée
+	* \param etat Etat (TRUE pour afficher la carte, FALSE pour la masquer)
 	*/
-void setFloorCheat(t_cell map[LINES][COLUMNS]) {
+void setFloorCheat(t_cell map[LINES][COLUMNS], int etat) {
 
 	err ("<setFloorCheat>", +1);
 	int i, j;
 
+	if(etat != TRUE && etat != FALSE){
+		etat = TRUE;
+	}
+	
 	for (i = 0; i < LINES; i++) {
 		for (j = 0; j < COLUMNS; j++) {
-			map[i][j].isDiscovered = TRUE;
-			map[i][j].obj[0].isDiscovered = TRUE;
+			map[i][j].isDiscovered = etat;
+			map[i][j].obj[0].isDiscovered = etat;
 		}
 	}
 
@@ -783,7 +788,7 @@ void displayPlayer(t_character player, t_cell map[LINES][COLUMNS], WINDOW *win, 
 	*/
 void printBar(int value, int max, WINDOW * win, int color){
 	err ("<printBar>", +1);
-	
+
 	int i;
 
 	if(color) wattron(win, COLOR_PAIR(BAR_YELLOW));
