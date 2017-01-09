@@ -202,7 +202,7 @@ void grabItem(t_character *player, t_cell map[LINES][COLUMNS], WINDOW *win_logs,
 	}
 
 	err ("</grabItem>", -1);
-	
+
 }
 
 /**
@@ -238,7 +238,10 @@ void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_cha
 	noecho();
 
 	if(strcmp(cheatSTR, "lumos") == 0){
-		setFloorCheat(map);
+		setFloorCheat(map, TRUE);
+	}
+	else if(strcmp(cheatSTR, "nox") == 0){
+		setFloorCheat(map, FALSE);
 	}
 	else if(strcmp(cheatSTR, "food") == 0){
 		player->food = MAX_FOOD;
@@ -290,6 +293,7 @@ void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_cha
 
 		addLog("help          : Affiche cette liste d'aide", &lineLog, win_logs);
 		addLog("lumos         : Affiche la map au complet", &lineLog, win_logs);
+		addLog("nox           : Masque la map au complet", &lineLog, win_logs);
 		addLog("food          : Met 100% de la nourriture", &lineLog, win_logs);
 		addLog("food++        : Ajoute 1pt de nourriture", &lineLog, win_logs);
 		addLog("food--        : Enlève 1pt de nourriture", &lineLog, win_logs);
@@ -319,7 +323,7 @@ void cheat(WINDOW *win_logs, WINDOW *win_game, t_cell map[LINES][COLUMNS], t_cha
 	*/
 void help(WINDOW *win_logs, int *lineLog){
 	err ("<help>", +1);
-	
+
 	(*lineLog)++;
 
 	printLineCenter("-- AIDE POUR LES NOUVEAUX -- ", COLS_LOGS, *lineLog, win_logs);
@@ -400,7 +404,7 @@ void traiterPorte(t_cell map[LINES][COLUMNS], t_character *player, int key, WIND
 
 		case 'k':
 		case KEY_UP    : (doorPos.line)--;   break;
-		
+
 		case 'j':
 		case KEY_DOWN  : (doorPos.line)++;   break;
 
@@ -409,7 +413,7 @@ void traiterPorte(t_cell map[LINES][COLUMNS], t_character *player, int key, WIND
 
 		case 'l':
 		case KEY_RIGHT : (doorPos.column)++; break;
-		
+
 		default: wrongKey(win, lineLog);
 	}
 
@@ -481,7 +485,7 @@ int traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW *win, 
 					}
 				}
 				break;
-				
+
 			case FOOD:
 				if(player->food >= MAX_FOOD){
 					addLog("Vous n'avez plus faim !", lineLog, win);
@@ -490,7 +494,7 @@ int traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW *win, 
 					eatFood(player, map);
 				}
 				break;
-				
+
 			case MED_KIT:
 				if(player->hp < MAX_HP || player->isSick){
 					player->hp = min(MAX_HP, player->hp + randab(5, 10));
@@ -499,7 +503,7 @@ int traiterEntree(t_cell map[LINES][COLUMNS], t_character *player, WINDOW *win, 
 					map[player->line][player->column].nbObject = 0;
 				}
 				break;
-			
+
 			default: break;
 		}
 	}
@@ -562,19 +566,19 @@ int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, 
 		case 'k': case KEY_UP:
 			move_perso(UP,    map, player, win_logs, lineLog, monsters, nbMonster, win_game, visibleByGhost);
 			break;
-			
+
 		case 'j': case KEY_DOWN:
 			move_perso(DOWN,  map, player, win_logs, lineLog, monsters, nbMonster, win_game, visibleByGhost);
 			break;
-			
+
 		case 'h': case KEY_LEFT:
 			move_perso(LEFT,  map, player, win_logs, lineLog, monsters, nbMonster, win_game, visibleByGhost);
 			break;
-			
+
 		case 'l': case KEY_RIGHT:
 			move_perso(RIGHT, map, player, win_logs, lineLog, monsters, nbMonster, win_game, visibleByGhost);
 			break;
-			
+
 
 		case 'y': move_perso(UP_LEFT,    map, player, win_logs, lineLog, monsters, nbMonster, win_game, visibleByGhost); break;
 		case 'u': move_perso(UP_RIGHT,   map, player, win_logs, lineLog, monsters, nbMonster, win_game, visibleByGhost); break;
@@ -590,7 +594,7 @@ int handleInteraction(int key, t_cell map[LINES][COLUMNS], t_character *player, 
 			saveGame(map, player, monsters, nbMonster);
 			addLog("Partie sauvegardée", lineLog, win_logs);
 			break;
-			
+
 		case 'q' : err ("</handleInteraction>", -1); return FALSE;
 		case 'Q' : err ("</handleInteraction>", -1); return !askConfirmationToQuit(win_logs, lineLog);
 

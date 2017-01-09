@@ -66,7 +66,7 @@ ame for the position's file*/
 void readLvl ( t_cell map[][COLUMNS], int nbLvl) {
 	/* Lit un fichier dans un dossier donné */
 	err ("<readLvl>", +1);
-	
+
 
 	int i, j, k, type, state, isDiscovered, nbObject, object, isDiscoveredObject;
 	FILE * lvlFile;
@@ -362,21 +362,27 @@ void initGameMap(t_cell map[LINES][COLUMNS], int choix, int choixFichierSauvegar
 void changeLvl(t_cell map[LINES][COLUMNS], t_character *player, int dir){
 	/* Fonction permettant de changer de niveaux */
 	err ("<changeLvl>", +1);
+	int target = player->lvl + dir;
 
 
-	if (isBetween (player->lvl + dir, 0, NB_LVL-1) ) {
-		writeLvl (map, player->lvl);
-		(player->lvl)+= dir;
-		readLvl (map, player->lvl);
-		if (dir > 0) {
-			move2spawn (map, player, STAIRS_DOWN);
-		}
-		else{
-			if(dir<0){
-				move2spawn (map, player, STAIRS_UP);
-			}
+	if(target < 0) {
+		target = 0;
+	}
+
+	if (target > NB_LVL-1) target = NB_LVL-1;
+
+	writeLvl (map, player->lvl);
+	(player->lvl)= target;
+	readLvl (map, target);
+	if (dir > 0) {
+		move2spawn (map, player, STAIRS_DOWN);
+	}
+	else{
+		if(dir<0){
+			move2spawn (map, player, STAIRS_UP);
 		}
 	}
+
 	err ("</changeLvl>", -1);
 }
 

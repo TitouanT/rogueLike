@@ -86,7 +86,7 @@ void displaySnake (int isAlive, int currDir) {
 	listPtr_readData(&pos);
 
 	mvwprintw(gWGame, pos.line, pos.col, "*");
-	
+
 	listPtr_move2head();
 	listPtr_readData (&pos);
 	if (isAlive) {
@@ -110,8 +110,8 @@ void displayStatsSnake(int foodEat, int length, int foodQtt) {
 	wrefresh(gWStats);
 	mvwprintw(gWStats, 1, 1, "nourriture mangée: %d, longueur: %d, nourriture présente: %d, ", foodEat, length, foodQtt);
 
-	if (CAN_CROWL_ON_HIM) wprintw(gWStats, "le serpent peu se manger lui-même");
-	else wprintw(gWStats, "le serpent ne peu pas se manger lui-même");
+	if (CAN_CROWL_ON_HIM) wprintw(gWStats, "le serpent peut se manger lui-même");
+	else wprintw(gWStats, "le serpent ne peut pas se manger lui-même");
 
 	wprintw(gWStats, " %s ", (CAN_CROWL_ON_HIM == CAN_GO_THROUGH_BORDER) ? "ET" : "MAIS");
 
@@ -129,7 +129,7 @@ void displayStatsSnake(int foodEat, int length, int foodQtt) {
 // display all the food
 void displayFood(t_pos * foods, int foodQtt) {
 	err("<displayFood>", +1);
-	
+
 	int i;
 	for (i = 0; i < foodQtt; i++) {
 		wattron(gWGame, COLOR_PAIR(1));
