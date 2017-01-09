@@ -631,7 +631,7 @@ void displayFloor(t_cell map[LINES][COLUMNS], t_character player, WINDOW *win, i
 
 					case EMPTY: 	 printCell(GENERAL_COLOR,' ', win); break;
 					case CORRIDOR:
-						if (map[i][j].nbObject <= 0 || map[i][j].obj[0].isDiscovered == FALSE)
+						if (map[i][j].nbObject <= 0 || (map[i][j].obj[0].isDiscovered == FALSE && visibleByGhost[i][j] == 0))
 							printCell(CORRIDOR_COLOR,'c', win);
 						else {
 							switch (map[i][j].obj[0].type) {
@@ -647,7 +647,7 @@ void displayFloor(t_cell map[LINES][COLUMNS], t_character player, WINDOW *win, i
 						break;
 
 					case DOORWAY:
-						if (map[i][j].nbObject <= 0 || map[i][j].obj[0].isDiscovered == FALSE){
+						if (map[i][j].nbObject <= 0 || (map[i][j].obj[0].isDiscovered == FALSE && visibleByGhost[i][j] == 0)){
 							switch (map[i][j].state) {
 								case dNONE:  printCell(CORRIDOR_COLOR,'c', win); break;
 								case dOPEN:  printCell(OPENED_DOOR,'c', win); break;
@@ -669,9 +669,10 @@ void displayFloor(t_cell map[LINES][COLUMNS], t_character player, WINDOW *win, i
 						break;
 
 					case ROOM:
-						if (map[i][j].nbObject == 0 || !map[i][j].obj[0].isDiscovered) printCell(ROOM_COLOR,' ', win);
-						else {
-							if(map[i][j].obj[0].isDiscovered){
+						if (map[i][j].nbObject > 0 && 
+							(map[i][j].obj[0].isDiscovered == TRUE || (visibleByGhost[i][j] == 1 && map[i][j].obj[0].type != TRAP))) 
+							
+							//if(map[i][j].obj[0].isDiscovered){
 								switch (map[i][j].obj[0].type) {
 									case STAIRS_UP:
 										if(player.lvl >= NB_LVL -1){
@@ -687,7 +688,9 @@ void displayFloor(t_cell map[LINES][COLUMNS], t_character player, WINDOW *win, i
 									case TRAP       : printCell(OBJECTS_COLOR, '^', win); break;
 									case objNONE    : printCell(ROOM_COLOR,' ', win);     break;
 								}
-							}
+							//}
+						else {
+							printCell(ROOM_COLOR,' ', win);
 						} break;
 
 
