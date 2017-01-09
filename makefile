@@ -1,4 +1,4 @@
-LIB = -lncurses
+LIB = -lncurses -lm
 FLAGS = -Wall
 DEBUG = -g
 

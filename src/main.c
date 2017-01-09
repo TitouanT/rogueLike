@@ -70,6 +70,82 @@
 #include "tools.h"        // OK
 #include "monstre.h"      // OK
 
+#include "math.h"
+
+#define DIFFUSION_SIZE 20
+
+int areDifferent(int l1, int c1, int l2, int c2) {
+	return (l1 != l2 || c1 != c2);
+}
+
+int isAnObstacle (t_cell map[][COLUMNS], int l, int c) {
+	return (map[l][c].type == WALL || map[l][c].type == DOORWAY && map[l][c].state == dCLOSE);
+}
+
+void followLine (t_cell map[LINES][COLUMNS], int mat[][2*DIFFUSION_SIZE + 1], t_character player, int startLine, int startCol, int endLine , int endCol) {
+	float sl = (float) startLine + 0.5;
+	float sc = (float) startCol + 0.5;
+	float el = (float) endLine + 0.5;
+	float ec = (float) endCol + 0.5;
+	float hl = sl;
+	float hc = sc;
+	float dirl = el - sl;
+	float dirc = ec - sc;
+	float mag = sqrt(dirl * dirl + dirc * dirc);
+	dirl /= mag * 10;
+	dirc /= mag * 10;
+	fprintf(stderr, "followLine 1\n");
+	while (areDifferent(endLine, endCol, (int) hl, (int) hc) && !isAnObstacle(map, (int) hl + player.line - startLine, (int) hc + player.column - startCol)) {
+		fprintf(stderr, "followLine 2 %d %d\n", (int) hl, (int) hc);
+		mat[(int) hl][(int) hc] = 1;
+		hl += dirl;
+		hc += dirc;
+	}
+}
+
+void lightDiffusion (t_cell map[LINES][COLUMNS], t_character player, int visibleByGhost[LINES][COLUMNS]) {
+	int mat[2*DIFFUSION_SIZE + 1][2*DIFFUSION_SIZE + 1] = {{0}};
+	int i, j, line, col;
+	t_pos matTopLeft = {0, 0},
+	      matBotRight = {2*DIFFUSION_SIZE, 2*DIFFUSION_SIZE},
+	      center = {DIFFUSION_SIZE, DIFFUSION_SIZE},
+	      matToVisibleByGhost;
+	
+	if (player.line - DIFFUSION_SIZE < 0) matTopLeft.line = -(player.line - DIFFUSION_SIZE);
+	if (player.column - DIFFUSION_SIZE < 0) matTopLeft.column = -(player.column - DIFFUSION_SIZE);
+	
+	if (player.line + DIFFUSION_SIZE >= LINES) matBotRight.line -= (player.line + DIFFUSION_SIZE - (LINES-1));
+	if (player.column + DIFFUSION_SIZE >= COLUMNS) matBotRight.column -= (player.column + DIFFUSION_SIZE - (COLUMNS-1));
+	
+	
+	fprintf(stderr, "1\n");
+	for (i = matTopLeft.column; i < matBotRight.column + 1; i++) {
+		followLine(map, mat, player, center.line, center.column, matTopLeft.line , i);
+		followLine(map, mat, player, center.line, center.column, matBotRight.line , i);
+	}
+	fprintf(stderr, "2\n");
+	
+	for (i = matTopLeft.line + 1; i < matBotRight.line; i++) {
+		followLine(map, mat, player, center.line, center.column, i, matTopLeft.column);
+		followLine(map, mat, player, center.line, center.column, i, matBotRight.column);
+	}
+	
+	fprintf(stderr, "3\n");
+	matToVisibleByGhost.line = player.line - center.line;
+	matToVisibleByGhost.column = player.column - center.column;
+	
+	for (i = matTopLeft.line; i <= matBotRight.line; i++) {
+		for (j = matTopLeft.column; j <= matBotRight.column; j++) {
+			if (mat[i][j] == 1) {
+				line = i + matToVisibleByGhost.line;
+				col = j + matToVisibleByGhost.column;
+				if (/*map[line][col].type == DOORWAY ||*/ map[line][col].type == ROOM) visibleByGhost[line][col] = 1;
+			}
+		}
+	}
+	fprintf(stderr, "4\n");
+}
+
 int main () {
 
 	if (fileExist("./accentNeeded")) setlocale(LC_ALL, "");
@@ -131,6 +207,7 @@ int main () {
 		// On affiche les objectifs
 		if(wasNewGame) displayObjectives(&lineLog, win_logs);
 		// On affiche la map et le joueur
+		lightDiffusion(map, player, visibleByGhost);
 		displayFloor(map, player, win_game, visibleByGhost);
 		displayPlayer(player, map, win_game, win_logs, &lineLog);
 		displayMonster (win_game, monsters, map, nbMonster, player.lvl, visibleByGhost);
@@ -165,6 +242,7 @@ int main () {
 
 			//moveMonster(map, monsters, nbMonster, &player);
 			setVisibleByGhost (monsters, visibleByGhost, player);
+			lightDiffusion(map, player, visibleByGhost);
 
 			err("affichage etage, player, stats", 0);
 			displayFloor(map, player, win_game, visibleByGhost);
