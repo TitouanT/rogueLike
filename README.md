@@ -1,5 +1,7 @@
 # rogueLike
 
+![Screenshot](https://raw.githubusercontent.com/TitouanT/rogueLike/master/include/screen_doxygen.png)
+
 ## Requirements
 
 Voici les différentes applications qui doivent être installées sur votre système :
