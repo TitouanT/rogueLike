@@ -79,7 +79,7 @@ int areDifferent(int l1, int c1, int l2, int c2) {
 }
 
 int isAnObstacle (t_cell map[][COLUMNS], int l, int c) {
-	return (map[l][c].type == WALL || map[l][c].type == DOORWAY && map[l][c].state == dCLOSE);
+	return (map[l][c].type == WALL || (map[l][c].type == DOORWAY && map[l][c].state == dCLOSE));
 }
 
 void followLine (t_cell map[LINES][COLUMNS], int mat[][2*DIFFUSION_SIZE + 1], t_character player, int startLine, int startCol, int endLine , int endCol) {
