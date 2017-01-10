@@ -23,12 +23,12 @@
 void my_delay(int i)    /*Pause l'application pour i ms*/
 {
 	err("<my_delay>", +1);
-	
+
 	// clock_t start,end;
 	// start=clock();
 	// while(((end=clock())-start)<=((i*CLOCKS_PER_SEC)/1000));
 	struct timespec delay = {i/1000, (long) (i%1000) * 1000000};
-	nanosleep(&delay, NULL); 
+	nanosleep(&delay, NULL);
 	err("</my_delay>", -1);
 }
 /**
@@ -120,8 +120,7 @@ int bIsPartOfRoom(t_cell cell){
 void fallTrap(t_cell map[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, int *lineLog, t_dir direction, t_monster monsters[NB_MONSTER_MAX], int nbMonster, WINDOW *win_game, int visibleByGhost[LINES][COLUMNS]){
 
 	err("<fallTrap>", +1);
-	t_character player;
-	int trapType, lostLvl, lostHp, glisser;
+	int trapType, lostLvl, lostHp;
 	int i;
 
 	if( perso->lvl !=0){
@@ -145,15 +144,14 @@ void fallTrap(t_cell map[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, 
 				addLog("Attention, un L1 vous a jeté une carte, vous      vous êtes écorché !", lineLog, win_logs);
 			break;
 		case 2 :
-				glisser = randab(2, 8);
-				do{
-				player=*perso;
 				clearLog(lineLog, win_logs);
-				displayFloor(map, player, win_game, visibleByGhost);
-				displayPlayer(player, map, win_game, win_logs, lineLog);
-				my_delay(50);
 				addLog("Regardez où vous mettez vos pieds, la femme de    ménage a lustré le sol.", lineLog, win_logs);
-				}while(move_perso(direction, map, perso, win_logs, lineLog, monsters, nbMonster, win_game, visibleByGhost));
+
+				do{
+					//displayFloor(map, *perso, win_game, visibleByGhost);
+					displayPlayer(*perso, map, win_game, win_logs, lineLog);
+					my_delay(50);
+				} while(move_perso(direction, map, perso, win_logs, lineLog, monsters, nbMonster, win_game, visibleByGhost));
 			break;
 		default : break;
 	}
