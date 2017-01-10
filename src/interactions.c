@@ -333,7 +333,7 @@ void help(WINDOW *win_logs, int *lineLog){
 	addLog("?         : Affiche cette liste d'aide", lineLog, win_logs);
 	addLog("flèches   : Permet de se déplacer", lineLog, win_logs);
 	addLog("o         : Ouvrir une porte", lineLog, win_logs);
-	addLog("f         : Fermer une porte", lineLog, win_logs);
+	addLog("c         : Fermer une porte", lineLog, win_logs);
 	addLog("i         : Voir l'inventaire", lineLog, win_logs);
 	addLog("g         : Prendre un objet", lineLog, win_logs);
 	addLog("d         : Poser un objet de l'inventaire", lineLog, win_logs);
