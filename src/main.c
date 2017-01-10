@@ -34,7 +34,7 @@
  *
  * - Pour se déplacer, utilisez les flèches de direction.
  * - Pour ouvrir une porte rouge, appuyez sur la touche `o` et signalez la direction de la porte avec les flèches de direction.
- * - Pour fermer une porte verte, appuyez sur la touche `f` et signalez la direction de la porte avec les flèches de direction.
+ * - Pour fermer une porte verte, appuyez sur la touche `c` et signalez la direction de la porte avec les flèches de direction.
  * - Pour passer à l'étage suivant ou à l'étage précédent, placez vous sur un escalier et appuyez sur la touche "entrée".
  * - Pour voir votre inventaire, appuyez sur la touche `i`.
  * - Pour récupérer un objet, placez-vous dessus, puis appuyez sur la touche `g`. Vous devez avoir un emplacement de libre dans votre inventaire.
@@ -108,27 +108,27 @@ void lightDiffusion (t_cell map[LINES][COLUMNS], t_character player, int visible
 	      matBotRight = {2*DIFFUSION_SIZE, 2*DIFFUSION_SIZE},
 	      center = {DIFFUSION_SIZE, DIFFUSION_SIZE},
 	      matToVisibleByGhost;
-	
+
 	if (player.line - DIFFUSION_SIZE < 0) matTopLeft.line = -(player.line - DIFFUSION_SIZE);
 	if (player.column - DIFFUSION_SIZE < 0) matTopLeft.column = -(player.column - DIFFUSION_SIZE);
-	
+
 	if (player.line + DIFFUSION_SIZE >= LINES) matBotRight.line -= (player.line + DIFFUSION_SIZE - (LINES-1));
 	if (player.column + DIFFUSION_SIZE >= COLUMNS) matBotRight.column -= (player.column + DIFFUSION_SIZE - (COLUMNS-1));
-	
-	
+
+
 	for (i = matTopLeft.column; i < matBotRight.column + 1; i++) {
 		followLine(map, mat, player, center.line, center.column, matTopLeft.line , i);
 		followLine(map, mat, player, center.line, center.column, matBotRight.line , i);
 	}
-	
+
 	for (i = matTopLeft.line + 1; i < matBotRight.line; i++) {
 		followLine(map, mat, player, center.line, center.column, i, matTopLeft.column);
 		followLine(map, mat, player, center.line, center.column, i, matBotRight.column);
 	}
-	
+
 	matToVisibleByGhost.line = player.line - center.line;
 	matToVisibleByGhost.column = player.column - center.column;
-	
+
 	for (i = matTopLeft.line; i <= matBotRight.line; i++) {
 		for (j = matTopLeft.column; j <= matBotRight.column; j++) {
 			if (mat[i][j] == 1) {

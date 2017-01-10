@@ -29,7 +29,7 @@ make install
 
 - Pour se déplacer, utilisez les flèches de direction.
 - Pour ouvrir une porte rouge, appuyez sur la touche `o` et signalez la direction de la porte avec les flèches de direction.
-- Pour fermer une porte verte, appuyez sur la touche `f` et signalez la direction de la porte avec les flèches de direction.
+- Pour fermer une porte verte, appuyez sur la touche `c` et signalez la direction de la porte avec les flèches de direction.
 - Pour passer à l'étage suivant ou à l'étage précédent, placez vous sur un escalier et appuyez sur la touche "entrée".
 - Pour voir votre inventaire, appuyez sur la touche `i`.
 - Pour récupérer un objet, placez-vous dessus, puis appuyez sur la touche `g`. Vous devez avoir un emplacement de libre dans votre inventaire.
