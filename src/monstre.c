@@ -346,7 +346,7 @@ void setVisibleByGhost (t_monster monsters[NB_MONSTER_MAX], int visibleByGhost[L
 					nbL = centerLine - line;
 					nbC = centerCol - col;
 					if (nbL * nbL + nbC * nbC < radius * radius && line >= 0 && line < LINES && col >= 0 && col < COLUMNS)
-					visibleByGhost[line][col] = 1;
+						visibleByGhost[line][col] = 1;
 				}
 			}
 		}

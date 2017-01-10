@@ -94,9 +94,7 @@ void followLine (t_cell map[LINES][COLUMNS], int mat[][2*DIFFUSION_SIZE + 1], t_
 	float mag = sqrt(dirl * dirl + dirc * dirc);
 	dirl /= mag * 10;
 	dirc /= mag * 10;
-	fprintf(stderr, "followLine 1\n");
 	while (areDifferent(endLine, endCol, (int) hl, (int) hc) && !isAnObstacle(map, (int) hl + player.line - startLine, (int) hc + player.column - startCol)) {
-		fprintf(stderr, "followLine 2 %d %d\n", (int) hl, (int) hc);
 		mat[(int) hl][(int) hc] = 1;
 		hl += dirl;
 		hc += dirc;
@@ -118,19 +116,16 @@ void lightDiffusion (t_cell map[LINES][COLUMNS], t_character player, int visible
 	if (player.column + DIFFUSION_SIZE >= COLUMNS) matBotRight.column -= (player.column + DIFFUSION_SIZE - (COLUMNS-1));
 	
 	
-	fprintf(stderr, "1\n");
 	for (i = matTopLeft.column; i < matBotRight.column + 1; i++) {
 		followLine(map, mat, player, center.line, center.column, matTopLeft.line , i);
 		followLine(map, mat, player, center.line, center.column, matBotRight.line , i);
 	}
-	fprintf(stderr, "2\n");
 	
 	for (i = matTopLeft.line + 1; i < matBotRight.line; i++) {
 		followLine(map, mat, player, center.line, center.column, i, matTopLeft.column);
 		followLine(map, mat, player, center.line, center.column, i, matBotRight.column);
 	}
 	
-	fprintf(stderr, "3\n");
 	matToVisibleByGhost.line = player.line - center.line;
 	matToVisibleByGhost.column = player.column - center.column;
 	
@@ -143,7 +138,6 @@ void lightDiffusion (t_cell map[LINES][COLUMNS], t_character player, int visible
 			}
 		}
 	}
-	fprintf(stderr, "4\n");
 }
 
 int main () {
@@ -237,7 +231,7 @@ int main () {
 			}
 
 			clearLog(&lineLog, win_logs);
-			continueGame = handleInteraction(key, map, &player, win_logs, win_game, &lineLog, monsters, nbMonster, &isPlayerInvicible);
+			continueGame = handleInteraction(key, map, &player, win_logs, win_game, &lineLog, monsters, nbMonster, &isPlayerInvicible, visibleByGhost);
 			markDiscoverRoom(map, player);
 
 			//moveMonster(map, monsters, nbMonster, &player);

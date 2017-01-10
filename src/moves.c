@@ -122,7 +122,6 @@ void fallTrap(t_cell map[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, 
 	err("<fallTrap>", +1);
 	t_character player;
 	int trapType, lostLvl, lostHp, glisser;
-	int i;
 
 	if( perso->lvl !=0){
 		trapType=randab(0, 3);
@@ -130,7 +129,6 @@ void fallTrap(t_cell map[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, 
 	else{
 		trapType=randab(1, 3);
 	}
-
 	switch(trapType){
 		case 0 :
 				lostHp  = randab(0, 5);
@@ -148,9 +146,11 @@ void fallTrap(t_cell map[LINES][COLUMNS], t_character *perso, WINDOW *win_logs, 
 				glisser = randab(2, 8);
 				do{
 				player=*perso;
+				setVisibleByGhost (monsters, visibleByGhost, *perso);
 				clearLog(lineLog, win_logs);
 				displayFloor(map, player, win_game, visibleByGhost);
 				displayPlayer(player, map, win_game, win_logs, lineLog);
+				displayMonster (win_game, monsters, map, nbMonster, player.lvl, visibleByGhost);
 				my_delay(50);
 				addLog("Regardez où vous mettez vos pieds, la femme de    ménage a lustré le sol.", lineLog, win_logs);
 				}while(move_perso(direction, map, perso, win_logs, lineLog, monsters, nbMonster, win_game, visibleByGhost));
