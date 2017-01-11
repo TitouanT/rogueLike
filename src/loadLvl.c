@@ -198,13 +198,14 @@ void writePosition ( t_character player) {
 	/* enregistre les paramètres du joueur dans les dossiers de sauvegardes */
 	err ("<writePosition>", +1);
 	char msg[100];
+	int i;
 	sprintf(msg, "ecriture de la position dans : %s", NOM_POSITION);
 	FILE * positionFile;
 	positionFile = fopen (NOM_POSITION, "w");
 	err(msg, 0);
 	fprintf (positionFile, "%i %i %i %i %i %i %i %i ", (player).line, (player).column, (player).lvl, (player).hp, (player).pw, (player).xp, (player).nbMove, (player).food);
 	fprintf(positionFile, "%i %i ", (player).isSick, (player).hasFoundObj);
-	for(int i=0; i<SIZE_INVENTORY; i++){
+	for(i=0; i<SIZE_INVENTORY; i++){
 		fprintf(positionFile, "%i ", player.inventory[i] );
 	}
 	fprintf(positionFile, "\n");
@@ -248,6 +249,7 @@ void readMonster (t_monster monsters[NB_MONSTER_MAX], int *nbMonster) {
 	/* Fonction permettant de lire toutes les données sur les montres */
 	err ("<readMonster>", +1);
 	FILE * lvlMonster;
+	int i;
 	int type,line,col,lvl,hp,pw,speed,sight,agility,data1,data2,data3;
 
 	lvlMonster = fopen (NOM_MONSTER, "r");
@@ -255,7 +257,7 @@ void readMonster (t_monster monsters[NB_MONSTER_MAX], int *nbMonster) {
 	fscanf(lvlMonster, "%d ", nbMonster);
 	fscanf(lvlMonster, "\n");
 
-	for (int i = 0; i < *nbMonster; i++) {
+	for (i = 0; i < *nbMonster; i++) {
 
 			fscanf(lvlMonster, "%d %d %d %d ", &type, &line, &col, &lvl);
 			fscanf(lvlMonster, "%d %d %d %d %d ", &hp, &pw, &speed, &sight, &agility);
@@ -288,12 +290,13 @@ void writeMonster (t_monster monsters[NB_MONSTER_MAX], int nbMonster) {
 	/* Fonction permettant de sauvegarder toutes les données sur les montres */
 	err ("<writeMonster>", +1);
 	FILE * lvlMonster;
+	int i;
 	lvlMonster = fopen (NOM_MONSTER, "w");
 
 	fprintf(lvlMonster, "%d ", nbMonster);
 	fprintf(lvlMonster, "\n");
 
-	for (int i = 0; i < nbMonster; i++) {
+	for (i = 0; i < nbMonster; i++) {
 
 			fprintf (lvlMonster, "%d %d %d %d ", monsters[i].type, monsters[i].line, monsters[i].col, monsters[i].lvl);
 			fprintf(lvlMonster, "%d %d %d %d %d ", monsters[i].hp, monsters[i].pw, monsters[i].speed, monsters[i].sight, monsters[i].agility);
